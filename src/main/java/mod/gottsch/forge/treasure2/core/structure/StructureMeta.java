@@ -27,6 +27,7 @@ import mod.gottsch.forge.gottschcore.enums.IRarity;
  * @author Mark Gottschling on Jul 29, 2019
  *
  */
+@Deprecated
 public class StructureMeta {
 	private String name;
 	private List<String> region;

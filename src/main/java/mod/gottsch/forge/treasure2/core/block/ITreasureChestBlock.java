@@ -23,7 +23,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
@@ -31,10 +30,10 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  * @author Mark Gottschling on Nov 15, 2022
  *
  */
-public interface ITreasureChestBlock {
+public interface ITreasureChestBlock {	
 	public static final EnumProperty<Direction> FACING = EnumProperty.create("facing", Direction.class);
-	public static final Property<Boolean> UNDISCOVERED = BooleanProperty.create("undiscovered");
-
+	public static final BooleanProperty DISCOVERED = BooleanProperty.create("discovered");
+	
 	/**
 	 * Convenience method.
 	 * @param state
@@ -44,14 +43,11 @@ public interface ITreasureChestBlock {
 		return state.getValue(FACING);
 	}
 	
-	public static Boolean getUndiscovered(BlockState state) {
-		return state.getValue(UNDISCOVERED);
-	}
-	
 	Class<?> getBlockEntityClass();
 
 	LockLayout getLockLayout();
 
+	@Deprecated
 	IRarity getRarity();
 
 	// TODO review - shouldn't need these in general

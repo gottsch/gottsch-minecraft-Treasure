@@ -50,6 +50,7 @@ public class TreasureBlockEntities {
 	
 	public static final RegistryObject<BlockEntityType<TreasureProximitySpawnerBlockEntity>> TREASURE_PROXIMITY_SPAWNER_ENTITY_TYPE;
 	public static final RegistryObject<BlockEntityType<GravestoneProximitySpawnerBlockEntity>> GRAVESTONE_PROXIMITY_SPAWNER_ENTITY_TYPE;
+	public static final RegistryObject<BlockEntityType<MistEmitterBlockEntity>> MIST_EMITTER_BLOCK_ENTITY_TYPE;
 
 	static {
 		WOOD_CHEST_BLOCK_ENTITY_TYPE = Registration.BLOCK_ENTITIES.register("wood_chest_block_entity", () -> BlockEntityType.Builder.of(WoodChestBlockEntity::new, TreasureBlocks.WOOD_CHEST.get()).build(null));
@@ -82,6 +83,11 @@ public class TreasureBlockEntities {
 						TreasureBlocks.GRAVESTONE1_SPAWNER_STONE.get(),
 						TreasureBlocks.GRAVESTONE2_SPAWNER_COBBLESTONE.get(),
 						TreasureBlocks.GRAVESTONE3_SPAWNER_OBSIDIAN.get()
+					).build(null));
+		
+		MIST_EMITTER_BLOCK_ENTITY_TYPE = Registration.BLOCK_ENTITIES.register("mist_emitter", 
+				() -> BlockEntityType.Builder.of(MistEmitterBlockEntity::new, 
+						TreasureBlocks.WITHER_SOUL_LOG.get()
 					).build(null));
 	}
 	

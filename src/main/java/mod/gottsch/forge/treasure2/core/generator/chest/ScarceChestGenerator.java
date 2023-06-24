@@ -24,12 +24,14 @@ import java.util.stream.Collectors;
 
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.gottschcore.loot.LootTableShell;
+import mod.gottsch.forge.gottschcore.random.RandomHelper;
+import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
-import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
-import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity.GenerationContext;
 import mod.gottsch.forge.treasure2.core.block.entity.ITreasureChestBlockEntity;
+import mod.gottsch.forge.treasure2.core.enums.ILootTableType;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.item.LockItem;
+import mod.gottsch.forge.treasure2.core.lock.LockLayout;
 import mod.gottsch.forge.treasure2.core.registry.KeyLockRegistry;
 import mod.gottsch.forge.treasure2.core.registry.TreasureLootTableRegistry;
 
@@ -43,19 +45,19 @@ public class ScarceChestGenerator extends AbstractChestGenerator {
 	/**
 	 * 
 	 */
-	public ScarceChestGenerator(IChestGeneratorType type) {
-		super(type);
+	public ScarceChestGenerator() {
+		super();
 	}
 
 	/**
 	 * 
 	 */
-	@Override
-	public void addGenerationContext(ITreasureChestBlockEntity blockEntity, IRarity rarity) {
-		GenerationContext generationContext = 
-				((AbstractTreasureChestBlockEntity)blockEntity).new GenerationContext(rarity, ChestGeneratorType.SCARCE);
-		blockEntity.setGenerationContext(generationContext);
-	}
+//	@Override
+//	public void addGenerationContext(ITreasureChestBlockEntity blockEntity, IRarity rarity) {
+//		GenerationContext generationContext = 
+//				((AbstractTreasureChestBlockEntity)blockEntity).new GenerationContext(rarity, ChestGeneratorType.SCARCE);
+//		blockEntity.setGenerationContext(generationContext);
+//	}
 	
 	/**
 	 * 
@@ -64,13 +66,21 @@ public class ScarceChestGenerator extends AbstractChestGenerator {
 	 * @return
 	 */
 	@Override
-	public List<LootTableShell> buildLootTableList(final IRarity chestRarity) {
+	public List<LootTableShell> buildLootTableList(ILootTableType key, final IRarity chestRarity) {
 		// get all loot tables by column key
 		List<LootTableShell> tables = new ArrayList<>();
-		tables.addAll(TreasureLootTableRegistry.getLootTableByRarity(Rarity.UNCOMMON));
-		tables.addAll(TreasureLootTableRegistry.getLootTableByRarity(Rarity.SCARCE));
+		tables.addAll(TreasureLootTableRegistry.getLootTableByRarity(key, Rarity.UNCOMMON));
+		tables.addAll(TreasureLootTableRegistry.getLootTableByRarity(key, Rarity.SCARCE));
 		return tables;
 	}	
+	
+	public int randomizedNumberOfLocksByChestType(Random random, LockLayout type) {
+		// determine the number of locks to add
+		int numLocks = RandomHelper.randomInt(random, 1, type.getMaxLocks());		
+		Treasure.LOGGER.debug("# of locks to use: {})", numLocks);
+		
+		return numLocks;
+	}
 	
 	/**
 	 * Select Locks from Common and Uncommon rarities.

@@ -20,7 +20,7 @@ package mod.gottsch.forge.treasure2.core.registry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+import java.util.Set;
 
 import org.apache.commons.lang3.tuple.Triple;
 
@@ -88,7 +88,7 @@ public class TagRegistry {
 	}
 	
 	public static void registerChests(IRarity rarity, TagKey<Block> chestTag) {
-		
+		registerTags(rarity, Triple.of(null, null, chestTag));
 	}
 	
 	public static void registerWishable(IRarity rarity, TagKey<Item> wishableTag) {
@@ -161,10 +161,16 @@ public class TagRegistry {
 		return null;
 	}
 
+	// TODO this should return optional
 	public static TagKey<Item> getWishableTag(IRarity rarity) {
 		if (WISHABLE_TAGS_REGISTRY.containsKey(rarity)) {
 			return WISHABLE_TAGS_REGISTRY.get(rarity);
 		}
 		return null;
+	}
+	
+	public static List<IRarity> getWishableKeys() {
+		Set<IRarity> keys = WISHABLE_TAGS_REGISTRY.keySet();
+		return new ArrayList<>(keys);
 	}
 }

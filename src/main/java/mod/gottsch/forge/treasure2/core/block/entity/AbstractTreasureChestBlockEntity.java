@@ -27,19 +27,22 @@ import javax.annotation.Nullable;
 
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.block.ITreasureChestBlock;
+import mod.gottsch.forge.treasure2.api.TreasureApi;
+import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
+import mod.gottsch.forge.treasure2.core.block.effects.IChestEffects;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
-import mod.gottsch.forge.treasure2.core.generator.chest.ChestGeneratorType;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGenerator;
-import mod.gottsch.forge.treasure2.core.generator.chest.IChestGeneratorType;
 import mod.gottsch.forge.treasure2.core.inventory.StandardChestContainerMenu;
 import mod.gottsch.forge.treasure2.core.lock.LockState;
+import mod.gottsch.forge.treasure2.core.particle.TreasureParticles;
 import mod.gottsch.forge.treasure2.core.registry.ChestGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
+import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
+import mod.gottsch.forge.treasure2.core.world.feature.IFeatureType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -48,9 +51,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
@@ -74,17 +75,17 @@ import net.minecraftforge.items.ItemStackHandler;
  * @author Mark Gottschling on Nov 10, 2022
  *
  */
-public abstract class AbstractTreasureChestBlockEntity extends BlockEntity implements ITreasureChestBlockEntity, MenuProvider, Nameable {
+public abstract class AbstractTreasureChestBlockEntity extends BlockEntity implements ITreasureChestBlockEntity, IChestEffects, MenuProvider, Nameable {
 
 	private static final String LOCK_STATES_TAG = "lockStates";
 	private static final String FACING_TAG = "facing";
 	private static final String SEALED_TAG = "sealed";
-
 	private static final String LOOT_TABLE_TAG = "lootTable";
-	
+	private static final String MIMIC_TAG = "mimic";
+
 	private static final String GENERATION_CONTEXT_TAG = "generationContext";
 	private static final String LOOT_RARITY_TAG = "lootRarity";
-	private static final String CHEST_GENERATOR_TYPE_TAG = "chestGeneratorType";
+	private static final String FEATURE_TYPE_TAG = "featureType";
 
 
 	/*
@@ -120,6 +121,11 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 	private ResourceLocation lootTable;
 
 	/*
+	 * The mimic assigned to this block entity
+	 */
+	private ResourceLocation mimic;
+	
+	/*
 	 * The custom name of this block entity
 	 */
 	private Component name;
@@ -154,14 +160,15 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 	/**
 	 * 
 	 */
-    @Override
-    public AbstractContainerMenu createMenu(int windowId, Inventory playerInventory, Player playerEntity) {
+	@Override
+	public AbstractContainerMenu createMenu(int windowId, Inventory playerInventory, Player playerEntity) {
 		Treasure.LOGGER.debug("is chest sealed -> {}", this.isSealed());
 		if (this.isSealed()) {
 			this.setSealed(false);
-			Treasure.LOGGER.debug("chest gen type -> {}", this.getGenerationContext().getChestGeneratorType()); 
-			IChestGeneratorType chestGeneratorType = this.getGenerationContext().getChestGeneratorType();
-			Optional<IChestGenerator> chestGenerator = ChestGeneratorRegistry.get(chestGeneratorType);
+//			Treasure.LOGGER.debug("chest gen type -> {}", this.getGenerationContext().getChestGeneratorType()); 
+//			IChestGeneratorType chestGeneratorType = this.getGenerationContext().getChestGeneratorType();
+			IRarity rarity = this.getGenerationContext().getLootRarity();
+			Optional<IChestGenerator> chestGenerator = ChestGeneratorRegistry.get(rarity);
 			if (chestGenerator.isPresent()) {
 				Treasure.LOGGER.debug("chest gen  -> {}", chestGenerator.get().getClass().getSimpleName());
 				// fill the chest with loot
@@ -171,20 +178,20 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 				Treasure.LOGGER.warn("treasure chest at -> {} does not reference a valid generator -> {}", this.worldPosition, chestGenerator.get().getClass().getSimpleName());
 			}
 		}
-    	return createChestContainerMenu(windowId, playerInventory, playerEntity);
-    }
-    
-    /**
-     * 
-     * @param windowId
-     * @param playerInventory
-     * @param playerEntity
-     * @return
-     */
-    public AbstractContainerMenu createChestContainerMenu(int windowId, Inventory playerInventory, Player playerEntity) {
-    	return new StandardChestContainerMenu(windowId, this.worldPosition, playerInventory, playerEntity);
-    }
-    
+		return createChestContainerMenu(windowId, playerInventory, playerEntity);
+	}
+
+	/**
+	 * 
+	 * @param windowId
+	 * @param playerInventory
+	 * @param playerEntity
+	 * @return
+	 */
+	public AbstractContainerMenu createChestContainerMenu(int windowId, Inventory playerInventory, Player playerEntity) {
+		return new StandardChestContainerMenu(windowId, this.worldPosition, playerInventory, playerEntity);
+	}
+
 	/**
 	 * 
 	 * @return
@@ -250,7 +257,8 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 	public void tickClient() {
 		this.prevLidAngle = this.lidAngle;
 		if (this.openCount > 0 && this.lidAngle == 0.0F) {
-			this.playSound(SoundEvents.CHEST_OPEN);
+			doChestOpenEffects(level, null, getBlockPos());
+//			this.playSound(SoundEvents.CHEST_OPEN);
 		}
 
 		if (this.openCount == 0 && this.lidAngle > 0.0F || this.openCount > 0 && this.lidAngle < 1.0F) {
@@ -268,7 +276,8 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 
 			//float f3 = 0.5F;
 			if (this.lidAngle < 0.5F && f2 >= 0.5F) {
-				this.playSound(SoundEvents.CHEST_CLOSE);
+				doChestCloseEffects(level, null, getBlockPos());
+//				this.playSound(SoundEvents.CHEST_CLOSE);
 			}
 
 			if (this.lidAngle < 0.0F) {
@@ -276,23 +285,45 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 			}
 		}	
 	}
-	
+
 	@Override
-	public void tickServer() {
+	public void tickParticle() {
 		if (Config.SERVER.effects.enableUndiscoveredEffects.get()
-				&& ITreasureChestBlock.getUndiscovered(this.getBlockState())) {
-			
-			// TODO test ticks ie world time
-			
+				&& !getBlockState().getValue(AbstractTreasureChestBlock.DISCOVERED)) {
+
 			// TODO move this to IChestEffects
-			// TODO server spawn particles
-			// TODO use gold and silver coins as particles to move upwards and spin
-			// TODO use long particles to simulate beams of light eminating from the chest.. see Ars mod?
-			((ServerLevel) getLevel()).sendParticles(ParticleTypes.SMOKE, 
-					getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), 20, 0.0D, 0.0D, 0.0D, 0.5D);
+
+			if (getLevel().getGameTime() % 10 == 0) {
+				Random random = getLevel().getRandom();
+				for(int k = 0; k < 5; ++k) {
+					SimpleParticleType coinParticle;
+					int x = k % 3;
+					if (x == 0) {
+						coinParticle = TreasureParticles.COPPER_COIN_PARTICLE.get();
+					} else if (x == 1) {
+						coinParticle = TreasureParticles.SILVER_COIN_PARTICLE.get();
+					} else {
+						coinParticle = TreasureParticles.GOLD_COIN_PARTICLE.get();
+					}
+					getLevel().addParticle(coinParticle, 
+							(double)getBlockPos().getX() + 0.5D + random.nextDouble() / 3.0D * (double)(random.nextBoolean() ? 1 : -1), 
+							(double)getBlockPos().getY() + random.nextDouble() + random.nextDouble(),
+							(double)getBlockPos().getZ() + 0.5D + random.nextDouble() / 3.0D * (double)(random.nextBoolean() ? 1 : -1),
+							0.0D, 0.07D, 0.0D);
+				}
+			}
 		}
 	}
 
+
+	@Override
+	public void tickServer() {
+	}
+	
+	/**
+	 * 
+	 * @param sound
+	 */
 	protected void playSound(SoundEvent sound) {
 		double d0 = (double)getBlockPos().getX() + 0.5D;
 		double d1 = (double)getBlockPos().getY() + 0.5D;
@@ -352,15 +383,17 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 			// write facing
 			tag.putInt(FACING_TAG, getFacing().get3DDataValue());
 			tag.putBoolean(SEALED_TAG, isSealed());
-//			tag.putBoolean(UNDISCOVERED_TAG, isUndiscovered());
 			if (getLootTable() != null) {
 				tag.putString(LOOT_TABLE_TAG, getLootTable().toString());
 			}
 
+			if (getMimic() != null) {
+				tag.putString(MIMIC_TAG, getMimic().toString());
+			}
 			if (getGenerationContext() != null) {
 				CompoundTag contextTag = new CompoundTag();
-				contextTag.putString(LOOT_RARITY_TAG, getGenerationContext().getLootRarity().getValue());
-				contextTag.putString(CHEST_GENERATOR_TYPE_TAG, getGenerationContext().getChestGeneratorType().getName());
+				contextTag.putString(LOOT_RARITY_TAG, getGenerationContext().getLootRarity().getName());
+				contextTag.putString(FEATURE_TYPE_TAG, getGenerationContext().getFeatureType().getName());
 				tag.put(GENERATION_CONTEXT_TAG, contextTag);
 			}
 		} catch (Exception e) {
@@ -430,34 +463,40 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 		}
 	}
 
-	public void loadProperties(CompoundTag nbt) {
+	public void loadProperties(CompoundTag tag) {
 		try {
 			// read the facing
-			if (nbt.contains(FACING_TAG)) {
-				this.setFacing(nbt.getInt(FACING_TAG));
+			if (tag.contains(FACING_TAG)) {
+				this.setFacing(tag.getInt(FACING_TAG));
 			}
-			if (nbt.contains(SEALED_TAG)) {
-				this.setSealed(nbt.getBoolean(SEALED_TAG));
+			if (tag.contains(SEALED_TAG)) {
+				this.setSealed(tag.getBoolean(SEALED_TAG));
 			}
-//			if (nbt.contains(UNDISCOVERED_TAG)) {
-//				this.setUndiscovered(nbt.getBoolean(UNDISCOVERED_TAG));
-//			}
-			if (nbt.contains(LOOT_TABLE_TAG)) {
-				if (!nbt.getString(LOOT_TABLE_TAG).isEmpty()) {
-					this.setLootTable(new ResourceLocation(nbt.getString(LOOT_TABLE_TAG)));
+			if (tag.contains(LOOT_TABLE_TAG)) {
+				if (!tag.getString(LOOT_TABLE_TAG).isEmpty()) {
+					this.setLootTable(new ResourceLocation(tag.getString(LOOT_TABLE_TAG)));
 				}
 			}
-			if (nbt.contains(GENERATION_CONTEXT_TAG)) {
-				CompoundTag contextTag = nbt.getCompound(GENERATION_CONTEXT_TAG);
-				Rarity rarity = null;
-				IChestGeneratorType genType = null;
+			if (tag.contains(MIMIC_TAG)) {
+				if (!tag.getString(MIMIC_TAG).isEmpty()) {
+					this.setMimic(new ResourceLocation(tag.getString(MIMIC_TAG)));
+				}
+			}
+			if (tag.contains(GENERATION_CONTEXT_TAG)) {
+				CompoundTag contextTag = tag.getCompound(GENERATION_CONTEXT_TAG);
+				Optional<IRarity> rarity = Optional.empty();
 				if (contextTag.contains(LOOT_RARITY_TAG)) {
-					rarity = Rarity.getByValue(contextTag.getString(LOOT_RARITY_TAG));
+					rarity = TreasureApi.getRarity(contextTag.getString(LOOT_RARITY_TAG));
 				}
-				if (contextTag.contains(CHEST_GENERATOR_TYPE_TAG)) {
-					genType = ChestGeneratorType.valueOf(contextTag.getString(CHEST_GENERATOR_TYPE_TAG).toUpperCase());
+				Optional<IFeatureType> featureType = Optional.empty();
+				if (contextTag.contains(FEATURE_TYPE_TAG)) {
+					featureType = TreasureApi.getFeatureType(contextTag.getString(FEATURE_TYPE_TAG));
 				}
-				AbstractTreasureChestBlockEntity.GenerationContext generationContext = this.new GenerationContext(rarity, genType);
+
+				AbstractTreasureChestBlockEntity.GenerationContext generationContext = 
+						this.new GenerationContext(
+								rarity.orElse(Rarity.NONE), 
+								featureType.orElse(FeatureType.UNKNOWN));
 				this.setGenerationContext(generationContext);
 			}	
 		} catch (Exception e) {
@@ -593,7 +632,7 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 	public void setLootTable(ResourceLocation lootTable) {
 		this.lootTable = lootTable;
 	}
-	
+
 
 	@Override
 	public GenerationContext getGenerationContext() {
@@ -605,40 +644,52 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 		this.generationContext = generationContext;
 	}
 	
+	@Override
+	public ResourceLocation getMimic() {
+		return mimic;
+	}
+
+	@Override
+	public void setMimic(ResourceLocation mimic) {
+		this.mimic = mimic;
+	}
+
 	/*
-	 * 
+	 * TODO think of something better here. There already is ChestGeneratedContext
 	 */
 	public class GenerationContext {
 		/*
 		 * The rarity level of the loot that the chest will contain
 		 */
 		private IRarity lootRarity;
+		private IFeatureType featureType;
 
-		private IChestGeneratorType chestGeneratorType;
-
-		public GenerationContext(IRarity rarity, IChestGeneratorType chestGeneratorType) {
+		public GenerationContext(IRarity rarity, IFeatureType featureType) {
 			this.lootRarity = rarity;
-			this.chestGeneratorType = chestGeneratorType;
+			this.featureType = featureType;
 		}
-
-		public GenerationContext(ResourceLocation lootTable, IRarity rarity, IChestGeneratorType chestGeneratorType) {
-			// TODO move the loot table to this class
+		
+		public GenerationContext(ResourceLocation lootTable, IRarity rarity, IFeatureType featureType) {
 			AbstractTreasureChestBlockEntity.this.lootTable = lootTable;
 			this.lootRarity = rarity;
-			this.chestGeneratorType = chestGeneratorType;
+			this.featureType = featureType;
 		}
 
 		public IRarity getLootRarity() {
 			return lootRarity;
 		}
 
-		public IChestGeneratorType getChestGeneratorType() {
-			return chestGeneratorType;
-		}
-
 		public ResourceLocation getLootTable() {
 			return AbstractTreasureChestBlockEntity.this.lootTable;
 		}
 
+		public IFeatureType getFeatureType() {
+			return featureType;
+		}
+
+		public void setFeatureType(IFeatureType type) {
+			this.featureType = type;
+		}
 	}
+
 }

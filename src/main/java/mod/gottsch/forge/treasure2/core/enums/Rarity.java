@@ -92,6 +92,7 @@ public enum Rarity implements IRarity {
 		this.value = value;
 	}
 	
+	// TODO should return IRarity
 	/**
 	 * 
 	 * @param code

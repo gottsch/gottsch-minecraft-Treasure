@@ -1,8 +1,9 @@
 {
   "replace": false,
   "values": [
-    "treasure2:silver_coin",
     "treasure2:gold_coin",
-    "treasure2:topaz"
+    "treasure2:topaz",
+    "minecraft:diamond",
+    "minecraft:emerald"
   ]
 }

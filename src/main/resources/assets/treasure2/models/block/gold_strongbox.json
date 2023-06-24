@@ -3,7 +3,7 @@
 	"texture_size": [64, 32],
 	"textures": {
 		"1": "treasure2:block/chest/gold_strongbox",
-		"particle": "treasure2:block/chest/gold_strongbox"
+		"particle": "treasure2:block/chest/particle/gold_strongbox_particle"
 	},
 	"elements": [
 		{

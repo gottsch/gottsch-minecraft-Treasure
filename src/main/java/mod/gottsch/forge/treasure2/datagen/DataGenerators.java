@@ -24,6 +24,7 @@ public class DataGenerators {
         	TreasureBlockTagsProvider blockTags = new TreasureBlockTagsProvider(generator, event.getExistingFileHelper());
             generator.addProvider(blockTags);
             generator.addProvider(new TreasureItemTagsProvider(generator, blockTags, event.getExistingFileHelper()));
+            generator.addProvider(new TreasureBiomeTagsProvider(generator, event.getExistingFileHelper()));
 
         }
         if (event.includeClient()) {

@@ -1,0 +1,83 @@
+{
+  "version" : "1.0",
+  "type" : "minecraft:chest",
+  "pools" : [ {
+    "name" : "common_armor",
+    "rolls" : 1,
+    "entries" : [ {
+      "entryName" : "leather_chestplate",
+      "type" : "minecraft:item",
+      "name" : "minecraft:leather_chestplate",
+      "weight" : 20
+    }, {
+      "entryName" : "leather_leggings",
+      "type" : "minecraft:item",
+      "name" : "minecraft:leather_leggings",
+      "weight" : 20
+    }, {
+      "entryName" : "leather_helmet",
+      "type" : "minecraft:item",
+      "name" : "minecraft:leather_helmet",
+      "weight" : 20
+    }, {
+      "entryName" : "leather_boots",
+      "type" : "minecraft:item",
+      "name" : "minecraft:leather_boots",
+      "weight" : 20
+    }, {
+      "entryName" : "golden_chestplate",
+      "type" : "minecraft:item",
+      "name" : "minecraft:golden_chestplate",
+      "weight" : 10
+    }, {
+      "entryName" : "golden_leggings",
+      "type" : "minecraft:item",
+      "name" : "minecraft:golden_leggings",
+      "weight" : 10
+    }, {
+      "entryName" : "golden_helmet",
+      "type" : "minecraft:item",
+      "name" : "minecraft:golden_helmet",
+      "weight" : 10
+    }, {
+      "entryName" : "golden_boots",
+      "type" : "minecraft:item",
+      "name" : "minecraft:golden_boots",
+      "weight" : 10
+    } ]
+  }, {
+    "name" : "common_weapons",
+    "rolls" : 1,
+    "entries" : [ {
+      "entryName" : "stone_sword",
+      "type" : "minecraft:item",
+      "name" : "minecraft:stone_sword",
+      "weight" : 10
+    }, {
+      "entryName" : "chipped_copper_short_sword",
+      "type" : "minecraft:item",
+      "name" : "treasure2:chipped_copper_short_sword",
+      "weight" : 10
+    }, {
+      "entryName" : "chipped_iron_short_sword",
+      "type" : "minecraft:item",
+      "name" : "treasure2:chipped_iron_short_sword",
+      "weight" : 10
+    }, {
+      "entryName" : "copper_short_sword",
+      "type" : "minecraft:item",
+      "name" : "treasure2:copper_short_sword",
+      "weight" : 10
+    }, {
+      "entryName" : "iron_short_sword",
+      "type" : "minecraft:item",
+      "name" : "treasure2:iron_short_sword",
+      "weight" : 10
+    }, {
+      "entryName" : "copper_broad_axe",
+      "type" : "minecraft:item",
+      "name" : "treasure2:copper_broad_axe",
+      "weight" : 10
+    } ]
+  } ]
+}

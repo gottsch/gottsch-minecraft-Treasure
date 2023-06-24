@@ -63,7 +63,8 @@ public class CrateChestBlockEntity extends AbstractTreasureChestBlockEntity {
 		this.prevLidAngle = this.lidAngle;
 
 		if (this.openCount > 0 && this.lidAngle == 0.0F) {
-			this.playSound(SoundEvents.CHEST_OPEN);
+//			this.playSound(SoundEvents.CHEST_OPEN);
+			doChestOpenEffects(level, null, getBlockPos());
 		}
 
 		if (this.openCount == 0 && this.lidAngle > 0.0F || this.openCount > 0 && this.lidAngle < .125F) {
@@ -80,7 +81,8 @@ public class CrateChestBlockEntity extends AbstractTreasureChestBlockEntity {
 			}
 
 			if (this.lidAngle < 0.06F && f2 >= 0.06F) {
-				this.playSound(SoundEvents.CHEST_CLOSE);
+				doChestCloseEffects(level, null, getBlockPos());
+//				this.playSound(SoundEvents.CHEST_CLOSE);
 			}
 
 			if (this.lidAngle < 0.0F) {

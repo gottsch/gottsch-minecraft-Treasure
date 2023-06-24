@@ -19,7 +19,7 @@ package mod.gottsch.forge.treasure2.core.block.entity;
 
 
 import mod.gottsch.forge.treasure2.core.chest.ChestInventorySize;
-import mod.gottsch.forge.treasure2.core.inventory.StandardChestContainerMenu;
+import mod.gottsch.forge.treasure2.core.inventory.VikingChestContainerMenu;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -44,6 +44,11 @@ public class VikingChestBlockEntity extends AbstractTreasureChestBlockEntity {
 		super(TreasureBlockEntities.VIKING_CHEST_BLOCK_ENTITY_TYPE.get(), pos, state);
 	}
 	
+    @Override
+    public AbstractContainerMenu createChestContainerMenu(int windowId, Inventory playerInventory, Player playerEntity) {
+    	return new VikingChestContainerMenu(windowId, this.worldPosition, playerInventory, playerEntity);
+    }
+    
     @Override
 	public Component getDefaultName() {
 		return new TranslatableComponent(LangUtil.screen("viking_chest.name"));

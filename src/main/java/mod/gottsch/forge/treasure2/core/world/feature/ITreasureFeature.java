@@ -23,7 +23,7 @@ import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.biome.TreasureBiomeHelper;
-import mod.gottsch.forge.treasure2.core.config.TreasureConfig;
+import mod.gottsch.forge.treasure2.core.config.Config;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -43,7 +43,7 @@ public interface ITreasureFeature {
 	 */
 	default public boolean meetsDimensionCriteria(ResourceLocation dimension) {
 		// test the dimension white list
-		return TreasureConfig.GENERAL.dimensionsWhiteList.get().contains(dimension.toString());
+		return Config.SERVER.integration.dimensionsWhiteList.get().contains(dimension.toString());
 	}
 
 	/**

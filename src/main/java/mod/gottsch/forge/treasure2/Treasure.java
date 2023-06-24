@@ -3,6 +3,7 @@ package mod.gottsch.forge.treasure2;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
@@ -13,19 +14,24 @@ import com.electronwill.nightconfig.core.CommentedConfig;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.block.entity.TreasureBlockEntities;
 import mod.gottsch.forge.treasure2.core.config.Config;
+import mod.gottsch.forge.treasure2.core.config.StructureConfiguration;
 import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
 import mod.gottsch.forge.treasure2.core.inventory.TreasureContainers;
 import mod.gottsch.forge.treasure2.core.item.TreasureItems;
 import mod.gottsch.forge.treasure2.core.particle.TreasureParticles;
-import mod.gottsch.forge.treasure2.core.registry.DimensionalGeneratedRegistry;
-import mod.gottsch.forge.treasure2.core.registry.WeightedChestGeneratorRegistry;
+import mod.gottsch.forge.treasure2.core.registry.DimensionalGeneratedCache;
+import mod.gottsch.forge.treasure2.core.registry.RarityLevelWeightedChestGeneratorRegistry;
+import mod.gottsch.forge.treasure2.core.registry.TreasureTemplateRegistry;
 import mod.gottsch.forge.treasure2.core.setup.ClientSetup;
 import mod.gottsch.forge.treasure2.core.setup.CommonSetup;
-import mod.gottsch.forge.treasure2.core.setup.Registration;
+import mod.gottsch.forge.treasure2.core.sound.TreasureSounds;
 import mod.gottsch.forge.treasure2.core.world.feature.TreasureConfiguredFeatures;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.event.server.ServerStartingEvent;
+import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -49,6 +55,7 @@ public class Treasure {
 	public static final String MODID = "treasure2";
 
 	private static final String CHESTS_CONFIG_VERSION = "1.18.2-v1";
+	private static final String STRUCTURES_CONFIG_VERSION = "1.18.2-v1";
 	
 	public static Treasure instance;
 
@@ -58,8 +65,9 @@ public class Treasure {
 	public Treasure() {
 		Treasure.instance = this;
 		Config.register();
-		// create the default config
+		// create the default configs
 		createServerConfig(Config.CHESTS_CONFIG_SPEC, "chests", CHESTS_CONFIG_VERSION);
+		createServerConfig(Config.STRUCTURE_CONFIG_SPEC, "structures", STRUCTURES_CONFIG_VERSION);
 		
 		// register the deferred registries
 		TreasureBlocks.register();
@@ -69,6 +77,7 @@ public class Treasure {
 		TreasureParticles.register();
 		TreasureEntities.register();
 		TreasureConfiguredFeatures.register();
+		TreasureSounds.register();
 		
 		// register the setup method for mod loading
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -111,7 +120,7 @@ public class Treasure {
 //        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.BRACELET.getMessageBuilder().build());
 //        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.BELT.getMessageBuilder().build());
 //    }
-
+    
 	/**
 	 * On a config event.
 	 * @param event
@@ -129,9 +138,15 @@ public class Treasure {
 	
 					// init generated chest registry
 					LOGGER.debug("reading in chests config...");
-					DimensionalGeneratedRegistry.initialize();
-					WeightedChestGeneratorRegistry.intialize();
+					DimensionalGeneratedCache.initialize();
+					RarityLevelWeightedChestGeneratorRegistry.initialize();
 				} 
+				else if (spec == Config.STRUCTURE_CONFIG_SPEC) {
+					Optional<StructureConfiguration> structConfig = Config.transformStructureConfiguration(commentedConfig);
+//					if (structConfig.isPresent()) {
+//						TreasureTemplateRegistry.registerAccesslists(structConfig.get().getWell());
+//					}
+				}
 			}
 		}
 	}

@@ -19,27 +19,20 @@ package mod.gottsch.forge.treasure2.core.generator.chest;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import mod.gottsch.forge.gottschcore.enums.IRarity;
-import mod.gottsch.forge.gottschcore.loot.LootTableShell;
 import mod.gottsch.forge.gottschcore.random.RandomHelper;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
 import mod.gottsch.forge.treasure2.core.block.StandardChestBlock;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
-import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
-import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity.GenerationContext;
 import mod.gottsch.forge.treasure2.core.block.entity.ITreasureChestBlockEntity;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.item.LockItem;
 import mod.gottsch.forge.treasure2.core.lock.LockLayout;
-import mod.gottsch.forge.treasure2.core.loot.SpecialLootTables;
 import mod.gottsch.forge.treasure2.core.registry.KeyLockRegistry;
-import mod.gottsch.forge.treasure2.core.registry.TreasureLootTableRegistry;
 
 /**
  * 
@@ -51,34 +44,34 @@ public class GoldSkullChestGenerator extends AbstractChestGenerator {
 	/**
 	 * 
 	 */
-	public GoldSkullChestGenerator(IChestGeneratorType type) {
-		super(type);
+	public GoldSkullChestGenerator() {
+		super();
 	}
 
 	/**
 	 * 
 	 */
-	@Override
-	public void addGenerationContext(ITreasureChestBlockEntity blockEntity, IRarity rarity) {
-		GenerationContext generationContext = 
-				((AbstractTreasureChestBlockEntity)blockEntity).new GenerationContext(rarity, ChestGeneratorType.GOLD_SKULL);
-		blockEntity.setGenerationContext(generationContext);
-	}
+//	@Override
+//	public void addGenerationContext(ITreasureChestBlockEntity blockEntity, IRarity rarity) {
+//		GenerationContext generationContext = 
+//				((AbstractTreasureChestBlockEntity)blockEntity).new GenerationContext(rarity, ChestGeneratorType.GOLD_SKULL);
+//		blockEntity.setGenerationContext(generationContext);
+//	}
 	
 	/*
 	 * @param random
 	 * @param chestRarity
 	 * @return
 	 */
-	@Override
-	public Optional<LootTableShell> selectLootTable(Random random, final IRarity chestRarity) {
-		return TreasureLootTableRegistry.getSpecialLootTable(SpecialLootTables.GOLD_SKULL_CHEST);
-	}
-
-	@Override
-	public Optional<LootTableShell> selectLootTable(Supplier<Random> factory, final IRarity rarity) {
-		return TreasureLootTableRegistry.getSpecialLootTable(SpecialLootTables.GOLD_SKULL_CHEST);
-	}
+//	@Override
+//	public Optional<LootTableShell> selectLootTable(Random random, final IRarity chestRarity) {
+//		return TreasureLootTableRegistry.getSpecialLootTable(SpecialLootTables.GOLD_SKULL_CHEST);
+//	}
+//
+//	@Override
+//	public Optional<LootTableShell> selectLootTable(Supplier<Random> factory, final IRarity rarity) {
+//		return TreasureLootTableRegistry.getSpecialLootTable(SpecialLootTables.GOLD_SKULL_CHEST);
+//	}
 	
 	/**
 	 * Always select a skull chest.

@@ -33,6 +33,10 @@ import mod.gottsch.forge.treasure2.client.model.blockentity.StrongboxModel;
 import mod.gottsch.forge.treasure2.client.model.blockentity.VikingChestModel;
 import mod.gottsch.forge.treasure2.client.model.blockentity.WitherChestModel;
 import mod.gottsch.forge.treasure2.client.model.entity.BoundSoulModel;
+import mod.gottsch.forge.treasure2.client.model.entity.CauldronChestMimicModel;
+import mod.gottsch.forge.treasure2.client.model.entity.PirateChestMimicModel;
+import mod.gottsch.forge.treasure2.client.model.entity.VikingChestMimicModel;
+import mod.gottsch.forge.treasure2.client.model.entity.WoodChestMimicModel;
 import mod.gottsch.forge.treasure2.client.renderer.blockentity.CardboardBoxRenderer;
 import mod.gottsch.forge.treasure2.client.renderer.blockentity.CauldronChestRenderer;
 import mod.gottsch.forge.treasure2.client.renderer.blockentity.CompressorChestRenderer;
@@ -50,18 +54,24 @@ import mod.gottsch.forge.treasure2.client.renderer.blockentity.VikingChestRender
 import mod.gottsch.forge.treasure2.client.renderer.blockentity.WitherChestRenderer;
 import mod.gottsch.forge.treasure2.client.renderer.blockentity.WoodChestRenderer;
 import mod.gottsch.forge.treasure2.client.renderer.entity.BoundSoulRenderer;
+import mod.gottsch.forge.treasure2.client.renderer.entity.CauldronChestMimicRenderer;
+import mod.gottsch.forge.treasure2.client.renderer.entity.PirateChestMimicRenderer;
+import mod.gottsch.forge.treasure2.client.renderer.entity.VikingChestMimicRenderer;
+import mod.gottsch.forge.treasure2.client.renderer.entity.WoodChestMimicRenderer;
 import mod.gottsch.forge.treasure2.client.screen.CompressorChestScreen;
 import mod.gottsch.forge.treasure2.client.screen.KeyRingScreen;
 import mod.gottsch.forge.treasure2.client.screen.PouchScreen;
 import mod.gottsch.forge.treasure2.client.screen.SkullChestScreen;
 import mod.gottsch.forge.treasure2.client.screen.StandardChestScreen;
 import mod.gottsch.forge.treasure2.client.screen.StrongboxScreen;
+import mod.gottsch.forge.treasure2.client.screen.VikingChestScreen;
 import mod.gottsch.forge.treasure2.client.screen.WitherChestScreen;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.block.entity.TreasureBlockEntities;
 import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
 import mod.gottsch.forge.treasure2.core.inventory.TreasureContainers;
 import mod.gottsch.forge.treasure2.core.particle.BillowingMistParticle;
+import mod.gottsch.forge.treasure2.core.particle.CoinParticle;
 import mod.gottsch.forge.treasure2.core.particle.MistParticle;
 import mod.gottsch.forge.treasure2.core.particle.PoisonMistParticle;
 import mod.gottsch.forge.treasure2.core.particle.SpanishMossParticle;
@@ -70,10 +80,14 @@ import mod.gottsch.forge.treasure2.core.particle.WitherMistParticle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.particle.ParticleEngine;
+import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.world.level.GrassColor;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -90,6 +104,21 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 public class ClientSetup {
 
 	/**
+	 * Register the {@link IBlockColor} handlers.
+	 *
+	 * @param event The event
+	 */
+	@OnlyIn(Dist.CLIENT)
+	@SubscribeEvent
+	public static void registerBlockColors(ColorHandlerEvent.Block event) {
+		event.getBlockColors().register(
+				(state, reader, pos, color) -> {
+					return (reader != null && pos != null) ? BiomeColors.getAverageGrassColor(reader, pos)  : GrassColor.get(0.5D, 1.0D);
+				},
+				TreasureBlocks.FALLING_GRASS.get());
+	}
+	
+	/**
 	 * 
 	 * @param event
 	 */
@@ -101,17 +130,15 @@ public class ClientSetup {
             MenuScreens.register(TreasureContainers.STRONGBOX_CONTAINER.get(), StrongboxScreen::new);
             MenuScreens.register(TreasureContainers.SKULL_CHEST_CONTAINER.get(), SkullChestScreen::new);
             MenuScreens.register(TreasureContainers.COMPRESSOR_CHEST_CONTAINER.get(), CompressorChestScreen::new);
+            MenuScreens.register(TreasureContainers.VIKING_CHEST_CONTAINER.get(), VikingChestScreen::new);
             MenuScreens.register(TreasureContainers.WITHER_CHEST_CONTAINER.get(), WitherChestScreen::new); 
             MenuScreens.register(TreasureContainers.KEY_RING_CONTAINER.get(), KeyRingScreen::new);           
             MenuScreens.register(TreasureContainers.POUCH_CONTAINER.get(), PouchScreen::new);           
-
-//            ItemBlockRenderTypes.setRenderLayer(TreasureBlocks.WOOD_CHEST.get(), RenderType.cutoutMipped());
             
             TreasureBlocks.CHESTS.forEach(chest -> {
             	ItemBlockRenderTypes.setRenderLayer(chest.get(), RenderType.cutoutMipped());
             });
-//            ItemBlockRenderTypes.setRenderLayer(TreasureBlocks.VIKING_CHEST.get(), RenderType.cutoutMipped());
-            
+
             ItemBlockRenderTypes.setRenderLayer(TreasureBlocks.SPANISH_MOSS.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(TreasureBlocks.SKELETON.get(), RenderType.cutout());
         });
@@ -174,6 +201,10 @@ public class ClientSetup {
 		event.registerBlockEntityRenderer(TreasureBlockEntities.WITHER_CHEST_BLOCK_ENTITY_TYPE.get(), WitherChestRenderer::new);
 		
 		event.registerEntityRenderer(TreasureEntities.BOUND_SOUL_ENTITY_TYPE.get(), BoundSoulRenderer::new);
+		event.registerEntityRenderer(TreasureEntities.WOOD_CHEST_MIMIC_ENTITY_TYPE.get(), WoodChestMimicRenderer::new);
+		event.registerEntityRenderer(TreasureEntities.PIRATE_CHEST_MIMIC_ENTITY_TYPE.get(), PirateChestMimicRenderer::new);
+		event.registerEntityRenderer(TreasureEntities.VIKING_CHEST_MIMIC_ENTITY_TYPE.get(), VikingChestMimicRenderer::new);
+		event.registerEntityRenderer(TreasureEntities.CAULDRON_CHEST_MIMIC_ENTITY_TYPE.get(), CauldronChestMimicRenderer::new);
 	}
 	
 	/**
@@ -198,6 +229,10 @@ public class ClientSetup {
 		event.registerLayerDefinition(WitherChestModel.LAYER_LOCATION, WitherChestModel::createBodyLayer);
 		
 		event.registerLayerDefinition(BoundSoulModel.LAYER_LOCATION, BoundSoulModel::createBodyLayer);
+		event.registerLayerDefinition(WoodChestMimicModel.LAYER_LOCATION, WoodChestMimicModel::createBodyLayer);
+		event.registerLayerDefinition(PirateChestMimicModel.LAYER_LOCATION, PirateChestMimicModel::createBodyLayer);
+		event.registerLayerDefinition(VikingChestMimicModel.LAYER_LOCATION, VikingChestMimicModel::createBodyLayer);
+		event.registerLayerDefinition(CauldronChestMimicModel.LAYER_LOCATION, CauldronChestMimicModel::createBodyLayer);
 	}
 	
 	
@@ -219,5 +254,9 @@ public class ClientSetup {
 		
 		particleEngine.register(TreasureParticles.WITHER_MIST_PARTICLE.get(), 
 				WitherMistParticle.Provider::new);
+		
+		particleEngine.register(TreasureParticles.COPPER_COIN_PARTICLE.get(), CoinParticle.Provider::new);
+		particleEngine.register(TreasureParticles.SILVER_COIN_PARTICLE.get(), CoinParticle.Provider::new);
+		particleEngine.register(TreasureParticles.GOLD_COIN_PARTICLE.get(), CoinParticle.Provider::new);
 	}
 }

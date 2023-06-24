@@ -17,13 +17,17 @@
  */
 package mod.gottsch.forge.treasure2.core.random;
 
+import java.util.Optional;
 import java.util.Random;
 
 import org.apache.commons.lang3.tuple.Pair;
 
 import mod.gottsch.forge.gottschcore.enums.IRarity;
+import mod.gottsch.forge.treasure2.api.TreasureApi;
+import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 
 /**
  * 
@@ -34,6 +38,12 @@ public class RarityLevelWeightedCollection extends LevelWeightedCollection<IRari
 
 	public RarityLevelWeightedCollection() {
 		super();
+	}
+
+	public RarityLevelWeightedCollection(LevelWeightedCollection<IRarity> col) {
+		super();
+		this.collection = col.collection;
+		this.original = col.original;
 	}
 	
 	public RarityLevelWeightedCollection(Random random) {
@@ -54,6 +64,10 @@ public class RarityLevelWeightedCollection extends LevelWeightedCollection<IRari
 		return (RarityLevelWeightedCollection) super.add(weightPair, item);
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public CompoundTag save() {
 		CompoundTag tag = new CompoundTag();
 		
@@ -81,7 +95,56 @@ public class RarityLevelWeightedCollection extends LevelWeightedCollection<IRari
 		return tag;
 	}
 	
-	public void load(CompoundTag list) {
-		// TODO
+	/**
+	 * 
+	 * @param tag
+	 */
+	public void load(CompoundTag tag) {
+		if (tag.contains("original")) {
+			ListTag originalList = tag.getList("original", Tag.TAG_COMPOUND);
+			originalList.forEach(element -> {
+				CompoundTag elementTag = (CompoundTag)element;
+				if (elementTag.contains("key")) {
+					String key = elementTag.getString("key");
+					int left = 0;
+					int right = 0;
+					if (elementTag.contains("left")) {
+						left = elementTag.getInt("left");
+					}
+					if (elementTag.contains("right")) {
+						right = elementTag.getInt("right");
+					}
+					Optional<IRarity> rarity = TreasureApi.getRarity(key);
+					if (rarity.isPresent()) {
+						getOriginal().put(rarity.get(), Pair.of(left, right));
+					}
+				}
+			});
+		}
+		/*
+		 *  don't bother to load collection as it is a view of the original.getPair().getRight();
+		 */
+		// clear the collection
+		collection.clear();
+		getOriginal().forEach((rarity, pair) -> {
+			collection.add(pair.getRight(), rarity);
+		});
+//		if (tag.contains("collection")) {
+//			ListTag originalList = tag.getList("collection", Tag.TAG_COMPOUND);
+//			originalList.forEach(element -> {
+//				CompoundTag elementTag = (CompoundTag)element;
+//				if (elementTag.contains("key")) {
+//					double key = elementTag.getDouble("key");
+//					String value = "";
+//					if (elementTag.contains("value")) {
+//						value = elementTag.getString("value");
+//					}
+//					Optional<IRarity> rarity = TreasureApi.getRarity(value);
+//					if (rarity.isPresent()) {
+//						collection.add(Integer.valueOf((int)key), rarity.get());
+//					}
+//				}
+//			});
+//		}
 	}
 }

@@ -20,15 +20,16 @@ package mod.gottsch.forge.treasure2.core.registry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
 import mod.gottsch.forge.gottschcore.enums.IRarity;
+import mod.gottsch.forge.treasure2.core.wishable.IWishableHandler;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.registries.RegistryObject;
 
 /**
  * 
@@ -37,32 +38,45 @@ import net.minecraftforge.registries.RegistryObject;
  */
 public class WishableRegistry {
 	/*
-	 * a Table registry for rarity/key lookups for keys
+	 * a Table registry for rarity/key lookups for wishable items.
+	 * NOTE registering Items - not RegistryObject<Item>, and therefor needs to happen after register items event.
 	 */
-	private static final Multimap<IRarity, RegistryObject<Item>> BY_RARITY;
-	private static final Map<ResourceLocation, RegistryObject<Item>> BY_NAME;
+	private static final Multimap<IRarity, Item> BY_RARITY;
+	private static final Map<ResourceLocation, Item> BY_NAME;
 	private static final Map<ResourceLocation, IRarity> RARITY_BY_NAME;
 
+	private static final Map<Item, IWishableHandler> HANDLER_MAP;
+	
 	static {
 		BY_RARITY = ArrayListMultimap.create();
 		BY_NAME = Maps.newHashMap();
 		RARITY_BY_NAME = Maps.newHashMap();
+		HANDLER_MAP = Maps.newHashMap();
 	}
 	
-	public static void register(RegistryObject<Item> chest) {		
-		if (!BY_NAME.containsKey(chest.get().getRegistryName())) {
-			BY_NAME.put(chest.getId(), chest);
+	public static void registerHandler(Item item, IWishableHandler handler) {
+		HANDLER_MAP.put(item, handler);
+	}
+	
+	public static Optional<IWishableHandler> getHandler(Item item) {
+		if (HANDLER_MAP.containsKey(item)) {
+			return Optional.of(HANDLER_MAP.get(item));
+		}
+		return Optional.empty();
+	}
+	
+	public static void register(Item item) {		
+		if (!BY_NAME.containsKey(item.getRegistryName())) {
+			BY_NAME.put(item.getRegistryName(), item);
 		}
 	}
 	
-	public static void registerByRarity(IRarity rarity, RegistryObject<Item> chest) {
-		if (!BY_RARITY.containsKey(rarity)) {
-			BY_RARITY.put(rarity, chest);
-			RARITY_BY_NAME.put(chest.getId(), rarity);
-		}
+	public static void registerByRarity(IRarity rarity, Item item) {
+		BY_RARITY.put(rarity, item);
+		RARITY_BY_NAME.put(item.getRegistryName(), rarity);
 	}
 	
-	public static List<RegistryObject<Item>> getAll() {
+	public static List<Item> getAll() {
 		return new ArrayList<>(BY_NAME.values());
 	}
 	
@@ -71,14 +85,22 @@ public class WishableRegistry {
 		RARITY_BY_NAME.clear();
 	}
 	
-	public static IRarity getRarity(ResourceLocation name) {
+	public static Optional<IRarity> getRarity(ResourceLocation name) {
 		if (RARITY_BY_NAME.containsKey(name)) {
-			return RARITY_BY_NAME.get(name);
+			return Optional.of(RARITY_BY_NAME.get(name));
 		}
-		return null;
+		return Optional.empty();
 	}
 	
-	public static IRarity getRarity(Item wishable) {
+	public static Optional<IRarity> getRarity(Item wishable) {
 		return getRarity(wishable.getRegistryName());
+	}
+
+	public static boolean isRegistered(Item item) {
+		return isRegistered(item.getRegistryName());	
+	}
+	
+	public static boolean isRegistered(ResourceLocation name) {
+		return BY_NAME.containsKey(name);	
 	}
 }

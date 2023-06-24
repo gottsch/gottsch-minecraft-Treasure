@@ -17,10 +17,17 @@
  */
 package mod.gottsch.forge.treasure2.core.block.entity;
 
+import java.util.Random;
+
+import mod.gottsch.forge.treasure2.core.particle.TreasureParticles;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
@@ -37,9 +44,26 @@ public class MoldyCrateChestBlockEntity extends CrateChestBlockEntity {
 	public MoldyCrateChestBlockEntity(BlockPos pos, BlockState state) {
 		super(TreasureBlockEntities.MOLDY_CRATE_CHEST_BLOCK_ENTITY_TYPE.get(), pos, state);
 	}
-	
-    @Override
+
+	@Override
 	public Component getDefaultName() {
 		return new TranslatableComponent(LangUtil.screen("moldy_crate_chest.name"));
+	}
+
+	@Override
+	public void doChestOpenEffects(Level level, Player player, BlockPos pos) {
+		super.doChestOpenEffects(level, player, pos);
+		// spawn particles
+
+		if (level.isClientSide()) {
+			Random random = getLevel().getRandom();
+			for(int k = 0; k < 20; ++k) {
+				level.addParticle(ParticleTypes.SPORE_BLOSSOM_AIR, 
+						(double)getBlockPos().getX() + 0.5D + random.nextDouble() / 3.0D * (double)(random.nextBoolean() ? 1 : -1), 
+						(double)getBlockPos().getY() + random.nextDouble() + random.nextDouble(),
+						(double)getBlockPos().getZ() + 0.5D + random.nextDouble() / 3.0D * (double)(random.nextBoolean() ? 1 : -1),
+						0D, 0D, 0D);
+			}
+		}
 	}
 }

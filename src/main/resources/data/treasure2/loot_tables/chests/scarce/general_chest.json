@@ -1,15 +1,18 @@
 {
-  "version" : "3.0",
-  "since" : "mc1.16.5-v2.1.0",
+  "version" : "4.0",
+  "since" : "mc1.18.2-v.3.0.0",
   "category" : "general",
   "rarity" : "scarce",
   "type" : "minecraft:chest",
   "pools" : [ {
     "name" : "treasure",
-    "rolls" : 1,
+    "rolls" : {
+      "min" : 2,
+      "max" : 3
+    },
     "entries" : [ {
       "type" : "minecraft:loot_table",
-      "name" : "treasure2:pools/treasure/scarce_all",
+      "name" : "treasure2:pools/treasure/scarce_treasure",
       "weight" : 1
     } ]
   }, {
@@ -31,7 +34,7 @@
     },
     "entries" : [ {
       "type" : "minecraft:loot_table",
-      "name" : "treasure2:pools/armor/scarce",
+      "name" : "treasure2:pools/combat/scarce",
       "weight" : 1
     } ]
   }, {
@@ -86,7 +89,7 @@
     },
     "entries" : [ {
       "type" : "minecraft:loot_table",
-      "name" : "treasure2:pools/armor/uncommon",
+      "name" : "treasure2:pools/combat/uncommon",
       "weight" : 1
     } ]
   }, {

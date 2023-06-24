@@ -1,0 +1,6 @@
+{
+  "parent": "treasure2:item/single_edge_sword",
+  "textures": {
+    "layer0": "treasure2:item/weapon/iron_dwarven_axe"
+  }
+}

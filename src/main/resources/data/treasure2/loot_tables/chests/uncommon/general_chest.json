@@ -1,10 +1,21 @@
 {
   "version" : "3.0",
-  "since" : "mc1.18.2-v2.5.0",
+  "since" : "mc1.18.2-v.3.0.0",
   "category" : "general",
   "rarity" : "uncommon",
   "type" : "minecraft:chest",
   "pools" : [ {
+    "name" : "treasure",
+    "rolls" : {
+      "min" : 2,
+      "max" : 3
+    },
+    "entries" : [ {
+      "type" : "minecraft:loot_table",
+      "name" : "treasure2:pools/treasure/uncommon_treasure",
+      "weight" : 1
+    } ]
+  }, {
     "name" : "items",
     "rolls" : {
       "min" : 2,
@@ -23,7 +34,7 @@
     },
     "entries" : [ {
       "type" : "minecraft:loot_table",
-      "name" : "treasure2:pools/armor/uncommon",
+      "name" : "treasure2:pools/combat/uncommon",
       "weight" : 1
     } ]
   }, {
@@ -78,7 +89,7 @@
     },
     "entries" : [ {
       "type" : "minecraft:loot_table",
-      "name" : "treasure2:pools/armor/common",
+      "name" : "treasure2:pools/combat/common",
       "weight" : 1
     } ]
   }, {

@@ -1,0 +1,187 @@
+{
+  "version" : "2.0.0",
+  "type" : "minecraft:chest",
+  "pools" : [ {
+    "name" : "epic_armor",
+    "rolls" : 1,
+    "entries" : [ {
+      "entryName" : "diamond_chestplate",
+      "type" : "minecraft:item",
+      "name" : "minecraft:diamond_chestplate",
+      "weight" : 18,
+      "functions" : [ {
+        "function" : "minecraft:enchant_with_levels",
+        "levels" : 30,
+        "treasure" : true
+      } ]
+    }, {
+      "entryName" : "diamond_leggings",
+      "type" : "minecraft:item",
+      "name" : "minecraft:diamond_leggings",
+      "weight" : 22,
+      "functions" : [ {
+        "function" : "minecraft:enchant_with_levels",
+        "levels" : 30,
+        "treasure" : true
+      } ]
+    }, {
+      "entryName" : "diamond_helmet",
+      "type" : "minecraft:item",
+      "name" : "minecraft:diamond_helmet",
+      "weight" : 22,
+      "functions" : [ {
+        "function" : "minecraft:enchant_with_levels",
+        "levels" : 30,
+        "treasure" : true
+      } ]
+    }, {
+      "entryName" : "diamond_boots",
+      "type" : "minecraft:item",
+      "name" : "minecraft:diamond_boots",
+      "weight" : 22,
+      "functions" : [ {
+        "function" : "minecraft:enchant_with_levels",
+        "levels" : 30,
+        "treasure" : true
+      } ]
+    }, {
+      "entryName" : "iron_chestplate",
+      "type" : "minecraft:item",
+      "name" : "minecraft:iron_chestplate",
+      "weight" : 35,
+      "functions" : [ {
+        "function" : "minecraft:enchant_with_levels",
+        "levels" : 30,
+        "treasure" : true
+      }, {
+        "function" : "minecraft:enchant_randomly"
+      } ]
+    }, {
+      "entryName" : "iron_leggings",
+      "type" : "minecraft:item",
+      "name" : "minecraft:iron_leggings",
+      "weight" : 35,
+      "functions" : [ {
+        "function" : "minecraft:enchant_with_levels",
+        "levels" : 30,
+        "treasure" : true
+      }, {
+        "function" : "minecraft:enchant_randomly"
+      } ]
+    }, {
+      "entryName" : "iron_helmet",
+      "type" : "minecraft:item",
+      "name" : "minecraft:iron_helmet",
+      "weight" : 35,
+      "functions" : [ {
+        "function" : "minecraft:enchant_with_levels",
+        "levels" : 30,
+        "treasure" : true
+      }, {
+        "function" : "minecraft:enchant_randomly"
+      } ]
+    }, {
+      "entryName" : "iron_boots",
+      "type" : "minecraft:item",
+      "name" : "minecraft:iron_boots",
+      "weight" : 35,
+      "functions" : [ {
+        "function" : "minecraft:enchant_with_levels",
+        "levels" : 30,
+        "treasure" : true
+      }, {
+        "function" : "minecraft:enchant_randomly"
+      } ]
+    }, {
+      "entryName" : "diamond_horse_armor",
+      "type" : "minecraft:item",
+      "name" : "minecraft:diamond_horse_armor",
+      "weight" : 25
+    }, {
+      "entryName" : "netherite_chestplate",
+      "type" : "minecraft:item",
+      "name" : "minecraft:netherite_chestplate",
+      "weight" : 10
+    }, {
+      "entryName" : "netherite_leggings",
+      "type" : "minecraft:item",
+      "name" : "minecraft:netherite_leggings",
+      "weight" : 10
+    }, {
+      "entryName" : "netherite_helmet",
+      "type" : "minecraft:item",
+      "name" : "minecraft:netherite_helmet",
+      "weight" : 10
+    }, {
+      "entryName" : "netherite_boots",
+      "type" : "minecraft:item",
+      "name" : "minecraft:netherite_boots",
+      "weight" : 10
+    } ]
+  }, {
+    "name" : "epic_weapons",
+    "rolls" : 1,
+    "entries" : [ {
+      "entryName" : "iron_sword",
+      "type" : "minecraft:item",
+      "name" : "minecraft:iron_sword",
+      "weight" : 35,
+      "functions" : [ {
+        "function" : "minecraft:enchant_with_levels",
+        "levels" : 30,
+        "treasure" : true
+      }, {
+        "function" : "minecraft:enchant_with_levels",
+        "levels" : 20,
+        "treasure" : true
+      }, {
+        "function" : "minecraft:enchant_randomly"
+      } ]
+    }, {
+      "entryName" : "diamond_sword",
+      "type" : "minecraft:item",
+      "name" : "minecraft:diamond_sword",
+      "weight" : 50,
+      "functions" : [ {
+        "function" : "minecraft:enchant_with_levels",
+        "levels" : 30,
+        "treasure" : true
+      }, {
+        "function" : "minecraft:enchant_randomly"
+      } ]
+    }, {
+      "entryName" : "trident",
+      "type" : "minecraft:item",
+      "name" : "minecraft:trident",
+      "weight" : 15,
+      "functions" : [ {
+        "function" : "minecraft:enchant_randomly"
+      } ]
+    }, {
+      "entryName" : "netherite_sword",
+      "type" : "minecraft:item",
+      "name" : "minecraft:netherite_sword",
+      "weight" : 10
+    }, {
+      "entryName" : "snake_eyes_katana",
+      "type" : "minecraft:item",
+      "name" : "treasure2:snake_eyes_katana",
+      "weight" : 5
+    }, {
+      "entryName" : "storm_shadows_katana",
+      "type" : "minecraft:item",
+      "name" : "treasure2:storm_shadows_katana",
+      "weight" : 5
+    }, {
+      "entryName" : "headsmans_axe",
+      "type" : "minecraft:item",
+      "name" : "treasure2:headsmans_axe",
+      "weight" : 10
+    }, {
+      "entryName" : "sword_of_omens",
+      "type" : "minecraft:item",
+      "name" : "treasure2:sword_of_omens",
+      "weight" : 10
+    } ]
+  } ]
+}

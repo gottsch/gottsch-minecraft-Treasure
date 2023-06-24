@@ -1,0 +1,10 @@
+{
+  "conditions" : [ {
+    "condition" : "forge:loot_table_id",
+    "loot_table_id" : "minecraft:gameplay/fishing/treasure"
+  } ],
+  "count" : 1,
+  "rarity": "scarce",
+  "chance": 0.10,
+  "type" : "treasure2:default"
+}

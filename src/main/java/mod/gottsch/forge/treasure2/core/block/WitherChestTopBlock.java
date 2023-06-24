@@ -27,11 +27,12 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -83,17 +84,28 @@ public class WitherChestTopBlock extends Block implements ITreasureChestBlockPro
 		return bottomState.getBlock().use(bottomState, world, pos.below(), player, hand, result);
 	}
 	
+	@Override
+	public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest,
+			FluidState fluid) {
+		
+		BlockPos downPos = pos.below();
+		Block downBlock = level.getBlockState(downPos).getBlock();
+		if (downBlock == TreasureBlocks.WITHER_CHEST.get()) {
+			downBlock.onDestroyedByPlayer(state, level, downPos, player, willHarvest, fluid);
+		}
+		
+		return true;
+	}
+	
 	/**
 	 * 
 	 */
 	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-	Treasure.LOGGER.debug("Breaking Wither Chest Top block....!");
+	public void onBlockExploded(BlockState state, Level level, BlockPos pos, Explosion explosion) {
 		BlockPos downPos = pos.below();
-		// destory placeholder above
 		Block downBlock = level.getBlockState(downPos).getBlock();
 		if (downBlock == TreasureBlocks.WITHER_CHEST.get()) {
-			Block.updateOrDestroy(state, Blocks.AIR.defaultBlockState(), level, downPos, 3);
+			downBlock.onBlockExploded(state, level, downPos, explosion);
 		}
 	}
 

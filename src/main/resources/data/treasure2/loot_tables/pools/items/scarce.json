@@ -1,5 +1,6 @@
 {
-  "version" : "1.0",
+  "version" : "2.0.0",
+  "since" : "mc1.18.2-v.3.0.0",
   "pools" : [ {
     "name" : "scarce_items",
     "rolls" : 1,
@@ -107,18 +108,24 @@
       "name" : "minecraft:bell",
       "weight" : 15
     }, {
-      "entryName" : "crossbow",
-      "type" : "minecraft:item",
-      "name" : "minecraft:crossbow",
-      "weight" : 15,
-      "functions" : [ {
-        "function" : "minecraft:enchant_randomly"
-      } ]
+      "entryName" : "glow_ink_sac",
+      "type" : "item",
+      "name" : "minecraft:glow_ink_sac",
+      "weight" : 15
     }, {
       "entryName" : "honeycomb",
       "type" : "item",
-      "name" : "minecraft:bell",
+      "name" : "minecraft:honeycomb",
       "weight" : 15
+    }, {
+      "entryName" : "candle",
+      "type" : "item",
+      "name" : "minecraft:candle",
+      "weight" : 15,
+      "count" : {
+        "min" : 1,
+        "max" : 3
+      }
     }, {
       "entryName" : "netherite_scrap",
       "type" : "minecraft:item",
@@ -142,6 +149,55 @@
           "min" : 1,
           "max" : 2
         }
+      } ]
+    } ]
+  }, {
+    "name" : "common_supplies",
+    "rolls" : 1,
+    "entries" : [ {
+      "entryName" : "dark_oak_logs",
+      "type" : "minecraft:item",
+      "name" : "minecraft:dark_oak_log",
+      "weight" : 20,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : 5
+      } ]
+    }, {
+      "entryName" : "raw_gold",
+      "type" : "minecraft:item",
+      "name" : "minecraft:raw_gold",
+      "weight" : 10,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : 5
+      } ]
+    }, {
+      "entryName" : "raw_iron",
+      "type" : "minecraft:item",
+      "name" : "minecraft:raw_iron",
+      "weight" : 10,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : 5
+      } ]
+    }, {
+      "entryName" : "dark_oak_planks",
+      "type" : "minecraft:item",
+      "name" : "minecraft:dark_oak_planks",
+      "weight" : 10,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : 5
+      } ]
+    }, {
+      "entryName" : "mossy_stone_bricks",
+      "type" : "minecraft:item",
+      "name" : "minecraft:mossy_stone_bricks",
+      "weight" : 20,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : 5
       } ]
     } ]
   } ]

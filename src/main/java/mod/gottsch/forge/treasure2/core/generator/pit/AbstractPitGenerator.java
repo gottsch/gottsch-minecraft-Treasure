@@ -129,7 +129,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 		
 		// if there is air above the origin, then in cavern. (pos in isAir() doesn't matter)
 		if (blockState == null || blockState.getMaterial() == Material.AIR) {
-			Treasure.LOGGER.debug("Spawn coords is in cavern.");
+			Treasure.LOGGER.debug("spawn coords is in a cavern.");
 			inCavern = true;
 		}
 

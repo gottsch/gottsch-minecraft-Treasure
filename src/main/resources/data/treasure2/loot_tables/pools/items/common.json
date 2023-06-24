@@ -1,34 +1,11 @@
 {
-  "version" : "1.1",
+  "version" : "2.0.0",
+  "since" : "mc1.18.2-v.3.0.0",
   "type" : "minecraft:chest",
   "pools" : [ {
     "name" : "common_items",
     "rolls" : 1,
     "entries" : [ {
-      "entryName" : "bread",
-      "type" : "minecraft:item",
-      "name" : "minecraft:bread",
-      "weight" : 80,
-      "functions" : [ {
-        "function" : "minecraft:set_count",
-        "count" : {
-          "min" : 2,
-          "max" : 5
-        }
-      } ]
-    }, {
-      "entryName" : "apple",
-      "type" : "item",
-      "name" : "minecraft:apple",
-      "weight" : 60,
-      "functions" : [ {
-        "function" : "set_count",
-        "count" : {
-          "min" : 1,
-          "max" : 4
-        }
-      } ]
-    }, {
       "entryName" : "wool",
       "type" : "minecraft:item",
       "name" : "minecraft:white_wool",
@@ -172,15 +149,12 @@
       "weight" : 15,
       "functions" : [ {
         "function" : "minecraft:set_count",
-        "count" : {
-          "min" : 1,
-          "max" : 1
-        }
+        "count" : 1
       } ]
     }, {
       "entryName" : "clay_ball",
-      "type" : "item",
-      "name" : "minecraft:iron_ingot",
+      "type" : "minecraft:item",
+      "name" : "minecraft:clay_ball",
       "weight" : 10,
       "functions" : [ {
         "function" : "set_count",
@@ -191,8 +165,8 @@
       } ]
     }, {
       "entryName" : "brick",
-      "type" : "item",
-      "name" : "minecraft:iron_ingot",
+      "type" : "minecraft:item",
+      "name" : "minecraft:brick",
       "weight" : 10,
       "functions" : [ {
         "function" : "set_count",
@@ -200,6 +174,79 @@
           "min" : 1,
           "max" : 2
         }
+      } ]
+    } ]
+  }, {
+    "name" : "common_supplies",
+    "rolls" : 1,
+    "entries" : [ {
+      "entryName" : "oak_logs",
+      "type" : "minecraft:item",
+      "name" : "minecraft:oak_log",
+      "weight" : 20,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : 5
+      } ]
+    }, {
+      "entryName" : "birch_logs",
+      "type" : "minecraft:item",
+      "name" : "minecraft:oak_log",
+      "weight" : 20,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : 5
+      } ]
+    }, {
+      "entryName" : "coal",
+      "type" : "minecraft:item",
+      "name" : "minecraft:coal",
+      "weight" : 10,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : 5
+      } ]
+    }, {
+      "entryName" : "raw_iron",
+      "type" : "minecraft:item",
+      "name" : "minecraft:raw_iron",
+      "weight" : 10,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 5,
+          "max" : 15
+        }
+      } ]
+    }, {
+      "entryName" : "raw_copper",
+      "type" : "minecraft:item",
+      "name" : "minecraft:raw_copper",
+      "weight" : 10,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 5,
+          "max" : 15
+        }
+      } ]
+    }, {
+      "entryName" : "oak_planks",
+      "type" : "minecraft:item",
+      "name" : "minecraft:oak_planks",
+      "weight" : 10,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : 5
+      } ]
+    }, {
+      "entryName" : "cobblestone",
+      "type" : "minecraft:item",
+      "name" : "minecraft:cobblestone",
+      "weight" : 20,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : 5
       } ]
     } ]
   } ]

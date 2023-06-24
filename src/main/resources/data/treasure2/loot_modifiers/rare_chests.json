@@ -1,0 +1,32 @@
+{
+  "conditions" : [ {
+    "condition" : "minecraft:alternative",
+    "terms" : [ {
+      "condition" : "forge:loot_table_id",
+      "loot_table_id" : "minecraft:bastion_bridge"
+    }, {
+      "condition" : "forge:loot_table_id",
+      "loot_table_id" : "minecraft:bastion_other"
+    }, {
+      "condition" : "forge:loot_table_id",
+      "loot_table_id" : "minecraft:buried_treasure"
+    }, {
+      "condition" : "forge:loot_table_id",
+      "loot_table_id" : "minecraft:nether_bridge"
+    }, {
+      "condition" : "forge:loot_table_id",
+      "loot_table_id" : "minecraft:pillager_outpost"
+    }, {
+      "condition" : "forge:loot_table_id",
+      "loot_table_id" : "minecraft:simple_dungeon"
+    }
+    , {
+      "condition" : "forge:loot_table_id",
+      "loot_table_id" : "minecraft:underwater_ruin_small"
+    } ]
+  } ],
+  "count" : 2,
+  "rarity" : "rare",
+  "chance" : 0.2,
+  "type" : "treasure2:default"
+}

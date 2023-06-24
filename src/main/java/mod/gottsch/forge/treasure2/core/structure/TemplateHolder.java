@@ -30,22 +30,22 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 public class TemplateHolder {
 	private StructureTemplate template;
 	private ResourceLocation location;
-	private ResourceLocation metaLocation;
+	@Deprecated
 	private List<ResourceLocation> decayRuleSetLocation;
+	
+	private List<String> tags;
 	
 	public TemplateHolder() {}
 
 	public TemplateHolder(StructureTemplate template, ResourceLocation location, ResourceLocation metaLocation, List<ResourceLocation> ruleSetLocation) {
 		setTemplate(template);
 		setLocation(metaLocation);
-		setMetaLocation(metaLocation);
 		setDecayRuleSetLocation(ruleSetLocation);
 	}
 	
 	public TemplateHolder(StructureTemplate template, ResourceLocation location, ResourceLocation metaLocation) {
 		setTemplate(template);
 		setLocation(metaLocation);
-		setMetaLocation(metaLocation);
 	}
 	
 	public StructureTemplate getTemplate() {
@@ -64,21 +64,12 @@ public class TemplateHolder {
 		return this;
 	}
 
-	public ResourceLocation getMetaLocation() {
-		return metaLocation;
-	}
-
 	public ResourceLocation getLocation() {
 		return location;
 	}
 
 	public TemplateHolder setLocation(ResourceLocation location) {
 		this.location = location;
-		return this;
-	}
-
-	public TemplateHolder setMetaLocation(ResourceLocation metaLocation) {
-		this.metaLocation = metaLocation;
 		return this;
 	}
 
@@ -96,7 +87,17 @@ public class TemplateHolder {
 
 	@Override
 	public String toString() {
-		return "TemplateHolder [location=" + location.toString() + ", metaLocation=" + metaLocation.toString()
-				+ ", decayRuleSetLocation=" + decayRuleSetLocation.toString() + "]";
+		return "TemplateHolder [location=" + location.toString() + "]";
+	}
+
+	public List<String> getTags() {
+		if (tags == null) {
+			tags = new ArrayList<>();
+		}
+		return tags;
+	}
+
+	public void setTags(List<String> tags) {
+		this.tags = tags;
 	}
 }

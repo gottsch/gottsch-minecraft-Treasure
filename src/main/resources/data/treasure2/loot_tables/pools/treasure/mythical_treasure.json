@@ -1,0 +1,21 @@
+{
+  "version" : "4.0.0",
+  "since" : "mc1.18.2-v.3.0.0",
+  "pools" : [ {
+    "name" : "mythical_treasure",
+    "rolls" : {
+      "min" : 2,
+      "max" : 3
+    },
+    "entries" : [ {
+      "type" : "loot_table",
+      "name" : "treasure2:pools/treasure/epic_treasure",
+      "weight" : 100
+    }, {
+      "entryName" : "one_key",
+      "type" : "item",
+      "name" : "treasure2:one_key",
+      "weight" : 10
+    } ]
+  } ]
+}

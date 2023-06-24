@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "#treasure2:lock/common",
+    "#treasure2:lock/uncommon",
+    "#treasure2:lock/scarce",
+    "#treasure2:lock/rare",
+    "#treasure2:lock/epic"
+  ]
+}

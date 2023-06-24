@@ -3,7 +3,7 @@
 	"texture_size": [64, 64],
 	"textures": {
 		"1": "treasure2:block/chest/compressor_chest",
-		"particle": "treasure2:block/chest/compressor_chest"
+		"particle": "treasure2:block/chest/particle/compressor_chest_particle"
 	},
 	"elements": [
 		{

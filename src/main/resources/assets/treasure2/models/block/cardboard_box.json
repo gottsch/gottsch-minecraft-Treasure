@@ -3,7 +3,7 @@
 	"texture_size": [128, 128],
 	"textures": {
 		"1": "treasure2:block/chest/cardboard_box",
-		"particle": "treasure2:block/chest/cardboard_box"
+		"particle": "treasure2:block/chest/particle/cardboard_box_particle"
 	},
 	"elements": [
 		{

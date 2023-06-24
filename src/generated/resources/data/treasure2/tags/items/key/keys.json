@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "#treasure2:key/common",
+    "#treasure2:key/uncommon",
+    "#treasure2:key/scarce",
+    "#treasure2:key/rare",
+    "#treasure2:key/epic",
+    "#treasure2:key/mythical"
+  ]
+}

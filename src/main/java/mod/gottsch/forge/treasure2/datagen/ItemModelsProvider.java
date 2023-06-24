@@ -75,6 +75,12 @@ public class ItemModelsProvider extends ItemModelProvider {
 		singleTexture(TreasureItems.EMERALD_KEY.get().getRegistryName().getPath(),
 				modLoc("item/horizontal_left_key"), "layer0", modLoc("item/key/emerald_key"));
 		
+		singleTexture(TreasureItems.TOPAZ_KEY.get().getRegistryName().getPath(),
+				modLoc("item/horizontal_left_key"), "layer0", modLoc("item/key/topaz_key"));
+		
+		singleTexture(TreasureItems.ONYX_KEY.get().getRegistryName().getPath(),
+				modLoc("item/horizontal_left_key"), "layer0", modLoc("item/key/onyx_key"));
+		
 		singleTexture(TreasureItems.RUBY_KEY.get().getRegistryName().getPath(),
 				modLoc("item/horizontal_left_key"), "layer0", modLoc("item/key/ruby_key"));
 		
@@ -127,6 +133,13 @@ public class ItemModelsProvider extends ItemModelProvider {
 		singleTexture(TreasureItems.EMERALD_LOCK.get().getRegistryName().getPath(),
 				mcLoc("item/generated"), "layer0", modLoc("item/lock/emerald_lock"));
 		
+		singleTexture(TreasureItems.TOPAZ_LOCK.get().getRegistryName().getPath(),
+				mcLoc("item/generated"), "layer0", modLoc("item/lock/topaz_lock"));
+		
+		singleTexture(TreasureItems.ONYX_LOCK.get().getRegistryName().getPath(),
+				mcLoc("item/generated"), "layer0", modLoc("item/lock/onyx_lock"));
+		
+		
 		singleTexture(TreasureItems.RUBY_LOCK.get().getRegistryName().getPath(),
 				mcLoc("item/generated"), "layer0", modLoc("item/lock/ruby_lock"));
 		
@@ -145,11 +158,11 @@ public class ItemModelsProvider extends ItemModelProvider {
 		
 		// wealth
 		singleTexture(TreasureItems.COPPER_COIN.get().getRegistryName().getPath(),
-				mcLoc("item/generated"), "layer0", modLoc("item/coin/copper_coin"));
+				modLoc("item/coin"), "layer0", modLoc("item/coin/copper_coin"));
 		singleTexture(TreasureItems.SILVER_COIN.get().getRegistryName().getPath(),
-				mcLoc("item/generated"), "layer0", modLoc("item/coin/silver_coin"));
+				modLoc("item/coin"), "layer0", modLoc("item/coin/silver_coin"));
 		singleTexture(TreasureItems.GOLD_COIN.get().getRegistryName().getPath(),
-				mcLoc("item/generated"), "layer0", modLoc("item/coin/gold_coin"));
+				modLoc("item/coin"), "layer0", modLoc("item/coin/gold_coin"));
 		
 		singleTexture(TreasureItems.TOPAZ.get().getRegistryName().getPath(),
 				mcLoc("item/generated"), "layer0", modLoc("item/gem/topaz"));
@@ -171,6 +184,112 @@ public class ItemModelsProvider extends ItemModelProvider {
 				mcLoc("item/generated"), "layer0", modLoc("item/treasure_tool"));
 		singleTexture(TreasureItems.SKELETON_ITEM.get().getRegistryName().getPath(),
 				mcLoc("item/generated"), "layer0", modLoc("item/skeleton_item"));
+		singleTexture(TreasureItems.EYE_PATCH.get().getRegistryName().getPath(),
+				mcLoc("item/generated"), "layer0", modLoc("item/eye_patch"));
+		
+		// short swords
+		singleTexture(TreasureItems.COPPER_SHORT_SWORD.get().getRegistryName().getPath(),
+				modLoc("item/short_sword"), "layer0", modLoc("item/weapon/copper_short_sword"));
+		
+		singleTexture(TreasureItems.CHIPPED_COPPER_SHORT_SWORD.get().getRegistryName().getPath(),
+				modLoc("item/short_sword"), "layer0", modLoc("item/weapon/chipped_copper_short_sword"));	
+		
+		singleTexture(TreasureItems.IRON_SHORT_SWORD.get().getRegistryName().getPath(),
+				modLoc("item/short_sword"), "layer0", modLoc("item/weapon/iron_short_sword"));
+		
+		singleTexture(TreasureItems.CHIPPED_IRON_SHORT_SWORD.get().getRegistryName().getPath(),
+				modLoc("item/short_sword"), "layer0", modLoc("item/weapon/chipped_iron_short_sword"));	
+		
+		singleTexture(TreasureItems.STEEL_SHORT_SWORD.get().getRegistryName().getPath(),
+				modLoc("item/short_sword"), "layer0", modLoc("item/weapon/steel_short_sword"));
+		
+		singleTexture(TreasureItems.CHIPPED_STEEL_SHORT_SWORD.get().getRegistryName().getPath(),
+				modLoc("item/short_sword"), "layer0", modLoc("item/weapon/chipped_steel_short_sword"));	
+		
+		// rapier
+		singleTexture(TreasureItems.COPPER_RAPIER.get().getRegistryName().getPath(),
+				mcLoc("item/handheld"), "layer0", modLoc("item/weapon/copper_rapier"));
+		
+		// longswords
+		// add skull sword here
+		singleTexture(TreasureItems.STEEL_SWORD.get().getRegistryName().getPath(),
+				mcLoc("item/handheld"), "layer0", modLoc("item/weapon/steel_sword"));
+		
+		singleTexture(TreasureItems.SKULL_SWORD.get().getRegistryName().getPath(),
+				mcLoc("item/handheld"), "layer0", modLoc("item/weapon/skull_sword2"));
+		
+		singleTexture(TreasureItems.SWORD_OMENS.get().getRegistryName().getPath(),
+				mcLoc("item/handheld"), "layer0", modLoc("item/weapon/sword_of_omens"));
+		
+		// broad / bastard swords
+		singleTexture(TreasureItems.IRON_BROADSWORD.get().getRegistryName().getPath(),
+				mcLoc("item/handheld"), "layer0", modLoc("item/weapon/iron_broadsword"));
+		singleTexture(TreasureItems.STEEL_BROADSWORD.get().getRegistryName().getPath(),
+				mcLoc("item/handheld"), "layer0", modLoc("item/weapon/steel_broadsword"));
+		
+		// large swords (x32)
+		singleTexture(TreasureItems.SWORD_POWER.get().getRegistryName().getPath(),
+				mcLoc("item/handheld"), "layer0", modLoc("item/weapon/sword_of_power"));
+		
+		singleTexture(TreasureItems.BLACK_SWORD.get().getRegistryName().getPath(),
+				modLoc("item/large_sword"), "layer0", modLoc("item/weapon/the_black_sword_x32"));
+		
+		singleTexture(TreasureItems.OATHBRINGER.get().getRegistryName().getPath(),
+				modLoc("item/large_sword"), "layer0", modLoc("item/weapon/oathbringer_x32"));
+		
+		// machetes
+		singleTexture(TreasureItems.STEEL_MACHETE.get().getRegistryName().getPath(),
+				modLoc("item/machete"), "layer0", modLoc("item/weapon/steel_machete"));	
+		singleTexture(TreasureItems.SHADOW_MACHETE.get().getRegistryName().getPath(),
+				modLoc("item/machete"), "layer0", modLoc("item/weapon/shadow_machete"));	
+		
+		// falchions
+		singleTexture(TreasureItems.IRON_FALCHION.get().getRegistryName().getPath(),
+				modLoc("item/single_edge_sword"), "layer0", modLoc("item/weapon/iron_falchion"));
+	
+		singleTexture(TreasureItems.STEEL_FALCHION.get().getRegistryName().getPath(),
+				modLoc("item/single_edge_sword"), "layer0", modLoc("item/weapon/steel_falchion"));
+		
+		singleTexture(TreasureItems.SHADOW_FALCHION.get().getRegistryName().getPath(),
+				modLoc("item/single_edge_sword"), "layer0", modLoc("item/weapon/shadow_falchion"));
+		
+		// scythes
+		singleTexture(TreasureItems.ORCUS.get().getRegistryName().getPath(),
+				modLoc("item/scythe"), "layer0", modLoc("item/weapon/orcus_x32"));
+		
+		// katanas
+		singleTexture(TreasureItems.SNAKE_EYES_KATANA.get().getRegistryName().getPath(),
+				modLoc("item/single_edge_sword"), "layer0", modLoc("item/weapon/snake_eyes_katana"));
+		
+		singleTexture(TreasureItems.STORM_SHADOWS_KATANA.get().getRegistryName().getPath(),
+				modLoc("item/single_edge_sword"), "layer0", modLoc("item/weapon/storm_shadows_katana"));
+		
+		// hammers / maces / mauls
+		singleTexture(TreasureItems.IRON_MACE.get().getRegistryName().getPath(),
+				mcLoc("item/handheld"), "layer0", modLoc("item/weapon/iron_mace"));
+		
+		singleTexture(TreasureItems.STEEL_MACE.get().getRegistryName().getPath(),
+				mcLoc("item/handheld"), "layer0", modLoc("item/weapon/steel_mace"));
+		
+		singleTexture(TreasureItems.MJOLNIR.get().getRegistryName().getPath(),
+				mcLoc("item/handheld"), "layer0", modLoc("item/weapon/mjolnir"));
+		
+		// axes
+		singleTexture(TreasureItems.COPPER_BROAD_AXE.get().getRegistryName().getPath(),
+				modLoc("item/single_edge_sword"), "layer0", modLoc("item/weapon/copper_broad_axe"));
+		singleTexture(TreasureItems.IRON_BROAD_AXE.get().getRegistryName().getPath(),
+				modLoc("item/single_edge_sword"), "layer0", modLoc("item/weapon/iron_broad_axe"));
+		singleTexture(TreasureItems.STEEL_BROAD_AXE.get().getRegistryName().getPath(),
+				modLoc("item/single_edge_sword"), "layer0", modLoc("item/weapon/steel_broad_axe"));
+		
+		singleTexture(TreasureItems.IRON_DWARVEN_AXE.get().getRegistryName().getPath(),
+				modLoc("item/single_edge_sword"), "layer0", modLoc("item/weapon/iron_dwarven_axe"));
+		
+		singleTexture(TreasureItems.AXE_DURIN.get().getRegistryName().getPath(),
+				modLoc("item/single_edge_sword"), "layer0", modLoc("item/weapon/axe_of_durin"));
+		
+		singleTexture(TreasureItems.HEADSMANS_AXE.get().getRegistryName().getPath(),
+				mcLoc("item/handheld"), "layer0", modLoc("item/weapon/headsmans_axe"));
 		
 		// block items
 //		withExistingParent(TreasureItems.WOOD_CHEST_ITEM.get().getRegistryName().getPath(), modLoc("block/wood_chest"));
@@ -204,7 +323,10 @@ public class ItemModelsProvider extends ItemModelProvider {
 		
 		// eggs
 		withExistingParent(TreasureItems.BOUND_SOUL_EGG.get().getRegistryName().getPath(), mcLoc("item/template_spawn_egg"));
-		
+		withExistingParent(TreasureItems.WOOD_CHEST_MIMIC_EGG.get().getRegistryName().getPath(), mcLoc("item/template_spawn_egg"));
+		withExistingParent(TreasureItems.PIRATE_CHEST_MIMIC_EGG.get().getRegistryName().getPath(), mcLoc("item/template_spawn_egg"));
+		withExistingParent(TreasureItems.VIKING_CHEST_MIMIC_EGG.get().getRegistryName().getPath(), mcLoc("item/template_spawn_egg"));
+		withExistingParent(TreasureItems.CAULDRON_CHEST_MIMIC_EGG.get().getRegistryName().getPath(), mcLoc("item/template_spawn_egg"));
 		// topaz rings
 		//        singleTexture(TreasureItems.ADORNMENT_ITEMS.get(modLoc("topaz_iron_ring")).getRegistryName().getPath(),        		
 		//        		mcLoc("treasure2:item/adornment"), "layer0", modLoc("item/adornments/topaz_iron_ring"));

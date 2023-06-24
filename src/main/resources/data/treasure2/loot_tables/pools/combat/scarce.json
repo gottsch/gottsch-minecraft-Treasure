@@ -1,0 +1,167 @@
+{
+  "version" : "2.0.0",
+  "since" : "mc1.18.2-v.3.0.0",
+  "type" : "minecraft:chest",
+  "pools" : [ {
+    "name" : "scarce_armor",
+    "rolls" : 1,
+    "entries" : [ {
+      "entryName" : "iron_chestplate",
+      "type" : "minecraft:item",
+      "name" : "minecraft:iron_chestplate",
+      "weight" : 20,
+      "functions" : [ {
+        "function" : "minecraft:enchant_randomly"
+      } ]
+    }, {
+      "entryName" : "iron_leggings",
+      "type" : "minecraft:item",
+      "name" : "minecraft:iron_leggings",
+      "weight" : 20,
+      "functions" : [ {
+        "function" : "minecraft:enchant_randomly"
+      } ]
+    }, {
+      "entryName" : "iron_helmet",
+      "type" : "minecraft:item",
+      "name" : "minecraft:iron_helmet",
+      "weight" : 20,
+      "functions" : [ {
+        "function" : "minecraft:enchant_randomly"
+      } ]
+    }, {
+      "entryName" : "iron_boots",
+      "type" : "minecraft:item",
+      "name" : "minecraft:iron_boots",
+      "weight" : 20,
+      "functions" : [ {
+        "function" : "minecraft:enchant_randomly"
+      } ]
+    }, {
+      "entryName" : "shield",
+      "type" : "minecraft:item",
+      "name" : "minecraft:shield",
+      "weight" : 10
+    }, {
+      "entryName" : "leather_chestplate",
+      "type" : "minecraft:item",
+      "name" : "minecraft:leather_chestplate",
+      "weight" : 15,
+      "functions" : [ {
+        "function" : "minecraft:enchant_randomly"
+      }, {
+        "function" : "minecraft:enchant_randomly"
+      } ]
+    }, {
+      "entryName" : "leather_leggings",
+      "type" : "minecraft:item",
+      "name" : "minecraft:leather_leggings",
+      "weight" : 15,
+      "functions" : [ {
+        "function" : "minecraft:enchant_randomly"
+      }, {
+        "function" : "minecraft:enchant_randomly"
+      } ]
+    }, {
+      "entryName" : "leather_helmet",
+      "type" : "minecraft:item",
+      "name" : "minecraft:leather_helmet",
+      "weight" : 15,
+      "functions" : [ {
+        "function" : "minecraft:enchant_randomly"
+      }, {
+        "function" : "minecraft:enchant_randomly"
+      } ]
+    }, {
+      "entryName" : "leather_boots",
+      "type" : "minecraft:item",
+      "name" : "minecraft:leather_boots",
+      "weight" : 15,
+      "functions" : [ {
+        "function" : "minecraft:enchant_randomly"
+      }, {
+        "function" : "minecraft:enchant_randomly"
+      } ]
+    }, {
+      "entryName" : "turtle_helmet",
+      "type" : "minecraft:item",
+      "name" : "minecraft:turtle_helmet",
+      "weight" : 20
+    }, {
+      "entryName" : "iron_horse_armor",
+      "type" : "minecraft:item",
+      "name" : "minecraft:iron_horse_armor",
+      "weight" : 8
+    } ]
+  }, {
+    "name" : "scarce_weapons",
+    "rolls" : 1,
+    "entries" : [ {
+      "entryName" : "iron_sword",
+      "type" : "minecraft:item",
+      "name" : "minecraft:iron_sword",
+      "weight" : 10,
+      "functions" : [ {
+        "function" : "minecraft:enchant_randomly"
+      } ]
+    }, {
+      "entryName" : "bow",
+      "type" : "minecraft:item",
+      "name" : "minecraft:bow",
+      "weight" : 20,
+      "functions" : [ {
+        "function" : "minecraft:enchant_randomly"
+      } ]
+    }, {
+      "entryName" : "diamond_sword",
+      "type" : "minecraft:item",
+      "name" : "minecraft:diamond_sword",
+      "weight" : 10
+    }, {
+      "entryName" : "steel_sword",
+      "type" : "minecraft:item",
+      "name" : "treasure2:steel_sword",
+      "weight" : 10
+    }, {
+      "entryName" : "steel_machete",
+      "type" : "minecraft:item",
+      "name" : "treasure2:steel_machete",
+      "weight" : 10
+    }, {
+      "entryName" : "steel_falchion",
+      "type" : "minecraft:item",
+      "name" : "treasure2:steel_falchion",
+      "weight" : 10
+    }, {
+      "entryName" : "steel_broadsword",
+      "type" : "minecraft:item",
+      "name" : "treasure2:steel_broadsword",
+      "weight" : 10
+    }, {
+      "entryName" : "copper_rapier",
+      "type" : "minecraft:item",
+      "name" : "treasure2:copper_rapier",
+      "weight" : 10
+    }, {
+      "entryName" : "iron_broadsword",
+      "type" : "minecraft:item",
+      "name" : "treasure2:iron_broadsword",
+      "weight" : 10
+    }, {
+      "entryName" : "iron_falchion",
+      "type" : "minecraft:item",
+      "name" : "treasure2:iron_falchion",
+      "weight" : 10
+    }, {
+      "entryName" : "iron_mace",
+      "type" : "minecraft:item",
+      "name" : "treasure2:iron_mace",
+      "weight" : 10
+    }, {
+      "entryName" : "steel_broad_axe",
+      "type" : "minecraft:item",
+      "name" : "treasure2:steel_broad_axe",
+      "weight" : 10
+    } ]
+  } ]
+}

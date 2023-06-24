@@ -1,0 +1,160 @@
+{
+  "version" : "3.0.0",
+  "since" : "mc1.18.2-v.3.0.0",
+  "category" : "general",
+  "rarity" : "rare",
+  "type" : "minecraft:chest",
+  "pools" : [ {
+    "name" : "treasure",
+    "rolls" : 1,
+    "entries" : [ {
+      "entryName" : "iron_key",
+      "type" : "minecraft:item",
+      "name" : "treasure2:iron_key",
+      "weight" : 10,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 1,
+          "max" : 2
+        }
+      } ]
+    }, {
+      "entryName" : "gold_key",
+      "type" : "minecraft:item",
+      "name" : "treasure2:gold_key",
+      "weight" : 20,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 1,
+          "max" : 2
+        }
+      } ]
+    }, {
+      "entryName" : "spider_key",
+      "type" : "minecraft:item",
+      "name" : "treasure2:spider_key",
+      "weight" : 15
+    }, {
+      "entryName" : "topaz_key",
+      "type" : "minecraft:item",
+      "name" : "treasure2:topaz_key",
+      "weight" : 15
+    }, {
+      "entryName" : "onyx_key",
+      "type" : "minecraft:item",
+      "name" : "treasure2:onyx_key",
+      "weight" : 15
+    }, {
+      "entryName" : "diamond_key",
+      "type" : "minecraft:item",
+      "name" : "treasure2:diamond_key",
+      "weight" : 15
+    }, {
+      "entryName" : "emerald_key",
+      "type" : "minecraft:item",
+      "name" : "treasure2:emerald_key",
+      "weight" : 15
+    }, {
+      "entryName" : "sapphire_key",
+      "type" : "minecraft:item",
+      "name" : "treasure2:sapphire_key",
+      "weight" : 20
+    }, {
+      "entryName" : "ruby_key",
+      "type" : "minecraft:item",
+      "name" : "treasure2:ruby_key",
+      "weight" : 20
+    }, {
+      "entryName" : "silver_coin",
+      "type" : "minecraft:item",
+      "name" : "treasure2:silver_coin",
+      "weight" : 30,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 1,
+          "max" : 2
+        }
+      } ]
+    }, {
+      "entryName" : "gold_coin",
+      "type" : "minecraft:item",
+      "name" : "treasure2:gold_coin",
+      "weight" : 50,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 1,
+          "max" : 4
+        }
+      } ]
+    } ]
+  }, {
+    "name" : "items",
+    "rolls" : 4,
+    "entries" : [ {
+      "entryName" : "ender_pearl",
+      "type" : "minecraft:item",
+      "name" : "minecraft:ender_pearl",
+      "weight" : 15
+    }, {
+      "entryName" : "blaze_powder",
+      "type" : "minecraft:item",
+      "name" : "minecraft:blaze_powder",
+      "weight" : 25,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 1,
+          "max" : 4
+        }
+      } ]
+    }, {
+      "entryName" : "diamond",
+      "type" : "minecraft:item",
+      "name" : "minecraft:diamond",
+      "weight" : 35,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 2,
+          "max" : 4
+        }
+      } ]
+    }, {
+      "entryName" : "emerald",
+      "type" : "minecraft:item",
+      "name" : "minecraft:emerald",
+      "weight" : 35,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 1,
+          "max" : 2
+        }
+      } ]
+    }, {
+      "entryName" : "topaz",
+      "type" : "item",
+      "name" : "treasure2:topaz",
+      "weight" : 25
+    }, {
+      "entryName" : "onyx",
+      "type" : "item",
+      "name" : "treasure2:onyx",
+      "weight" : 25
+    }, {
+      "entryName" : "ruby",
+      "type" : "minecraft:item",
+      "name" : "treasure2:ruby",
+      "weight" : 15
+    }, {
+      "entryName" : "sapphire",
+      "type" : "minecraft:item",
+      "name" : "treasure2:sapphire",
+      "weight" : 15
+    } ]
+  } ]
+}

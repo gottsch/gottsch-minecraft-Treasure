@@ -24,9 +24,7 @@ import com.google.common.base.Suppliers;
 
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
-import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
-import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.features.OreFeatures;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
@@ -87,9 +85,15 @@ public class TreasureConfiguredFeatures {
 
 
 	// Feature
-	public static final RegistryObject<Feature<NoneFeatureConfiguration>> TERRESTRIAL_CHEST = FEATURES.register("terrestrial_chest",
-			() -> new TerrestrialChestFeature(NoneFeatureConfiguration.CODEC));
+	public static final RegistryObject<Feature<NoneFeatureConfiguration>> TERRANEAN_CHEST = FEATURES.register("terranean_chest",
+			() -> new TerraneanChestFeature(NoneFeatureConfiguration.CODEC));
 
+	public static final RegistryObject<Feature<NoneFeatureConfiguration>> SUBAQUATIC_CHEST = FEATURES.register("subaquatic_chest",
+			() -> new AquaticChestFeature(NoneFeatureConfiguration.CODEC));
+
+	public static final RegistryObject<Feature<NoneFeatureConfiguration>> WELL = FEATURES.register("well",
+			() -> new WellFeature(NoneFeatureConfiguration.CODEC));
+	
 	// Configured features
 	public static final RegistryObject<ConfiguredFeature<?, ?>> TOPAZ_ORE_CONFIGURED = CONFIGURED_FEATURES.register("topaz_ore",
 			() -> new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(OVERWORLD_TOPAZ_ORES.get(), 3)));
@@ -103,9 +107,15 @@ public class TreasureConfiguredFeatures {
 	public static final RegistryObject<ConfiguredFeature<?, ?>> SAPPHIRE_ORE_CONFIGURED = CONFIGURED_FEATURES.register("sapphire_ore",
 			() -> new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(OVERWORLD_SAPPHIRE_ORES.get(), 3)));
 	
-	public static final RegistryObject<ConfiguredFeature<?, ?>> TERRESTRIAL_CHEST_CONFIGURED = CONFIGURED_FEATURES.register("terrestrial_chest",
-			() -> new ConfiguredFeature<>(TERRESTRIAL_CHEST.get(), NoneFeatureConfiguration.INSTANCE));
+	public static final RegistryObject<ConfiguredFeature<?, ?>> TERRANEAN_CHEST_CONFIGURED = CONFIGURED_FEATURES.register("terranean_chest",
+			() -> new ConfiguredFeature<>(TERRANEAN_CHEST.get(), NoneFeatureConfiguration.INSTANCE));
 
+	public static final RegistryObject<ConfiguredFeature<?, ?>> SUBAQUATIC_CHEST_CONFIGURED = CONFIGURED_FEATURES.register("subaquatic_chest",
+			() -> new ConfiguredFeature<>(SUBAQUATIC_CHEST.get(), NoneFeatureConfiguration.INSTANCE));
+
+	public static final RegistryObject<ConfiguredFeature<?, ?>> WELL_CONFIGURED = CONFIGURED_FEATURES.register("well",
+			() -> new ConfiguredFeature<>(WELL.get(), NoneFeatureConfiguration.INSTANCE));
+	
 	/*
 	 * placement
 	 * NOTE: the aboveBottom values are OFFSETS, ex -64 + x = placement depth
@@ -127,10 +137,14 @@ public class TreasureConfiguredFeatures {
 			() -> new PlacedFeature(SAPPHIRE_ORE_CONFIGURED.getHolder().get(), TreasureOrePlacement.commonOrePlacement(1, HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(14), 
 					VerticalAnchor.aboveBottom(70)))));
 	
-	public static final RegistryObject<PlacedFeature> TERRESTRIAL_CHEST_PLACED = PLACED_FEATURES.register("terrestrial_chest",
-			() -> new PlacedFeature(TERRESTRIAL_CHEST_CONFIGURED.getHolder().get(), List.of(BiomeFilter.biome())));
+	public static final RegistryObject<PlacedFeature> TERRANEAN_CHEST_PLACED = PLACED_FEATURES.register("terranean_chest",
+			() -> new PlacedFeature(TERRANEAN_CHEST_CONFIGURED.getHolder().get(), List.of(BiomeFilter.biome())));
 
-
+	public static final RegistryObject<PlacedFeature> SUBAQUATIC_CHEST_PLACED = PLACED_FEATURES.register("subaquatic_chest",
+			() -> new PlacedFeature(SUBAQUATIC_CHEST_CONFIGURED.getHolder().get(), List.of(BiomeFilter.biome())));
+	
+	public static final RegistryObject<PlacedFeature> WELL_PLACED = PLACED_FEATURES.register("well",
+			() -> new PlacedFeature(WELL_CONFIGURED.getHolder().get(), List.of(BiomeFilter.biome())));
 	/**
 	 * 
 	 */

@@ -41,6 +41,10 @@ public class MistEmitterBlockEntity extends BlockEntity {
 	private boolean active = false;
 	private List<Player> playersWithinProximity;
 
+	public MistEmitterBlockEntity(BlockPos pos, BlockState state) {
+		this(TreasureBlockEntities.MIST_EMITTER_BLOCK_ENTITY_TYPE.get(), pos, state);
+	}
+	
 	/**
 	 * 
 	 */

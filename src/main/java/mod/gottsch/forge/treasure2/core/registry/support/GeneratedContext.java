@@ -41,8 +41,12 @@ public class GeneratedContext {
 	
 	public CompoundTag save() {
 		CompoundTag tag = new CompoundTag();
-		tag.put("coords", coords.save(new CompoundTag()));
-		tag.putString("rarity", rarity.getValue());		
+		if (coords != null && coords != Coords.EMPTY) {
+			tag.put("coords", coords.save(new CompoundTag()));
+		}
+		if (rarity != null) {
+			tag.putString("rarity", rarity.getValue());
+		}
 		return tag;
 	}
 	
@@ -73,5 +77,10 @@ public class GeneratedContext {
 	}
 	public void setRarity(IRarity rarity) {
 		this.rarity = rarity;
+	}
+	
+	@Override
+	public String toString() {
+		return "GeneratedContext [coords=" + coords + ", rarity=" + rarity + "]";
 	}
 }

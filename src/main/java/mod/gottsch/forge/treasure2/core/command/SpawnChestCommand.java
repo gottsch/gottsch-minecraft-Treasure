@@ -1,5 +1,19 @@
-/**
- * 
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2020 Mark Gottschling (gottsch)
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 package mod.gottsch.forge.treasure2.core.command;
 
@@ -10,18 +24,23 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 
+import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.gottschcore.loot.LootTableShell;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.Heading;
 import mod.gottsch.forge.treasure2.Treasure;
+import mod.gottsch.forge.treasure2.api.TreasureApi;
 import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
 import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
-import mod.gottsch.forge.treasure2.core.generator.GeneratorType;
+import mod.gottsch.forge.treasure2.core.enums.WishableExtraRarity;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGenerator;
 import mod.gottsch.forge.treasure2.core.registry.ChestRegistry;
-import mod.gottsch.forge.treasure2.core.registry.WeightedChestGeneratorRegistry;
+import mod.gottsch.forge.treasure2.core.registry.MimicRegistry;
+import mod.gottsch.forge.treasure2.core.registry.RarityLevelWeightedChestGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.util.ModUtil;
+import mod.gottsch.forge.treasure2.core.world.feature.FeatureGenContext;
+import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
@@ -38,44 +57,14 @@ import net.minecraftforge.registries.RegistryObject;
  *
  */
 public class SpawnChestCommand {
-	
+
 	private static final String NAME = "name";
-	
-//	private enum Chests {
-//		WOOD(TreasureBlocks.WOOD_CHEST.get()),
-//		CRATE(TreasureBlocks.CRATE_CHEST.get()),
-//		MOLDY_CRATE(TreasureBlocks.MOLDY_CRATE_CHEST.get()),
-//		IRON_BOUND(TreasureBlocks.IRONBOUND_CHEST.get()),
-//		PIRATE(TreasureBlocks.PIRATE_CHEST.get()),
-//		IRON_STRONGBOX(TreasureBlocks.IRON_STRONGBOX.get()),
-//		GOLD_STRONGBOX(TreasureBlocks.GOLD_STRONGBOX.get()),
-//		SAFE(TreasureBlocks.SAFE.get()),
-//		DREAD_PIRATE(TreasureBlocks.DREAD_PIRATE_CHEST.get()),
-//		COMPRESSOR(TreasureBlocks.COMPRESSOR_CHEST.get()),
-//		SPIDER(TreasureBlocks.SPIDER_CHEST.get()), 
-//		VIKING(TreasureBlocks.VIKING_CHEST.get()),
-//		CARDBOARD_BOX(TreasureBlocks.CARDBOARD_BOX.get()),
-//		MILK_CRATE(TreasureBlocks.MILK_CRATE.get()),
-//		WITHER(TreasureBlocks.WITHER_CHEST.get()),
-//		SKULL(TreasureBlocks.SKULL_CHEST.get()),
-//		GOLD_SKULL(TreasureBlocks.GOLD_SKULL_CHEST.get()),
-//		CRYSTAL_SKULL_CHEST(TreasureBlocks.CRYSTAL_SKULL_CHEST.get()),
-//		CAULDRON(TreasureBlocks.CAULDRON_CHEST.get());
-//
-//		Block chest;
-//
-//		Chests(Block chestBlock) {
-//			this.chest = chestBlock;
-//		}
-//
-//		public static List<String> getNames() {
-//			List<String> names = EnumSet.allOf(Chests.class).stream().map(x -> x.name()).collect(Collectors.toList());
-//			return names;
-//		}
-//	}
 
 	private static final SuggestionProvider<CommandSourceStack> SUGGEST_RARITY = (source, builder) -> {
-		return SharedSuggestionProvider.suggest(Rarity.getNames().stream(), builder);
+		return SharedSuggestionProvider.suggest(TreasureApi.getRarities()
+				.stream()
+				.filter(r -> !(r instanceof WishableExtraRarity))
+				.map(r -> r.getName()), builder);
 	};
 
 	private static final SuggestionProvider<CommandSourceStack> SUGGEST_CHEST = (source, builder) -> {
@@ -84,6 +73,10 @@ public class SpawnChestCommand {
 
 	private static final SuggestionProvider<CommandSourceStack> SUGGEST_DIRECTION = (source, builder) -> {    	
 		return SharedSuggestionProvider.suggest(Heading.getNames().stream().filter(x -> !x.equalsIgnoreCase("UP") && !x.equalsIgnoreCase("DOWN")), builder);
+	};
+
+	private static final SuggestionProvider<CommandSourceStack> SUGGEST_MIMIC = (source, builder) -> {    	
+		return SharedSuggestionProvider.suggest(MimicRegistry.getMimics().stream().map(x -> x.toString()), builder);
 	};
 
 	/**
@@ -126,8 +119,23 @@ public class SpawnChestCommand {
 																.executes(source -> {
 																	return spawn(source.getSource(), BlockPosArgument.getLoadedBlockPos(source, "pos"),
 																			ResourceLocationArgument.getId(source, NAME).toString(), StringArgumentType.getString(source, "rarity"), StringArgumentType.getString(source, "direction"), true, true);
+																})									
+																)
+														.then(Commands.literal("mimic")
+																.executes(source -> {
+																	return spawn(source.getSource(), BlockPosArgument.getLoadedBlockPos(source, "pos"), 
+																			ResourceLocationArgument.getId(source, NAME).toString(), StringArgumentType.getString(source, "rarity"), StringArgumentType.getString(source, "direction"), 
+																			true, false, true);							
 																})
 																)
+														//														.then(Commands.argument("mimic", ResourceLocationArgument.id())
+														//																.suggests(SUGGEST_MIMIC)
+														//																.executes(source -> {
+														//																	return spawn(source.getSource(), BlockPosArgument.getLoadedBlockPos(source, "pos"), 
+														//																			ResourceLocationArgument.getId(source, NAME).toString(), StringArgumentType.getString(source, "rarity"), StringArgumentType.getString(source, "direction"), 
+														//																			true, false, ResourceLocationArgument.getId(source, "mimic"));							
+														//																})
+														//															)
 														)
 												.then(Commands.literal("sealed")
 														.executes(source -> {
@@ -140,6 +148,44 @@ public class SpawnChestCommand {
 																			ResourceLocationArgument.getId(source, NAME).toString(), StringArgumentType.getString(source, "rarity"), StringArgumentType.getString(source, "direction"), true, true);
 																})
 																)
+														.then(Commands.literal("mimic")
+																.executes(source -> {
+																	return spawn(source.getSource(), BlockPosArgument.getLoadedBlockPos(source, "pos"), 
+																			ResourceLocationArgument.getId(source, NAME).toString(), StringArgumentType.getString(source, "rarity"), StringArgumentType.getString(source, "direction"), 
+																			false, true, true);							
+																})
+																)
+														//														.then(Commands.argument("mimic", ResourceLocationArgument.id())
+														//																.suggests(SUGGEST_MIMIC)
+														//																.executes(source -> {
+														//																	return spawn(source.getSource(), BlockPosArgument.getLoadedBlockPos(source, "pos"), 
+														//																			ResourceLocationArgument.getId(source, NAME).toString(), StringArgumentType.getString(source, "rarity"), StringArgumentType.getString(source, "direction"), 
+														//																			false, true, ResourceLocationArgument.getId(source, "mimic"));							
+														//																})
+														//																)	
+														)
+//												.then(Commands.argument("mimic", ResourceLocationArgument.id())
+//														.suggests(SUGGEST_MIMIC)
+												.then(Commands.literal("mimic")
+														.executes(source -> {
+															return spawn(source.getSource(), BlockPosArgument.getLoadedBlockPos(source, "pos"), 
+																	ResourceLocationArgument.getId(source, NAME).toString(), StringArgumentType.getString(source, "rarity"), StringArgumentType.getString(source, "direction"), 
+																	false, false, true);							
+														})
+														.then(Commands.literal("locked")
+																.executes(source -> {
+																	return spawn(source.getSource(), BlockPosArgument.getLoadedBlockPos(source, "pos"),
+																			ResourceLocationArgument.getId(source, NAME).toString(), StringArgumentType.getString(source, "rarity"), StringArgumentType.getString(source, "direction"), 
+																			true, false, true);
+																})
+																)
+														.then(Commands.literal("sealed")
+																.executes(source -> {
+																	return spawn(source.getSource(), BlockPosArgument.getLoadedBlockPos(source, "pos"),
+																			ResourceLocationArgument.getId(source, NAME).toString(), StringArgumentType.getString(source, "rarity"), StringArgumentType.getString(source, "direction"), 
+																			false, true, true);
+																})									
+																)
 														)
 												)
 										)
@@ -147,7 +193,6 @@ public class SpawnChestCommand {
 						)
 				);
 	}
-
 
 	private static int spawn(CommandSourceStack source, BlockPos pos, String chestName, String rarityName) {
 		return spawn(source, pos, chestName, rarityName, Heading.SOUTH.name(), false, false);
@@ -160,33 +205,43 @@ public class SpawnChestCommand {
 	 * @param name
 	 * @return
 	 */
-	private static int spawn(CommandSourceStack source, BlockPos pos, String chestName, String rarityName, String directionName, boolean locked, boolean sealed) {
+	private static int spawn(CommandSourceStack source, BlockPos pos, String chestName, String rarityName, String directionName, 
+			boolean locked, boolean sealed) {
+		return spawn(source, pos, chestName, rarityName, directionName, locked, sealed, false);
+	}
+
+	private static int spawn(CommandSourceStack source, BlockPos pos, String chestName, String rarityName, String directionName, 
+			boolean locked, boolean sealed, boolean mimic) {
+
+		// TODO I goofed something up with the mimics code depending on the options order
 		Treasure.LOGGER.debug("executing spawn chest, pos -> {}, name -> {}, rarity -> {}", pos, chestName, rarityName);
 		try {
 			ServerLevel world = source.getLevel();
 			Random random = new Random();
-			// TODO fetch from the registry
-			Rarity rarity = rarityName.isEmpty() ? Rarity.COMMON : Rarity.valueOf(rarityName.toUpperCase());
+			Optional<IRarity> rarity = TreasureApi.getRarity(rarityName);
+			if (rarity.isEmpty()) {
+				return 1;
+			}
 			Heading heading = directionName.isEmpty() ? Heading.SOUTH : Heading.valueOf(directionName);
 			ResourceLocation chestLocation = ModUtil.asLocation(chestName);
 			Optional<RegistryObject<Block>> optionalChest = ChestRegistry.getChest(chestLocation);
 			AbstractTreasureChestBlock chest;
-			
+
 			// TODO provide Genertor by name in command (no weighted option)
 			// TODO provide GeneratorType option in command
-			IChestGenerator generator = WeightedChestGeneratorRegistry.getNextGenerator(rarity, GeneratorType.TERRESTRIAL);
+			IChestGenerator generator = RarityLevelWeightedChestGeneratorRegistry.getNextGenerator(rarity.get(), FeatureType.TERRANEAN);
 			if (optionalChest.isEmpty()) {
-				chest = generator.selectChest(random, rarity);
+				chest = generator.selectChest(random, rarity.get());
 			} else {
 				chest = (AbstractTreasureChestBlock) optionalChest.get().get();
 			}
-			
+
 			// select a  chest if it hasn't been provided
-			
+
 			Treasure.LOGGER.debug("generator -> {}", generator);
 
 			// select loot table
-			Optional<LootTableShell> lootTableShell = generator.selectLootTable(random, rarity);
+			Optional<LootTableShell> lootTableShell = generator.selectLootTable(random, rarity.get());
 			Treasure.LOGGER.debug("loot table shell -> {}", lootTableShell);
 
 			ResourceLocation lootTableResourceLocation = null;
@@ -194,28 +249,40 @@ public class SpawnChestCommand {
 				lootTableResourceLocation = lootTableShell.get().getResourceLocation();
 			}
 			if (lootTableResourceLocation == null) {
-				Treasure.LOGGER.debug("Unable to select a LootTable for rarity -> {}", rarity);
+				Treasure.LOGGER.debug("Unable to select a LootTable for rarity -> {}", rarity.getClass());
 				return 0;
 			}
 
 			AbstractTreasureChestBlock chestBlock = chest;
 			if (chestBlock != null) {
-				world.setBlockAndUpdate(pos, chestBlock.defaultBlockState().setValue(AbstractTreasureChestBlock.FACING, heading.getDirection()));
+				world.setBlockAndUpdate(pos, chestBlock
+						.defaultBlockState()
+						.setValue(AbstractTreasureChestBlock.FACING, heading.getDirection())
+						.setValue(AbstractTreasureChestBlock.DISCOVERED, false)	// TODO add command argument	
+						);
 			}
 
-			AbstractTreasureChestBlockEntity tileEntity = (AbstractTreasureChestBlockEntity) world.getBlockEntity(pos);
-			if (tileEntity != null) {
-				if (locked || sealed) {
-					generator.addLootTable(tileEntity, lootTableResourceLocation);
-					generator.addSeal(tileEntity);
+			AbstractTreasureChestBlockEntity blockEntity = (AbstractTreasureChestBlockEntity) world.getBlockEntity(pos);
+
+			if (blockEntity != null) {
+				if (mimic) {
+					Optional<ResourceLocation> mimicLocation = MimicRegistry.getMimic(chestLocation);
+					if (mimicLocation.isPresent()) {
+						blockEntity.setMimic(mimicLocation.get());
+					}
 				}
 
-				generator.addGenerationContext(tileEntity, rarity);
+				if (locked || sealed) {
+					generator.addLootTable(blockEntity, lootTableResourceLocation);
+					generator.addSeal(blockEntity);
+				}
+				generator.addGenerationContext(new FeatureGenContext(world, world.getChunkSource().getGenerator(), random, FeatureType.TERRANEAN), blockEntity, rarity.get());
+				blockEntity.getGenerationContext().setFeatureType(FeatureType.TERRANEAN);
 
 				if (locked) {
-					generator.addLocks(random, chestBlock, (AbstractTreasureChestBlockEntity) tileEntity, rarity);
+					generator.addLocks(random, chestBlock, (AbstractTreasureChestBlockEntity) blockEntity, rarity.get());
 					(chestBlock).rotateLockStates(world, new Coords(pos), Heading.NORTH.getRotation(heading));
-					(tileEntity).sendUpdates();
+					(blockEntity).sendUpdates();
 				}
 			}
 		}

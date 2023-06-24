@@ -166,5 +166,4 @@ public class CardboardBoxBlockEntity extends AbstractTreasureChestBlockEntity {
 	public void setPrevInnerLidAngle(float innerLidAngle) {
 		this.prevInnerLidAngle = innerLidAngle;
 	}
-
 }

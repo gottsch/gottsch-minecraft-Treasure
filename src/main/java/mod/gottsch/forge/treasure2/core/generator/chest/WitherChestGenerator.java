@@ -18,12 +18,9 @@
 package mod.gottsch.forge.treasure2.core.generator.chest;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
-import java.util.function.Supplier;
 
 import mod.gottsch.forge.gottschcore.enums.IRarity;
-import mod.gottsch.forge.gottschcore.loot.LootTableShell;
 import mod.gottsch.forge.gottschcore.random.RandomHelper;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
@@ -32,15 +29,12 @@ import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
 import mod.gottsch.forge.treasure2.core.block.StandardChestBlock;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
-import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity.GenerationContext;
 import mod.gottsch.forge.treasure2.core.block.entity.ITreasureChestBlockEntity;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorUtil;
 import mod.gottsch.forge.treasure2.core.item.LockItem;
 import mod.gottsch.forge.treasure2.core.item.TreasureItems;
 import mod.gottsch.forge.treasure2.core.lock.LockLayout;
 import mod.gottsch.forge.treasure2.core.lock.LockState;
-import mod.gottsch.forge.treasure2.core.loot.SpecialLootTables;
-import mod.gottsch.forge.treasure2.core.registry.TreasureLootTableRegistry;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -55,34 +49,34 @@ public class WitherChestGenerator extends AbstractChestGenerator {
 	/**
 	 * 
 	 */
-	public WitherChestGenerator(IChestGeneratorType type) {
-		super(type);
+	public WitherChestGenerator() {
+		super();
 	}
 
 	/**
 	 * 
 	 */
-	@Override
-	public void addGenerationContext(ITreasureChestBlockEntity blockEntity, IRarity rarity) {
-		GenerationContext generationContext = 
-				((AbstractTreasureChestBlockEntity)blockEntity).new GenerationContext(rarity, ChestGeneratorType.WITHER);
-		blockEntity.setGenerationContext(generationContext);
-	}
+//	@Override
+//	public void addGenerationContext(ITreasureChestBlockEntity blockEntity, IRarity rarity) {
+//		GenerationContext generationContext = 
+//				((AbstractTreasureChestBlockEntity)blockEntity).new GenerationContext(rarity, ChestGeneratorType.WITHER);
+//		blockEntity.setGenerationContext(generationContext);
+//	}
 	
 	/*
 	 * @param random
 	 * @param chestRarity
 	 * @return
 	 */
-	@Override
-	public Optional<LootTableShell> selectLootTable(Random random, final IRarity chestRarity) {
-		return TreasureLootTableRegistry.getSpecialLootTable(SpecialLootTables.WITHER_CHEST);
-	}
-
-	@Override
-	public Optional<LootTableShell> selectLootTable(Supplier<Random> factory, final IRarity rarity) {
-		return TreasureLootTableRegistry.getSpecialLootTable(SpecialLootTables.WITHER_CHEST);
-	}
+//	@Override
+//	public Optional<LootTableShell> selectLootTable(Random random, final IRarity chestRarity) {
+//		return TreasureLootTableRegistry.getSpecialLootTable(SpecialLootTables.WITHER_CHEST);
+//	}
+//
+//	@Override
+//	public Optional<LootTableShell> selectLootTable(Supplier<Random> factory, final IRarity rarity) {
+//		return TreasureLootTableRegistry.getSpecialLootTable(SpecialLootTables.WITHER_CHEST);
+//	}
 	
 	/**
 	 * Always select a skull chest.
@@ -140,9 +134,10 @@ public class WitherChestGenerator extends AbstractChestGenerator {
 	 * @return
 	 */
 	@Override
+	@Deprecated
 	public BlockEntity placeInWorld(IWorldGenContext context, AbstractTreasureChestBlock chest, ICoords chestCoords) {
 		// replace block @ coords
-		GeneratorUtil.replaceBlockWithChest(context, chest, chestCoords);
+		GeneratorUtil.replaceBlockWithChest(context, chest, chestCoords, false);
 		// ensure that chest is of type WITHER_CHEST
 		if (context.level().getBlockState(chestCoords.toPos()).getBlock() == TreasureBlocks.WITHER_CHEST.get()) {
 			// add top placeholder
@@ -162,9 +157,9 @@ public class WitherChestGenerator extends AbstractChestGenerator {
 	}
 	
 	@Override
-	public BlockEntity placeInWorld(IWorldGenContext context, ICoords chestCoords, AbstractTreasureChestBlock chest, BlockState state) {
+	public BlockEntity placeInWorld(IWorldGenContext context, ICoords chestCoords, AbstractTreasureChestBlock chest, BlockState state, boolean discovered) {
 		// replace block @ coords
-		GeneratorUtil.replaceBlockWithChest(context, chestCoords, chest, state);
+		GeneratorUtil.replaceBlockWithChest(context, chestCoords, chest, state, discovered);
 		
 		// ensure that chest is of type WITHER_CHEST
 		if (context.level().getBlockState(chestCoords.toPos()).getBlock() == TreasureBlocks.WITHER_CHEST.get()) {

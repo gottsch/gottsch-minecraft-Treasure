@@ -17,24 +17,11 @@
  */
 package mod.gottsch.forge.treasure2.core.generator.chest;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
-import mod.gottsch.forge.gottschcore.enums.IRarity;
-import mod.gottsch.forge.gottschcore.loot.LootTableShell;
 import mod.gottsch.forge.gottschcore.random.RandomHelper;
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
-import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
-import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity.GenerationContext;
-import mod.gottsch.forge.treasure2.core.block.entity.ITreasureChestBlockEntity;
-import mod.gottsch.forge.treasure2.core.enums.Rarity;
-import mod.gottsch.forge.treasure2.core.item.LockItem;
 import mod.gottsch.forge.treasure2.core.lock.LockLayout;
-import mod.gottsch.forge.treasure2.core.registry.KeyLockRegistry;
-import mod.gottsch.forge.treasure2.core.registry.TreasureLootTableRegistry;
 
 /**
  * 
@@ -46,19 +33,19 @@ public class EpicChestGenerator extends AbstractChestGenerator {
 	/**
 	 * 
 	 */
-	public EpicChestGenerator(IChestGeneratorType type) {
-		super(type);
+	public EpicChestGenerator() {
+		super();
 	}
 
 	/**
 	 * 
 	 */
-	@Override
-	public void addGenerationContext(ITreasureChestBlockEntity blockEntity, IRarity rarity) {
-		GenerationContext generationContext = 
-				((AbstractTreasureChestBlockEntity)blockEntity).new GenerationContext(rarity, ChestGeneratorType.EPIC);
-		blockEntity.setGenerationContext(generationContext);
-	}
+//	@Override
+//	public void addGenerationContext(ITreasureChestBlockEntity blockEntity, IRarity rarity) {
+//		GenerationContext generationContext = 
+//				((AbstractTreasureChestBlockEntity)blockEntity).new GenerationContext(rarity, ChestGeneratorType.EPIC);
+//		blockEntity.setGenerationContext(generationContext);
+//	}
 	
 	/**
 	 * Epic will have at least one lock.

@@ -35,6 +35,7 @@ public class ChestGeneratorData extends GeneratorData {
 	private IRarity rarity;
 	private ResourceLocation registryName;
 	private BlockState state;
+	@Deprecated
 	private IRegionPlacement placement;
 	
 	/*
@@ -122,13 +123,5 @@ public class ChestGeneratorData extends GeneratorData {
 
 	public void setCoords(ICoords coords) {
 		this.coords = coords;
-	}
-
-	public IRegionPlacement getPlacement() {
-		return placement;
-	}
-
-	public void setPlacement(IRegionPlacement placement) {
-		this.placement = placement;
 	}
 }

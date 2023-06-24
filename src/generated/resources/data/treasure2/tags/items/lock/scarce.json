@@ -3,6 +3,8 @@
   "values": [
     "treasure2:ember_lock",
     "treasure2:gold_lock",
+    "treasure2:topaz_lock",
+    "treasure2:onyx_lock",
     "treasure2:spider_lock"
   ]
 }

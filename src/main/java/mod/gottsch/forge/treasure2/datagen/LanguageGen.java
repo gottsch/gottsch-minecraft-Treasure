@@ -54,6 +54,8 @@ public class LanguageGen extends LanguageProvider {
         
         add(TreasureItems.DIAMOND_KEY.get(), "Diamond Key");
         add(TreasureItems.EMERALD_KEY.get(), "Emerald Key");
+        add(TreasureItems.TOPAZ_KEY.get(), "Topaz Key");
+        add(TreasureItems.ONYX_KEY.get(), "Onyx Key");
         add(TreasureItems.RUBY_KEY.get(), "Ruby Key");
         add(TreasureItems.SAPPHIRE_KEY.get(), "Sapphire Key");
         add(TreasureItems.JEWELLED_KEY.get(), "Jewelled Key");
@@ -75,6 +77,8 @@ public class LanguageGen extends LanguageProvider {
         
         add(TreasureItems.DIAMOND_LOCK.get(), "Diamond Lock");
         add(TreasureItems.EMERALD_LOCK.get(), "Emerald Lock");
+        add(TreasureItems.TOPAZ_LOCK.get(), "Topaz Lock");
+        add(TreasureItems.ONYX_LOCK.get(), "Onyx Lock");
         add(TreasureItems.RUBY_LOCK.get(), "Ruby Lock");
         add(TreasureItems.SAPPHIRE_LOCK.get(), "Sapphire Lock");
         
@@ -102,6 +106,49 @@ public class LanguageGen extends LanguageProvider {
         add(TreasureBlocks.SPANISH_MOSS.get(), "Spanish Moss");
         add(TreasureBlocks.WISHING_WELL.get(), "Wishing Well Stone");
         add(TreasureBlocks.DESERT_WISHING_WELL.get(), "Desert Wishing Well Stone");
+        add(TreasureItems.EYE_PATCH.get(), "Eye Patch");
+        
+        // swords
+        add(TreasureItems.COPPER_SHORT_SWORD.get(), "Copper Short Sword");
+        add(TreasureItems.CHIPPED_COPPER_SHORT_SWORD.get(), "Chipped Copper Short Sword");
+        add(TreasureItems.IRON_SHORT_SWORD.get(), "Iron Short Sword");
+        add(TreasureItems.CHIPPED_IRON_SHORT_SWORD.get(), "Chipped Iron Short Sword");
+        add(TreasureItems.STEEL_SHORT_SWORD.get(), "Steel Short Sword");
+        add(TreasureItems.CHIPPED_STEEL_SHORT_SWORD.get(), "Chipped Steel Short Sword");
+        add(TreasureItems.STEEL_SWORD.get(), "Steel Sword");
+        add(TreasureItems.IRON_BROADSWORD.get(), "Iron Broadsword");
+        add(TreasureItems.STEEL_BROADSWORD.get(), "Steel Broadsword");
+        add(TreasureItems.COPPER_RAPIER.get(), "Copper Rapier");
+        
+        // specials
+        add(TreasureItems.SKULL_SWORD.get(), "Skull Sword");
+        add(TreasureItems.BLACK_SWORD.get(), "The Black Sword");
+        add(TreasureItems.SWORD_OMENS.get(), "The Sword of Omens");
+        add(TreasureItems.SWORD_POWER.get(), "The Sword of Power");
+        add(TreasureItems.ORCUS.get(), "Orcus");
+        add(TreasureItems.SNAKE_EYES_KATANA.get(), "Snake Eye's Katana");
+        add(TreasureItems.STORM_SHADOWS_KATANA.get(), "Storm Shadow's Daisho");
+        add(TreasureItems.OATHBRINGER.get(), "Oathbringer");
+        add(TreasureItems.MJOLNIR.get(), "Mjolnir");
+        add(TreasureItems.AXE_DURIN.get(), "Axe of Durin");
+        add(TreasureItems.HEADSMANS_AXE.get(), "The Headsman's Axe");
+        
+        add(TreasureItems.STEEL_MACHETE.get(), "Steel Machete");
+        add(TreasureItems.SHADOW_MACHETE.get(), "Shadow Machete");
+        
+        add(TreasureItems.IRON_FALCHION.get(), "Iron Falchion");
+        add(TreasureItems.STEEL_FALCHION.get(), "Steel Falchion");
+        add(TreasureItems.SHADOW_FALCHION.get(), "Shadow Falchion");
+        
+        // maces/hammers
+        add(TreasureItems.IRON_MACE.get(), "Iron Mace");
+        add(TreasureItems.STEEL_MACE.get(), "Steel Mace");
+        
+        // axes
+        add(TreasureItems.COPPER_BROAD_AXE.get(), "Copper Broad Axe");
+        add(TreasureItems.IRON_BROAD_AXE.get(), "Iron Broad Axe");
+        add(TreasureItems.STEEL_BROAD_AXE.get(), "Steel Broad Axe");
+        add(TreasureItems.IRON_DWARVEN_AXE.get(), "Iron Dwarven Axe");
         
         // chests
         add(TreasureBlocks.WOOD_CHEST.get(), "Wood Chest");
@@ -123,6 +170,12 @@ public class LanguageGen extends LanguageProvider {
         add(TreasureBlocks.CARDBOARD_BOX.get(), "Cardboard Box");
         add(TreasureBlocks.MILK_CRATE.get(), "Milk Crate");
         add(TreasureBlocks.WITHER_CHEST.get(), "Wither Chest");
+        add(TreasureBlocks.WITHER_BRANCH.get(), "Wither Branch");
+        add(TreasureBlocks.WITHER_ROOT.get(), "Wither Root");
+        add(TreasureBlocks.WITHER_LOG.get(), "Wither Log");
+        add(TreasureBlocks.WITHER_BROKEN_LOG.get(), "Wither Broken Log");
+        add(TreasureBlocks.WITHER_SOUL_LOG.get(), "Wither Soul Log");
+        add(TreasureBlocks.WITHER_PLANKS.get(), "Wither Planks");
         
         // ore
         add(TreasureBlocks.TOPAZ_ORE.get(), "Topaz Ore");
@@ -161,8 +214,15 @@ public class LanguageGen extends LanguageProvider {
         add(TreasureBlocks.GRAVESTONE2_SPAWNER_COBBLESTONE.get(), "Cobblestone Gravestone Spawner");
         add(TreasureBlocks.GRAVESTONE3_SPAWNER_OBSIDIAN.get(), "Obsidian Gravestone Spawner");
         
+//        add(TreasureItems.WITHER_STICK_ITEM.get(), "Wither Branch");
+//        add(TreasureItems.WITHER_ROOT_ITEM.get(), "Wither Root");
+        
         // eggs
         add(TreasureItems.BOUND_SOUL_EGG.get(), "Bound Soul Spawn Egg");
+        add(TreasureItems.WOOD_CHEST_MIMIC_EGG.get(), "Wood Chest Mimic Spawn Egg");
+        add(TreasureItems.PIRATE_CHEST_MIMIC_EGG.get(), "Pirate Chest Mimic Spawn Egg");
+        add(TreasureItems.VIKING_CHEST_MIMIC_EGG.get(), "Viking Chest Mimic Spawn Egg");
+        add(TreasureItems.CAULDRON_CHEST_MIMIC_EGG.get(), "Cauldron Chest Mimic Spawn Egg");
         
         /*
          *  Util.tooltips
@@ -206,6 +266,35 @@ public class LanguageGen extends LanguageProvider {
         add(LangUtil.tooltip("cap.durability.repairs"), "R[%s/%s]");
         add(LangUtil.tooltip("cap.spell.recharges"), "R[%s/%s]");
         
+        // weapons
+        add(LangUtil.tooltip("weapons.black_sword.lore"), "Sword of the Avatar. Host of the daemon Arcadion.");
+        add(LangUtil.tooltip("weapons.sword_of_omens.lore"), "'Thunder... Thunder... Thunder... ThunderCats HO!'");
+        add(LangUtil.tooltip("weapons.sword_of_power.lore"), "'By the power of Grayskull.... I have the power!'");
+        
+        add(LangUtil.tooltip("weapons.orcus.lore"), "'Fair lady, throw those costly robes aside,~"
+        		+ "No longer may you glory in your pride.~"
+        		+ "Take leave of all sour vain delight~"
+        		+ "I'm come to summon you away this night'.~"
+        		+ "    -The Grim Reaper");
+        add(LangUtil.tooltip("weapons.snake_eyes_katana.lore"), "Move with the wind, and you will never be heard.~" 
+        		+ "    -Snake Eyes");
+        add(LangUtil.tooltip("weapons.storm_shadows_katana.lore"), "Most people will tell you that ninjas dont exist.~"
+        		+ "Thats what the ninjas want you to believe ..."
+        		+ "    -Storm Shadow");
+        add(LangUtil.tooltip("weapons.oathbringer.lore"), "Life before death,~"
+        		+ "strength before weakness,~"
+        		+ "journey before destination.");
+        
+        add(LangUtil.tooltip("weapons.mjolnir.lore"), "'Whosoever holds this hammer,~"
+        		+ "if they be worthy, shall possess the power of Thor.'");
+        
+        add(LangUtil.tooltip("weapons.headsmans_axe.lore"), "Let the good times roll.");
+        
+        add(LangUtil.tooltip("weapons.axe_of_durin.lore"), "'... And my axe!'");
+        
+        add(LangUtil.tooltip("weapons.power_attack_chance"), "Power Attack Chance: %s%%");
+        add(LangUtil.tooltip("weapons.power_attack_damage"), "Power Attack Damage: +%s");
+        
         /*
          * screens
          */
@@ -230,6 +319,13 @@ public class LanguageGen extends LanguageProvider {
         add(LangUtil.screen("milk_crate.name"), "Milk Crate");
         add(LangUtil.screen("wither_chest.name"), "Wither Chest");
 
+        add(LangUtil.screen("treasure_map.uncommon"), "Uncommon Treasure Map");
+        add(LangUtil.screen("treasure_map.scarce"), "Scarce Treasure Map");
+        add(LangUtil.screen("treasure_map.rare"), "Rare Treasure Map");
+        add(LangUtil.screen("treasure_map.epic"), "Epic Treasure Map");
+        add(LangUtil.screen("treasure_map.legendary"), "Legendary Treasure Map");
+        add(LangUtil.screen("treasure_map.mythical"), "Mythical Treasure Map");
+        
         /*
          *  chat
          */
@@ -237,6 +333,7 @@ public class LanguageGen extends LanguageProvider {
         add(LangUtil.chat("key.key_break"), "Your key broke whilst attempting to unlock the lock!");
         add(LangUtil.chat("key.key_not_fit"), "Your key doesn't fit the lock!");
         add(LangUtil.chat("key.key_unable_unlock"), "Your key failed to unlock the lock!");
+
 
     }
 }

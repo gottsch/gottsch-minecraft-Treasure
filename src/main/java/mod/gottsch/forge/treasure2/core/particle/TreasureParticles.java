@@ -33,6 +33,11 @@ public class TreasureParticles {
 	public static final RegistryObject<CollidingParticleType> POISON_MIST_PARTICLE = Registration.PARTICLES.register("poison_mist_particle", () -> new CollidingParticleType(null, CollidingParticleType.DESERIALIZER));	
 	public static final RegistryObject<CollidingParticleType> WITHER_MIST_PARTICLE = Registration.PARTICLES.register("wither_mist_particle", () -> new CollidingParticleType(null, CollidingParticleType.DESERIALIZER));
 	
+	public static final RegistryObject<SimpleParticleType> COPPER_COIN_PARTICLE = Registration.PARTICLES.register("copper_coin_particle", () -> new SimpleParticleType(true));
+	public static final RegistryObject<SimpleParticleType> SILVER_COIN_PARTICLE = Registration.PARTICLES.register("silver_coin_particle", () -> new SimpleParticleType(true));
+	public static final RegistryObject<SimpleParticleType> GOLD_COIN_PARTICLE = Registration.PARTICLES.register("gold_coin_particle", () -> new SimpleParticleType(true));
+	
+	
 	public static void register() {
 		Registration.registerParticles();
 	}

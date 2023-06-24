@@ -19,9 +19,14 @@
  */
 package mod.gottsch.forge.treasure2.core.persistence;
 
+import java.util.List;
+
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.registry.DimensionalGeneratedRegistry;
-import mod.gottsch.forge.treasure2.core.registry.WeightedChestGeneratorRegistry;
+import mod.gottsch.forge.treasure2.core.cache.FeatureCaches;
+import mod.gottsch.forge.treasure2.core.random.RarityLevelWeightedCollection;
+import mod.gottsch.forge.treasure2.core.registry.DimensionalGeneratedCache;
+import mod.gottsch.forge.treasure2.core.registry.RarityLevelWeightedChestGeneratorRegistry;
+import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
@@ -36,32 +41,11 @@ import net.minecraft.world.level.storage.DimensionDataStorage;
  *
  */
 public class TreasureSavedData extends SavedData {	
-//	private static final String TREASURE_GEN_TAG_NAME = "treasureGenerator";
-	
 	private static final String CHEST_GEN_REGISTRY_NAME = "weightedChestGeneratorRegistry";
 	private static final String DIM_GEN_REGISTRY_NAME = "dimensionalGeneratedRegistry";
-	
-//	public static final String GEN_DATA_KEY = Treasure.MODID + ":generationData";
+	private static final String FEATURE_CACHES_NAME = "featureCaches";
+
 	private static final String TREASURE = Treasure.MODID;
-
-//	private static final String KEY_TAG_NAME = "key";
-//	private static final String CHEST_REGISTRY_TAG_NAME = "chestRegistry";
-//	private static final String REGISTRY_TAG_NAME = "registry";
-//	private static final String WELL_REGISTRIES_TAG_NAME = "wellRegistries";
-//	private static final String WITHER_TREE_REGISTRIES_TAG_NAME = "witherTreeRegistries";
-//	private static final String COORDS_TAG_NAME = "coords";
-
-//	private static final String RARITY_TAG_NAME = "rarity";
-//	private static final String RARITIES_TAG_NAME = "rarities";
-//	private static final String DIMENSION_ID_TAG_NAME = "dimensionID";
-//	private static final String DIMENSIONS_TAG_NAME = "dimensions";
-//	private static final String BIOME_ID_TAG_NAME = "biomeID";
-//	private static final String BIOMES_TAG_NAME = "biomes";
-
-	// legacy
-//	private static final String CHEST_REGISTRIES_TAG_NAME = "chestRegistries";
-
-	
 	
 	public static TreasureSavedData create() {
 		return new TreasureSavedData();
@@ -72,19 +56,39 @@ public class TreasureSavedData extends SavedData {
 	 */
 	public static TreasureSavedData load(CompoundTag tag) {
 		Treasure.LOGGER.debug("loading treasure2 saved gen data...");
-
+		
 		/*
 		 * chest generator registry
 		 */
 		if (tag.contains(CHEST_GEN_REGISTRY_NAME)) {
-			WeightedChestGeneratorRegistry.load(tag.getList(CHEST_GEN_REGISTRY_NAME, Tag.TAG_COMPOUND));
+			RarityLevelWeightedChestGeneratorRegistry.initialize();
+			RarityLevelWeightedChestGeneratorRegistry.load(tag.getList(CHEST_GEN_REGISTRY_NAME, Tag.TAG_COMPOUND));
+			
+			RarityLevelWeightedChestGeneratorRegistry.RARITY_SELECTOR.forEach((dim, map) -> {
+				RarityLevelWeightedCollection dumpCol = map.get(FeatureType.TERRANEAN);
+				List<String> dump = dumpCol.dump();
+//				Treasure.LOGGER.debug("load terranean weighted collection dump -> {}", dump);
+				dumpCol = map.get(FeatureType.AQUATIC);
+				dump = dumpCol.dump();
+//				Treasure.LOGGER.debug("load aquatic weighted collection dump -> {}", dump);
+			});
+
 		}
 		
         /*
          * chest registry
          */
 		if (tag.contains(DIM_GEN_REGISTRY_NAME)) {
-			DimensionalGeneratedRegistry.load((CompoundTag)tag.get(DIM_GEN_REGISTRY_NAME));
+			DimensionalGeneratedCache.clear();
+			DimensionalGeneratedCache.initialize();
+			DimensionalGeneratedCache.load((CompoundTag)tag.get(DIM_GEN_REGISTRY_NAME));
+		}
+		
+		/*
+		 * well cache
+		 */
+		if (tag.contains(FEATURE_CACHES_NAME)) {
+			FeatureCaches.load((CompoundTag)tag.get(FEATURE_CACHES_NAME));
 		}
 		
         return create();
@@ -98,10 +102,13 @@ public class TreasureSavedData extends SavedData {
 	@Override
 	public CompoundTag save(CompoundTag tag) {
 		try {
-			updateCompound(tag, CHEST_GEN_REGISTRY_NAME, WeightedChestGeneratorRegistry.save());
+			updateCompound(tag, CHEST_GEN_REGISTRY_NAME, RarityLevelWeightedChestGeneratorRegistry.save());
 
 			// update tag
-			updateCompound(tag, DIM_GEN_REGISTRY_NAME, DimensionalGeneratedRegistry.save());
+			updateCompound(tag, DIM_GEN_REGISTRY_NAME, DimensionalGeneratedCache.save());
+
+			// update feature dimensional simple caches
+			updateCompound(tag, FEATURE_CACHES_NAME, FeatureCaches.save());
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -123,28 +130,6 @@ public class TreasureSavedData extends SavedData {
 		// add new values
 		compound.put(name, nbt);		
 	}
-
-	/**
-	 * 
-	 * @param registryList
-	 * @param dimension
-	 * @param registry
-	 */
-//	private void saveRegistry(ListTag registryList, String dimension, SimpleListRegistry<ICoords> registry) {
-//		CompoundTag dimensionCompound = new CompoundTag();
-//		dimensionCompound.putString(DIMENSION_ID_TAG_NAME, dimension);
-//		ListTag coordsList = new ListTag();
-//		registry.getValues().forEach(coords -> {
-//			CompoundTag coordsCompound = new CompoundTag();
-//			coordsCompound.putInt("x", coords.getX());
-//			coordsCompound.putInt("y", coords.getY());
-//			coordsCompound.putInt("z", coords.getZ());
-//			// add entry to list
-//			coordsList.add(coordsCompound);
-//		});
-//		dimensionCompound.put(REGISTRY_TAG_NAME, coordsList);
-//		registryList.add(dimensionCompound);
-//	}
 
 	/**
 	 * @param world
