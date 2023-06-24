@@ -48,7 +48,7 @@
     "rolls" : 1,
     "entries" : [ {
       "type" : "loot_table",
-      "name" : "treasure2:pools/tools/epic",
+      "name" : "treasure2:pools/tools/rare",
       "weight" : 1
     } ]
   }, {

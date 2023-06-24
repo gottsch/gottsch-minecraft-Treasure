@@ -12,7 +12,7 @@ d3f7b2911aedd8eb04c71d279f581f59e9dc6aef assets/treasure2/models/item/chipped_ir
 54409e2988a15c10a32ba1da988ca635e88e27e7 assets/treasure2/models/item/chipped_steel_short_sword.json
 2fec2a6b3b6366ee9f6e3aaf10c15a5716aed49b assets/treasure2/models/item/compressor_chest.json
 b5eddd12d977946efa78d26d5bbb303c1e573890 assets/treasure2/models/item/copper_broad_axe.json
-f90471654a10ae7918b0ebcb26f54b3eb4132682 assets/treasure2/models/item/copper_coin.json
+c04a176e0e3b5a72821b0887f8e718d89a08b82a assets/treasure2/models/item/copper_coin.json
 26831dfe53e9dd30c41a8f270ba954c994977e75 assets/treasure2/models/item/copper_rapier.json
 a1409d6fb57001d8ec31d76b2ade187f56a5cf75 assets/treasure2/models/item/copper_short_sword.json
 b6ee03c50f84077f621d35f79d8d14e28704d927 assets/treasure2/models/item/crate_chest.json
@@ -31,7 +31,7 @@ e902b14e26467c36334c4924c61a76d053b160a0 assets/treasure2/models/item/diamond_lo
 69c7707a8bcde51d6dde15353b11973fcf50681e assets/treasure2/models/item/emerald_key.json
 d128600f2fee0565e06448b024f7afc1d717bedc assets/treasure2/models/item/emerald_lock.json
 8484780c538478afe661ae3cb196d0d7268f5e8f assets/treasure2/models/item/eye_patch.json
-29e08052f5f4f1c9c7b902540feb17df6444ca83 assets/treasure2/models/item/gold_coin.json
+0638a5a714dcb8eb36801c33f9ca26e933c822c0 assets/treasure2/models/item/gold_coin.json
 020bef26353086bdfe3810c4252f4bf5a53265ad assets/treasure2/models/item/gold_key.json
 99b7279e31f7f2d37d24164b6b222079c4419201 assets/treasure2/models/item/gold_lock.json
 fe2fe7516f6477fa99a2991ef54a24ed878b6e85 assets/treasure2/models/item/gold_skull_chest.json
@@ -98,7 +98,7 @@ dc1a1d07bf872cb5f070d5e9291334de40d2863f assets/treasure2/models/item/sapphire_k
 ed558c5bbb52c31b0ddce797a0e73914b845bd19 assets/treasure2/models/item/sapphire_ore.json
 888aa563023418233fbda0717d597c8e85f200f3 assets/treasure2/models/item/shadow_falchion.json
 6b642839c29dc17d839ec61c458f27cd9277b96c assets/treasure2/models/item/shadow_machete.json
-91193176b38a2c08f8168215b7ac4730924a3aba assets/treasure2/models/item/silver_coin.json
+6bfad0a0cd9053514760d72242263456fef00d1b assets/treasure2/models/item/silver_coin.json
 454183e208759ab6541d059fe713f5faedd91cd6 assets/treasure2/models/item/skeleton.json
 bb0571e700f5bd031a35f2751bb748f9bf360bd2 assets/treasure2/models/item/skeleton_key.json
 f433c733e20602615c9448a3341d1bab4cd55f7a assets/treasure2/models/item/skull_and_crossbones.json

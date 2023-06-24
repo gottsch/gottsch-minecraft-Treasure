@@ -80,10 +80,14 @@ import mod.gottsch.forge.treasure2.core.particle.WitherMistParticle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.particle.ParticleEngine;
+import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.world.level.GrassColor;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -99,6 +103,21 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 @Mod.EventBusSubscriber(modid = Treasure.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ClientSetup {
 
+	/**
+	 * Register the {@link IBlockColor} handlers.
+	 *
+	 * @param event The event
+	 */
+	@OnlyIn(Dist.CLIENT)
+	@SubscribeEvent
+	public static void registerBlockColors(ColorHandlerEvent.Block event) {
+		event.getBlockColors().register(
+				(state, reader, pos, color) -> {
+					return (reader != null && pos != null) ? BiomeColors.getAverageGrassColor(reader, pos)  : GrassColor.get(0.5D, 1.0D);
+				},
+				TreasureBlocks.FALLING_GRASS.get());
+	}
+	
 	/**
 	 * 
 	 * @param event

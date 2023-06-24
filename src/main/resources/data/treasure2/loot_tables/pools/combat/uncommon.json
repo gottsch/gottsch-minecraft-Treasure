@@ -6,24 +6,24 @@
     "name" : "uncommon_armor",
     "rolls" : 1,
     "entries" : [ {
-      "entryName" : "chainmailchestplate",
+      "entryName" : "chainmail_chestplate",
       "type" : "minecraft:item",
-      "name" : "minecraft:chainmailchestplate",
+      "name" : "minecraft:chainmail_chestplate",
       "weight" : 10
     }, {
-      "entryName" : "chainmailleggings",
+      "entryName" : "chainmail_leggings",
       "type" : "minecraft:item",
-      "name" : "minecraft:chainmailleggings",
+      "name" : "minecraft:chainmail_leggings",
       "weight" : 10
     }, {
-      "entryName" : "chainmailhelmet",
+      "entryName" : "chainmail_helmet",
       "type" : "minecraft:item",
-      "name" : "minecraft:chainmailhelmet",
+      "name" : "minecraft:chainmail_helmet",
       "weight" : 10
     }, {
-      "entryName" : "chainmailboots",
+      "entryName" : "chainmail_boots",
       "type" : "minecraft:item",
-      "name" : "minecraft:chainmailboots",
+      "name" : "minecraft:chainmail_boots",
       "weight" : 10
     }, {
       "entryName" : "iron_chestplate",

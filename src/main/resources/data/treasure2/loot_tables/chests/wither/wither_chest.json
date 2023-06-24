@@ -17,7 +17,7 @@
     "rolls" : 2,
     "entries" : [ {
       "type" : "minecraft:loot_table",
-      "name" : "treasure2:pools/treasure/combat/scarce",
+      "name" : "treasure2:pools/combat/scarce",
       "weight" : 20
     } ]
   }, {

@@ -248,7 +248,7 @@
     }, {
       "entryName" : "tinted_glass",
       "type" : "item",
-      "name" : "minecraft:tined_glass",
+      "name" : "minecraft:tinted_glass",
       "weight" : 15,
       "functions" : [ {
         "function" : "set_count",

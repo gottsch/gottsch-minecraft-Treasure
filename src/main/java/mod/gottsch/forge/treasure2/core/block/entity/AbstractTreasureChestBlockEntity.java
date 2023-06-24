@@ -32,14 +32,13 @@ import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
 import mod.gottsch.forge.treasure2.core.block.effects.IChestEffects;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
-import mod.gottsch.forge.treasure2.core.generator.chest.ChestGeneratorType;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGenerator;
-import mod.gottsch.forge.treasure2.core.generator.chest.IChestGeneratorType;
 import mod.gottsch.forge.treasure2.core.inventory.StandardChestContainerMenu;
 import mod.gottsch.forge.treasure2.core.lock.LockState;
 import mod.gottsch.forge.treasure2.core.particle.TreasureParticles;
 import mod.gottsch.forge.treasure2.core.registry.ChestGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
+import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 import mod.gottsch.forge.treasure2.core.world.feature.IFeatureType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -53,7 +52,6 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
@@ -87,7 +85,7 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 
 	private static final String GENERATION_CONTEXT_TAG = "generationContext";
 	private static final String LOOT_RARITY_TAG = "lootRarity";
-//	private static final String CHEST_GENERATOR_TYPE_TAG = "chestGeneratorType";
+	private static final String FEATURE_TYPE_TAG = "featureType";
 
 
 	/*
@@ -394,8 +392,8 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 			}
 			if (getGenerationContext() != null) {
 				CompoundTag contextTag = new CompoundTag();
-				contextTag.putString(LOOT_RARITY_TAG, getGenerationContext().getLootRarity().getValue());
-//				contextTag.putString(CHEST_GENERATOR_TYPE_TAG, getGenerationContext().getChestGeneratorType().getName());
+				contextTag.putString(LOOT_RARITY_TAG, getGenerationContext().getLootRarity().getName());
+				contextTag.putString(FEATURE_TYPE_TAG, getGenerationContext().getFeatureType().getName());
 				tag.put(GENERATION_CONTEXT_TAG, contextTag);
 			}
 		} catch (Exception e) {
@@ -481,23 +479,24 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 			}
 			if (tag.contains(MIMIC_TAG)) {
 				if (!tag.getString(MIMIC_TAG).isEmpty()) {
-					this.setLootTable(new ResourceLocation(tag.getString(MIMIC_TAG)));
+					this.setMimic(new ResourceLocation(tag.getString(MIMIC_TAG)));
 				}
 			}
 			if (tag.contains(GENERATION_CONTEXT_TAG)) {
 				CompoundTag contextTag = tag.getCompound(GENERATION_CONTEXT_TAG);
-				Optional<IRarity> rarity = null;
-				IChestGeneratorType genType = null;
+				Optional<IRarity> rarity = Optional.empty();
 				if (contextTag.contains(LOOT_RARITY_TAG)) {
-					// TODO should NOT use Rarity.getByValue but look at Registry
-					//					rarity = Rarity.getByValue(contextTag.getString(LOOT_RARITY_TAG));
 					rarity = TreasureApi.getRarity(contextTag.getString(LOOT_RARITY_TAG));
 				}
-//				if (contextTag.contains(CHEST_GENERATOR_TYPE_TAG)) {
-//					genType = ChestGeneratorType.valueOf(contextTag.getString(CHEST_GENERATOR_TYPE_TAG).toUpperCase());
-//				}
+				Optional<IFeatureType> featureType = Optional.empty();
+				if (contextTag.contains(FEATURE_TYPE_TAG)) {
+					featureType = TreasureApi.getFeatureType(contextTag.getString(FEATURE_TYPE_TAG));
+				}
 
-				AbstractTreasureChestBlockEntity.GenerationContext generationContext = this.new GenerationContext(rarity.orElse(Rarity.NONE), genType);
+				AbstractTreasureChestBlockEntity.GenerationContext generationContext = 
+						this.new GenerationContext(
+								rarity.orElse(Rarity.NONE), 
+								featureType.orElse(FeatureType.UNKNOWN));
 				this.setGenerationContext(generationContext);
 			}	
 		} catch (Exception e) {
@@ -644,6 +643,16 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 	public void setGenerationContext(GenerationContext generationContext) {
 		this.generationContext = generationContext;
 	}
+	
+	@Override
+	public ResourceLocation getMimic() {
+		return mimic;
+	}
+
+	@Override
+	public void setMimic(ResourceLocation mimic) {
+		this.mimic = mimic;
+	}
 
 	/*
 	 * TODO think of something better here. There already is ChestGeneratedContext
@@ -653,22 +662,7 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 		 * The rarity level of the loot that the chest will contain
 		 */
 		private IRarity lootRarity;
-
-		@Deprecated
-		private IChestGeneratorType chestGeneratorType;
 		private IFeatureType featureType;
-
-		public GenerationContext(IRarity rarity, IChestGeneratorType chestGeneratorType) {
-			this.lootRarity = rarity;
-			this.chestGeneratorType = chestGeneratorType;
-		}
-
-		@Deprecated
-		public GenerationContext(ResourceLocation lootTable, IRarity rarity, IChestGeneratorType chestGeneratorType) {
-			AbstractTreasureChestBlockEntity.this.lootTable = lootTable;
-			this.lootRarity = rarity;
-			this.chestGeneratorType = chestGeneratorType;
-		}
 
 		public GenerationContext(IRarity rarity, IFeatureType featureType) {
 			this.lootRarity = rarity;
@@ -685,11 +679,6 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 			return lootRarity;
 		}
 
-//		@Deprecated
-//		public IChestGeneratorType getChestGeneratorType() {
-//			return chestGeneratorType;
-//		}
-
 		public ResourceLocation getLootTable() {
 			return AbstractTreasureChestBlockEntity.this.lootTable;
 		}
@@ -703,11 +692,4 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 		}
 	}
 
-	public ResourceLocation getMimic() {
-		return mimic;
-	}
-
-	public void setMimic(ResourceLocation mimic) {
-		this.mimic = mimic;
-	}
 }

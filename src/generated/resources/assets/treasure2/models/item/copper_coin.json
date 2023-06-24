@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:item/generated",
+  "parent": "treasure2:item/coin",
   "textures": {
     "layer0": "treasure2:item/coin/copper_coin"
   }

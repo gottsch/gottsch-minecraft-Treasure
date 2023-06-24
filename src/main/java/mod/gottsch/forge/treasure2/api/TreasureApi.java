@@ -32,7 +32,6 @@ import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGenerator;
-import mod.gottsch.forge.treasure2.core.generator.chest.IChestGeneratorType;
 import mod.gottsch.forge.treasure2.core.generator.marker.IMarkerGenerator;
 import mod.gottsch.forge.treasure2.core.generator.pit.IPitGenerator;
 import mod.gottsch.forge.treasure2.core.generator.ruin.IRuinGenerator;
@@ -66,8 +65,6 @@ public class TreasureApi {
 	public static final String GENERATOR_TYPE = "generatorType";
 	public static final String CHEST_GENERATOR_TYPE = "chestGeneratorType";
 	public static final String REGION_PLACEMENT = "regionPlacement";
-	@Deprecated
-	public static final String SPECIAL_LOOT_TABLE = "specialLootTable";
 	
 	public static final String LOOT_TABLE_TYPE = "lootTableType";
 	public static final String FEATURE_TYPE = "featureType";
@@ -129,21 +126,6 @@ public class TreasureApi {
 			return Optional.of((IKeyLockCategory) ienum);
 		}
 	}
-
-	
-	public static void registerChestGeneratorType(IChestGeneratorType type) {
-		EnumRegistry.register(CHEST_GENERATOR_TYPE, type);
-	}
-	
-	public static Optional<IChestGeneratorType> getChestGeneratorType(String key) {
-		IEnum ienum = EnumRegistry.get(CHEST_GENERATOR_TYPE, key);
-		if (ienum == null) {
-			return Optional.empty();
-		}
-		else {
-			return Optional.of((IChestGeneratorType) ienum);
-		}
-	}	
 	
 	public static void registerLootTableType(ILootTableType type) {
 		EnumRegistry.register(LOOT_TABLE_TYPE, type);		

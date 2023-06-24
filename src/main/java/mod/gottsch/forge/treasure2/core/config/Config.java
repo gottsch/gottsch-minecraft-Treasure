@@ -536,7 +536,7 @@ public class Config extends AbstractConfig {
 
 				mimicProbability = builder
 						.comment(" The probability that a mimic will spawn instead of a chest.", "  Not all chests have a mimic counterpart.")
-						.defineInRange("probability", 25, 0, 100);
+						.defineInRange("probability", 12, 0, 100);
 
 				builder.pop();
 			}

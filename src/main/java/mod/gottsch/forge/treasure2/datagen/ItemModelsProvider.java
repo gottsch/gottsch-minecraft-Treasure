@@ -158,11 +158,11 @@ public class ItemModelsProvider extends ItemModelProvider {
 		
 		// wealth
 		singleTexture(TreasureItems.COPPER_COIN.get().getRegistryName().getPath(),
-				mcLoc("item/generated"), "layer0", modLoc("item/coin/copper_coin"));
+				modLoc("item/coin"), "layer0", modLoc("item/coin/copper_coin"));
 		singleTexture(TreasureItems.SILVER_COIN.get().getRegistryName().getPath(),
-				mcLoc("item/generated"), "layer0", modLoc("item/coin/silver_coin"));
+				modLoc("item/coin"), "layer0", modLoc("item/coin/silver_coin"));
 		singleTexture(TreasureItems.GOLD_COIN.get().getRegistryName().getPath(),
-				mcLoc("item/generated"), "layer0", modLoc("item/coin/gold_coin"));
+				modLoc("item/coin"), "layer0", modLoc("item/coin/gold_coin"));
 		
 		singleTexture(TreasureItems.TOPAZ.get().getRegistryName().getPath(),
 				mcLoc("item/generated"), "layer0", modLoc("item/gem/topaz"));

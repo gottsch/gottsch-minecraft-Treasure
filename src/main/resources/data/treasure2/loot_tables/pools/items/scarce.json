@@ -164,15 +164,6 @@
         "count" : 5
       } ]
     }, {
-      "entryName" : "mangrove_logs",
-      "type" : "minecraft:item",
-      "name" : "minecraft:mangrove_log",
-      "weight" : 20,
-      "functions" : [ {
-        "function" : "minecraft:set_count",
-        "count" : 5
-      } ]
-    }, {
       "entryName" : "raw_gold",
       "type" : "minecraft:item",
       "name" : "minecraft:raw_gold",
@@ -195,15 +186,6 @@
       "type" : "minecraft:item",
       "name" : "minecraft:dark_oak_planks",
       "weight" : 10,
-      "functions" : [ {
-        "function" : "minecraft:set_count",
-        "count" : 5
-      } ]
-    }, {
-      "entryName" : "magrove_planks",
-      "type" : "minecraft:item",
-      "name" : "minecraft:mangrove_planks",
-      "weight" : 20,
       "functions" : [ {
         "function" : "minecraft:set_count",
         "count" : 5

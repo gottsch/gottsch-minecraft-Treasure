@@ -92,14 +92,6 @@
       } ]
     } ]
   }, {
-    "name" : "charms",
-    "rolls" : 1,
-    "entries" : [ {
-      "type" : "loot_table",
-      "name" : "treasure2:pools/treasure/rare_charms",
-      "weight" : 1
-    } ]
-  }, {
     "name" : "items",
     "rolls" : 4,
     "entries" : [ {
