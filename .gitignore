@@ -13,3 +13,4 @@ gradle.log
 !*.json
 !*.gradlew
 !/models/
+!*.md
