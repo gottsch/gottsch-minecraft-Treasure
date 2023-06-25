@@ -7,7 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [3.0.0] - 2023-06-30
+## [3.1.0] - 2023-06-25
+
+### Changed
+
+- updated the topaz key texture to be more like the onyx key
+
+
+## [3.0.0] - 2023-06-24
 
 - Initial release for mc1.18.2 port.
 
@@ -32,4 +39,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-- Removed all Charms and charm-related contect. They are being moved to a new stand-alone mod tentatively called 'GealdorCraft', which will have built-in itegration with Treasure2.
+- Removed all Charms and charm-related content. They are being moved to a new stand-alone mod tentatively called 'GealdorCraft', which will have built-in itegration with Treasure2.
