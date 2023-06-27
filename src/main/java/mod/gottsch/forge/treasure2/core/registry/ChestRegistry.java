@@ -27,6 +27,7 @@ import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.gottschcore.random.RandomHelper;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
+import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.RegistryObject;
@@ -53,7 +54,7 @@ public class ChestRegistry {
 	}
 	
 	public static void register(RegistryObject<Block> chest) {		
-		if (!CHESTS_BY_NAME.containsKey(chest.get().getRegistryName())) {
+		if (!CHESTS_BY_NAME.containsKey(ModUtil.getName(chest.get()))) {
 			CHESTS_BY_NAME.put(chest.getId(), chest);
 		}
 	}
@@ -86,7 +87,7 @@ public class ChestRegistry {
 	}
 	
 	public static IRarity getRarity(AbstractTreasureChestBlock chest) {
-		return getRarity(chest.getRegistryName());
+		return getRarity(ModUtil.getName(chest));
 	}
 	
 	public static List<RegistryObject<Block>> getChest(IRarity rarity) {

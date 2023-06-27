@@ -35,7 +35,7 @@ import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component.translatable;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -78,7 +78,7 @@ public class PouchItem extends Item implements MenuProvider {
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-		tooltip.add(new TranslatableComponent(LangUtil.tooltip("pouch")).withStyle(ChatFormatting.GOLD));
+		tooltip.add(Component.translatable(LangUtil.tooltip("pouch")).withStyle(ChatFormatting.GOLD));
 	}
 
 	@Override
@@ -119,7 +119,7 @@ public class PouchItem extends Item implements MenuProvider {
 
 	@Override
 	public Component getDisplayName() {
-		return new TranslatableComponent(LangUtil.item("pouch"));
+		return Component.translatable(LangUtil.item("pouch"));
 	}
 
 	////////////////////////

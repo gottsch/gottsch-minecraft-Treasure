@@ -17,7 +17,6 @@
  */
 package mod.gottsch.forge.treasure2.core.block;
 
-
 import mod.gottsch.forge.gottschcore.block.AbstractProximityBlock;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.entity.TreasureProximitySpawnerBlockEntity;

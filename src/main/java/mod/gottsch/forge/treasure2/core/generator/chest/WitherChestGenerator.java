@@ -35,6 +35,7 @@ import mod.gottsch.forge.treasure2.core.item.LockItem;
 import mod.gottsch.forge.treasure2.core.item.TreasureItems;
 import mod.gottsch.forge.treasure2.core.lock.LockLayout;
 import mod.gottsch.forge.treasure2.core.lock.LockState;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -52,37 +53,12 @@ public class WitherChestGenerator extends AbstractChestGenerator {
 	public WitherChestGenerator() {
 		super();
 	}
-
-	/**
-	 * 
-	 */
-//	@Override
-//	public void addGenerationContext(ITreasureChestBlockEntity blockEntity, IRarity rarity) {
-//		GenerationContext generationContext = 
-//				((AbstractTreasureChestBlockEntity)blockEntity).new GenerationContext(rarity, ChestGeneratorType.WITHER);
-//		blockEntity.setGenerationContext(generationContext);
-//	}
-	
-	/*
-	 * @param random
-	 * @param chestRarity
-	 * @return
-	 */
-//	@Override
-//	public Optional<LootTableShell> selectLootTable(Random random, final IRarity chestRarity) {
-//		return TreasureLootTableRegistry.getSpecialLootTable(SpecialLootTables.WITHER_CHEST);
-//	}
-//
-//	@Override
-//	public Optional<LootTableShell> selectLootTable(Supplier<Random> factory, final IRarity rarity) {
-//		return TreasureLootTableRegistry.getSpecialLootTable(SpecialLootTables.WITHER_CHEST);
-//	}
 	
 	/**
 	 * Always select a skull chest.
 	 */
 	@Override
-	public StandardChestBlock  selectChest(final Random random, final IRarity rarity) {
+	public StandardChestBlock  selectChest(final RandomSource random, final IRarity rarity) {
 		StandardChestBlock chest = (StandardChestBlock) TreasureBlocks.WITHER_CHEST.get();
 		return chest;
 	}
@@ -103,7 +79,7 @@ public class WitherChestGenerator extends AbstractChestGenerator {
 	 * @param chest
 	 */
 	@Override
-	public void addLocks(Random random, AbstractTreasureChestBlock chest, ITreasureChestBlockEntity blockEntity, IRarity rarity) {
+	public void addLocks(RandomSource random, AbstractTreasureChestBlock chest, ITreasureChestBlockEntity blockEntity, IRarity rarity) {
 		// get the chest type
 		LockLayout type = chest.getLockLayout();
 		// get the lock states

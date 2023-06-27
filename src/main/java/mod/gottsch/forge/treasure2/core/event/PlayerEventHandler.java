@@ -29,7 +29,7 @@ import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import mod.gottsch.forge.treasure2.core.wishable.IWishableHandler;
 import mod.gottsch.forge.treasure2.core.wishable.TreasureWishableHandlers;
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -87,7 +87,7 @@ public class PlayerEventHandler {
 	@SubscribeEvent
 	public static void onItemInfo(ItemTooltipEvent event) {
 		if (!(event.getItemStack().getItem() instanceof WealthItem) && event.getItemStack().is(TreasureTags.Items.WISHABLES)) {
-			event.getToolTip().add(new TranslatableComponent(LangUtil.tooltip("wishable")).withStyle(ChatFormatting.GOLD, ChatFormatting.ITALIC));
+			event.getToolTip().add(Component.translatable(LangUtil.tooltip("wishable")).withStyle(ChatFormatting.GOLD, ChatFormatting.ITALIC));
 		}
 	}
 }

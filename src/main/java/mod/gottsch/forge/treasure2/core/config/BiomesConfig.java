@@ -7,8 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.someguyssoftware.gottschcore.biome.BiomeTypeHolder;
-
+import mod.gottsch.forge.gottschcore.biome.BiomeTypeHolder;
 import net.minecraftforge.common.ForgeConfigSpec.Builder;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 
@@ -88,45 +87,4 @@ public class BiomesConfig {
 				+ ", typeBlackList=" + typeBlackList.get() + ", typeHolderWhiteList=" + typeHolderWhiteList
 				+ ", typeHolderBlackList=" + typeHolderBlackList + "]";
 	}
-	
-//	@Override
-//	public List<Biome> getWhiteList() {
-//		return whiteList;
-//	}
-//
-//	@Override
-//	public void setWhiteList(List<Biome> whiteList) {
-//		this.whiteList = whiteList;
-//	}
-	
-//	@Override
-//	public List<Biome> getBlackList() {
-//		return blackList;
-//	}
-//
-//	@Override
-//	public void setBlackList(List<Biome> blackList) {
-//		this.blackList = blackList;
-//	}
-//
-//	@Override
-//	public List<BiomeTypeHolder> getTypeWhiteList() {
-//		return typeWhiteList;
-//	}
-//
-//	@Override
-//	public void setTypeWhiteList(List<BiomeTypeHolder> whiteList) {
-//		this.typeWhiteList = whiteList;
-//		
-//	}
-//
-//	@Override
-//	public List<BiomeTypeHolder> getTypeBlackList() {
-//		return typeBlackList;
-//	}
-//
-//	@Override
-//	public void setTypeBlackList(List<BiomeTypeHolder> blackList) {
-//		this.typeBlackList = blackList;		
-//	}
 }

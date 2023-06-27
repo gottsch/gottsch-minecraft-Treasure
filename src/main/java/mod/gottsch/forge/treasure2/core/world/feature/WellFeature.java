@@ -19,7 +19,6 @@ package mod.gottsch.forge.treasure2.core.world.feature;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 import com.mojang.serialization.Codec;
 
@@ -42,6 +41,7 @@ import mod.gottsch.forge.treasure2.core.registry.WellGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.registry.support.GeneratedContext;
 import mod.gottsch.forge.treasure2.core.structure.StructureCategory;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -90,7 +90,7 @@ public class WellFeature extends Feature<NoneFeatureConfiguration> implements IT
 		}
 		
 		// the get first surface y (could be leaves, trunk, water, etc)
-		ICoords spawnCoords = WorldInfo.getDryLandSurfaceCoords(genLevel, context.chunkGenerator(), new Coords(context.origin().offset(WorldInfo.CHUNK_RADIUS - 1, 0, WorldInfo.CHUNK_RADIUS - 1)));
+		ICoords spawnCoords = WorldInfo.getDryLandSurfaceCoords(genLevel.getLevel(), context.chunkGenerator(), new Coords(context.origin().offset(WorldInfo.CHUNK_RADIUS - 1, 0, WorldInfo.CHUNK_RADIUS - 1)));
 		if (spawnCoords == Coords.EMPTY) {
 			return false;
 		}
@@ -186,7 +186,7 @@ public class WellFeature extends Feature<NoneFeatureConfiguration> implements IT
 	 * @param random
 	 * @return
 	 */
-	private boolean meetsProbabilityCriteria(Random random) {
+	private boolean meetsProbabilityCriteria(RandomSource random) {
 		if (!RandomHelper.checkProbability(random, Config.SERVER.wells.probability.get())) {
 			Treasure.LOGGER.debug("does not meet generate probability.");
 			return false;

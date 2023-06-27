@@ -25,7 +25,7 @@ import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component.translatable;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -56,9 +56,9 @@ public class TreasureChestBlockItem extends BlockItem {
 		AbstractTreasureChestBlock tb = (AbstractTreasureChestBlock) getBlock();
 
 		// chest info		
-		tooltip.add(new TranslatableComponent(LangUtil.tooltip("chest.rarity"), ChatFormatting.DARK_BLUE + tb.getRarity().toString()));
-		tooltip.add(new TranslatableComponent(LangUtil.tooltip("chest.max_locks"), ChatFormatting.DARK_BLUE + String.valueOf(tb.getLockLayout().getMaxLocks())));
+		tooltip.add(Component.translatable(LangUtil.tooltip("chest.rarity"), ChatFormatting.DARK_BLUE + tb.getRarity().toString()));
+		tooltip.add(Component.translatable(LangUtil.tooltip("chest.max_locks"), ChatFormatting.DARK_BLUE + String.valueOf(tb.getLockLayout().getMaxLocks())));
 		int size = tb.getBlockEntityInstance() != null ? tb.getBlockEntityInstance().getInventorySize() : 0;
-		tooltip.add(new TranslatableComponent(LangUtil.tooltip("chest.container_size"), ChatFormatting.DARK_GREEN + String.valueOf(size)));
+		tooltip.add(Component.translatable(LangUtil.tooltip("chest.container_size"), ChatFormatting.DARK_GREEN + String.valueOf(size)));
 	}	
 }

@@ -18,15 +18,9 @@
 package mod.gottsch.forge.treasure2.core.block.entity;
 
 import mod.gottsch.forge.treasure2.core.chest.ChestInventorySize;
-import mod.gottsch.forge.treasure2.core.inventory.StandardChestContainerMenu;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -55,7 +49,7 @@ public class CrateChestBlockEntity extends AbstractTreasureChestBlockEntity {
 
     @Override
 	public Component getDefaultName() {
-		return new TranslatableComponent(LangUtil.screen("crate_chest.name"));
+		return Component.translatable(LangUtil.screen("crate_chest.name"));
 	}
 
 	@Override

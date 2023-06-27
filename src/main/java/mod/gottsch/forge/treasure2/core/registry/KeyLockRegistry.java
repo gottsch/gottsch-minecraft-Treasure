@@ -30,6 +30,7 @@ import com.google.common.collect.Multimap;
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.treasure2.core.item.KeyItem;
 import mod.gottsch.forge.treasure2.core.item.LockItem;
+import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -76,15 +77,16 @@ public class KeyLockRegistry {
 	public static void registerKey(RegistryObject<KeyItem> key) {		
 		// register by the key's tag
 		//	Set<String> tags = ForgeRegistries.ITEMS.tags().stream().filter(tag -> tag.getKey().location().getNamespace().equals(Treasure.MODID)).map(tag -> tag.getKey().location().getPath()).collect(Collectors.toSet());
-
-		if (!KEYS_BY_NAME.containsKey(key.get().getRegistryName())) {
-			KEYS_BY_NAME.put(key.get().getRegistryName(), key);
+		ResourceLocation name = ModUtil.getName(key.get());
+		if (!KEYS_BY_NAME.containsKey(name)) {
+			KEYS_BY_NAME.put(name, key);
 		}
 	}
 	
 	public static void registerLock(RegistryObject<LockItem> lock) {
-		if (!LOCKS_BY_NAME.containsKey(lock.get().getRegistryName())) {
-			LOCKS_BY_NAME.put(lock.get().getRegistryName(), lock);
+		ResourceLocation name = ModUtil.getName(lock.get());
+		if (!LOCKS_BY_NAME.containsKey(name)) {
+			LOCKS_BY_NAME.put(name, lock);
 		}
 		
 	}
@@ -141,7 +143,8 @@ public class KeyLockRegistry {
 		return null;
 	}
 	public static IRarity getRarityByKey(KeyItem key) {
-		return getRarityByKey(key.getRegistryName());
+		ResourceLocation name = ModUtil.getName(key);
+		return getRarityByKey(name);
 	}
 	
 	public static IRarity getRarityByLock(ResourceLocation lock) {
@@ -156,22 +159,7 @@ public class KeyLockRegistry {
 	 * @return
 	 */
 	public static IRarity getRarityByLock(LockItem lock) {
-		return getRarityByLock(lock.getRegistryName());
+		ResourceLocation name = ModUtil.getName(lock);
+		return getRarityByLock(name);
 	}
-
-//	public static void registerCategory(IKeyLockCategory category) {
-//		if (!CATEGORY_REGISTRY.containsKey(category.toString())) {
-//			CATEGORY_REGISTRY.put(category.toString(), category);
-//		}
-//	}
-	
-	// TODO research
-	// might not make this available - what happens if you unregister AFTER
-	// keys/locks have been associated with a unregister category?
-	// - they all get set to NONE?
-//	public static void unregister(IKeyLockCategory category) {
-//		if (CATEGORY_REGISTRY.containsKey(category.toString())) {
-//			CATEGORY_REGISTRY.remove(category.toString());
-//		}
-//	}
 }

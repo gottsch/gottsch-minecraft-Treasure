@@ -21,7 +21,7 @@ import java.util.List;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component.translatable;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -67,9 +67,9 @@ public class Axe extends AxeItem implements IWeapon {
 	@Override
 	public Component getName(ItemStack itemStack) {
 		if (isUnique()) {
-			return new TranslatableComponent(this.getDescriptionId(itemStack)).withStyle(ChatFormatting.YELLOW);
+			return Component.translatable(this.getDescriptionId(itemStack)).withStyle(ChatFormatting.YELLOW);
 		} else {
-			return new TranslatableComponent(this.getDescriptionId(itemStack));
+			return Component.translatable(this.getDescriptionId(itemStack));
 		}
 	}
 	

@@ -9,7 +9,7 @@ import com.google.common.collect.Multimap;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component.translatable;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -79,9 +79,9 @@ public class Sword extends SwordItem implements IWeapon {
 	@Override
 	public Component getName(ItemStack itemStack) {
 		if (isUnique()) {
-			return new TranslatableComponent(this.getDescriptionId(itemStack)).withStyle(ChatFormatting.YELLOW);
+			return Component.translatable(this.getDescriptionId(itemStack)).withStyle(ChatFormatting.YELLOW);
 		} else {
-			return new TranslatableComponent(this.getDescriptionId(itemStack));
+			return Component.translatable(this.getDescriptionId(itemStack));
 		}
 	}
 

@@ -108,7 +108,7 @@ public class GravestoneMarkerGenerator implements IMarkerGenerator<GeneratorResu
 				}
 
 				// don't place if the spawnCoords isn't AIR or REPLACEABLE
-				BlockContext cube = new BlockContext(context.level(), spawnCoords);
+				BlockContext cube = new BlockContext(context.level().getLevel(), spawnCoords);
 				if (!cube.isAir() && !cube.isReplaceable()) {
 					Treasure.LOGGER.debug("marker not placed because block [{}] is not Air nor Replaceable.",
 							spawnCoords.toShortString());

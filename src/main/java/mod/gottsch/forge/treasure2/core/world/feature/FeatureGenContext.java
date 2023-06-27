@@ -17,9 +17,8 @@
  */
 package mod.gottsch.forge.treasure2.core.world.feature;
 
-import java.util.Random;
-
 import mod.gottsch.forge.gottschcore.world.WorldGenContext;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
@@ -39,7 +38,7 @@ public class FeatureGenContext extends WorldGenContext implements IFeatureGenCon
 	 * @param random
 	 * @param featureType
 	 */
-	public FeatureGenContext(ServerLevelAccessor level, ChunkGenerator chunkGenerator, Random random, IFeatureType featureType) {
+	public FeatureGenContext(ServerLevelAccessor level, ChunkGenerator chunkGenerator, RandomSource random, IFeatureType featureType) {
 		super(level, chunkGenerator, random);
 		this.featureType = featureType;
 	}

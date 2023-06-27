@@ -19,20 +19,18 @@ package mod.gottsch.forge.treasure2.core.generator.chest;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.gottschcore.loot.LootTableShell;
 import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
-import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
-import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity.GenerationContext;
 import mod.gottsch.forge.treasure2.core.block.entity.ITreasureChestBlockEntity;
 import mod.gottsch.forge.treasure2.core.enums.ILootTableType;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.item.LockItem;
 import mod.gottsch.forge.treasure2.core.registry.KeyLockRegistry;
 import mod.gottsch.forge.treasure2.core.registry.TreasureLootTableRegistry;
+import net.minecraft.util.RandomSource;
 
 /**
  * 
@@ -78,7 +76,7 @@ public class CommonChestGenerator extends AbstractChestGenerator {
 	 * @param chest
 	 */
 	@Override
-	public void addLocks(Random random, AbstractTreasureChestBlock chest, ITreasureChestBlockEntity chestBlockEntity, IRarity rarity) {
+	public void addLocks(RandomSource random, AbstractTreasureChestBlock chest, ITreasureChestBlockEntity chestBlockEntity, IRarity rarity) {
 		// select a rarity locks
 		List<LockItem> locks = new ArrayList<>();
 		locks.addAll(KeyLockRegistry.getLocks(Rarity.COMMON).stream().map(l -> l.get()).collect(Collectors.toList()));

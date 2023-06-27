@@ -22,7 +22,7 @@ import java.util.List;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component.translatable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -61,8 +61,8 @@ public class LightningKey extends KeyItem {
 	@Override
 	public  void appendHoverSpecials(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 		tooltip.add(
-				new TranslatableComponent(LangUtil.tooltip("key_lock.specials"), 
-						ChatFormatting.GOLD + new TranslatableComponent(LangUtil.tooltip("key_lock.lightning_key.specials")).getString())
+				Component.translatable(LangUtil.tooltip("key_lock.specials"), 
+						ChatFormatting.GOLD + Component.translatable(LangUtil.tooltip("key_lock.lightning_key.specials")).getString())
 				);	
 	}
 }

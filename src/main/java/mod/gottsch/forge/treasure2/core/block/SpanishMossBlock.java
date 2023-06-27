@@ -25,6 +25,7 @@ import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.particle.TreasureParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -68,7 +69,7 @@ public class SpanishMossBlock extends BushBlock implements ITreasureBlock {
 	 */
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState state, Level world, BlockPos pos, Random random) {
+	public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource random) {
 
 		// TODO this should be a client setting
 		if (!Config.CLIENT.gui.enableFog.get()) {
@@ -79,7 +80,7 @@ public class SpanishMossBlock extends BushBlock implements ITreasureBlock {
 			return;
 		}
 
-		if (RandomHelper.checkProbability(random, 75D)) {
+		if (RandomHelper.checkProbability(new Random(), 75D)) {
 			return;
 		}
 

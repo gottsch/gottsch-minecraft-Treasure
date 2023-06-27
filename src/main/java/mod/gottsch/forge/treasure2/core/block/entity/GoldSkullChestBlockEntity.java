@@ -22,7 +22,6 @@ import mod.gottsch.forge.treasure2.core.inventory.SkullChestContainerMenu;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -51,7 +50,7 @@ public class GoldSkullChestBlockEntity extends SkullChestBlockEntity {
 	
     @Override
 	public Component getDefaultName() {
-		return new TranslatableComponent(LangUtil.screen("gold_skull_chest.name"));
+		return Component.translatable(LangUtil.screen("gold_skull_chest.name"));
 	}
 
 }

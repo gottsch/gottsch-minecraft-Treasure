@@ -22,7 +22,6 @@ import java.lang.reflect.Constructor;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 import javax.annotation.Nullable;
 
@@ -33,7 +32,6 @@ import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.spatial.Rotate;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.block.effects.IChestEffects;
 import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
 import mod.gottsch.forge.treasure2.core.block.entity.ITreasureChestBlockEntity;
 import mod.gottsch.forge.treasure2.core.entity.monster.Mimic;
@@ -53,6 +51,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -305,7 +304,7 @@ public class AbstractTreasureChestBlock extends BaseEntityBlock implements ITrea
 					// mark as discovered
 					blockEntity = discovered(blockEntity, state, level, pos, player);
 				}			
-				NetworkHooks.openGui((ServerPlayer) player, blockEntity, pos);
+				NetworkHooks.openScreen((ServerPlayer) player, blockEntity, pos);
 			}		
 		}
 		return InteractionResult.SUCCESS;
@@ -319,9 +318,9 @@ public class AbstractTreasureChestBlock extends BaseEntityBlock implements ITrea
 	 * @param pos
 	 * @param player
 	 */
-	protected void spawnMimic(Level level, Random random, BlockState state, BlockPos pos, Player player) {
+	protected void spawnMimic(Level level, RandomSource random, BlockState state, BlockPos pos, Player player) {
 		AbstractTreasureChestBlockEntity blockEntity = (AbstractTreasureChestBlockEntity) level.getBlockEntity(pos);
-		EntityType<?> entityType = ForgeRegistries.ENTITIES.getHolder(blockEntity.getMimic()).get().value();
+		EntityType<?> entityType = ForgeRegistries.ENTITY_TYPES.getHolder(blockEntity.getMimic()).get().value();
 
 		// remove the block entity
 		level.removeBlock(pos, true);
@@ -348,13 +347,13 @@ public class AbstractTreasureChestBlock extends BaseEntityBlock implements ITrea
 	/**
 	 * 
 	 * @param level
-	 * @param random
+	 * @param randomSource
 	 * @param owner
 	 * @param pos
 	 * @param target
 	 * @return
 	 */
-	protected Mob spawn(ServerLevel level, Random random, EntityType<?> entityType, BlockPos pos, LivingEntity target, float yRot) {
+	protected Mob spawn(ServerLevel level, RandomSource randomSource, EntityType<?> entityType, BlockPos pos, LivingEntity target, float yRot) {
 		double spawnX = pos.getX() + 0.5;
 		double spawnY = pos.getY();
 		double spawnZ = pos.getZ() + 0.5;

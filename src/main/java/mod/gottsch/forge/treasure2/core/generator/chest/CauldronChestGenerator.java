@@ -19,7 +19,6 @@ package mod.gottsch.forge.treasure2.core.generator.chest;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 import mod.gottsch.forge.gottschcore.enums.IRarity;
@@ -30,6 +29,7 @@ import mod.gottsch.forge.treasure2.core.block.entity.ITreasureChestBlockEntity;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.item.LockItem;
 import mod.gottsch.forge.treasure2.core.registry.KeyLockRegistry;
+import net.minecraft.util.RandomSource;
 
 /**
  * 
@@ -44,22 +44,12 @@ public class CauldronChestGenerator extends EpicChestGenerator {
 	public CauldronChestGenerator() {
 		super();
 	}
-
-	/**
-	 * 
-	 */
-//	@Override
-//	public void addGenerationContext(ITreasureChestBlockEntity blockEntity, IRarity rarity) {
-//		GenerationContext generationContext = 
-//				((AbstractTreasureChestBlockEntity)blockEntity).new GenerationContext(rarity, ChestGeneratorType.CAULDRON);
-//		blockEntity.setGenerationContext(generationContext);
-//	}
 	
 	/**
 	 * Always select a epic chest.
 	 */
 	@Override
-	public AbstractTreasureChestBlock selectChest(final Random random, final IRarity rarity) {
+	public AbstractTreasureChestBlock selectChest(final RandomSource random, final IRarity rarity) {
 		StandardChestBlock chest = (StandardChestBlock) TreasureBlocks.CAULDRON_CHEST.get();
 		return chest;
 	}
@@ -69,7 +59,7 @@ public class CauldronChestGenerator extends EpicChestGenerator {
 	 * @param chest
 	 */
 	@Override
-	public void addLocks(Random random, AbstractTreasureChestBlock chest, ITreasureChestBlockEntity chestBlockEntity, IRarity rarity) {
+	public void addLocks(RandomSource random, AbstractTreasureChestBlock chest, ITreasureChestBlockEntity chestBlockEntity, IRarity rarity) {
 		// select a rarity locks
 		List<LockItem> locks = new ArrayList<>();
 		locks.addAll(KeyLockRegistry.getLocks(Rarity.RARE).stream().map(l -> l.get()).collect(Collectors.toList()));

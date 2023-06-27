@@ -33,6 +33,7 @@ import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.item.LockItem;
 import mod.gottsch.forge.treasure2.core.lock.LockLayout;
 import mod.gottsch.forge.treasure2.core.registry.KeyLockRegistry;
+import net.minecraft.util.RandomSource;
 
 /**
  * 
@@ -77,7 +78,7 @@ public class CrystalSkullChestGenerator extends AbstractChestGenerator {
 	 * Always select a skull chest.
 	 */
 	@Override
-	public StandardChestBlock  selectChest(final Random random, final IRarity rarity) {
+	public StandardChestBlock  selectChest(final RandomSource random, final IRarity rarity) {
 		StandardChestBlock chest = (StandardChestBlock) TreasureBlocks.CRYSTAL_SKULL_CHEST.get();
 		return chest;
 	}
@@ -98,7 +99,7 @@ public class CrystalSkullChestGenerator extends AbstractChestGenerator {
 	 * @param chest
 	 */
 	@Override
-	public void addLocks(Random random, AbstractTreasureChestBlock chest, ITreasureChestBlockEntity chestBlockEntity, IRarity rarity) {
+	public void addLocks(RandomSource random, AbstractTreasureChestBlock chest, ITreasureChestBlockEntity chestBlockEntity, IRarity rarity) {
 		// select a rarity locks
 		List<LockItem> locks = new ArrayList<>();
 		locks.addAll(KeyLockRegistry.getLocks(Rarity.RARE).stream().map(l -> l.get()).collect(Collectors.toList()));

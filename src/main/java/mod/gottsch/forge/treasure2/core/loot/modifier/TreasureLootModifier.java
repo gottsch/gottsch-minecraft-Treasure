@@ -18,13 +18,16 @@
 package mod.gottsch.forge.treasure2.core.loot.modifier;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.function.Supplier;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.logging.log4j.ThreadContext.ContextStack;
+import org.jetbrains.annotations.NotNull;
 
-import com.google.gson.JsonObject;
+import com.google.common.base.Suppliers;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.gottschcore.random.RandomHelper;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
@@ -34,14 +37,12 @@ import mod.gottsch.forge.treasure2.core.enums.LootTableType;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.loot.ILootGenerator;
 import mod.gottsch.forge.treasure2.core.loot.TreasureLootGenerators;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
+import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.common.loot.LootModifier;
 
 /**
@@ -50,22 +51,54 @@ import net.minecraftforge.common.loot.LootModifier;
  *
  */
 public class TreasureLootModifier extends LootModifier {
+	
+//    public static final Supplier<Codec<TreasureLootModifier>> CODEC = Suppliers.memoize(()
+//            -> RecordCodecBuilder.create(inst -> codecStart(inst).and(ForgeRegistries.ITEMS.getCodec()
+//            .fieldOf("item").forGetter(m -> m.item)).apply(inst, TreasureLootModifier::new)));
+    
+    public static final Supplier<Codec<TreasureLootModifier>> CODEC = Suppliers.memoize(()
+            -> RecordCodecBuilder.create(inst -> codecStart(inst)            		
+            		.and(Codec.INT.fieldOf("count").forGetter(m -> m.count))
+            		.and(Codec.STRING.fieldOf("rarity").forGetter(m -> m.rarity))
+            		.and(Codec.DOUBLE.fieldOf("chance").forGetter(m -> m.chance))
+            		.apply(inst, TreasureLootModifier::new)));
 
 	// the number of items to add
 	private final int count;
-	private final IRarity rarity;
+	private final String rarity;
 	private final double chance;
-
-	protected TreasureLootModifier(LootItemCondition[] conditionsIn, int count, IRarity rarity, double chance) {
+    
+	protected TreasureLootModifier(LootItemCondition[] conditionsIn, int count, String rarity, double chance) {		
 		super(conditionsIn);
 		this.count = count;
 		this.rarity = rarity;
 		this.chance = chance;
 	}
+	
+//	protected TreasureLootModifier(LootItemCondition[] conditionsIn, int count, IRarity rarity, double chance) {
+//		super(conditionsIn);
+//		this.count = count;
+//		this.rarity = rarity;
+//		this.chance = chance;
+//	}
 
 	@Override
-	protected List<ItemStack> doApply(List<ItemStack> generatedLoot, LootContext context) {
+	public Codec<? extends IGlobalLootModifier> codec() {
+		return CODEC.get();
+	}
 
+	@Override
+	protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot,
+			LootContext context) {
+		IRarity rarity = TreasureApi.getRarity(this.rarity).orElse(Rarity.NONE);
+		
+		// TODO Auto-generated method stub
+//		return null;
+//	}
+
+//	@Override
+//	protected List<ItemStack> doApply(List<ItemStack> generatedLoot, LootContext context) {
+//
 		if (Config.SERVER.wealth.enableVanillaLootModifiers.get() && RandomHelper.checkProbability(context.getLevel().getRandom(), chance * 100)) {
 			Vec3 vec3 = context.getParam(LootContextParams.ORIGIN);
 			// use this to supple to the LootGenerator
@@ -94,26 +127,26 @@ public class TreasureLootModifier extends LootModifier {
 	/*
 	 * 
 	 */
-	public static class Serializer extends GlobalLootModifierSerializer<TreasureLootModifier> {
-
-		@Override
-		public TreasureLootModifier read(ResourceLocation location, JsonObject object,	LootItemCondition[] conditions) {
-			int count = GsonHelper.getAsInt(object, "count");
-			String rarityStr = GsonHelper.getAsString(object, "rarity");
-			IRarity rarity = TreasureApi.getRarity(rarityStr).orElse(Rarity.COMMON);
-			double chance = GsonHelper.getAsDouble(object, "chance");
-			
-			return new TreasureLootModifier(conditions, count, rarity, chance);
-		}
-
-		@Override
-		public JsonObject write(TreasureLootModifier instance) {
-			JsonObject json = makeConditions(instance.conditions);
-			json.addProperty("count", Integer.valueOf(instance.count));
-			json.addProperty("rarity", instance.rarity.getName());
-			json.addProperty("chance", Double.valueOf(instance.chance));
-			return json;
-		}
-
-	}
+//	public static class Serializer extends GlobalLootModifierSerializer<TreasureLootModifier> {
+//
+//		@Override
+//		public TreasureLootModifier read(ResourceLocation location, JsonObject object,	LootItemCondition[] conditions) {
+//			int count = GsonHelper.getAsInt(object, "count");
+//			String rarityStr = GsonHelper.getAsString(object, "rarity");
+//			IRarity rarity = TreasureApi.getRarity(rarityStr).orElse(Rarity.COMMON);
+//			double chance = GsonHelper.getAsDouble(object, "chance");
+//			
+//			return new TreasureLootModifier(conditions, count, rarity, chance);
+//		}
+//
+//		@Override
+//		public JsonObject write(TreasureLootModifier instance) {
+//			JsonObject json = makeConditions(instance.conditions);
+//			json.addProperty("count", Integer.valueOf(instance.count));
+//			json.addProperty("rarity", instance.rarity.getName());
+//			json.addProperty("chance", Double.valueOf(instance.chance));
+//			return json;
+//		}
+//
+//	}
 }

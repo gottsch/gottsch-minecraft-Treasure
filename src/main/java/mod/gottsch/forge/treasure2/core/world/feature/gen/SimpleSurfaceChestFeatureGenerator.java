@@ -19,7 +19,6 @@ package mod.gottsch.forge.treasure2.core.world.feature.gen;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
@@ -39,6 +38,7 @@ import mod.gottsch.forge.treasure2.core.registry.RarityLevelWeightedChestGenerat
 import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 import mod.gottsch.forge.treasure2.core.world.feature.IFeatureGenContext;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 
 /**
  * 
@@ -93,7 +93,7 @@ public class SimpleSurfaceChestFeatureGenerator implements IFeatureGenerator {
 	 * @param random
 	 * @return
 	 */
-	public IMarkerGenerator<GeneratorResult<GeneratorData>> selectMarkerGenerator(Random random) {
+	public IMarkerGenerator<GeneratorResult<GeneratorData>> selectMarkerGenerator(RandomSource random) {
 		IMarkerType markerType = MarkerType.STANDARD;
 		
 		List<IMarkerGenerator<GeneratorResult<GeneratorData>>> markerGenerators = MarkerGeneratorRegistry.get(markerType);

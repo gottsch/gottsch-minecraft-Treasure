@@ -25,7 +25,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -136,14 +135,14 @@ public class DurabilityHandler implements IDurabilityHandler {
 	@Override
 	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flag) {
 		if (!isInfinite()) {
-			MutableComponent text = new TranslatableComponent("tooltip.durability.amount", getDurability() - stack.getDamageValue(), getDurability()).withStyle(ChatFormatting.WHITE);
+			MutableComponent text = Component.translatable("tooltip.durability.amount", getDurability() - stack.getDamageValue(), getDurability()).withStyle(ChatFormatting.WHITE);
 			if (getMaxRepairs() > 0) {
-				text.append(" ").append(new TranslatableComponent("tooltip.durability.repairs", getRepairs(), getMaxRepairs()));
+				text.append(" ").append(Component.translatable("tooltip.durability.repairs", getRepairs(), getMaxRepairs()));
 			}
 			tooltip.add(text);
 		}
 		else {
-			tooltip.add(new TranslatableComponent("tooltip.durability.amount.infinite").withStyle(ChatFormatting.WHITE));
+			tooltip.add(Component.translatable("tooltip.durability.amount.infinite").withStyle(ChatFormatting.WHITE));
 		}
 	}
 	

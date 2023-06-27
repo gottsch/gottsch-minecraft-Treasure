@@ -57,11 +57,13 @@ import mod.gottsch.forge.treasure2.core.registry.*;
 import mod.gottsch.forge.treasure2.core.registry.support.GeneratedChestContext;
 import mod.gottsch.forge.treasure2.core.registry.support.GeneratedChestContext.GeneratedType;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
+import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import mod.gottsch.forge.treasure2.core.world.feature.IFeatureGenContext;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
@@ -126,7 +128,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 			Treasure.LOGGER.warn("unable to select a chest for rarity -> {}.", rarity);
 			return result.fail();
 		}
-		result.getData().setRegistryName(chest.getRegistryName());
+		result.getData().setRegistryName(ModUtil.getName(chest));
 
 		// update the state
 		if (state == null) {
@@ -212,7 +214,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 			IRarity rarity) {
 		// check against config if mimic should be used
 		if (Config.SERVER.mobs.enableMimics.get() && RandomHelper.checkProbability(context.random(), Config.SERVER.mobs.mimicProbability.get())) {
-			Optional<ResourceLocation> mimicName = MimicRegistry.getMimic(chest.getRegistryName());
+			Optional<ResourceLocation> mimicName = MimicRegistry.getMimic(ModUtil.getName(chest));
 			if (mimicName.isPresent()) {
 				// set the mimic name in the block entity
 				blockEntity.setMimic(mimicName.get());
@@ -220,14 +222,13 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 		}
 	}
 
-
 	/**
 	 * 
-	 * @param random
+	 * @param randomSource
 	 * @param rarity
 	 * @return
 	 */
-	default public Optional<LootTableShell> selectLootTable(Random random, final IRarity rarity) {
+	default public Optional<LootTableShell> selectLootTable(RandomSource randomSource, final IRarity rarity) {
 		LootTableShell lootTableShell = null;
 
 		// select the loot table by rarity
@@ -242,7 +243,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 			if (tables.size() == 1) {
 				lootTableShell = tables.get(0);
 			} else {
-				index = RandomHelper.randomInt(random, 0, tables.size() - 1);
+				index = RandomHelper.randomInt(randomSource, 0, tables.size() - 1);
 				lootTableShell = tables.get(index);
 			}
 			Treasure.LOGGER.debug("Selected loot table shell index --> {}, shell -> {}", index, lootTableShell.getCategories());
@@ -294,11 +295,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 	 * @param rarity
 	 * @return
 	 */
-	// TODO how to prevent special chests from ending up in the rarity tag lists?
-	// TODO move to the ChestRegistry ?
-	// why did I deprecate this?? - should use ChestRegistry
-	// 5/1/2023 correct, because Skull chest is a scarce chest which is fine. it's chestGenerator provides the correct loot table
-	default public AbstractTreasureChestBlock selectChest(final Random random, final IRarity rarity) {
+	default public AbstractTreasureChestBlock selectChest(final RandomSource random, final IRarity rarity) {
 		Treasure.LOGGER.debug("attempting to get chest list for rarity -> {}", rarity);
 		List<RegistryObject<Block>> chestList = (List<RegistryObject<Block>>) ChestRegistry.getChest(rarity);
 		Treasure.LOGGER.debug("size of chests lists -> {}", chestList.size());
@@ -316,7 +313,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 	 * @param blockEntity
 	 * @param lootRarity
 	 */
-	default public void fillChest(final Level level, Random random, final BlockEntity blockEntity, final IRarity rarity, Player player) {
+	default public void fillChest(final Level level, RandomSource random, final BlockEntity blockEntity, final IRarity rarity, Player player) {
 		if (!(blockEntity instanceof AbstractTreasureChestBlockEntity)) {
 			return;
 		}
@@ -324,7 +321,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 
 		ResourceLocation lootTableResourceLocation = chestBlockEntity.getLootTable();
 		Treasure.LOGGER.debug("chest has loot table property of -> {}", lootTableResourceLocation);
-		
+
 		Optional<LootTableShell> lootTableShell = null;
 		// if a chest didn't have its loot table set then pick one randomly
 		if (lootTableResourceLocation == null) {
@@ -341,7 +338,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 		} else {
 			lootTableShell = TreasureLootTableRegistry.getLootTableByResourceLocation(LootTableType.CHESTS, lootTableResourceLocation);
 		}
-		
+
 		Treasure.LOGGER.debug("loot table resource -> {}", lootTableResourceLocation); 
 
 		LootTable lootTable = level.getServer().getLootTables().get(lootTableResourceLocation);
@@ -433,14 +430,15 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 			ItemStackHandler inventory = (ItemStackHandler)itemHandler;
 
 			// add the treasure items to the chest
-			Collections.shuffle(treasureStacks, random);
+			Random rand = new Random();
+			Collections.shuffle(treasureStacks, rand);
 			fillInventory(inventory, random, treasureStacks.stream().limit(treasureLootItemSize).collect(Collectors.toList()));
 
 			// add a treasure map if there is still space
 			addTreasureMap(level, random, inventory, new Coords(blockEntity.getBlockPos()), rarity);
 
 			// shuffle the items list
-			Collections.shuffle(itemStacks, random);		
+			Collections.shuffle(itemStacks, rand);		
 			// fill the chest with items
 			fillInventory(inventory, random, itemStacks.stream().limit(lootItemSize).collect(Collectors.toList()));
 		}
@@ -448,7 +446,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 
 	//////////////////
 	// TODO add predicate to signature and use it instead of "treasure" filter
-	default public List<ItemStack> getInjectedLootItems(Level world, Random random, List<LootTableShell> lootTableShells,
+	default public List<ItemStack> getInjectedLootItems(Level world, RandomSource random, List<LootTableShell> lootTableShells,
 			LootContext lootContext, Predicate<LootPoolShell> predicate) {
 
 		List<ItemStack> itemStacks = new ArrayList<>();		
@@ -488,7 +486,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 	 * @param chestCoords
 	 * @param rarity
 	 */
-	default public void addTreasureMap(Level world, Random random, ItemStackHandler inventory, ICoords chestCoords, IRarity rarity) {
+	default public void addTreasureMap(Level world, RandomSource random, ItemStackHandler inventory, ICoords chestCoords, IRarity rarity) {
 		ResourceLocation dimension = WorldInfo.getDimension(world);
 		//check for open slots first
 		List<Integer> emptySlots = getEmptySlotsRandomized(inventory, random);
@@ -556,7 +554,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 		ItemStack itemStack = MapItem.create(world, coords.getX(), coords.getZ(), zoom, true, true);
 		MapItem.renderBiomePreviewMap((ServerLevel) world, itemStack);
 		MapItemSavedData.addTargetDecoration(itemStack, coords.toPos(), "+", MapDecoration.Type.RED_X);
-		itemStack.setHoverName(new TranslatableComponent(LangUtil.screen("treasure_map." + rarity.getValue())));
+		itemStack.setHoverName(Component.translatable(LangUtil.screen("treasure_map." + rarity.getValue())));
 		return itemStack;
 	}
 
@@ -598,10 +596,10 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 	 * @param random
 	 * @param context
 	 */
-	default public void fillInventory(ItemStackHandler inventory, Random random, List<ItemStack> list) {
+	default public void fillInventory(ItemStackHandler inventory, RandomSource random, List<ItemStack> list) {
 		List<Integer> emptySlots = getEmptySlotsRandomized(inventory, random);
 		Treasure.LOGGER.debug("empty slots size -> {}", emptySlots.size());
-		this.shuffleItems(list, emptySlots.size(), random);
+		this.shuffleItems(list, emptySlots.size(), new Random());
 
 		for (ItemStack itemstack : list) {
 			// if no more empty slots are available
@@ -651,14 +649,14 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 	 * 
 	 * @param chest
 	 */
-	default public void addLocks(Random random, AbstractTreasureChestBlock chest, 
+	default public void addLocks(RandomSource randomSource, AbstractTreasureChestBlock chest, 
 			ITreasureChestBlockEntity blockEntity, IRarity rarity) {
 
 		Treasure.LOGGER.debug("finding locks for rarity -> {}", rarity);
 		List<LockItem> locks = new ArrayList<>();
 		locks.addAll(KeyLockRegistry.getLocks(rarity).stream().map(lock -> lock.get()).collect(Collectors.toList()));
 		Treasure.LOGGER.debug("locks for rarity -> {}", locks);
-		addLocks(random, chest, blockEntity, locks);
+		addLocks(randomSource, chest, blockEntity, locks);
 		locks.clear();
 	}
 
@@ -669,7 +667,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 	 * @param blockEntity
 	 * @param locks
 	 */
-	default public void addLocks(Random random, AbstractTreasureChestBlock chest, 
+	default public void addLocks(RandomSource random, AbstractTreasureChestBlock chest, 
 			ITreasureChestBlockEntity blockEntity, List<LockItem> locks) {
 		Treasure.LOGGER.debug("locks to select from -> {}", locks);
 		int numLocks = randomizedNumberOfLocksByChestType(random, chest.getLockLayout());
@@ -692,7 +690,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 	 * @param lockLayout
 	 * @return
 	 */
-	default public int randomizedNumberOfLocksByChestType(Random random, LockLayout lockLayout) {
+	default public int randomizedNumberOfLocksByChestType(RandomSource random, LockLayout lockLayout) {
 		// determine the number of locks to add
 		int numLocks = RandomHelper.randomInt(random, 0, lockLayout.getMaxLocks());
 		Treasure.LOGGER.debug("# of locks to use: {})", numLocks);
@@ -706,7 +704,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 	 * @param rand
 	 * @return
 	 */
-	default public List<Integer> getEmptySlotsRandomized(ItemStackHandler inventory, Random rand) {
+	default public List<Integer> getEmptySlotsRandomized(ItemStackHandler inventory, RandomSource rand) {
 		List<Integer> list = Lists.<Integer>newArrayList();
 
 		for (int i = 0; i < inventory.getSlots(); ++i) {
@@ -715,7 +713,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 			}
 		}
 
-		Collections.shuffle(list, rand);
+		Collections.shuffle(list, new Random());
 		return list;
 	}
 

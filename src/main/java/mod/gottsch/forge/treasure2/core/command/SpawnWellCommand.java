@@ -19,20 +19,16 @@ package mod.gottsch.forge.treasure2.core.command;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.world.WorldGenContext;
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.config.Config.ServerConfig.Wells;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.well.IWellGenerator;
-import mod.gottsch.forge.treasure2.core.generator.well.WellGenerator;
 import mod.gottsch.forge.treasure2.core.registry.TreasureTemplateRegistry;
 import mod.gottsch.forge.treasure2.core.registry.WellGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.structure.StructureCategory;
@@ -46,6 +42,7 @@ import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 
 
 /**
@@ -99,7 +96,7 @@ public class SpawnWellCommand {
 
 		try {
 			ServerLevel world = source.getLevel();
-			Random random = new Random();
+			RandomSource random = world.getRandom();
 
 			// get the template
 			Optional<TemplateHolder> template = TreasureTemplateRegistry.getTemplate(name);

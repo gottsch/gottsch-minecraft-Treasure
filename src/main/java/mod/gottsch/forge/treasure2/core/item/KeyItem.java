@@ -52,7 +52,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component.translatable;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -176,41 +176,41 @@ public class KeyItem extends Item implements IKeyEffects {
 		if (stack.getCapability(DURABILITY).isPresent()) {
 			stack.getCapability(DURABILITY).ifPresent(cap -> {
 				if (cap.isInfinite()) {
-					tooltip.add(new TranslatableComponent(LangUtil.tooltip("cap.durability.amount.infinite"), cap.getDurability() - stack.getDamageValue(), cap.getDurability()));					
+					tooltip.add(Component.translatable(LangUtil.tooltip("cap.durability.amount.infinite"), cap.getDurability() - stack.getDamageValue(), cap.getDurability()));					
 				}
 				else {
-					tooltip.add(new TranslatableComponent(LangUtil.tooltip("cap.durability.amount"), cap.getDurability() - stack.getDamageValue(), cap.getDurability()));
+					tooltip.add(Component.translatable(LangUtil.tooltip("cap.durability.amount"), cap.getDurability() - stack.getDamageValue(), cap.getDurability()));
 				}
 			});
 		}
 		else {
-			tooltip.add(new TranslatableComponent(LangUtil.tooltip("durability.amount"), stack.getMaxDamage() - stack.getDamageValue(), stack.getMaxDamage()));
+			tooltip.add(Component.translatable(LangUtil.tooltip("durability.amount"), stack.getMaxDamage() - stack.getDamageValue(), stack.getMaxDamage()));
 		}
 		
-		tooltip.add(new TranslatableComponent(LangUtil.tooltip("key_lock.rarity"), ChatFormatting.BLUE + getRarity().toString()));
-		tooltip.add(new TranslatableComponent(LangUtil.tooltip("key_lock.category"), ChatFormatting.GOLD + getCategory().toString()));
+		tooltip.add(Component.translatable(LangUtil.tooltip("key_lock.rarity"), ChatFormatting.BLUE + getRarity().toString()));
+		tooltip.add(Component.translatable(LangUtil.tooltip("key_lock.category"), ChatFormatting.GOLD + getCategory().toString()));
 
 		LangUtil.appendAdvancedHoverText(tooltip, tt -> {
 			
 			// is breakable tooltip
 			MutableComponent breakable = null;
 			if (isBreakable()) {
-				breakable = new TranslatableComponent(LangUtil.tooltip("boolean.yes")).withStyle(ChatFormatting.DARK_RED);
+				breakable = Component.translatable(LangUtil.tooltip("boolean.yes")).withStyle(ChatFormatting.DARK_RED);
 			}
 			else {
-				breakable = new TranslatableComponent(LangUtil.tooltip("boolean.no")).withStyle(ChatFormatting.GREEN);
+				breakable = Component.translatable(LangUtil.tooltip("boolean.no")).withStyle(ChatFormatting.GREEN);
 			}
 			tooltip.add(
-					new TranslatableComponent(LangUtil.tooltip("key_lock.breakable"), breakable));
+					Component.translatable(LangUtil.tooltip("key_lock.breakable"), breakable));
 
 			MutableComponent craftable = null;
 			if (isCraftable()) {
-				craftable = new TranslatableComponent(LangUtil.tooltip("boolean.yes")).withStyle(ChatFormatting.GREEN);
+				craftable = Component.translatable(LangUtil.tooltip("boolean.yes")).withStyle(ChatFormatting.GREEN);
 			}
 			else {
-				craftable = new TranslatableComponent(LangUtil.tooltip("boolean.no")).withStyle(ChatFormatting.DARK_RED);
+				craftable = Component.translatable(LangUtil.tooltip("boolean.no")).withStyle(ChatFormatting.DARK_RED);
 			}
-			tooltip.add(new TranslatableComponent(LangUtil.tooltip("key_lock.craftable"), craftable));
+			tooltip.add(Component.translatable(LangUtil.tooltip("key_lock.craftable"), craftable));
 		
 			appendHoverSpecials(stack, worldIn, tooltip, flag);
 			appendHoverExtras(stack, worldIn, tooltip, flag);

@@ -27,7 +27,6 @@ import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -39,13 +38,17 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.NaturalSpawner;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.LevelStorageSource;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 
 /**
  * @author Mark Gottschling on Jul 22, 2021
@@ -78,7 +81,25 @@ public class ModUtil {
 	public static ResourceLocation asLocation(String name) {
 		return hasDomain(name) ? new ResourceLocation(name) : new ResourceLocation(Treasure.MODID, name);
 	}
+	
+	public static ResourceLocation getName(Block block) {
+		// don't bother checking optional - if it is empty, then the block isn't registered and this shouldn't run anyway.
+		ResourceLocation name = ForgeRegistries.BLOCKS.getResourceKey(block).get().location();
+		return name;
+	}
 
+	public static ResourceLocation getName(Item item) {
+		// don't bother checking optional - if it is empty, then the block isn't registered and this shouldn't run anyway.
+		ResourceLocation name = ForgeRegistries.ITEMS.getResourceKey(item).get().location();
+		return name;
+	}
+	
+	public static ResourceLocation getName(Biome biome) {
+		// don't bother checking optional - if it is empty, then the block isn't registered and this shouldn't run anyway.
+		ResourceLocation name = ForgeRegistries.BIOMES.getResourceKey(biome).get().location();
+		return name;
+	}
+	
 	public static boolean hasDomain(String name) {
 		return name.indexOf(":") >= 0;
 	}
@@ -187,7 +208,7 @@ public class ModUtil {
 		 * @param coords
 		 * @return
 		 */
-		public static Entity spawn(ServerLevel level, Random random, EntityType<?> entityType, Entity mob, ICoords coords) {
+		public static Entity spawn(ServerLevel level, RandomSource random, EntityType<?> entityType, Entity mob, ICoords coords) {
 
 			for (int i = 0; i < 20; i++) { // 20 tries
 				int spawnX = coords.getX() + Mth.nextInt(random, 1, 2) * Mth.nextInt(random, -1, 1);

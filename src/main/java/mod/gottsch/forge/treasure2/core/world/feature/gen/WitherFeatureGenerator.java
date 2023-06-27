@@ -22,7 +22,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 import mod.gottsch.forge.gottschcore.block.BlockContext;
 import mod.gottsch.forge.gottschcore.enums.IRarity;
@@ -45,6 +44,7 @@ import mod.gottsch.forge.treasure2.core.registry.PitGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.world.feature.IFeatureGenContext;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -222,7 +222,7 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 	 * @param random
 	 * @return
 	 */
-	public IPitGenerator<GeneratorResult<ChestGeneratorData>> selectPitGenerator(Random random) {
+	public IPitGenerator<GeneratorResult<ChestGeneratorData>> selectPitGenerator(RandomSource random) {
 		PitType pitType = RandomHelper.checkProbability(random, Config.SERVER.pits.structureProbability.get()) ? PitType.STRUCTURE : PitType.STANDARD;
 		List<IPitGenerator<GeneratorResult<ChestGeneratorData>>> pitGenerators = PitGeneratorRegistry.get(pitType);
 		IPitGenerator<GeneratorResult<ChestGeneratorData>> pitGenerator = pitGenerators.get(random.nextInt(pitGenerators.size()));
@@ -259,7 +259,7 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 					//	Instant start2 = Instant.now();
 					// additional check that it's not a tree and within 2 y-blocks of original
 					if (Math.abs(buildCoords.getY() - coords.getY()) < VERTICAL_MAX_DIFF) {
-						BlockContext cube = new BlockContext(context.level(), buildCoords.down(1));
+						BlockContext cube = new BlockContext(context.level().getLevel(), buildCoords.down(1));
 						if (cube.isFluid()) {
 							continue;
 						}
@@ -276,14 +276,14 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 
 					//	Instant start3 = Instant.now();
 					// remove existing tree
-					BlockContext blockContext = new BlockContext(context.level(), buildCoords);
+					BlockContext blockContext = new BlockContext(context.level().getLevel(), buildCoords);
 					ICoords climbCoords = new Coords(buildCoords);
 					while (blockContext.equalsMaterial(Material.WOOD) && !(blockContext.getState().getBlock() instanceof ITreasureBlock)) {
 						// remove log
 						context.level().setBlock(climbCoords.toPos(), Blocks.AIR.defaultBlockState(), 3);
 						// climb upwards
 						climbCoords = climbCoords.add(0, 1, 0);
-						blockContext = new BlockContext(context.level(), climbCoords);
+						blockContext = new BlockContext(context.level().getLevel(), climbCoords);
 					}
 					//	Instant finish3 = Instant.now();
 					//	Treasure.LOGGER.debug("removing existing tree time -> {}ms", Duration.between(start3, finish3).toMillis());
@@ -402,8 +402,8 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 				if (!isGenerationWithinMaxRadius(newCoords, originalSpawnCoords)) {
 					continue;
 				}
-				BlockContext groundBlockContext = new BlockContext(context.level(), newCoords.down(1));
-				BlockContext replaceBlockContext = new BlockContext(context.level(), newCoords);
+				BlockContext groundBlockContext = new BlockContext(context.level().getLevel(), newCoords.down(1));
+				BlockContext replaceBlockContext = new BlockContext(context.level().getLevel(), newCoords);
 				if (groundBlockContext.isSolid()
 						&& (replaceBlockContext.isAir() || replaceBlockContext.isReplaceable())) {
 					// rotate the branch in the right direction
@@ -413,7 +413,7 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 
 					// add the branch to the world
 					//					world.setBlockState(c.toPos(), state, 3);
-					WorldInfo.setBlock(context.level(), newCoords, state);
+					WorldInfo.setBlock(context.level().getLevel(), newCoords, state);
 					//					 Treasure.logger.debug("Wither Tree building root @ " +  coords.toShortString());					
 				}
 			}
@@ -441,7 +441,7 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 				}
 				for (int segment = 0; segment < branchSize; segment++) {
 					c = c.add(direction, 1);
-					BlockContext replaceBlockContext = new BlockContext(context.level(), c);
+					BlockContext replaceBlockContext = new BlockContext(context.level().getLevel(), c);
 
 					// if there is a branch directly below, don't build
 					if (context.level().getBlockState(c.down(1).toPos()).getBlock() instanceof WitherBranchBlock)
@@ -454,11 +454,11 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 								.setValue(WitherBranchBlock.FACING, direction);
 
 						// add the branch to the world
-						WorldInfo.setBlock(context.level(), c, state);
+						WorldInfo.setBlock(context.level().getLevel(), c, state);
 
 						// add spanish moss
 						if (RandomHelper.checkProbability(context.random(), SPANISH_MOSS_PROBABILITY)) {
-							replaceBlockContext = new BlockContext(context.level(), c.add(0, /*y*/ - 1, 0));
+							replaceBlockContext = new BlockContext(context.level().getLevel(), c.add(0, /*y*/ - 1, 0));
 							if (replaceBlockContext.isAir() || replaceBlockContext.isReplaceable()) {
 								context.level().setBlock(replaceBlockContext.getCoords().toPos(), TreasureBlocks.SPANISH_MOSS
 										.get().defaultBlockState().setValue(SpanishMossBlock.ACTIVATED, true), 3);
@@ -481,7 +481,7 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 			//			world.setBlockState(coords.add(0, y, 0).toPos(), state, 3);
 			ICoords topCoords = coords.add(0, y, 0);
 			if (isGenerationWithinMaxRadius(topCoords, originalSpawnCoords)) {
-				WorldInfo.setBlock(context.level(), coords.add(0, y, 0), state);
+				WorldInfo.setBlock(context.level().getLevel(), coords.add(0, y, 0), state);
 			}
 		}
 	}
@@ -597,13 +597,13 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 	 * @param maxDepth
 	 * @return
 	 */
-	public static Optional<ICoords> getUndergroundSpawnPos(ServerLevelAccessor world, Random random, ICoords startingCoords, int minDepth, int maxDepth) {
+	public static Optional<ICoords> getUndergroundSpawnPos(ServerLevelAccessor world, RandomSource random, ICoords startingCoords, int minDepth, int maxDepth) {
 		int depth = RandomHelper.randomInt(minDepth, maxDepth);
 		int ySpawn = Math.max(UNDERGROUND_OFFSET, startingCoords.getY() - depth);
 		Treasure.LOGGER.debug("ySpawn -> {}", ySpawn);
 		ICoords coords = new Coords(startingCoords.getX(), ySpawn, startingCoords.getZ());
 		// get floor pos (if in a cavern or tunnel etc)
-		coords = WorldInfo.getSubterraneanSurfaceCoords(world, coords);
+		coords = WorldInfo.getSubterraneanSurfaceCoords(world.getLevel(), coords);
 
 		return (coords == null || coords == Coords.EMPTY) ? Optional.empty() : Optional.of(coords);
 	}

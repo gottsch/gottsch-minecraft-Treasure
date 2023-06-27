@@ -20,7 +20,6 @@ package mod.gottsch.forge.treasure2.core.block.entity;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -48,11 +47,11 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.Nameable;
@@ -172,7 +171,7 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 			if (chestGenerator.isPresent()) {
 				Treasure.LOGGER.debug("chest gen  -> {}", chestGenerator.get().getClass().getSimpleName());
 				// fill the chest with loot
-				chestGenerator.get().fillChest(getLevel(), new Random(), this, this.getGenerationContext().getLootRarity(), playerEntity);
+				chestGenerator.get().fillChest(getLevel(), getLevel().getRandom(), this, this.getGenerationContext().getLootRarity(), playerEntity);
 			}
 			else {
 				Treasure.LOGGER.warn("treasure chest at -> {} does not reference a valid generator -> {}", this.worldPosition, chestGenerator.get().getClass().getSimpleName());
@@ -294,7 +293,7 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 			// TODO move this to IChestEffects
 
 			if (getLevel().getGameTime() % 10 == 0) {
-				Random random = getLevel().getRandom();
+				RandomSource random = getLevel().getRandom();
 				for(int k = 0; k < 5; ++k) {
 					SimpleParticleType coinParticle;
 					int x = k % 3;
@@ -538,7 +537,7 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 
 	@Override
 	public Component getDefaultName() {
-		return new TranslatableComponent(LangUtil.screen("default_chest.name"));
+		return Component.translatable(LangUtil.screen("default_chest.name"));
 	}
 
 	@Override

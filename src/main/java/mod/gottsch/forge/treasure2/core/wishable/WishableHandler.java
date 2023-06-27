@@ -40,6 +40,7 @@ import mod.gottsch.forge.treasure2.core.loot.TreasureLootGenerators;
 import mod.gottsch.forge.treasure2.core.registry.KeyLockRegistry;
 import mod.gottsch.forge.treasure2.core.registry.TreasureLootTableRegistry;
 import mod.gottsch.forge.treasure2.core.registry.WishableRegistry;
+import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -134,12 +135,12 @@ public class WishableHandler implements IWishableHandler {
 			injectLoot(world, random, itemStacks, rarity, lootContext);
 			
 			for (ItemStack stack : itemStacks) {
-				Treasure.LOGGER.debug("possible loot item -> {}", stack.getItem().getRegistryName().toString());
+				Treasure.LOGGER.debug("possible loot item -> {}", ModUtil.getName(stack.getItem()).toString());
 			}
 			
 			// select one item randomly
 			outputStack = itemStacks.get(RandomHelper.randomInt(0, itemStacks.size()-1));
-			Treasure.LOGGER.debug("loot item output stack -> {}", outputStack.getItem().getRegistryName().toString());
+			Treasure.LOGGER.debug("loot item output stack -> {}", ModUtil.getName(outputStack.getItem()).toString());
 		}				
 		return Optional.of(outputStack);
 	}
@@ -160,7 +161,7 @@ public class WishableHandler implements IWishableHandler {
 	 * @return
 	 */
 	public ItemStack getDefaultLootKey (Random random, ItemEntity itemEntity) {
-		IRarity rarity = WishableRegistry.getRarity(itemEntity.getItem().getItem().getRegistryName()).orElse(Rarity.COMMON);
+		IRarity rarity = WishableRegistry.getRarity(ModUtil.getName(itemEntity.getItem().getItem())).orElse(Rarity.COMMON);
 		return getDefaultLootKey(random, rarity);
 	}
 

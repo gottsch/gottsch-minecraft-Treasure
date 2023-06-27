@@ -17,14 +17,6 @@
  */
 package mod.gottsch.forge.treasure2.core.world.feature.gen;
 
-import java.util.List;
-
-import mod.gottsch.forge.treasure2.core.world.feature.TreasureConfiguredFeatures;
-import net.minecraft.core.Holder;
-import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import net.minecraftforge.event.world.BiomeLoadingEvent;
-
 /**
  * 
  * @author Mark Gottschling on Nov 27, 2022
@@ -32,14 +24,14 @@ import net.minecraftforge.event.world.BiomeLoadingEvent;
  */
 public class TreasureOreGeneration {
 	
-	public static void generateOres(final BiomeLoadingEvent event) {
-		List<Holder<PlacedFeature>> base = 
-				event.getGeneration().getFeatures(GenerationStep.Decoration.UNDERGROUND_ORES);
-		
-		base.add(TreasureConfiguredFeatures.TOPAZ_ORE_PLACED.getHolder().get());
-		base.add(TreasureConfiguredFeatures.ONYX_ORE_PLACED.getHolder().get());
-		base.add(TreasureConfiguredFeatures.RUBY_ORE_PLACED.getHolder().get());
-		base.add(TreasureConfiguredFeatures.SAPPHIRE_ORE_PLACED.getHolder().get());
-		
-	}
+//	public static void generateOres(final BiomeLoadingEvent event) {
+//		List<Holder<PlacedFeature>> base = 
+//				event.getGeneration().getFeatures(GenerationStep.Decoration.UNDERGROUND_ORES);
+//		
+//		base.add(TreasureConfiguredFeatures.TOPAZ_ORE_PLACED.getHolder().get());
+//		base.add(TreasureConfiguredFeatures.ONYX_ORE_PLACED.getHolder().get());
+//		base.add(TreasureConfiguredFeatures.RUBY_ORE_PLACED.getHolder().get());
+//		base.add(TreasureConfiguredFeatures.SAPPHIRE_ORE_PLACED.getHolder().get());
+//		
+//	}
 }

@@ -22,7 +22,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component.translatable;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.*;
@@ -238,21 +238,21 @@ public class TreasureItems {
 
 		@Override
 		public Component getName(ItemStack stack) {
-			return ((TranslatableComponent)super.getName(stack)).withStyle(ChatFormatting.YELLOW);
+			return ((Component.translatable)super.getName(stack)).withStyle(ChatFormatting.YELLOW);
 		}
 
 		@Override
 		public  void appendHoverSpecials(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 			tooltip.add(
-					new TranslatableComponent(LangUtil.tooltip("key_lock.specials"), 
-							ChatFormatting.GOLD + new TranslatableComponent(LangUtil.tooltip("key_lock.one_key.specials")).getString())
+					Component.translatable(LangUtil.tooltip("key_lock.specials"), 
+							ChatFormatting.GOLD + Component.translatable(LangUtil.tooltip("key_lock.one_key.specials")).getString())
 					);
 		}
 		@Override
 		public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 			tooltip.add(new TextComponent(LangUtil.NEWLINE));
 			tooltip.add(new TextComponent(LangUtil.INDENT4)
-					.append(new TranslatableComponent(LangUtil.tooltip("key_lock.one_key.lore"))
+					.append(Component.translatable(LangUtil.tooltip("key_lock.one_key.lore"))
 							.append(new TextComponent(LangUtil.INDENT4)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC)));
 			tooltip.add(new TextComponent(LangUtil.NEWLINE));
 		}
@@ -451,7 +451,7 @@ public class TreasureItems {
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 					tooltip.add(new TextComponent(LangUtil.NEWLINE));
 					tooltip.add(new TextComponent(LangUtil.INDENT4)
-							.append(new TranslatableComponent(LangUtil.tooltip("weapons.sword_of_power.lore"))
+							.append(Component.translatable(LangUtil.tooltip("weapons.sword_of_power.lore"))
 									.append(new TextComponent(LangUtil.INDENT4)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC)));
 					tooltip.add(new TextComponent(LangUtil.NEWLINE));
 				}
@@ -471,7 +471,7 @@ public class TreasureItems {
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 					tooltip.add(new TextComponent(LangUtil.NEWLINE));
 					tooltip.add(new TextComponent(LangUtil.INDENT4)
-							.append(new TranslatableComponent(LangUtil.tooltip("weapons.black_sword.lore"))
+							.append(Component.translatable(LangUtil.tooltip("weapons.black_sword.lore"))
 									.append(new TextComponent(LangUtil.INDENT4)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC)));
 					tooltip.add(new TextComponent(LangUtil.NEWLINE));
 				}
@@ -491,10 +491,10 @@ public class TreasureItems {
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 					tooltip.add(new TextComponent(LangUtil.NEWLINE));
 					// lore may be multiple lines, so separate on ~ and add to tooltip
-					TranslatableComponent lore = new TranslatableComponent(LangUtil.tooltip("weapons.oathbringer.lore"));
+					Component.translatable lore = Component.translatable(LangUtil.tooltip("weapons.oathbringer.lore"));
 					for (String s : lore.getString().split("~")) {	
 						tooltip.add(new TextComponent(LangUtil.INDENT4)
-								.append(new TranslatableComponent(s)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC));
+								.append(Component.translatable(s)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC));
 					}
 					tooltip.add(new TextComponent(LangUtil.NEWLINE));
 				}
@@ -514,7 +514,7 @@ public class TreasureItems {
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 					tooltip.add(new TextComponent(LangUtil.NEWLINE));
 					tooltip.add(new TextComponent(LangUtil.INDENT4)
-							.append(new TranslatableComponent(LangUtil.tooltip("weapons.sword_of_omens.lore"))
+							.append(Component.translatable(LangUtil.tooltip("weapons.sword_of_omens.lore"))
 									.append(new TextComponent(LangUtil.INDENT4)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC)));
 					tooltip.add(new TextComponent(LangUtil.NEWLINE));
 				}
@@ -542,10 +542,10 @@ public class TreasureItems {
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 					tooltip.add(new TextComponent(LangUtil.NEWLINE));
 					// lore may be multiple lines, so separate on ~ and add to tooltip
-					TranslatableComponent lore = new TranslatableComponent(LangUtil.tooltip("weapons.orcus.lore"));
+					Component.translatable lore = Component.translatable(LangUtil.tooltip("weapons.orcus.lore"));
 					for (String s : lore.getString().split("~")) {	
 						tooltip.add(new TextComponent(LangUtil.INDENT4)
-								.append(new TranslatableComponent(s)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC));
+								.append(Component.translatable(s)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC));
 					}
 					tooltip.add(new TextComponent(LangUtil.NEWLINE));
 				}
@@ -566,10 +566,10 @@ public class TreasureItems {
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 					tooltip.add(new TextComponent(LangUtil.NEWLINE));
 					// lore may be multiple lines, so separate on ~ and add to tooltip
-					TranslatableComponent lore = new TranslatableComponent(LangUtil.tooltip("weapons.snake_eyes_katana.lore"));
+					Component.translatable lore = Component.translatable(LangUtil.tooltip("weapons.snake_eyes_katana.lore"));
 					for (String s : lore.getString().split("~")) {	
 						tooltip.add(new TextComponent(LangUtil.INDENT4)
-								.append(new TranslatableComponent(s)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC));
+								.append(Component.translatable(s)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC));
 					}
 					tooltip.add(new TextComponent(LangUtil.NEWLINE));
 				}
@@ -589,10 +589,10 @@ public class TreasureItems {
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 					tooltip.add(new TextComponent(LangUtil.NEWLINE));
 					// lore may be multiple lines, so separate on ~ and add to tooltip
-					TranslatableComponent lore = new TranslatableComponent(LangUtil.tooltip("weapons.storm_shadows_katana.lore"));
+					Component.translatable lore = Component.translatable(LangUtil.tooltip("weapons.storm_shadows_katana.lore"));
 					for (String s : lore.getString().split("~")) {	
 						tooltip.add(new TextComponent(LangUtil.INDENT4)
-								.append(new TranslatableComponent(s)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC));
+								.append(Component.translatable(s)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC));
 					}
 					tooltip.add(new TextComponent(LangUtil.NEWLINE));
 				}
@@ -634,10 +634,10 @@ public class TreasureItems {
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 					tooltip.add(new TextComponent(LangUtil.NEWLINE));
 					// lore may be multiple lines, so separate on ~ and add to tooltip
-					TranslatableComponent lore = new TranslatableComponent(LangUtil.tooltip("weapons.mjolnir.lore"));
+					Component.translatable lore = Component.translatable(LangUtil.tooltip("weapons.mjolnir.lore"));
 					for (String s : lore.getString().split("~")) {	
 						tooltip.add(new TextComponent(LangUtil.INDENT4)
-								.append(new TranslatableComponent(s)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC));
+								.append(Component.translatable(s)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC));
 					}
 					tooltip.add(new TextComponent(LangUtil.NEWLINE));
 				}
@@ -675,10 +675,10 @@ public class TreasureItems {
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 					tooltip.add(new TextComponent(LangUtil.NEWLINE));
 					// lore may be multiple lines, so separate on ~ and add to tooltip
-					TranslatableComponent lore = new TranslatableComponent(LangUtil.tooltip("weapons.axe_of_durin.lore"));
+					Component.translatable lore = Component.translatable(LangUtil.tooltip("weapons.axe_of_durin.lore"));
 					for (String s : lore.getString().split("~")) {	
 						tooltip.add(new TextComponent(LangUtil.INDENT4)
-								.append(new TranslatableComponent(s)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC));
+								.append(Component.translatable(s)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC));
 					}
 					tooltip.add(new TextComponent(LangUtil.NEWLINE));
 				}
@@ -699,10 +699,10 @@ public class TreasureItems {
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 					tooltip.add(new TextComponent(LangUtil.NEWLINE));
 					// lore may be multiple lines, so separate on ~ and add to tooltip
-					TranslatableComponent lore = new TranslatableComponent(LangUtil.tooltip("weapons.headsmans_axe.lore"));
+					Component.translatable lore = Component.translatable(LangUtil.tooltip("weapons.headsmans_axe.lore"));
 					for (String s : lore.getString().split("~")) {	
 						tooltip.add(new TextComponent(LangUtil.INDENT4)
-								.append(new TranslatableComponent(s)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC));
+								.append(Component.translatable(s)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC));
 					}
 					tooltip.add(new TextComponent(LangUtil.NEWLINE));
 				}

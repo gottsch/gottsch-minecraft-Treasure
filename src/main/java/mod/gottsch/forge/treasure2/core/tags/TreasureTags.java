@@ -26,6 +26,7 @@ import mod.gottsch.forge.treasure2.core.registry.ChestRegistry;
 import mod.gottsch.forge.treasure2.core.registry.KeyLockRegistry;
 import mod.gottsch.forge.treasure2.core.registry.TagRegistry;
 import mod.gottsch.forge.treasure2.core.registry.WishableRegistry;
+import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -125,7 +126,7 @@ public class TreasureTags {
 				if (tag != null && holder.is(tag)) {
 					// register the key in the key-lock registry by rarity
 					KeyLockRegistry.registerKeyByRarity(rarity, key);
-					Treasure.LOGGER.info("registering key -> {} by rarity -> {}", key.get().getRegistryName(), rarity);
+					Treasure.LOGGER.info("registering key -> {} by rarity -> {}", ModUtil.getName(key.get()), rarity);
 					break;
 				}
 			}			
@@ -140,7 +141,7 @@ public class TreasureTags {
 				if (tag != null && holder.is(tag)) {
 					// register the lock in the key-lock registry by rarity
 					KeyLockRegistry.registerLockByRarity(rarity, lock);
-					Treasure.LOGGER.info("registering lock -> {} by rarity -> {}", lock.get().getRegistryName(), rarity);
+					Treasure.LOGGER.info("registering lock -> {} by rarity -> {}", ModUtil.getName(lock.get()), rarity);
 					break;
 				}
 			}			
@@ -157,7 +158,7 @@ public class TreasureTags {
 				TagKey<Block> tag = TagRegistry.getChestTag(rarity);
 				if (tag != null && holder.is(tag)) {
 					ChestRegistry.registerByRarity(rarity, chest);
-					Treasure.LOGGER.info("registering chest -> {} by rarity -> {}", chest.get().getRegistryName(), rarity);
+					Treasure.LOGGER.info("registering chest -> {} by rarity -> {}", ModUtil.getName(chest.get()), rarity);
 					break;
 				}
 			}			
@@ -174,7 +175,7 @@ public class TreasureTags {
 					Item wishable = iterator.next();
 					// register the wishable in the wishable registry by rarity
 					WishableRegistry.registerByRarity(rarity, wishable);
-					Treasure.LOGGER.info("registering wishable -> {} by rarity -> {}", wishable.getRegistryName(), rarity);
+					Treasure.LOGGER.info("registering wishable -> {} by rarity -> {}", ModUtil.getName(wishable), rarity);
 				}
 			}
 		}

@@ -21,6 +21,7 @@ import java.util.Random;
 
 import mod.gottsch.forge.gottschcore.random.RandomHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.TorchBlock;
@@ -42,7 +43,7 @@ public interface IMistSupport {
 	 * @return
 	 */
 	// TODO change xyz to ICoords
-	default public boolean isMistAllowed(Level world, Random random, int x, int y, int z) {
+	default public boolean isMistAllowed(Level world, RandomSource random, int x, int y, int z) {
 		int numberOfTorches = 0;
 		// use a MutatableBlockPos instead of Cube\Coords or BlockPos to save the
 		// recreation of many objects

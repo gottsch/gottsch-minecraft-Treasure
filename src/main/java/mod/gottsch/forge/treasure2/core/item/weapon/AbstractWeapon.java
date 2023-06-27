@@ -23,7 +23,7 @@ import java.util.List;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component.translatable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TieredItem;
@@ -46,9 +46,9 @@ public abstract class AbstractWeapon extends TieredItem implements Vanishable {
 	@Override
 	public Component getName(ItemStack itemStack) {
 		if (isUnique()) {
-			return new TranslatableComponent(this.getDescriptionId(itemStack)).withStyle(ChatFormatting.YELLOW);
+			return Component.translatable(this.getDescriptionId(itemStack)).withStyle(ChatFormatting.YELLOW);
 		} else {
-			return new TranslatableComponent(this.getDescriptionId(itemStack));
+			return Component.translatable(this.getDescriptionId(itemStack));
 		}
 	}
 

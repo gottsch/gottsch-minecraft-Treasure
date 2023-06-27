@@ -19,7 +19,6 @@ package mod.gottsch.forge.treasure2.core.command;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -46,6 +45,7 @@ import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 
 
 /**
@@ -113,7 +113,7 @@ public class SpawnRuinsCommand {
 	 */
 	public static int spawn(CommandSourceStack source, BlockPos pos, String category, ResourceLocation name) {
 		ServerLevel level = source.getLevel();
-		Random random = new Random();
+		RandomSource random = level.getRandom();
 
 		Optional<IStructureCategory> structureCategory = TreasureApi.getStructureCategory(category);
 		if (structureCategory.isEmpty()) {

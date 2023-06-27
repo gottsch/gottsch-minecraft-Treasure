@@ -17,15 +17,11 @@
  */
 package mod.gottsch.forge.treasure2.core.block.entity;
 
-import java.util.Random;
-
-import mod.gottsch.forge.treasure2.core.particle.TreasureParticles;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -47,7 +43,7 @@ public class MoldyCrateChestBlockEntity extends CrateChestBlockEntity {
 
 	@Override
 	public Component getDefaultName() {
-		return new TranslatableComponent(LangUtil.screen("moldy_crate_chest.name"));
+		return Component.translatable(LangUtil.screen("moldy_crate_chest.name"));
 	}
 
 	@Override
@@ -56,7 +52,7 @@ public class MoldyCrateChestBlockEntity extends CrateChestBlockEntity {
 		// spawn particles
 
 		if (level.isClientSide()) {
-			Random random = getLevel().getRandom();
+			RandomSource random = getLevel().getRandom();
 			for(int k = 0; k < 20; ++k) {
 				level.addParticle(ParticleTypes.SPORE_BLOSSOM_AIR, 
 						(double)getBlockPos().getX() + 0.5D + random.nextDouble() / 3.0D * (double)(random.nextBoolean() ? 1 : -1), 

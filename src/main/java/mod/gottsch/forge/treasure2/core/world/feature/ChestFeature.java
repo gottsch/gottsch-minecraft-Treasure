@@ -19,7 +19,6 @@ package mod.gottsch.forge.treasure2.core.world.feature;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import com.mojang.serialization.Codec;
 
@@ -37,9 +36,10 @@ import mod.gottsch.forge.treasure2.core.registry.DimensionalGeneratedCache;
 import mod.gottsch.forge.treasure2.core.registry.GeneratedCache;
 import mod.gottsch.forge.treasure2.core.registry.RarityLevelWeightedChestGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.registry.support.GeneratedChestContext;
-import mod.gottsch.forge.treasure2.core.registry.support.GeneratedContext;
 import mod.gottsch.forge.treasure2.core.registry.support.GeneratedChestContext.GeneratedType;
+import mod.gottsch.forge.treasure2.core.registry.support.GeneratedContext;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -61,7 +61,7 @@ public abstract class ChestFeature extends Feature<NoneFeatureConfiguration> imp
 	 * @param random
 	 * @return
 	 */
-	protected boolean meetsProbabilityCriteria(Random random, Generator generatorConfig) {
+	protected boolean meetsProbabilityCriteria(RandomSource random, Generator generatorConfig) {
 		if (generatorConfig.getProbability() == null) {
 			Treasure.LOGGER.warn("chest generator config -> '{}' is missing 'probability' value", generatorConfig.getKey());
 			return false;

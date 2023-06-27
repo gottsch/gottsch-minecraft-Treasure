@@ -61,7 +61,7 @@ public class SurfaceStructureFeatureGenerator implements IFeatureGenerator {
 		}
 
 		// check if it has 50% land
-		if (!WorldInfo.isSolidBase(context.level(), spawnCoords, 2, 2, 50)) {
+		if (!WorldInfo.isSolidBase(context.level().getLevel(), spawnCoords, 2, 2, 50)) {
 			Treasure.LOGGER.debug("coords -> {} does not meet solid base requires for {} x {}", spawnCoords.toShortString(), 2, 2);
 			return Optional.empty();
 		}

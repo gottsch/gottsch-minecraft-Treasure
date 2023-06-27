@@ -27,6 +27,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
 import mod.gottsch.forge.gottschcore.enums.IRarity;
+import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import mod.gottsch.forge.treasure2.core.wishable.IWishableHandler;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -65,15 +66,17 @@ public class WishableRegistry {
 		return Optional.empty();
 	}
 	
-	public static void register(Item item) {		
-		if (!BY_NAME.containsKey(item.getRegistryName())) {
-			BY_NAME.put(item.getRegistryName(), item);
+	public static void register(Item item) {	
+		ResourceLocation name = ModUtil.getName(item);
+		if (!BY_NAME.containsKey(name)) {
+			BY_NAME.put(name, item);
 		}
 	}
 	
 	public static void registerByRarity(IRarity rarity, Item item) {
+		ResourceLocation name = ModUtil.getName(item);
 		BY_RARITY.put(rarity, item);
-		RARITY_BY_NAME.put(item.getRegistryName(), rarity);
+		RARITY_BY_NAME.put(name, rarity);
 	}
 	
 	public static List<Item> getAll() {
@@ -93,11 +96,13 @@ public class WishableRegistry {
 	}
 	
 	public static Optional<IRarity> getRarity(Item wishable) {
-		return getRarity(wishable.getRegistryName());
+		ResourceLocation name = ModUtil.getName(wishable);
+		return getRarity(name);
 	}
 
 	public static boolean isRegistered(Item item) {
-		return isRegistered(item.getRegistryName());	
+		ResourceLocation name = ModUtil.getName(item);
+		return isRegistered(name);	
 	}
 	
 	public static boolean isRegistered(ResourceLocation name) {

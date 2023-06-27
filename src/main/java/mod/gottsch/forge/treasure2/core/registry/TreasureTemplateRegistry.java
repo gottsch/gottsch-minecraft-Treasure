@@ -38,7 +38,6 @@ import com.google.gson.GsonBuilder;
 
 import mod.gottsch.forge.gottschcore.loot.LootTableShell;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
-import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.gottschcore.world.gen.structure.GottschTemplate;
 import mod.gottsch.forge.gottschcore.world.gen.structure.StructureMarkers;
 import mod.gottsch.forge.treasure2.Treasure;
@@ -51,16 +50,14 @@ import net.minecraft.SharedConstants;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.LevelStorageSource;
-import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 
 
@@ -366,11 +363,11 @@ public class TreasureTemplateRegistry {
 	 * 
 	 * @param event
 	 */
-	public static void onWorldLoad(WorldEvent.Load event, Path worldSavePath) {
+	public static void onWorldLoad(LevelEvent.Load event, Path worldSavePath) {
 		setWorldSaveFolder(worldSavePath);
 		clearDatapacks();
 		clearAccesslists();
-		if (!event.getWorld().isClientSide()) {
+		if (!event.getLevel().isClientSide()) {
 			Treasure.LOGGER.debug("template registry world load event...");
 			loadDataPacks(getMarkerScanList(), getReplacementMap());
 			registerAccesslists(Config.structureConfiguration.getStructMetas());
@@ -795,7 +792,7 @@ public class TreasureTemplateRegistry {
 		return offsetCoords;
 	}
 
-	public static ICoords getOffsetFrom(Random random, GottschTemplate template, StructureMarkers marker) {
+	public static ICoords getOffsetFrom(RandomSource random, GottschTemplate template, StructureMarkers marker) {
 		ICoords offsetCoords = template.findCoords(random, getMarkerMap().get(marker));
 		return offsetCoords;
 	}

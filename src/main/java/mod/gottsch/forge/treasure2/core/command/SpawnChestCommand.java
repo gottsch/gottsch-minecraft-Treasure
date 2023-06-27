@@ -49,6 +49,7 @@ import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -217,7 +218,7 @@ public class SpawnChestCommand {
 		Treasure.LOGGER.debug("executing spawn chest, pos -> {}, name -> {}, rarity -> {}", pos, chestName, rarityName);
 		try {
 			ServerLevel world = source.getLevel();
-			Random random = new Random();
+			RandomSource random = world.getRandom();
 			Optional<IRarity> rarity = TreasureApi.getRarity(rarityName);
 			if (rarity.isEmpty()) {
 				return 1;

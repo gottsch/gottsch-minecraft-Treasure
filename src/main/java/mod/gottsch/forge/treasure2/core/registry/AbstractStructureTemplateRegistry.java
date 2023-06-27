@@ -23,8 +23,8 @@ import java.util.Map;
 
 import com.google.common.collect.Maps;
 import com.mojang.datafixers.DataFixer;
-import com.someguyssoftware.gottschcore.world.gen.structure.StructureMarkers;
 
+import mod.gottsch.forge.gottschcore.world.gen.structure.StructureMarkers;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;

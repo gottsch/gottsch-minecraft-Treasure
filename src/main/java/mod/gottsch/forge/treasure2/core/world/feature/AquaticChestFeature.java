@@ -98,7 +98,7 @@ public class AquaticChestFeature extends ChestFeature {
 			return false;
 		}
 		
-		ICoords spawnCoords = WorldInfo.getOceanFloorSurfaceCoords(genLevel, context.chunkGenerator(),
+		ICoords spawnCoords = WorldInfo.getOceanFloorSurfaceCoords(genLevel.getLevel(), context.chunkGenerator(),
 				new Coords(context.origin().offset(WorldInfo.CHUNK_RADIUS - 1, 0, WorldInfo.CHUNK_RADIUS - 1)));
 		if (spawnCoords == Coords.EMPTY) {
 			return false;

@@ -22,7 +22,7 @@ import java.util.List;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component.translatable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -41,7 +41,7 @@ public class TreasureToolItem extends Item {
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);	
-		tooltip.add(new TranslatableComponent(LangUtil.tooltip("treasure_tool")));
+		tooltip.add(Component.translatable(LangUtil.tooltip("treasure_tool")));
 	}	
 
 	/**

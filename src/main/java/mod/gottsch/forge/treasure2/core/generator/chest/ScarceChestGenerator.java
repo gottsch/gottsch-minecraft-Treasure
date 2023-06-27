@@ -34,6 +34,7 @@ import mod.gottsch.forge.treasure2.core.item.LockItem;
 import mod.gottsch.forge.treasure2.core.lock.LockLayout;
 import mod.gottsch.forge.treasure2.core.registry.KeyLockRegistry;
 import mod.gottsch.forge.treasure2.core.registry.TreasureLootTableRegistry;
+import net.minecraft.util.RandomSource;
 
 /**
  * 
@@ -48,16 +49,6 @@ public class ScarceChestGenerator extends AbstractChestGenerator {
 	public ScarceChestGenerator() {
 		super();
 	}
-
-	/**
-	 * 
-	 */
-//	@Override
-//	public void addGenerationContext(ITreasureChestBlockEntity blockEntity, IRarity rarity) {
-//		GenerationContext generationContext = 
-//				((AbstractTreasureChestBlockEntity)blockEntity).new GenerationContext(rarity, ChestGeneratorType.SCARCE);
-//		blockEntity.setGenerationContext(generationContext);
-//	}
 	
 	/**
 	 * 
@@ -87,7 +78,7 @@ public class ScarceChestGenerator extends AbstractChestGenerator {
 	 * @param chest
 	 */
 	@Override
-	public void addLocks(Random random, AbstractTreasureChestBlock chest, ITreasureChestBlockEntity chestBlockEntity, IRarity rarity) {
+	public void addLocks(RandomSource random, AbstractTreasureChestBlock chest, ITreasureChestBlockEntity chestBlockEntity, IRarity rarity) {
 		// select a rarity locks
 		List<LockItem> locks = new ArrayList<>();
 		locks.addAll(KeyLockRegistry.getLocks(Rarity.UNCOMMON).stream().map(l -> l.get()).collect(Collectors.toList()));

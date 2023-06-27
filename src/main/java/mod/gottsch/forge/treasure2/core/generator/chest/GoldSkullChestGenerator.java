@@ -33,6 +33,7 @@ import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.item.LockItem;
 import mod.gottsch.forge.treasure2.core.lock.LockLayout;
 import mod.gottsch.forge.treasure2.core.registry.KeyLockRegistry;
+import net.minecraft.util.RandomSource;
 
 /**
  * 
@@ -47,37 +48,12 @@ public class GoldSkullChestGenerator extends AbstractChestGenerator {
 	public GoldSkullChestGenerator() {
 		super();
 	}
-
-	/**
-	 * 
-	 */
-//	@Override
-//	public void addGenerationContext(ITreasureChestBlockEntity blockEntity, IRarity rarity) {
-//		GenerationContext generationContext = 
-//				((AbstractTreasureChestBlockEntity)blockEntity).new GenerationContext(rarity, ChestGeneratorType.GOLD_SKULL);
-//		blockEntity.setGenerationContext(generationContext);
-//	}
-	
-	/*
-	 * @param random
-	 * @param chestRarity
-	 * @return
-	 */
-//	@Override
-//	public Optional<LootTableShell> selectLootTable(Random random, final IRarity chestRarity) {
-//		return TreasureLootTableRegistry.getSpecialLootTable(SpecialLootTables.GOLD_SKULL_CHEST);
-//	}
-//
-//	@Override
-//	public Optional<LootTableShell> selectLootTable(Supplier<Random> factory, final IRarity rarity) {
-//		return TreasureLootTableRegistry.getSpecialLootTable(SpecialLootTables.GOLD_SKULL_CHEST);
-//	}
 	
 	/**
 	 * Always select a skull chest.
 	 */
 	@Override
-	public StandardChestBlock  selectChest(final Random random, final IRarity rarity) {
+	public StandardChestBlock  selectChest(final RandomSource random, final IRarity rarity) {
 		StandardChestBlock chest = (StandardChestBlock) TreasureBlocks.GOLD_SKULL_CHEST.get();
 		return chest;
 	}
@@ -98,7 +74,7 @@ public class GoldSkullChestGenerator extends AbstractChestGenerator {
 	 * @param chest
 	 */
 	@Override
-	public void addLocks(Random random, AbstractTreasureChestBlock chest, ITreasureChestBlockEntity chestBlockEntity, IRarity rarity) {
+	public void addLocks(RandomSource random, AbstractTreasureChestBlock chest, ITreasureChestBlockEntity chestBlockEntity, IRarity rarity) {
 		// select a rarity locks
 		List<LockItem> locks = new ArrayList<>();
 		locks.addAll(KeyLockRegistry.getLocks(Rarity.SCARCE).stream().map(l -> l.get()).collect(Collectors.toList()));

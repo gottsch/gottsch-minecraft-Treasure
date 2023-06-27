@@ -23,7 +23,7 @@ import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component.translatable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -68,9 +68,9 @@ public class EmberLock extends LockItem {
 
 	@Override
 	public  void appendHoverSpecials(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flag) {
-		TranslatableComponent specials = new TranslatableComponent(LangUtil.tooltip("key_lock.ember_lock.specials"));
+		Component.translatable specials = Component.translatable(LangUtil.tooltip("key_lock.ember_lock.specials"));
 		for (String s : specials.getString().split("~")) {	
-			tooltip.add(new TranslatableComponent(LangUtil.INDENT2)
+			tooltip.add(Component.translatable(LangUtil.INDENT2)
 					.append(new TextComponent(s).withStyle(ChatFormatting.GOLD, ChatFormatting.ITALIC)));
 		}
 	}

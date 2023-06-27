@@ -1,7 +1,6 @@
 package mod.gottsch.forge.treasure2.core.block;
 
-import com.someguyssoftware.gottschcore.block.FacingBlock;
-
+import mod.gottsch.forge.gottschcore.block.FacingBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;

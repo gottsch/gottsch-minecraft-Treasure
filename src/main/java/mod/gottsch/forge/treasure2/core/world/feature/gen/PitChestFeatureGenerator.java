@@ -19,7 +19,6 @@ package mod.gottsch.forge.treasure2.core.world.feature.gen;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.gottschcore.random.RandomHelper;
@@ -45,6 +44,7 @@ import mod.gottsch.forge.treasure2.core.registry.RarityLevelWeightedChestGenerat
 import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 import mod.gottsch.forge.treasure2.core.world.feature.IFeatureGenContext;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -77,7 +77,7 @@ public class PitChestFeatureGenerator implements IFeatureGenerator {
 		}
 		
 		// check if it has 50% land
-		if (!WorldInfo.isSolidBase(context.level(), spawnCoords, 2, 2, 50)) {
+		if (!WorldInfo.isSolidBase(context.level().getLevel(), spawnCoords, 2, 2, 50)) {
 			Treasure.LOGGER.debug("coords -> {} does not meet solid base requires for {} x {}", spawnCoords.toShortString(), 2, 2);
 			return Optional.empty();
 		}
@@ -173,7 +173,7 @@ public class PitChestFeatureGenerator implements IFeatureGenerator {
 	 * @param random
 	 * @return
 	 */
-	public IPitGenerator<GeneratorResult<ChestGeneratorData>> selectPitGenerator(Random random) {
+	public IPitGenerator<GeneratorResult<ChestGeneratorData>> selectPitGenerator(RandomSource random) {
 		PitType pitType = RandomHelper.checkProbability(random, Config.SERVER.pits.structureProbability.get()) ? PitType.STRUCTURE : PitType.STANDARD;
 		List<IPitGenerator<GeneratorResult<ChestGeneratorData>>> pitGenerators = PitGeneratorRegistry.get(pitType);
 		IPitGenerator<GeneratorResult<ChestGeneratorData>> pitGenerator = pitGenerators.get(random.nextInt(pitGenerators.size()));
@@ -187,7 +187,7 @@ public class PitChestFeatureGenerator implements IFeatureGenerator {
 	 * @param random
 	 * @return
 	 */
-	public IMarkerGenerator<GeneratorResult<GeneratorData>> selectMarkerGenerator(Random random) {
+	public IMarkerGenerator<GeneratorResult<GeneratorData>> selectMarkerGenerator(RandomSource random) {
 		IMarkerType markerType;
 		if (Config.SERVER.markers.enableMarkerStructures.get() 
 				&& RandomHelper.checkProbability(random, Config.SERVER.markers.structureProbability.get())) {
@@ -205,20 +205,20 @@ public class PitChestFeatureGenerator implements IFeatureGenerator {
 	
 	/**
 	 * 
-	 * @param world
+	 * @param level
 	 * @param random
 	 * @param startingCoords
 	 * @param minDepth
 	 * @param maxDepth
 	 * @return
 	 */
-	public static Optional<ICoords> getUndergroundSpawnPos(ServerLevelAccessor world, Random random, ICoords startingCoords, int minDepth, int maxDepth) {
+	public static Optional<ICoords> getUndergroundSpawnPos(ServerLevelAccessor level, RandomSource random, ICoords startingCoords, int minDepth, int maxDepth) {
 		int depth = RandomHelper.randomInt(minDepth, maxDepth);
 		int ySpawn = Math.max(UNDERGROUND_OFFSET, startingCoords.getY() - depth);
 		Treasure.LOGGER.debug("ySpawn -> {}", ySpawn);
 		ICoords coords = new Coords(startingCoords.getX(), ySpawn, startingCoords.getZ());
 		// get floor pos (if in a cavern or tunnel etc)
-		coords = WorldInfo.getSubterraneanSurfaceCoords(world, coords);
+		coords = WorldInfo.getSubterraneanSurfaceCoords(level.getLevel(), coords);
 
 		return (coords == null || coords == Coords.EMPTY) ? Optional.empty() : Optional.of(coords);
 	}

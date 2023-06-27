@@ -5,7 +5,6 @@ package mod.gottsch.forge.treasure2.core.command;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 import com.mojang.brigadier.CommandDispatcher;
@@ -30,6 +29,7 @@ import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 
 /**
  * Notes: Rarity is not needed in this command. This command is for generating pits. If a chest is required for <i>test</i> then just a literal argument for chest
@@ -114,8 +114,8 @@ public class SpawnPitCommand {
 		Treasure.LOGGER.debug("executing spawn pit, pos -> {}, type -> {}, name -> {}", pos, type, pitName);
 
 		try {
-			ServerLevel world = source.getLevel();
-			Random random = new Random();
+			ServerLevel level = source.getLevel();
+			RandomSource random = level.getRandom();
 			
 			// get the type
 			PitType pitType;
@@ -144,7 +144,7 @@ public class SpawnPitCommand {
 			if (pitGenerator.isPresent()) {
 				// get surface coords
 				ICoords coords = new Coords(pos);
-				IWorldGenContext context = new WorldGenContext(world, world.getChunkSource().getGenerator(), random);
+				IWorldGenContext context = new WorldGenContext(level, level.getChunkSource().getGenerator(), random);
 				ICoords surfaceCoords = WorldInfo.getDryLandSurfaceCoordsWG(context,
 						new Coords(coords.getX(), WorldInfo.MAX_HEIGHT, coords.getZ()));
 

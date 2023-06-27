@@ -19,8 +19,7 @@ package mod.gottsch.forge.treasure2.core.block;
 
 import java.util.Random;
 
-import com.someguyssoftware.gottschcore.block.FacingBlock;
-
+import mod.gottsch.forge.gottschcore.block.FacingBlock;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.particle.CollidingParticleType;
@@ -28,6 +27,7 @@ import mod.gottsch.forge.treasure2.core.particle.TreasureParticles;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -86,7 +86,7 @@ public class WitherRootBlock extends FacingBlock implements ITreasureBlock, IMis
 	 */
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState state, Level world, BlockPos pos, Random random) {
+	public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource random) {
 
 		if (!Config.CLIENT.gui.enableFog.get()) {
 			return;

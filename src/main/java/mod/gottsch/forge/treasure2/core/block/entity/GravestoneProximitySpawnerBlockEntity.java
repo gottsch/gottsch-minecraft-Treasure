@@ -19,14 +19,11 @@
  */
 package mod.gottsch.forge.treasure2.core.block.entity;
 
-import java.util.Objects;
-import java.util.Random;
-
 import javax.annotation.Nullable;
 
 import mod.gottsch.forge.gottschcore.block.entity.ProximitySpawnerBlockEntity;
 import mod.gottsch.forge.gottschcore.random.RandomHelper;
-import mod.gottsch.forge.gottschcore.size.Quantity;
+import mod.gottsch.forge.gottschcore.size.DoubleRange;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.treasure2.Treasure;
@@ -40,13 +37,9 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 
@@ -65,7 +58,7 @@ public class GravestoneProximitySpawnerBlockEntity extends ProximitySpawnerBlock
 		super(TreasureBlockEntities.GRAVESTONE_PROXIMITY_SPAWNER_ENTITY_TYPE.get(), pos, state);
 		setProximity(20D);
 		setMobName(new ResourceLocation(Treasure.MODID, "bound_soul"));
-		setMobNum(new Quantity(1, 1));
+		setMobNum(new DoubleRange(1, 1));
 		setProximity(3D);
 		setHasEntity(true); // TEMP true
 		Treasure.LOGGER.debug("Created Gravestone tile entity");
@@ -98,7 +91,7 @@ public class GravestoneProximitySpawnerBlockEntity extends ProximitySpawnerBlock
 					isTriggered = true;
 					// exectute action
 					Treasure.LOGGER.debug("proximity pos -> {}", this.getBlockPos());
-					execute(level, new Random(), new Coords(this.getBlockPos()), new Coords(player.blockPosition()));
+					execute(level, level.getRandom(), new Coords(this.getBlockPos()), new Coords(player.blockPosition()));
 					// NOTE: does not self-destruct that is up to the execute action to perform
 				}
 				if (this.isDead()) {
@@ -112,7 +105,7 @@ public class GravestoneProximitySpawnerBlockEntity extends ProximitySpawnerBlock
 	 * 
 	 */
 	@Override
-	public void execute(Level world, Random random, ICoords blockCoords, ICoords playerCoords) {
+	public void execute(Level world, RandomSource random, ICoords blockCoords, ICoords playerCoords) {
 		Treasure.LOGGER.debug("executing...");
 		Treasure.LOGGER.debug("blockCoords -> {}, playerCoords -> {}", blockCoords.toShortString(), playerCoords.toShortString());
 		int mobCount = RandomHelper.randomInt(random, getMobNum().getMinInt(), getMobNum().getMaxInt());

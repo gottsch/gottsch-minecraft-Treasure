@@ -17,11 +17,10 @@
  */
 package mod.gottsch.forge.treasure2.core.block;
 
-import java.util.Random;
-
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
@@ -83,7 +82,7 @@ public abstract class AbstractTreasureFallingBlock extends FallingBlock implemen
 			// set to activated
 			world.setBlock(pos, defaultBlockState().setValue(ACTIVATED, Boolean.valueOf(true)), 3);
 			// initiate fall
-			tick(world.getBlockState(pos), (ServerLevel)world, pos, new Random());
+			tick(world.getBlockState(pos), (ServerLevel)world, pos, world.getRandom());
 		}
 	}
 
@@ -94,7 +93,7 @@ public abstract class AbstractTreasureFallingBlock extends FallingBlock implemen
 	 * @param pos
 	 * @param rand
 	 */
-	public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random random) {
+	public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource random) {
 		// ensure the block is activated
 		if (!worldIn.getBlockState(pos).getValue(ACTIVATED)) {
 			return;

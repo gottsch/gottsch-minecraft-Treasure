@@ -61,7 +61,7 @@ public class SubaquaticStructureFeatureGenerator implements IFeatureGenerator {
 		}
 
 		// check if it has 50% land
-		if (!WorldInfo.isSolidBase(context.level(), coords, 2, 2, 50)) {
+		if (!WorldInfo.isSolidBase(context.level().getLevel(), coords, 2, 2, 50)) {
 			Treasure.LOGGER.debug("coords -> {} does not meet solid base requires for {} x {}", coords.toShortString(), 2, 2);
 			return Optional.empty();
 		}

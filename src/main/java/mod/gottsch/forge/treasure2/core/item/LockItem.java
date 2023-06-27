@@ -39,7 +39,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component.translatable;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -129,22 +129,22 @@ public class LockItem extends Item implements ILockEffects {
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, worldIn, tooltip, flag);
 
-		tooltip.add(new TranslatableComponent(LangUtil.tooltip("key_lock.rarity"),
+		tooltip.add(Component.translatable(LangUtil.tooltip("key_lock.rarity"),
 				ChatFormatting.DARK_BLUE + getRarity().toString()));
-		tooltip.add(new TranslatableComponent(LangUtil.tooltip("key_lock.category"), ChatFormatting.GOLD + getCategory().toString()));
+		tooltip.add(Component.translatable(LangUtil.tooltip("key_lock.category"), ChatFormatting.GOLD + getCategory().toString()));
 
 		LangUtil.appendAdvancedHoverText(tooltip, tt -> {
 			MutableComponent craftable = null;
 			if (isCraftable()) {
-				craftable = new TranslatableComponent(LangUtil.tooltip("boolean.yes")).withStyle(ChatFormatting.GREEN);
+				craftable = Component.translatable(LangUtil.tooltip("boolean.yes")).withStyle(ChatFormatting.GREEN);
 			} else {
-				craftable = new TranslatableComponent(LangUtil.tooltip("boolean.no")).withStyle(ChatFormatting.DARK_RED);
+				craftable = Component.translatable(LangUtil.tooltip("boolean.no")).withStyle(ChatFormatting.DARK_RED);
 			}
-			tooltip.add(new TranslatableComponent(LangUtil.tooltip("key_lock.craftable"), craftable));
-			tooltip.add(new TranslatableComponent(LangUtil.tooltip("key_lock.accepts_keys")));
+			tooltip.add(Component.translatable(LangUtil.tooltip("key_lock.craftable"), craftable));
+			tooltip.add(Component.translatable(LangUtil.tooltip("key_lock.accepts_keys")));
 			getKeys().forEach(key -> {
 				tooltip.add(new TextComponent("- ")
-						.append(new TranslatableComponent(key.getDescription().getString()).withStyle(ChatFormatting.DARK_GREEN)));
+						.append(Component.translatable(key.getDescription().getString()).withStyle(ChatFormatting.DARK_GREEN)));
 			});
 
 			appendHoverSpecials(stack, worldIn, tooltip, flag);

@@ -28,7 +28,7 @@ import mod.gottsch.forge.treasure2.core.registry.KeyLockRegistry;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component.translatable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -81,12 +81,12 @@ public class ThiefsLockPick extends KeyItem {
 	@Override
 	public  void appendHoverSpecials(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flag) {
 
-		TranslatableComponent s1 = new TranslatableComponent(LangUtil.tooltip("key_lock.thiefs_lock_pick.specials"), 
+		Component.translatable s1 = Component.translatable(LangUtil.tooltip("key_lock.thiefs_lock_pick.specials"), 
 				getSuccessProbability(), 
 				(this.getSuccessProbability() - (this.getSuccessProbability()/4)),
 				(getSuccessProbability()/2));
 			
-		TranslatableComponent s2 = new TranslatableComponent(LangUtil.tooltip("key_lock.specials"), 
+		Component.translatable s2 = Component.translatable(LangUtil.tooltip("key_lock.specials"), 
 				ChatFormatting.GOLD + s1.getString());
 		tooltip.add(s2);
 	}

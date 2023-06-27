@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-import mod.gottsch.forge.gottschcore.size.Quantity;
+import mod.gottsch.forge.gottschcore.size.DoubleRange;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
@@ -138,7 +138,7 @@ public class StructureMarkerGenerator implements IMarkerGenerator<GeneratorResul
 				
 		// if offset is 2 or less, then determine if the solid ground percentage is valid
 		if (offset >= -2) {
-			if (!WorldInfo.isSolidBase(context.level(), spawnCoords, transformedSize.getX(), transformedSize.getZ(), 70)) {
+			if (!WorldInfo.isSolidBase(context.level().getLevel(), spawnCoords, transformedSize.getX(), transformedSize.getZ(), 70)) {
 				Treasure.LOGGER.debug("Coords -> [{}] does not meet {}% solid base requirements for size -> {} x {}", spawnCoords.toShortString(), 70, transformedSize.getX(), transformedSize.getY());
 				 Optional<GeneratorResult<GeneratorData>> genResult = new GravestoneMarkerGenerator().generate(context, coords);
 				 return genResult;
@@ -173,8 +173,9 @@ public class StructureMarkerGenerator implements IMarkerGenerator<GeneratorResul
 	    	context.level().setBlock(c2.toPos(), TreasureBlocks.PROXIMITY_SPAWNER.get().defaultBlockState(), 3);
 	    	TreasureProximitySpawnerBlockEntity te = (TreasureProximitySpawnerBlockEntity) context.level().getBlockEntity(c2.toPos());
 	    	EntityType<?> r = DungeonHooks.getRandomDungeonMob(context.random());
-	    	te.setMobName(r.getRegistryName());
-	    	te.setMobNum(new Quantity(1, 2));
+	    	
+	    	te.setMobName(EntityType.getKey(r));
+	    	te.setMobNum(new DoubleRange(1, 2));
 	    	te.setProximity(10D);
 //		    Treasure.LOGGER.debug("Creating proximity spawner @ {} -> [mobName={}, spawnRange={}", c.getCoords().toShortString(), r, te.getProximity());
 		}		

@@ -45,7 +45,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component.translatable;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -95,7 +95,7 @@ public class KeyRingItem extends Item implements MenuProvider {
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-		tooltip.add(new TranslatableComponent(LangUtil.tooltip("key_lock.key_ring")).withStyle(ChatFormatting.GOLD, ChatFormatting.ITALIC));
+		tooltip.add(Component.translatable(LangUtil.tooltip("key_lock.key_ring")).withStyle(ChatFormatting.GOLD, ChatFormatting.ITALIC));
 	}
 
 	@Override
@@ -287,7 +287,7 @@ public class KeyRingItem extends Item implements MenuProvider {
 
 	@Override
 	public Component getDisplayName() {
-		return new TranslatableComponent("item.treasure2.key_ring");
+		return Component.translatable("item.treasure2.key_ring");
 	}
 
 	////////////////////////

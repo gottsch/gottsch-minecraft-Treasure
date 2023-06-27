@@ -1,22 +1,19 @@
 
 package mod.gottsch.forge.treasure2.core.block;
 
-import java.util.Random;
-
 import javax.annotation.Nullable;
 
-import com.someguyssoftware.gottschcore.block.FacingBlock;
-
+import mod.gottsch.forge.gottschcore.block.FacingBlock;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.block.entity.GravestoneProximitySpawnerBlockEntity;
 import mod.gottsch.forge.treasure2.core.block.entity.MistEmitterBlockEntity;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.particle.CollidingParticleType;
 import mod.gottsch.forge.treasure2.core.particle.TreasureParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -46,7 +43,7 @@ public class WitherSoulLog extends FacingBlock implements ITreasureBlock, IMistS
 	 * An array of VoxelShape shapes for the bounding box
 	 */
 	private VoxelShape[] bounds = new VoxelShape[4];
-	
+
 	/**
 	 * 
 	 * @param modID
@@ -56,7 +53,7 @@ public class WitherSoulLog extends FacingBlock implements ITreasureBlock, IMistS
 	public WitherSoulLog(Block.Properties properties) {
 		super(properties);
 		registerDefaultState(getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(APPEARANCE, Appearance.NONE));
-		
+
 		// set the default shapes/shape (full block)
 		VoxelShape shape = Block.box(0, 0, 0, 16, 16, 16);
 		setBounds(
@@ -85,7 +82,7 @@ public class WitherSoulLog extends FacingBlock implements ITreasureBlock, IMistS
 		}
 		return null;
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -111,14 +108,14 @@ public class WitherSoulLog extends FacingBlock implements ITreasureBlock, IMistS
 			return bounds[3];
 		}
 	}
-	
+
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {		BlockState blockState = this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
-		return blockState;
+	return blockState;
 	}
 
-	   @OnlyIn(Dist.CLIENT)
-		public void animateTick(BlockState state, Level world, BlockPos pos, Random random) {
+	@OnlyIn(Dist.CLIENT)
+	public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource random) {
 		if (WorldInfo.isServerSide(world)) {
 			return;
 		}
@@ -126,7 +123,7 @@ public class WitherSoulLog extends FacingBlock implements ITreasureBlock, IMistS
 		if (!Config.CLIENT.gui.enableFog.get()) {
 			return;
 		}
-		
+
 		// get the appearance property
 		Appearance appearance =state.getValue(APPEARANCE);
 
@@ -173,7 +170,7 @@ public class WitherSoulLog extends FacingBlock implements ITreasureBlock, IMistS
 		} else {
 			mistType = TreasureParticles.POISON_MIST_PARTICLE.get();			
 		}
-		
+
 		try {
 			mistType.setSourceCoords(new Coords(x, y, z));
 			world.addParticle(mistType, false, xPos, yPos, zPos, 0, 0, 0);
@@ -182,7 +179,7 @@ public class WitherSoulLog extends FacingBlock implements ITreasureBlock, IMistS
 			Treasure.LOGGER.error("error with particle:", e);
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @author Mark Gottschling on Jun 7, 2018
@@ -218,7 +215,7 @@ public class WitherSoulLog extends FacingBlock implements ITreasureBlock, IMistS
 			return name;
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @return

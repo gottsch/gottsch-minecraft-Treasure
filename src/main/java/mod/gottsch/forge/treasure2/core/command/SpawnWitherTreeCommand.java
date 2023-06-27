@@ -18,7 +18,6 @@
 package mod.gottsch.forge.treasure2.core.command;
 
 import java.util.Optional;
-import java.util.Random;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
@@ -45,6 +44,7 @@ import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 
 
 /**
@@ -95,7 +95,7 @@ public class SpawnWitherTreeCommand {
 
 		try {
 			ServerLevel world = source.getLevel();
-			Random random = new Random();
+			RandomSource random = world.getRandom();
 			IRarity rarity = Rarity.COMMON;
 			
 //			ResourceLocation dimension = WorldInfo.getDimension(world);

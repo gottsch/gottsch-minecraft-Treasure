@@ -4,7 +4,6 @@ import mod.gottsch.forge.treasure2.core.chest.ChestInventorySize;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
@@ -24,7 +23,7 @@ public class WoodChestBlockEntity extends AbstractTreasureChestBlockEntity {
 	
     @Override
 	public Component getDefaultName() {
-		return new TranslatableComponent(LangUtil.screen("wood_chest.name"));
+		return Component.translatable(LangUtil.screen("wood_chest.name"));
 	}
     
 	@Override

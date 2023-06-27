@@ -112,7 +112,7 @@ public class TerraneanChestFeature extends ChestFeature {
 		// TODO add a check against a tag that lists all the build on materials (dirt, stone, cobblestone etc), or a blacklist (bricks, planks, wool, etc)
 
 		// the get first surface y (could be leaves, trunk, water, etc)
-		ICoords spawnCoords = WorldInfo.getDryLandSurfaceCoords(genLevel, context.chunkGenerator(), new Coords(context.origin().offset(WorldInfo.CHUNK_RADIUS - 1, 0, WorldInfo.CHUNK_RADIUS - 1)));
+		ICoords spawnCoords = WorldInfo.getDryLandSurfaceCoords(genLevel.getLevel(), context.chunkGenerator(), new Coords(context.origin().offset(WorldInfo.CHUNK_RADIUS - 1, 0, WorldInfo.CHUNK_RADIUS - 1)));
 		if (spawnCoords == Coords.EMPTY) {
 			return false;
 		}

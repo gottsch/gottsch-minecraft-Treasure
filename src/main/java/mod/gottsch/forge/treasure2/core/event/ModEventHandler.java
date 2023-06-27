@@ -22,10 +22,9 @@ import javax.annotation.Nonnull;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.loot.modifier.TreasureLootModifier;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.RegisterEvent;
 
 /**
  * 
@@ -35,11 +34,11 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(modid = Treasure.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModEventHandler {
 	
-	@SubscribeEvent
-	public static void registerModifierSerializers(@Nonnull final RegistryEvent.Register<GlobalLootModifierSerializer<?>> event) {
-		event.getRegistry().registerAll(
-				new TreasureLootModifier.Serializer().setRegistryName(
-						new ResourceLocation(Treasure.MODID, "default"))		
-				);
-	}
+//	@SubscribeEvent
+//	public static void registerModifierSerializers(@Nonnull final RegisterEvent event) {
+//		event.getForgeRegistry().registerAll(
+//				new TreasureLootModifier.Serializer().setRegistryName(
+//						new ResourceLocation(Treasure.MODID, "default"))		
+//				);
+//	}
 }

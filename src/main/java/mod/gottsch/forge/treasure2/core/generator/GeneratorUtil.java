@@ -69,7 +69,7 @@ public class GeneratorUtil {
 	 */
 	public static boolean replaceWithBlock(ServerLevelAccessor world, ICoords coords, Block block) {
 		// don't change if old block is air
-		BlockContext context = new BlockContext(world, coords);
+		BlockContext context = new BlockContext(world.getLevel(), coords);
 		if (context.isAir()) {
 			return false;
 		}
@@ -86,7 +86,7 @@ public class GeneratorUtil {
 	 */
 	public static boolean replaceWithBlockState(ServerLevelAccessor world, ICoords coords, BlockState blockState) {
 		// don't change if old block is air
-		BlockContext context = new BlockContext(world, coords);
+		BlockContext context = new BlockContext(world.getLevel(), coords);
 		if (context.isAir()) {
 			return false;
 		}
@@ -156,7 +156,7 @@ public class GeneratorUtil {
 		try {
 			BlockPos pos = coords.toPos();
 			// create and place the chest
-			WorldInfo.setBlock(world, coords, chest
+			WorldInfo.setBlock(world.getLevel(), coords, chest
 					.defaultBlockState()
 					.setValue(FACING, direction)
 					.setValue(AbstractTreasureChestBlock.DISCOVERED, discovered));
@@ -172,7 +172,7 @@ public class GeneratorUtil {
 
 			if (blockEntity == null) {
 				// remove the chest block
-				WorldInfo.setBlock(world, coords, Blocks.AIR.defaultBlockState());
+				WorldInfo.setBlock(world.getLevel(), coords, Blocks.AIR.defaultBlockState());
 				Treasure.LOGGER.warn("unable to create treasure chest's BlockEntity, removing chest.");
 				return false;
 			}
@@ -196,8 +196,8 @@ public class GeneratorUtil {
 		Direction facing = Direction.Plane.HORIZONTAL.getRandomDirection(context.random());
 		ICoords coords2 = new Coords(coords.toPos().relative(facing));
 
-		BlockContext blockContext = new BlockContext(context.level(), coords);
-		BlockContext blockContext2 = new BlockContext(context.level(), coords2);
+		BlockContext blockContext = new BlockContext(context.level().getLevel(), coords);
+		BlockContext blockContext2 = new BlockContext(context.level().getLevel(), coords2);
 
 		boolean flag = blockContext.isReplaceable();
 		boolean flag1 = blockContext2.isReplaceable();

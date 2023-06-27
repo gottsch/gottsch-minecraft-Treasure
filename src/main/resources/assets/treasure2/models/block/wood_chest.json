@@ -5,6 +5,7 @@
 		"1": "treasure2:block/chest/wood_chest",
 		"particle": "treasure2:block/chest/particle/wood_chest_particle"
 	},
+	"render_type": "cutout_mipped",
 	"elements": [
 		{
 			"name": "base",
