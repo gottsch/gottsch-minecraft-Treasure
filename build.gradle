@@ -188,7 +188,7 @@ dependencies {
 	
 	//compileOnly fg.deobf("curse.maven:champions-307152:${cf_champions}")
 	//compileOnly fg.deobf("curse.maven:jade-324717:4082408")
-	compileOnly fg.deobf("curse.maven:compass-coords-368398:3765883")
+	//compileOnly fg.deobf("curse.maven:compass-coords-368398:3765883")
 	
 	// implementation files(gottschcore_path)
 	//runtimeOnly files(minimap_path)
@@ -204,10 +204,10 @@ dependencies {
 jar {
     manifest {
         attributes([
-                "Specification-Title"     : "Enemy Echelons",
+                "Specification-Title"     : "Treasure2",
                 "Specification-Vendor"    : "gottsch",
                 "Specification-Version"   : "1",
-                "Implementation-Title"    : "Enemy Echelons",
+                "Implementation-Title"    : "Treasure2",
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : "gottsch",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
