@@ -19,7 +19,6 @@
  */
 package mod.gottsch.forge.treasure2.core.generator.well;
 
-import java.util.List;
 import java.util.Optional;
 
 import mod.gottsch.forge.gottschcore.block.BlockContext;
@@ -28,17 +27,13 @@ import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
-import mod.gottsch.forge.gottschcore.world.gen.structure.BlockInfoContext;
 import mod.gottsch.forge.gottschcore.world.gen.structure.GottschTemplate;
 import mod.gottsch.forge.gottschcore.world.gen.structure.PlacementSettings;
-import mod.gottsch.forge.gottschcore.world.gen.structure.StructureMarkers;
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.config.StructureConfiguration.StructMeta;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
-import mod.gottsch.forge.treasure2.core.generator.GeneratorUtil;
 import mod.gottsch.forge.treasure2.core.generator.TemplateGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.template.TemplateGenerator;
 import mod.gottsch.forge.treasure2.core.structure.StructureCategory;
@@ -108,7 +103,7 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		 */
 		// 1. determine y-coord of land surface for the actual spawn coords
 		//		actualSpawnCoords = WorldInfo.getDryLandSurfaceCoords(world, new Coords(actualSpawnCoords.getX(), 255, actualSpawnCoords.getZ()));
-		actualSpawnCoords = WorldInfo.getDryLandSurfaceCoords(context.level(), context.chunkGenerator(), actualSpawnCoords);
+		actualSpawnCoords = WorldInfo.getDryLandSurfaceCoords(context.level().getLevel(), context.chunkGenerator(), actualSpawnCoords);
 
 		if (actualSpawnCoords == null || actualSpawnCoords == Coords.EMPTY) {
 			Treasure.LOGGER.debug("Returning due to marker coords == null or EMPTY_COORDS");
@@ -117,7 +112,7 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		Treasure.LOGGER.debug("actual spawn coords after dry land surface check -> {}", actualSpawnCoords);
 
 		// 2. check if it has 50% land
-		if (!WorldInfo.isSolidBase(context.level(), actualSpawnCoords, 3, 3, 50)) {
+		if (!WorldInfo.isSolidBase(context.level().getLevel(), actualSpawnCoords, 3, 3, 50)) {
 			Treasure.LOGGER.debug("Coords [{}] does not meet solid base requires for {} x {}", actualSpawnCoords.toShortString(), 3, 3);
 			return Optional.empty();
 		}	
@@ -234,13 +229,13 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 			Treasure.LOGGER.debug("Returning due to marker coords == null or EMPTY_COORDS");
 			return;
 		}
-		BlockContext markerContext = new BlockContext(context.level(), markerCoords);
+		BlockContext markerContext = new BlockContext(context.level().getLevel(), markerCoords);
 		if (!markerContext.isAir() && !markerContext.isReplaceable()) {
 			Treasure.LOGGER.debug("Returning due to marker coords is not air nor replaceable.");
 			return;
 		}
 
-		markerContext = new BlockContext(context.level(), markerCoords.add(0, -1, 0));
+		markerContext = new BlockContext(context.level().getLevel(), markerCoords.add(0, -1, 0));
 		Treasure.LOGGER.debug("Marker on block: {}", markerContext.getState());
 		if (markerContext.equalsBlock(Blocks.GRASS_BLOCK) || markerContext.equalsBlock(Blocks.DIRT)) {
 			blockState = FLOWERS.get(context.random().nextInt(FLOWERS.size())).defaultBlockState();

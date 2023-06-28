@@ -23,7 +23,7 @@ import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component.translatable;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -62,7 +62,7 @@ public interface IKeyEffects {
 	 * @param chestTileEntity
 	 */
 	default public void doKeyBreakEffects(Level worldIn, Player player, BlockPos chestPos) {
-		player.sendMessage(Component.translatable(LangUtil.chat("key.key_break")), Util.NIL_UUID);
+		player.sendSystemMessage(Component.translatable(LangUtil.chat("key.key_break")));
 
 		BlockEntity be = worldIn.getBlockEntity(chestPos);
 		if (be instanceof ITreasureChestBlockEntity) {
@@ -88,7 +88,7 @@ public interface IKeyEffects {
 	 * @param chestTileEntity
 	 */
 	default public void doKeyNotFitEffects(Level worldIn, Player player, BlockPos chestPos) {
-		player.sendMessage(Component.translatable(LangUtil.chat("key.key_not_fit")), Util.NIL_UUID);
+		player.sendSystemMessage(Component.translatable(LangUtil.chat("key.key_not_fit")));
 		
 		BlockEntity be = worldIn.getBlockEntity(chestPos);
 		if (be instanceof ITreasureChestBlockEntity) {
@@ -109,6 +109,6 @@ public interface IKeyEffects {
 	 * @param chestTileEntity
 	 */
 	default public void doKeyUnableToUnlockEffects(Level worldIn, Player player, BlockPos chestPos) {		
-		player.sendMessage(Component.translatable(LangUtil.chat("key.key_unable_unlock")), Util.NIL_UUID);
+		player.sendSystemMessage(Component.translatable(LangUtil.chat("key.key_unable_unlock")));
 	}
 }

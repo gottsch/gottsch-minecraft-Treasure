@@ -20,7 +20,6 @@ package mod.gottsch.forge.treasure2.core.loot;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -39,6 +38,7 @@ import mod.gottsch.forge.treasure2.core.item.TreasureItems;
 import mod.gottsch.forge.treasure2.core.registry.KeyLockRegistry;
 import mod.gottsch.forge.treasure2.core.registry.TreasureLootTableRegistry;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -64,7 +64,7 @@ public abstract class LootGenerator implements ILootGenerator {
 	 * @return
 	 */
 	@Override
-	public Pair<List<ItemStack>, List<ItemStack>> generateLoot(Level world, Random random, ILootTableType type, IRarity rarity, Player player, ICoords coords) {
+	public Pair<List<ItemStack>, List<ItemStack>> generateLoot(Level world, RandomSource random, ILootTableType type, IRarity rarity, Player player, ICoords coords) {
 		List<ItemStack> treasureStacks = new ArrayList<>();
 		List<ItemStack> itemStacks = new ArrayList<>();
 
@@ -117,7 +117,7 @@ public abstract class LootGenerator implements ILootGenerator {
 	 * @return
 	 */
 	@Override
-	public ItemStack getDefaultLootItem(Random random, IRarity rarity) {
+	public ItemStack getDefaultLootItem(RandomSource random, IRarity rarity) {
 		List<RegistryObject<KeyItem>> keys = KeyLockRegistry.getKeys(rarity);
 		List<KeyItem> keyItems = keys.stream().map(k -> k.get()).toList();
 		if (keyItems.isEmpty()) {
@@ -133,7 +133,7 @@ public abstract class LootGenerator implements ILootGenerator {
 	 * @param rarity
 	 * @return
 	 */
-	public Optional<LootTableShell> getLootTableShell(Level level, Random random, ILootTableType type, IRarity rarity) {
+	public Optional<LootTableShell> getLootTableShell(Level level, RandomSource random, ILootTableType type, IRarity rarity) {
 		List<LootTableShell> lootTables = getLootTables(type, rarity);
 
 		//		// handle if loot tables is null or size = 0. return an item (apple) to ensure continuing functionality
@@ -201,7 +201,7 @@ public abstract class LootGenerator implements ILootGenerator {
 	 */
 	@Deprecated
 	// can't be called using the implemented generateLoot()
-	public void injectLoot(Level level, Random random, List<ItemStack> itemStacks, ILootTableType type, IRarity rarity, LootContext lootContext) {
+	public void injectLoot(Level level, RandomSource random, List<ItemStack> itemStacks, ILootTableType type, IRarity rarity, LootContext lootContext) {
 		// get a list of "inject" loot tables
 		List<LootTableShell> injectLootTableShells = buildLootTableList(LootTableType.INJECTS, rarity, type);
 
@@ -220,7 +220,7 @@ public abstract class LootGenerator implements ILootGenerator {
 	 * @param rarity
 	 * @param lootContext
 	 */
-	public void injectLoot(Level level, Random random, Pair<List<ItemStack>, List<ItemStack>> lootStacks,
+	public void injectLoot(Level level, RandomSource random, Pair<List<ItemStack>, List<ItemStack>> lootStacks,
 			ILootTableType type, IRarity rarity, LootContext lootContext) {
 		
 		// get a list of "inject" loot tables
@@ -247,7 +247,7 @@ public abstract class LootGenerator implements ILootGenerator {
 	 * @param predicate
 	 * @return
 	 */
-	public List<ItemStack> getInjectedLootItems(Level world, Random random, List<LootTableShell> lootTableShells,
+	public List<ItemStack> getInjectedLootItems(Level world, RandomSource random, List<LootTableShell> lootTableShells,
 			LootContext lootContext, Predicate<LootPoolShell> predicate) {
 
 		List<ItemStack> itemStacks = new ArrayList<>();		

@@ -34,12 +34,11 @@ import mod.gottsch.forge.treasure2.core.item.effects.ILockEffects;
 import mod.gottsch.forge.treasure2.core.lock.LockState;
 import mod.gottsch.forge.treasure2.core.registry.KeyLockRegistry;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
+import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.Component.translatable;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -143,7 +142,7 @@ public class LockItem extends Item implements ILockEffects {
 			tooltip.add(Component.translatable(LangUtil.tooltip("key_lock.craftable"), craftable));
 			tooltip.add(Component.translatable(LangUtil.tooltip("key_lock.accepts_keys")));
 			getKeys().forEach(key -> {
-				tooltip.add(new TextComponent("- ")
+				tooltip.add(Component.literal("- ")
 						.append(Component.translatable(key.getDescription().getString()).withStyle(ChatFormatting.DARK_GREEN)));
 			});
 
@@ -355,7 +354,7 @@ public class LockItem extends Item implements ILockEffects {
 	 */
 	@Override
 	public String toString() {
-		return "LockItem [name=" + getRegistryName() + ", rarity=" + getRarity() + ", craftable=" + craftable + ", keys="
+		return "LockItem [name=" + ModUtil.getName(this) + ", rarity=" + getRarity() + ", craftable=" + craftable + ", keys="
 				+ keys + "]";
 	}
 

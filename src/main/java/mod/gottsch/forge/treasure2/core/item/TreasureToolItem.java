@@ -19,10 +19,8 @@ package mod.gottsch.forge.treasure2.core.item;
 
 import java.util.List;
 
-import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Component.translatable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -48,7 +46,7 @@ public class TreasureToolItem extends Item {
 	 * Required to prevent item consumpution in recipe
 	 */
 	@Override
-	public boolean hasContainerItem(ItemStack stack) {
+	public boolean hasCraftingRemainingItem() {
 		return true;
 	}
 
@@ -56,11 +54,10 @@ public class TreasureToolItem extends Item {
 	 * Required to prevent item consumpution in recipe
 	 */
 	@Override
-	public ItemStack getContainerItem(ItemStack itemStack) {
-		super.getContainerItem(itemStack);
-        if (!hasContainerItem(itemStack)) {
-            return ItemStack.EMPTY;
+	public boolean hasCraftingRemainingItem(ItemStack itemStack) {
+        if (!hasCraftingRemainingItem()) {
+            return false;
         }
-        return itemStack.copy();
+        return true;
 	}
 }

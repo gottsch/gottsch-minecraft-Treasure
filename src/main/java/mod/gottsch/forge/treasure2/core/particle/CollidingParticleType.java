@@ -120,7 +120,7 @@ public class CollidingParticleType extends ParticleType<CollidingParticleType> i
 	@Override
 	public String writeToString() {
 		return String.format(Locale.ROOT, "%s %s",
-				this.getType().getRegistryName(), sourceCoords.toShortString());
+				this.getType().getClass().getSimpleName(), sourceCoords.toShortString());
 	}
 	
 	@Override

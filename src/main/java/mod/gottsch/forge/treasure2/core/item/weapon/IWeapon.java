@@ -23,8 +23,6 @@ import java.util.List;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.Component.translatable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -57,12 +55,12 @@ public interface IWeapon {
 	 */
 	default public void appendStats(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flag) {
 		if (getCriticalChance() > 0f) {
-			tooltip.add(new TextComponent(LangUtil.NEWLINE));
+			tooltip.add(Component.literal(LangUtil.NEWLINE));
 			tooltip.add(Component.translatable(LangUtil.tooltip("weapons.power_attack_chance"), df.format(getCriticalChance()))
 					.withStyle(ChatFormatting.AQUA));
 			tooltip.add(Component.translatable(LangUtil.tooltip("weapons.power_attack_damage"), df.format(getCriticalDamage()))
 					.withStyle(ChatFormatting.AQUA));
-			tooltip.add(new TextComponent(LangUtil.NEWLINE));
+			tooltip.add(Component.literal(LangUtil.NEWLINE));
 		}
 	}
 	

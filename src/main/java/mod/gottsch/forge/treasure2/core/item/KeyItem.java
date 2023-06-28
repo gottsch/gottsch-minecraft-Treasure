@@ -23,7 +23,6 @@ import static mod.gottsch.forge.treasure2.core.capability.TreasureCapabilities.D
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 import java.util.function.Predicate;
 
@@ -34,7 +33,6 @@ import mod.gottsch.forge.gottschcore.random.RandomHelper;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
-import mod.gottsch.forge.treasure2.core.block.ITreasureChestBlock;
 import mod.gottsch.forge.treasure2.core.block.ITreasureChestBlockProxy;
 import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
 import mod.gottsch.forge.treasure2.core.block.entity.ITreasureChestBlockEntity;
@@ -47,27 +45,23 @@ import mod.gottsch.forge.treasure2.core.item.effects.IKeyEffects;
 import mod.gottsch.forge.treasure2.core.lock.LockState;
 import mod.gottsch.forge.treasure2.core.registry.KeyLockRegistry;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
+import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.Component.translatable;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
 
 /**
  * 
@@ -424,7 +418,7 @@ public class KeyItem extends Item implements IKeyEffects {
 	 */
 	public boolean unlock(LockItem lockItem) {	
 		if (lockItem.acceptsKey(this) || fitsLock(lockItem)) {
-			Treasure.LOGGER.debug("lock -> {} accepts key -> {}", lockItem.getRegistryName(), this.getRegistryName());
+			Treasure.LOGGER.debug("lock -> {} accepts key -> {}", ModUtil.getName(lockItem), ModUtil.getName(this));
 			if (RandomHelper.checkProbability(new Random(), this.getSuccessProbability())) {
 				Treasure.LOGGER.debug("unlock attempt met probability");
 				return true;

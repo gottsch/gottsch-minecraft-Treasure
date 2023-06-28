@@ -22,7 +22,6 @@ import java.util.List;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Component.translatable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;

@@ -24,8 +24,6 @@ import java.util.Optional;
 
 import javax.annotation.Nullable;
 
-import com.someguyssoftware.gottschcore.item.ModItem;
-
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.capability.PouchCapability;
@@ -35,7 +33,6 @@ import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Component.translatable;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -88,7 +85,7 @@ public class PouchItem extends Item implements MenuProvider {
 			return InteractionResultHolder.fail(player.getItemInHand(hand));		}
 
 		// open the chest
-		NetworkHooks.openGui((ServerPlayer)player, this, player.blockPosition());
+		NetworkHooks.openScreen((ServerPlayer)player, this, player.blockPosition());
 		
 		return InteractionResultHolder.pass(player.getItemInHand(hand));
 	}

@@ -37,6 +37,7 @@ import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorUtil;
 import mod.gottsch.forge.treasure2.core.generator.TemplateGeneratorData;
 import mod.gottsch.forge.treasure2.core.registry.TreasureTemplateRegistry;
+import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Block;
@@ -124,7 +125,7 @@ public class TemplateGenerator implements ITemplateGenerator<GeneratorResult<Tem
 			BlockInfoContext blockContext = getAbsoluteTransformedContext(entry.getValue(), spawnCoords, placement);
 			result.getData().getMap().put(entry.getKey(), blockContext);
 			Treasure.LOGGER.debug("new: adding to structure info absoluted transformed coords -> {} : {}",
-					entry.getKey().getRegistryName(), blockContext.getCoords().toShortString());
+					ModUtil.getName(entry.getKey()), blockContext.getCoords().toShortString());
 		}
 
 		// get the transformed size

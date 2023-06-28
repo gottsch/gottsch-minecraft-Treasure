@@ -17,7 +17,6 @@
  */package mod.gottsch.forge.treasure2.core.loot;
 
 import java.util.List;
-import java.util.Random;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -52,6 +51,6 @@ public interface ILootGenerator {
 	 * @param rarity
 	 * @return
 	 */
-	ItemStack getDefaultLootItem(Random random, IRarity rarity);
+	ItemStack getDefaultLootItem(RandomSource random, IRarity rarity);
 
 }

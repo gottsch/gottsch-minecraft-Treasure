@@ -17,8 +17,8 @@
  */
 package mod.gottsch.forge.treasure2.core.item;
 
+import java.awt.TextComponent;
 import java.util.List;
-import java.util.function.Predicate;
 
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
@@ -26,8 +26,6 @@ import mod.gottsch.forge.treasure2.core.registry.KeyLockRegistry;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.Component.translatable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -73,10 +71,10 @@ public class SkeletonKey extends KeyItem {
 	public  void appendHoverSpecials(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flag) {
 		tooltip.add(Component.translatable(LangUtil.tooltip("key_lock.specials")));
 
-		Component.translatable specials = Component.translatable(LangUtil.tooltip("key_lock.skeleton_key.specials"));
+		Component specials = Component.translatable(LangUtil.tooltip("key_lock.skeleton_key.specials"));
 		for (String s : specials.getString().split("~")) {	
-			tooltip.add(Component.translatable(LangUtil.INDENT2)
-					.append(new TextComponent(s).withStyle(ChatFormatting.GOLD, ChatFormatting.ITALIC)));
+			tooltip.add(Component.literal(LangUtil.INDENT2)
+					.append(Component.literal(s).withStyle(ChatFormatting.GOLD, ChatFormatting.ITALIC)));
 		}
 	}
 }

@@ -21,8 +21,7 @@ import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.Component.translatable;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.*;
@@ -238,7 +237,7 @@ public class TreasureItems {
 
 		@Override
 		public Component getName(ItemStack stack) {
-			return ((Component.translatable)super.getName(stack)).withStyle(ChatFormatting.YELLOW);
+			return ((MutableComponent)super.getName(stack)).withStyle(ChatFormatting.YELLOW);
 		}
 
 		@Override
@@ -250,11 +249,11 @@ public class TreasureItems {
 		}
 		@Override
 		public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
-			tooltip.add(new TextComponent(LangUtil.NEWLINE));
-			tooltip.add(new TextComponent(LangUtil.INDENT4)
+			tooltip.add(Component.literal(LangUtil.NEWLINE));
+			tooltip.add(Component.literal(LangUtil.INDENT4)
 					.append(Component.translatable(LangUtil.tooltip("key_lock.one_key.lore"))
-							.append(new TextComponent(LangUtil.INDENT4)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC)));
-			tooltip.add(new TextComponent(LangUtil.NEWLINE));
+							.append(Component.literal(LangUtil.INDENT4)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC)));
+			tooltip.add(Component.literal(LangUtil.NEWLINE));
 		}
 
 		@Override
@@ -449,11 +448,11 @@ public class TreasureItems {
 			() -> new Sword(MYTHICAL, 3, -2.4F, TREASURE_ITEM_PROPERTIES) {
 				@Override
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
-					tooltip.add(new TextComponent(LangUtil.NEWLINE));
-					tooltip.add(new TextComponent(LangUtil.INDENT4)
+					tooltip.add(Component.literal(LangUtil.NEWLINE));
+					tooltip.add(Component.literal(LangUtil.INDENT4)
 							.append(Component.translatable(LangUtil.tooltip("weapons.sword_of_power.lore"))
-									.append(new TextComponent(LangUtil.INDENT4)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC)));
-					tooltip.add(new TextComponent(LangUtil.NEWLINE));
+									.append(Component.literal(LangUtil.INDENT4)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC)));
+					tooltip.add(Component.literal(LangUtil.NEWLINE));
 				}
 				@Override
 				public boolean isUnique() {
@@ -469,11 +468,11 @@ public class TreasureItems {
 			() -> new Sword(MYTHICAL, 3, -2.4F, TREASURE_ITEM_PROPERTIES) {
 				@Override
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
-					tooltip.add(new TextComponent(LangUtil.NEWLINE));
-					tooltip.add(new TextComponent(LangUtil.INDENT4)
+					tooltip.add(Component.literal(LangUtil.NEWLINE));
+					tooltip.add(Component.literal(LangUtil.INDENT4)
 							.append(Component.translatable(LangUtil.tooltip("weapons.black_sword.lore"))
-									.append(new TextComponent(LangUtil.INDENT4)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC)));
-					tooltip.add(new TextComponent(LangUtil.NEWLINE));
+									.append(Component.literal(LangUtil.INDENT4)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC)));
+					tooltip.add(Component.literal(LangUtil.NEWLINE));
 				}
 				@Override
 				public boolean isUnique() {
@@ -489,14 +488,14 @@ public class TreasureItems {
 			() -> new Sword(MYTHICAL, 3, -2.0F, 50F, 7F, TREASURE_ITEM_PROPERTIES) {
 				@Override
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
-					tooltip.add(new TextComponent(LangUtil.NEWLINE));
+					tooltip.add(Component.literal(LangUtil.NEWLINE));
 					// lore may be multiple lines, so separate on ~ and add to tooltip
-					Component.translatable lore = Component.translatable(LangUtil.tooltip("weapons.oathbringer.lore"));
+					Component lore = Component.translatable(LangUtil.tooltip("weapons.oathbringer.lore"));
 					for (String s : lore.getString().split("~")) {	
-						tooltip.add(new TextComponent(LangUtil.INDENT4)
+						tooltip.add(Component.literal(LangUtil.INDENT4)
 								.append(Component.translatable(s)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC));
 					}
-					tooltip.add(new TextComponent(LangUtil.NEWLINE));
+					tooltip.add(Component.literal(LangUtil.NEWLINE));
 				}
 				@Override
 				public boolean isUnique() {
@@ -512,11 +511,11 @@ public class TreasureItems {
 			() -> new Sword(EPIC, 3, -2.4F, 35F, 5F, TREASURE_ITEM_PROPERTIES) {
 				@Override
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
-					tooltip.add(new TextComponent(LangUtil.NEWLINE));
-					tooltip.add(new TextComponent(LangUtil.INDENT4)
+					tooltip.add(Component.literal(LangUtil.NEWLINE));
+					tooltip.add(Component.literal(LangUtil.INDENT4)
 							.append(Component.translatable(LangUtil.tooltip("weapons.sword_of_omens.lore"))
-									.append(new TextComponent(LangUtil.INDENT4)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC)));
-					tooltip.add(new TextComponent(LangUtil.NEWLINE));
+									.append(Component.literal(LangUtil.INDENT4)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC)));
+					tooltip.add(Component.literal(LangUtil.NEWLINE));
 				}
 				@Override
 				public boolean isUnique() {
@@ -540,14 +539,14 @@ public class TreasureItems {
 			() -> new Sword(LEGENDARY, 3, -2.4F, 40F, 5F, TREASURE_ITEM_PROPERTIES) {
 				@Override
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
-					tooltip.add(new TextComponent(LangUtil.NEWLINE));
+					tooltip.add(Component.literal(LangUtil.NEWLINE));
 					// lore may be multiple lines, so separate on ~ and add to tooltip
-					Component.translatable lore = Component.translatable(LangUtil.tooltip("weapons.orcus.lore"));
+					Component lore = Component.translatable(LangUtil.tooltip("weapons.orcus.lore"));
 					for (String s : lore.getString().split("~")) {	
-						tooltip.add(new TextComponent(LangUtil.INDENT4)
+						tooltip.add(Component.literal(LangUtil.INDENT4)
 								.append(Component.translatable(s)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC));
 					}
-					tooltip.add(new TextComponent(LangUtil.NEWLINE));
+					tooltip.add(Component.literal(LangUtil.NEWLINE));
 				}
 				@Override
 				public boolean isUnique() {
@@ -564,14 +563,14 @@ public class TreasureItems {
 			() -> new Sword(RARE, 3, -1.5F, 25f, 5f, TREASURE_ITEM_PROPERTIES) {
 				@Override
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
-					tooltip.add(new TextComponent(LangUtil.NEWLINE));
+					tooltip.add(Component.literal(LangUtil.NEWLINE));
 					// lore may be multiple lines, so separate on ~ and add to tooltip
-					Component.translatable lore = Component.translatable(LangUtil.tooltip("weapons.snake_eyes_katana.lore"));
+					Component lore = Component.translatable(LangUtil.tooltip("weapons.snake_eyes_katana.lore"));
 					for (String s : lore.getString().split("~")) {	
-						tooltip.add(new TextComponent(LangUtil.INDENT4)
+						tooltip.add(Component.literal(LangUtil.INDENT4)
 								.append(Component.translatable(s)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC));
 					}
-					tooltip.add(new TextComponent(LangUtil.NEWLINE));
+					tooltip.add(Component.literal(LangUtil.NEWLINE));
 				}
 				@Override
 				public boolean isUnique() {
@@ -587,14 +586,14 @@ public class TreasureItems {
 			() -> new Sword(RARE, 3, -1.5f, 25f, 5f, TREASURE_ITEM_PROPERTIES) {
 				@Override
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
-					tooltip.add(new TextComponent(LangUtil.NEWLINE));
+					tooltip.add(Component.literal(LangUtil.NEWLINE));
 					// lore may be multiple lines, so separate on ~ and add to tooltip
-					Component.translatable lore = Component.translatable(LangUtil.tooltip("weapons.storm_shadows_katana.lore"));
+					Component lore = Component.translatable(LangUtil.tooltip("weapons.storm_shadows_katana.lore"));
 					for (String s : lore.getString().split("~")) {	
-						tooltip.add(new TextComponent(LangUtil.INDENT4)
+						tooltip.add(Component.literal(LangUtil.INDENT4)
 								.append(Component.translatable(s)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC));
 					}
-					tooltip.add(new TextComponent(LangUtil.NEWLINE));
+					tooltip.add(Component.literal(LangUtil.NEWLINE));
 				}
 				@Override
 				public boolean isUnique() {
@@ -632,14 +631,14 @@ public class TreasureItems {
 					75F, 9F, TREASURE_ITEM_PROPERTIES) {
 				@Override
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
-					tooltip.add(new TextComponent(LangUtil.NEWLINE));
+					tooltip.add(Component.literal(LangUtil.NEWLINE));
 					// lore may be multiple lines, so separate on ~ and add to tooltip
-					Component.translatable lore = Component.translatable(LangUtil.tooltip("weapons.mjolnir.lore"));
+					Component lore = Component.translatable(LangUtil.tooltip("weapons.mjolnir.lore"));
 					for (String s : lore.getString().split("~")) {	
-						tooltip.add(new TextComponent(LangUtil.INDENT4)
+						tooltip.add(Component.literal(LangUtil.INDENT4)
 								.append(Component.translatable(s)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC));
 					}
-					tooltip.add(new TextComponent(LangUtil.NEWLINE));
+					tooltip.add(Component.literal(LangUtil.NEWLINE));
 				}
 				@Override
 				public boolean isUnique() {
@@ -673,14 +672,14 @@ public class TreasureItems {
 					65F, 7F, TREASURE_ITEM_PROPERTIES) {
 				@Override
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
-					tooltip.add(new TextComponent(LangUtil.NEWLINE));
+					tooltip.add(Component.literal(LangUtil.NEWLINE));
 					// lore may be multiple lines, so separate on ~ and add to tooltip
-					Component.translatable lore = Component.translatable(LangUtil.tooltip("weapons.axe_of_durin.lore"));
+					Component lore = Component.translatable(LangUtil.tooltip("weapons.axe_of_durin.lore"));
 					for (String s : lore.getString().split("~")) {	
-						tooltip.add(new TextComponent(LangUtil.INDENT4)
+						tooltip.add(Component.literal(LangUtil.INDENT4)
 								.append(Component.translatable(s)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC));
 					}
-					tooltip.add(new TextComponent(LangUtil.NEWLINE));
+					tooltip.add(Component.literal(LangUtil.NEWLINE));
 				}
 				@Override
 				public boolean isUnique() {
@@ -697,14 +696,14 @@ public class TreasureItems {
 					55F, 6F, TREASURE_ITEM_PROPERTIES) {
 				@Override
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
-					tooltip.add(new TextComponent(LangUtil.NEWLINE));
+					tooltip.add(Component.literal(LangUtil.NEWLINE));
 					// lore may be multiple lines, so separate on ~ and add to tooltip
-					Component.translatable lore = Component.translatable(LangUtil.tooltip("weapons.headsmans_axe.lore"));
+					Component lore = Component.translatable(LangUtil.tooltip("weapons.headsmans_axe.lore"));
 					for (String s : lore.getString().split("~")) {	
-						tooltip.add(new TextComponent(LangUtil.INDENT4)
+						tooltip.add(Component.literal(LangUtil.INDENT4)
 								.append(Component.translatable(s)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC));
 					}
-					tooltip.add(new TextComponent(LangUtil.NEWLINE));
+					tooltip.add(Component.literal(LangUtil.NEWLINE));
 				}
 				@Override
 				public boolean isUnique() {

@@ -17,13 +17,12 @@
  */
 package mod.gottsch.forge.treasure2.core.item;
 
+import java.awt.TextComponent;
 import java.util.List;
 
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.Component.translatable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -68,10 +67,10 @@ public class EmberLock extends LockItem {
 
 	@Override
 	public  void appendHoverSpecials(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flag) {
-		Component.translatable specials = Component.translatable(LangUtil.tooltip("key_lock.ember_lock.specials"));
+		Component specials = Component.translatable(LangUtil.tooltip("key_lock.ember_lock.specials"));
 		for (String s : specials.getString().split("~")) {	
-			tooltip.add(Component.translatable(LangUtil.INDENT2)
-					.append(new TextComponent(s).withStyle(ChatFormatting.GOLD, ChatFormatting.ITALIC)));
+			tooltip.add(Component.literal(LangUtil.INDENT2)
+					.append(Component.translatable(s).withStyle(ChatFormatting.GOLD, ChatFormatting.ITALIC)));
 		}
 	}
 }

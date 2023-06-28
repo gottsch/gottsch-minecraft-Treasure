@@ -34,12 +34,12 @@ import mod.gottsch.forge.treasure2.core.registry.TreasureTemplateRegistry;
 import mod.gottsch.forge.treasure2.core.structure.IStructureCategory;
 import mod.gottsch.forge.treasure2.core.structure.IStructureType;
 import mod.gottsch.forge.treasure2.core.structure.TemplateHolder;
+import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.registries.ForgeRegistries;
 
 /**
  * @author Mark Gottschling on Feb 18, 2018
@@ -88,7 +88,7 @@ public interface IWellGenerator<RESULT extends IGeneratorResult<?>> {
 		Holder<Biome> biome = context.level().getBiome(coords.toPos());
 
 //		List<TemplateHolder> holders = TreasureTemplateRegistry.getTemplate(category, type);
-		List<TemplateHolder> holders = TreasureTemplateRegistry.getTemplate(category, type, biome.value().getRegistryName());
+		List<TemplateHolder> holders = TreasureTemplateRegistry.getTemplate(category, type, ModUtil.getName(biome.value()));
 		if (!holders.isEmpty()) {
 			holder = Optional.ofNullable(holders.get(context.random().nextInt(holders.size())));
 		}
@@ -132,7 +132,7 @@ public interface IWellGenerator<RESULT extends IGeneratorResult<?>> {
 					Treasure.LOGGER.debug("Returning due to marker coords == null or EMPTY_COORDS");
 					continue; 
 				}
-				BlockContext blockContext = new BlockContext(context.level(), markerCoords.add(0, -1, 0));
+				BlockContext blockContext = new BlockContext(context.level().getLevel(), markerCoords.add(0, -1, 0));
 				
 				if (blockContext.equalsBlock(Blocks.GRASS) || blockContext.equalsBlock(Blocks.DIRT)) {
 					blockState = FLOWERS.get(context.random().nextInt(FLOWERS.size())).defaultBlockState();

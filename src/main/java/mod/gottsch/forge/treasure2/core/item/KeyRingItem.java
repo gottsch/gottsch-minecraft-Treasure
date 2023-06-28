@@ -24,7 +24,6 @@ import static mod.gottsch.forge.treasure2.core.capability.TreasureCapabilities.D
 import java.util.List;
 import java.util.Optional;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
@@ -41,11 +40,11 @@ import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.inventory.KeyRingContainerMenu;
 import mod.gottsch.forge.treasure2.core.lock.LockState;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
+import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Component.translatable;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -63,7 +62,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -140,7 +138,7 @@ public class KeyRingItem extends Item implements MenuProvider {
 					ItemStack keyStack = handler.getStackInSlot(i);
 					if (keyStack != null && keyStack != ItemStack.EMPTY)  {
 						KeyItem key = (KeyItem) keyStack.getItem();
-						Treasure.LOGGER.debug("using key from keyring -> {}", key.getRegistryName());
+						Treasure.LOGGER.debug("using key from keyring -> {}", ModUtil.getName(key));
 						boolean breakKey = true;
 						boolean fitsLock = false;
 						LockState lockState = null;
@@ -228,7 +226,7 @@ public class KeyRingItem extends Item implements MenuProvider {
 		}
 
 		// open the key ring
-		NetworkHooks.openGui((ServerPlayer)player, this, player.blockPosition());
+		NetworkHooks.openScreen((ServerPlayer)player, this, player.blockPosition());
 
 		return InteractionResultHolder.pass(player.getItemInHand(hand));
 	}
