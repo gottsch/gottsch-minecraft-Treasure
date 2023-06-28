@@ -138,7 +138,7 @@ public class SubaquaticRuinGenerator implements IRuinGenerator<GeneratorResult<C
 		/**
 		 * Environment Checks
 		 */
-		alignedSpawnCoords = WorldInfo.getOceanFloorSurfaceCoords(context.level(), context.chunkGenerator(), alignedSpawnCoords);
+		alignedSpawnCoords = WorldInfo.getOceanFloorSurfaceCoords(context.level().getLevel(), context.chunkGenerator(), alignedSpawnCoords);
 
 		Treasure.LOGGER.debug("ocean floor coords -> {}", alignedSpawnCoords.toShortString());
 		if (alignedSpawnCoords == Coords.EMPTY) {
@@ -147,7 +147,7 @@ public class SubaquaticRuinGenerator implements IRuinGenerator<GeneratorResult<C
 		
 		// check if it has % land
 		for (int i = 0; i < 3; i++) {
-			if (!WorldInfo.isSolidBase(context.level(), alignedSpawnCoords, templateSize.getX(), templateSize.getZ(), REQUIRED_BASE_SIZE)) {
+			if (!WorldInfo.isSolidBase(context.level().getLevel(), alignedSpawnCoords, templateSize.getX(), templateSize.getZ(), REQUIRED_BASE_SIZE)) {
 				if (i == 2) {
 					Treasure.LOGGER.debug("Coords -> [{}] does not meet {}% solid base requirements for size -> {} x {}", REQUIRED_BASE_SIZE, alignedSpawnCoords.toShortString(), templateSize.getX(), templateSize.getY());
 					return Optional.empty();
@@ -171,7 +171,7 @@ public class SubaquaticRuinGenerator implements IRuinGenerator<GeneratorResult<C
 		}
 
 		Treasure.LOGGER.debug("checking for {} % water using offset of -> {} at coords -> {} for dimensions -> {} x {}", REQUIRED_WATER_SIZE, offset, alignedSpawnCoords.add(0, offset, 0), templateSize.getX(), templateSize.getZ());
-		if (!WorldInfo.isLiquidBase(context.level(), alignedSpawnCoords.add(0, offset, 0), templateSize.getX(), templateSize.getZ(), REQUIRED_WATER_SIZE)) {
+		if (!WorldInfo.isLiquidBase(context.level().getLevel(), alignedSpawnCoords.add(0, offset, 0), templateSize.getX(), templateSize.getZ(), REQUIRED_WATER_SIZE)) {
 			Treasure.LOGGER.debug("Coords -> [{}] does not meet {} % water base requirements for size -> {} x {}", alignedSpawnCoords.toShortString(), REQUIRED_WATER_SIZE, templateSize.getX(), templateSize.getZ());
 			return Optional.empty();
 		}

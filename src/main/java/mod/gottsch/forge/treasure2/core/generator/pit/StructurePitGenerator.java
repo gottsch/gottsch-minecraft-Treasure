@@ -21,9 +21,8 @@ package mod.gottsch.forge.treasure2.core.generator.pit;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
-import mod.gottsch.forge.gottschcore.size.Quantity;
+import mod.gottsch.forge.gottschcore.size.DoubleRange;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
@@ -44,6 +43,7 @@ import mod.gottsch.forge.treasure2.core.structure.StructureCategory;
 import mod.gottsch.forge.treasure2.core.structure.StructureType;
 import mod.gottsch.forge.treasure2.core.structure.TemplateHolder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
@@ -272,8 +272,8 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 		    	context.level().setBlock(c.getCoords().toPos(), TreasureBlocks.PROXIMITY_SPAWNER.get().defaultBlockState(), 3);
 		    	TreasureProximitySpawnerBlockEntity blockEntity = (TreasureProximitySpawnerBlockEntity) context.level().getBlockEntity(c.getCoords().toPos());
 		    	EntityType<?> r = DungeonHooks.getRandomDungeonMob(context.random());
-		    	blockEntity.setMobName(r.getRegistryName());
-		    	blockEntity.setMobNum(new Quantity(1, 2));
+		    	blockEntity.setMobName(EntityType.getKey(r));
+		    	blockEntity.setMobNum(new DoubleRange(1, 2));
 		    	blockEntity.setProximity(5D);
 			}
 
@@ -297,7 +297,7 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 	 * @param random
 	 * @return
 	 */
-	private Optional<GottschTemplate> getRandomTemplate(Random random) {
+	private Optional<GottschTemplate> getRandomTemplate(RandomSource random) {
 		Optional<GottschTemplate> result = Optional.empty();
 		
 		List<TemplateHolder> holders = TreasureTemplateRegistry.getTemplate(StructureCategory.SUBTERRANEAN, StructureType.ROOM);

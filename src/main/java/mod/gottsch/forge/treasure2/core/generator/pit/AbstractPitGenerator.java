@@ -24,7 +24,7 @@ import java.util.Optional;
 import mod.gottsch.forge.gottschcore.block.BlockContext;
 import mod.gottsch.forge.gottschcore.block.entity.ProximitySpawnerBlockEntity;
 import mod.gottsch.forge.gottschcore.random.WeightedCollection;
-import mod.gottsch.forge.gottschcore.size.Quantity;
+import mod.gottsch.forge.gottschcore.size.DoubleRange;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
@@ -34,6 +34,7 @@ import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorUtil;
+import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
@@ -207,7 +208,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 		for (int yIndex = coords.getY() + getOffsetY(); yIndex <= surfaceCoords.getY() - SURFACE_OFFSET_Y; yIndex++) {
 			
 			// if the block to be replaced is air block then skip to the next pos
-			BlockContext cube = new BlockContext(context.level(), new Coords(coords.getX(), yIndex, coords.getZ()));
+			BlockContext cube = new BlockContext(context.level().getLevel(), new Coords(coords.getX(), yIndex, coords.getZ()));
 			if (cube.isAir()) {
 				continue;
 			}
@@ -260,7 +261,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 	 * @return
 	 */
 	public ICoords buildLayer(IWorldGenContext context, ICoords coords, Block block) {
-		Treasure.LOGGER.debug("Building layer from {} @ {} ", block.getRegistryName(), coords.toShortString());
+		Treasure.LOGGER.debug("Building layer from {} @ {} ", ModUtil.getName(block), coords.toShortString());
 		GeneratorUtil.replaceWithBlock(context.level(), coords, block);
 		GeneratorUtil.replaceWithBlock(context.level(), coords.add(1, 0, 0), block);
 		GeneratorUtil.replaceWithBlock(context.level(), coords.add(0, 0, 1), block);
@@ -277,7 +278,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 	 * @return
 	 */
 	public ICoords buildLogLayer(IWorldGenContext context, final ICoords coords, final Block block) {
-		Treasure.LOGGER.debug("building log layer from {} @ {} ", block.getRegistryName(), coords.toShortString());
+		Treasure.LOGGER.debug("building log layer from {} @ {} ", ModUtil.getName(block), coords.toShortString());
 		// ensure that block is of type LOG/LOG2
 		if (!(block instanceof RotatedPillarBlock)) {
 			Treasure.LOGGER.debug("block is not a log");
@@ -351,7 +352,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 	 * @param spawnCoords
 	 */
 	public void spawnRandomMob(IWorldGenContext context, ICoords spawnCoords) {
-		WorldInfo.setBlock(context.level(), spawnCoords, TreasureBlocks.PROXIMITY_SPAWNER.get().defaultBlockState());
+		WorldInfo.setBlock(context.level().getLevel(), spawnCoords, TreasureBlocks.PROXIMITY_SPAWNER.get().defaultBlockState());
 //    	context.level().setBlock(spawnCoords.toPos(), TreasureBlocks.PROXIMITY_SPAWNER.defaultBlockState(), 3);
     	ProximitySpawnerBlockEntity blockEntity = (ProximitySpawnerBlockEntity) context.level().getBlockEntity(spawnCoords.toPos());
     	if (blockEntity == null) {
@@ -361,9 +362,9 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
     	EntityType<?> mobEntityType = DungeonHooks.getRandomDungeonMob(context.random());
     	Treasure.LOGGER.debug("spawn mob entity -> {}", mobEntityType);
     	if (mobEntityType != null) {
-    		Treasure.LOGGER.debug("spawn mob -> {}", mobEntityType.getRegistryName());
-	    	blockEntity.setMobName(mobEntityType.getRegistryName());
-	    	blockEntity.setMobNum(new Quantity(1, 1));
+    		Treasure.LOGGER.debug("spawn mob -> {}", EntityType.getKey(mobEntityType));
+	    	blockEntity.setMobName(EntityType.getKey(mobEntityType));
+	    	blockEntity.setMobNum(new DoubleRange(1, 1));
 	    	blockEntity.setProximity(3D);
     	}
 	}

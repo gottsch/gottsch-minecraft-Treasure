@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 import mod.gottsch.forge.gottschcore.random.RandomHelper;
+import mod.gottsch.forge.gottschcore.size.DoubleRange;
 import mod.gottsch.forge.gottschcore.size.Quantity;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
@@ -37,6 +38,7 @@ import mod.gottsch.forge.treasure2.core.registry.TreasureTemplateRegistry;
 import mod.gottsch.forge.treasure2.core.structure.IStructureCategory;
 import mod.gottsch.forge.treasure2.core.structure.IStructureType;
 import mod.gottsch.forge.treasure2.core.structure.TemplateHolder;
+import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.biome.Biome;
@@ -68,7 +70,7 @@ public interface IRuinGenerator<RESULT extends IGeneratorResult<?>> {
 		// get the biome ID
 		Holder<Biome> biome = context.level().getBiome(coords.toPos());
 		
-		List<TemplateHolder> holders = TreasureTemplateRegistry.getTemplate(category, type, biome.value().getRegistryName());
+		List<TemplateHolder> holders = TreasureTemplateRegistry.getTemplate(category, type, ModUtil.getName(biome.value()));
 		if (!holders.isEmpty()) {
 			holder = Optional.ofNullable(holders.get(context.random().nextInt(holders.size())));
 		}
@@ -93,9 +95,9 @@ public interface IRuinGenerator<RESULT extends IGeneratorResult<?>> {
 	 	    	if (RandomHelper.checkProbability(context.random(), 20)) {
 	 	    		r = EntityType.VINDICATOR;
 	 	    	}
-		    	Treasure.LOGGER.debug("using mob -> {} for poximity spawner.", r.getRegistryName().toString());
-		    	te.setMobName(r.getRegistryName());
-		    	te.setMobNum(new Quantity(1, 2));
+		    	Treasure.LOGGER.debug("using mob -> {} for poximity spawner.", EntityType.getKey(r).toString());
+		    	te.setMobName(EntityType.getKey(r));
+		    	te.setMobNum(new DoubleRange(1, 2));
 		    	te.setProximity(proximity);
 	    	}
 	    	else {

@@ -20,8 +20,6 @@ package mod.gottsch.forge.treasure2.core.generator.ruin;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.logging.log4j.Level;
-
 import mod.gottsch.forge.gottschcore.block.BlockContext;
 import mod.gottsch.forge.gottschcore.size.Quantity;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
@@ -138,7 +136,7 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 		/**
 		 * Environment Checks
 		 */
-		alignedSpawnCoords = WorldInfo.getDryLandSurfaceCoords(context.level(), context.chunkGenerator(), alignedSpawnCoords);
+		alignedSpawnCoords = WorldInfo.getDryLandSurfaceCoords(context.level().getLevel(), context.chunkGenerator(), alignedSpawnCoords);
 
 		Treasure.LOGGER.debug("surface coords -> {}", alignedSpawnCoords.toShortString());
 		if (alignedSpawnCoords == Coords.EMPTY) {
@@ -158,7 +156,7 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 		// check if it has % land base using the endCoords
 		for (int i = 0; i < 3; i++) {
 			Treasure.LOGGER.debug("finding solid base index -> {} at coords -> {}", i, endCoords.toShortString());
-			if (!WorldInfo.isSolidBase(context.level(), endCoords, templateSize.getX(), templateSize.getZ(), REQUIRED_BASE_SIZE)) {
+			if (!WorldInfo.isSolidBase(context.level().getLevel(), endCoords, templateSize.getX(), templateSize.getZ(), REQUIRED_BASE_SIZE)) {
 				if (i == 2) {
 					Treasure.LOGGER.debug("Coords -> [{}] does not meet {}% solid base requirements for size -> {} x {}",endCoords.toShortString(), REQUIRED_BASE_SIZE, templateSize.getX(), templateSize.getZ());
 					return Optional.empty();
@@ -178,7 +176,7 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 		
 		// check if the plane above the actual spawn coords is % air
 		Treasure.LOGGER.debug("checking for {} % air at coords -> {} for dimensions -> {} x {}", REQUIRED_AIR_SIZE, alignedSpawnCoords.add(0, 1, 0), templateSize.getX(), templateSize.getZ());
-		if (!WorldInfo.isAirBase(context.level(), alignedSpawnCoords.add(0, 1, 0), templateSize.getX(), templateSize.getZ(), REQUIRED_AIR_SIZE)) {
+		if (!WorldInfo.isAirBase(context.level().getLevel(), alignedSpawnCoords.add(0, 1, 0), templateSize.getX(), templateSize.getZ(), REQUIRED_AIR_SIZE)) {
 			Treasure.LOGGER.debug("Coords -> [{}] does not meet {} % air base requirements for size -> {} x {}", REQUIRED_AIR_SIZE, alignedSpawnCoords.toShortString(), templateSize.getX(), templateSize.getZ());
 			return Optional.empty();
 		}
@@ -310,7 +308,7 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 		
 		while (!isSurfaceBlock) {
 			// get the cube that is 1 below current position
-			BlockContext blockContext = new BlockContext(serverLevelAccessor, newCoords.down(1));
+			BlockContext blockContext = new BlockContext(serverLevelAccessor.getLevel(), newCoords.down(1));
 //			Treasure.LOGGER.debug("below block -> {} @ {}", cube.getState().getBlock().getRegistryName(), cube.getCoords().toShortString());
 			// exit if not valid Y coordinate
 			if (!WorldInfo.isHeightValid(blockContext.getCoords())) {

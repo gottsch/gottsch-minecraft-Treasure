@@ -22,7 +22,7 @@ package mod.gottsch.forge.treasure2.core.generator.pit;
 import java.util.Optional;
 
 import mod.gottsch.forge.gottschcore.block.entity.ProximitySpawnerBlockEntity;
-import mod.gottsch.forge.gottschcore.size.Quantity;
+import mod.gottsch.forge.gottschcore.size.DoubleRange;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
@@ -166,8 +166,8 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
     	EntityType<?> r = DungeonHooks.getRandomDungeonMob(context.random());
     	Treasure.LOGGER.debug("spawn mob entity -> {}", r);
     	if (r != null) {
-	    	te.setMobName(r.getRegistryName());
-	    	te.setMobNum(new Quantity(2, 4));
+	    	te.setMobName(EntityType.getKey(r));
+	    	te.setMobNum(new DoubleRange(2, 4));
 	    	te.setProximity(5D);
 	    	Treasure.LOGGER.debug("placed proximity spawner @ {}", coords.add(-1,0,0).toShortString());
     	}
@@ -179,8 +179,8 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
     	r = DungeonHooks.getRandomDungeonMob(context.random());
     	Treasure.LOGGER.debug("spawn mob entity -> {}", r);
     	if (r != null) {
-	    	te.setMobName(r.getRegistryName());
-	    	te.setMobNum(new Quantity(2, 4));
+	    	te.setMobName(EntityType.getKey(r));
+	    	te.setMobNum(new DoubleRange(2, 4));
 	    	te.setProximity(5.5D);		// slightly larger proximity to fire first without entity collision
 	    	Treasure.LOGGER.debug("placed proximity spawner @ {}", coords.add(1,0,0).toShortString());
     	}

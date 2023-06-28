@@ -787,7 +787,7 @@ public class TreasureTemplateRegistry {
 		TreasureTemplateRegistry.replacementMap = replacementMap;
 	}
 
-	public static ICoords getOffset(Random random, GottschTemplate template) {
+	public static ICoords getOffset(RandomSource random, GottschTemplate template) {
 		ICoords offsetCoords = template.findCoords(random, getMarkerMap().get(StructureMarkers.OFFSET));
 		return offsetCoords;
 	}

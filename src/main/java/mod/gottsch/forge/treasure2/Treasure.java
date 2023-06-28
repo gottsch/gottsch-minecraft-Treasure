@@ -22,18 +22,13 @@ import mod.gottsch.forge.treasure2.core.loot.modifier.TreasureLootModifiers;
 import mod.gottsch.forge.treasure2.core.particle.TreasureParticles;
 import mod.gottsch.forge.treasure2.core.registry.DimensionalGeneratedCache;
 import mod.gottsch.forge.treasure2.core.registry.RarityLevelWeightedChestGeneratorRegistry;
-import mod.gottsch.forge.treasure2.core.registry.TreasureTemplateRegistry;
 import mod.gottsch.forge.treasure2.core.setup.ClientSetup;
 import mod.gottsch.forge.treasure2.core.setup.CommonSetup;
 import mod.gottsch.forge.treasure2.core.sound.TreasureSounds;
-import mod.gottsch.forge.treasure2.core.world.biome.TreasureBiomeModifiers;
 import mod.gottsch.forge.treasure2.core.world.feature.TreasureConfiguredFeatures;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.event.server.ServerStartingEvent;
-import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -81,7 +76,6 @@ public class Treasure {
 		TreasureConfiguredFeatures.register();
 		TreasureSounds.register();
 		TreasureLootModifiers.register(FMLJavaModLoadingContext.get().getModEventBus());
-		TreasureBiomeModifiers.register();
 		
 		// register the setup method for mod loading
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
