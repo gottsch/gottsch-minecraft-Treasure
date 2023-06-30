@@ -148,11 +148,9 @@ public class TreasureConfiguredFeatures {
 	/**
 	 * 
 	 */
-	public static void register() {
-		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+	public static void register(IEventBus bus) {
 		CONFIGURED_FEATURES.register(bus);
 		PLACED_FEATURES.register(bus);
 		FEATURES.register(bus);
-
 	}
 }

@@ -68,23 +68,7 @@ public class CommonSetup {
 		// create a treasure2 specific log file
 		Config.instance.addRollingFileAppender(Treasure.MODID);
 		Treasure.LOGGER.debug("file appender created");
-		
-		/*
-		 *  update registered block/item properties using reflection now that
-		 *  the config is loaded.
-		 *  ex. WealthItem.maxStackSize
-		 *  NOTE this may be moot. Testing seems to indicate that the config values ARE being used on item registration.
-		 */
-		ModUtil.setItemMaxStackSize(TreasureItems.COPPER_COIN.get(), Config.SERVER.wealth.wealthMaxStackSize.get());
-		ModUtil.setItemMaxStackSize(TreasureItems.SILVER_COIN.get(), Config.SERVER.wealth.wealthMaxStackSize.get());
-		ModUtil.setItemMaxStackSize(TreasureItems.GOLD_COIN.get(), Config.SERVER.wealth.wealthMaxStackSize.get());
-		ModUtil.setItemMaxStackSize(TreasureItems.TOPAZ.get(), Config.SERVER.wealth.wealthMaxStackSize.get());
-		ModUtil.setItemMaxStackSize(TreasureItems.ONYX.get(), Config.SERVER.wealth.wealthMaxStackSize.get());
-		ModUtil.setItemMaxStackSize(TreasureItems.SAPPHIRE.get(), Config.SERVER.wealth.wealthMaxStackSize.get());
-		ModUtil.setItemMaxStackSize(TreasureItems.RUBY.get(), Config.SERVER.wealth.wealthMaxStackSize.get());
-		ModUtil.setItemMaxStackSize(TreasureItems.WHITE_PEARL.get(), Config.SERVER.wealth.wealthMaxStackSize.get());
-		ModUtil.setItemMaxStackSize(TreasureItems.BLACK_PEARL.get(), Config.SERVER.wealth.wealthMaxStackSize.get());
-		
+				
 		/**
 		 * Most resources in Treasure2 are associated with a Rarity. Register rarities
 		 * to enable them in other features. The registry in conjunction with
@@ -417,7 +401,6 @@ public class CommonSetup {
 		// register network
 		TreasureNetworking.register();
 		
-		FeatureCaches.initialize();
 	}
 
 	@SubscribeEvent

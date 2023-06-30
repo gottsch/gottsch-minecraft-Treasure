@@ -20,7 +20,7 @@ package mod.gottsch.forge.treasure2.core.sound;
 import mod.gottsch.forge.treasure2.Treasure;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -40,7 +40,7 @@ public class TreasureSounds {
 		return SOUND_EVENTS.register(name, () -> new SoundEvent(new ResourceLocation(Treasure.MODID, name)));
 	}
 	
-	public static void register() {
-		SOUND_EVENTS.register(FMLJavaModLoadingContext.get().getModEventBus());
+	public static void register(IEventBus bus) {
+		SOUND_EVENTS.register(bus);
 	}
 }

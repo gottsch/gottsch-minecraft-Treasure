@@ -19,6 +19,7 @@ package mod.gottsch.forge.treasure2.core.particle;
 
 import mod.gottsch.forge.treasure2.core.setup.Registration;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.RegistryObject;
 
 /**
@@ -38,7 +39,7 @@ public class TreasureParticles {
 	public static final RegistryObject<SimpleParticleType> GOLD_COIN_PARTICLE = Registration.PARTICLES.register("gold_coin_particle", () -> new SimpleParticleType(true));
 	
 	
-	public static void register() {
-		Registration.registerParticles();
+	public static void register(IEventBus bus) {
+		Registration.registerParticles(bus);
 	}
 }

@@ -26,6 +26,7 @@ import mod.gottsch.forge.treasure2.core.entity.monster.WoodChestMimic;
 import mod.gottsch.forge.treasure2.core.setup.Registration;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.RegistryObject;
 
 /**
@@ -74,8 +75,8 @@ public class TreasureEntities {
 			.setShouldReceiveVelocityUpdates(true)
 			.build(CAULDRON_CHEST_MIMIC));
 	
-	public static void register() {
+	public static void register(IEventBus bus) {
 		// cycle through all block and create items
-		Registration.registerEntities();
+		Registration.registerEntities(bus);
 	}
 }

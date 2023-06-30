@@ -36,6 +36,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.RegistryObject;
 
 /**
@@ -48,12 +49,12 @@ public class TreasureBlocks {
 	// TODO all light levels for chests can be removed
 	// functional interfaces
 	static ToIntFunction<BlockState> light = (state) -> {
-		if (Config.SERVER.effects.enableUndiscoveredEffects.get() 
-				&& !state.getValue(AbstractTreasureChestBlock.DISCOVERED)
-				) {
+//		if (Config.SERVER.effects.enableUndiscoveredEffects.get() 
+//				&& !state.getValue(AbstractTreasureChestBlock.DISCOVERED)
+//				) {
 			return 14;
-		}
-		return 0;
+//		}
+//		return 0;
 	};
 
 	// chests
@@ -273,9 +274,9 @@ public class TreasureBlocks {
 	/**
 	 * 
 	 */
-	public static void register() {
+	public static void register(IEventBus bus) {
 		// cycle through all block and create items
-		Registration.registerBlocks();
+		Registration.registerBlocks(bus);
 	}	
 
 	private static RotatedPillarBlock log(MaterialColor color1, MaterialColor color2) {

@@ -25,6 +25,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -61,27 +62,27 @@ public class Registration {
 //		CONTAINERS.register(FMLJavaModLoadingContext.get().getModEventBus());
 	}
 	
-	public static void registerBlocks() {
-		BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
+	public static void registerBlocks(IEventBus bus) {
+		BLOCKS.register(bus);
 	}
 	
-	public static void registerItems() {
-		ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
+	public static void registerItems(IEventBus bus) {
+		ITEMS.register(bus);
 	}
 
-	public static void registerBlockEntities() {
-		BLOCK_ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
+	public static void registerBlockEntities(IEventBus bus) {
+		BLOCK_ENTITIES.register(bus);
 	}
 
-	public static void registerContainers() {
-		CONTAINERS.register(FMLJavaModLoadingContext.get().getModEventBus());
+	public static void registerContainers(IEventBus bus) {
+		CONTAINERS.register(bus);
 	}
 	
-	public static void registerParticles() {
-		PARTICLES.register(FMLJavaModLoadingContext.get().getModEventBus());
+	public static void registerParticles(IEventBus bus) {
+		PARTICLES.register(bus);
 	}
 
-	public static void registerEntities() {
-		ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
+	public static void registerEntities(IEventBus bus) {
+		ENTITIES.register(bus);
 	}
 }

@@ -73,6 +73,15 @@ public class ModUtil {
 	*/
 	public static final String MAX_STACK_SIZSE_SRG_NAME = "f_41370_";
 	
+	/*
+	 MC 1.19.2: net/minecraft/world/item/Item.maxDamage
+	Name: e => f_41371_ => maxDamage
+	Side: BOTH
+	AT: public net.minecraft.world.item.Item f_41371_ # maxDamage
+	Type: int
+	 */
+	public static final String MAX_DAMAGE_SRG_NAME = " f_41371_";
+	
 	/**
 	 * 
 	 * @param name
@@ -106,6 +115,11 @@ public class ModUtil {
 
 	public static void setItemMaxStackSize(Item item, int size) {
 		ObfuscationReflectionHelper.setPrivateValue(Item.class, item, size, MAX_STACK_SIZSE_SRG_NAME);
+	}
+	
+	public static void setItemDurability(Item item, int durability) {
+		ObfuscationReflectionHelper.setPrivateValue(Item.class, item, durability, MAX_DAMAGE_SRG_NAME);
+		setItemMaxStackSize(item, 1);
 	}
 	
 	/**

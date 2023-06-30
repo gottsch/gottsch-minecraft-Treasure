@@ -13,6 +13,7 @@ import com.electronwill.nightconfig.core.CommentedConfig;
 
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.block.entity.TreasureBlockEntities;
+import mod.gottsch.forge.treasure2.core.cache.FeatureCaches;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.config.StructureConfiguration;
 import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
@@ -25,6 +26,7 @@ import mod.gottsch.forge.treasure2.core.registry.RarityLevelWeightedChestGenerat
 import mod.gottsch.forge.treasure2.core.setup.ClientSetup;
 import mod.gottsch.forge.treasure2.core.setup.CommonSetup;
 import mod.gottsch.forge.treasure2.core.sound.TreasureSounds;
+import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import mod.gottsch.forge.treasure2.core.world.feature.TreasureConfiguredFeatures;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -66,19 +68,21 @@ public class Treasure {
 		createServerConfig(Config.CHESTS_CONFIG_SPEC, "chests", CHESTS_CONFIG_VERSION);
 		createServerConfig(Config.STRUCTURE_CONFIG_SPEC, "structures", STRUCTURES_CONFIG_VERSION);
 		
+		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+		
 		// register the deferred registries
-		TreasureBlocks.register();
-		TreasureItems.register();
-		TreasureBlockEntities.register();
-		TreasureContainers.register();
-		TreasureParticles.register();
-		TreasureEntities.register();
-		TreasureConfiguredFeatures.register();
-		TreasureSounds.register();
-		TreasureLootModifiers.register(FMLJavaModLoadingContext.get().getModEventBus());
+		TreasureBlocks.register(modEventBus);
+		TreasureItems.register(modEventBus);
+		TreasureBlockEntities.register(modEventBus);
+		TreasureContainers.register(modEventBus);
+		TreasureParticles.register(modEventBus);
+		TreasureEntities.register(modEventBus);
+		TreasureConfiguredFeatures.register(modEventBus);
+		TreasureSounds.register(modEventBus);
+		TreasureLootModifiers.register(modEventBus);
 		
 		// register the setup method for mod loading
-		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+		
 		// register 'ModSetup::init' to be called at mod setup time (server and client)
 		modEventBus.addListener(CommonSetup::init);
 		modEventBus.addListener(this::config);
@@ -144,6 +148,54 @@ public class Treasure {
 //					if (structConfig.isPresent()) {
 //						TreasureTemplateRegistry.registerAccesslists(structConfig.get().getWell());
 //					}
+				}
+				else if (spec == Config.SERVER_SPEC) {
+					/*
+					 *  update registered block/item properties using reflection now that
+					 *  the config is loaded.
+					 *  ex. WealthItem.maxStackSize
+					 */
+					ModUtil.setItemMaxStackSize(TreasureItems.COPPER_COIN.get(), Config.SERVER.wealth.wealthMaxStackSize.get());
+					ModUtil.setItemMaxStackSize(TreasureItems.SILVER_COIN.get(), Config.SERVER.wealth.wealthMaxStackSize.get());
+					ModUtil.setItemMaxStackSize(TreasureItems.GOLD_COIN.get(), Config.SERVER.wealth.wealthMaxStackSize.get());
+					ModUtil.setItemMaxStackSize(TreasureItems.TOPAZ.get(), Config.SERVER.wealth.wealthMaxStackSize.get());
+					ModUtil.setItemMaxStackSize(TreasureItems.ONYX.get(), Config.SERVER.wealth.wealthMaxStackSize.get());
+					ModUtil.setItemMaxStackSize(TreasureItems.SAPPHIRE.get(), Config.SERVER.wealth.wealthMaxStackSize.get());
+					ModUtil.setItemMaxStackSize(TreasureItems.RUBY.get(), Config.SERVER.wealth.wealthMaxStackSize.get());
+					ModUtil.setItemMaxStackSize(TreasureItems.WHITE_PEARL.get(), Config.SERVER.wealth.wealthMaxStackSize.get());
+					ModUtil.setItemMaxStackSize(TreasureItems.BLACK_PEARL.get(), Config.SERVER.wealth.wealthMaxStackSize.get());
+					
+					ModUtil.setItemDurability(TreasureItems.WOOD_KEY.get(), Config.SERVER.keysAndLocks.woodKeyMaxUses.get());
+					ModUtil.setItemDurability(TreasureItems.STONE_KEY.get(), Config.SERVER.keysAndLocks.stoneKeyMaxUses.get());
+					ModUtil.setItemDurability(TreasureItems.LEAF_KEY.get(), Config.SERVER.keysAndLocks.leafKeyMaxUses.get());
+					ModUtil.setItemDurability(TreasureItems.EMBER_KEY.get(), Config.SERVER.keysAndLocks.emberKeyMaxUses.get());
+					ModUtil.setItemDurability(TreasureItems.LIGHTNING_KEY.get(), Config.SERVER.keysAndLocks.lightningKeyMaxUses.get());
+					ModUtil.setItemDurability(TreasureItems.IRON_KEY.get(), Config.SERVER.keysAndLocks.ironKeyMaxUses.get());
+					ModUtil.setItemDurability(TreasureItems.GOLD_KEY.get(), Config.SERVER.keysAndLocks.goldKeyMaxUses.get());
+					ModUtil.setItemDurability(TreasureItems.METALLURGISTS_KEY.get(), Config.SERVER.keysAndLocks.metallurgistsKeyMaxUses.get());
+					
+					ModUtil.setItemDurability(TreasureItems.DIAMOND_KEY.get(), Config.SERVER.keysAndLocks.diamondKeyMaxUses.get());
+					ModUtil.setItemDurability(TreasureItems.EMERALD_KEY.get(), Config.SERVER.keysAndLocks.emeraldKeyMaxUses.get());
+					ModUtil.setItemDurability(TreasureItems.TOPAZ_KEY.get(), Config.SERVER.keysAndLocks.topazKeyMaxUses.get());
+					ModUtil.setItemDurability(TreasureItems.ONYX_KEY.get(), Config.SERVER.keysAndLocks.onyxKeyMaxUses.get());
+					ModUtil.setItemDurability(TreasureItems.RUBY_KEY.get(), Config.SERVER.keysAndLocks.rubyKeyMaxUses.get());
+					ModUtil.setItemDurability(TreasureItems.SAPPHIRE_KEY.get(), Config.SERVER.keysAndLocks.sapphireKeyMaxUses.get());
+					ModUtil.setItemDurability(TreasureItems.JEWELLED_KEY.get(), Config.SERVER.keysAndLocks.jewelledKeyMaxUses.get());
+					
+					ModUtil.setItemDurability(TreasureItems.SPIDER_KEY.get(), Config.SERVER.keysAndLocks.spiderKeyMaxUses.get());
+					ModUtil.setItemDurability(TreasureItems.WITHER_KEY.get(), Config.SERVER.keysAndLocks.witherKeyMaxUses.get());
+					
+					ModUtil.setItemDurability(TreasureItems.SKELETON_KEY.get(), Config.SERVER.keysAndLocks.skeletonKeyMaxUses.get());
+					
+					ModUtil.setItemDurability(TreasureItems.PILFERERS_LOCK_PICK.get(), Config.SERVER.keysAndLocks.pilferersLockPickMaxUses.get());
+					ModUtil.setItemDurability(TreasureItems.THIEFS_LOCK_PICK.get(), Config.SERVER.keysAndLocks.thiefsLockPickMaxUses.get());
+					
+					// TODO do for wealth items as well
+//					WealthItem.super(properties.stacksTo(Config.SERVER.wealth.wealthMaxStackSize.get()));
+					
+					// TODO same with blocks and lighting
+					
+					FeatureCaches.initialize();
 				}
 			}
 		}
