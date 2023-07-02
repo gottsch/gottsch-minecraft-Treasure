@@ -34,6 +34,9 @@ import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
+import net.minecraft.core.Holder;
+import net.minecraft.data.BuiltinRegistries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -103,10 +106,9 @@ public class ModUtil {
 		return name;
 	}
 	
-	public static ResourceLocation getName(Biome biome) {
-		// don't bother checking optional - if it is empty, then the block isn't registered and this shouldn't run anyway.
-		ResourceLocation name = ForgeRegistries.BIOMES.getResourceKey(biome).get().location();
-		return name;
+
+	public static ResourceLocation getName(Holder<Biome> biome) {
+		return biome.unwrapKey().get().location();	
 	}
 	
 	public static boolean hasDomain(String name) {
@@ -130,7 +132,9 @@ public class ModUtil {
 	public static Optional<Path> getWorldSaveFolder(ServerLevel level) {
 		Object save = ObfuscationReflectionHelper.getPrivateValue(MinecraftServer.class, level.getServer(), SAVE_FORMAT_LEVEL_SAVE_SRG_NAME);
 		if (save instanceof LevelStorageSource.LevelStorageAccess) {
-			Path path = ((LevelStorageSource.LevelStorageAccess) save).getWorldDir().resolve("datapacks");
+			Path path = ((LevelStorageSource.LevelStorageAccess) save)
+					.getWorldDir().resolve(((LevelStorageSource.LevelStorageAccess) save).getLevelId())
+					.resolve("datapacks");
 			return Optional.of(path);
 		}
 		return Optional.empty();

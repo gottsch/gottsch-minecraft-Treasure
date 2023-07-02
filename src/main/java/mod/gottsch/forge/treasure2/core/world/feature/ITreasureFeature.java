@@ -18,6 +18,7 @@
 package mod.gottsch.forge.treasure2.core.world.feature;
 
 import java.util.List;
+import java.util.Optional;
 
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
@@ -26,6 +27,7 @@ import mod.gottsch.forge.treasure2.core.biome.TreasureBiomeHelper;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import net.minecraft.core.Holder;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.biome.Biome;
@@ -55,15 +57,16 @@ public interface ITreasureFeature {
 	 * @return
 	 */
 	default public boolean meetsBiomeCriteria(ServerLevel world, ICoords spawnCoords, List<String> whitelist, List<String> blacklist) {
-		Holder<Biome> biome = world.getBiome(spawnCoords.toPos());
-		TreasureBiomeHelper.Result biomeCheck =TreasureBiomeHelper.isBiomeAllowed(biome.value(),whitelist, blacklist);
+		ResourceLocation name = ModUtil.getName(world.getBiome(spawnCoords.toPos()));
+		TreasureBiomeHelper.Result biomeCheck =TreasureBiomeHelper.isBiomeAllowed(name, whitelist, blacklist);
+		
 		if(biomeCheck == TreasureBiomeHelper.Result.BLACK_LISTED ) {
 			if (WorldInfo.isClientSide(world)) {
-				Treasure.LOGGER.debug("biome {} is not a valid biome at -> {}", ModUtil.getName(biome.value()).toString(), spawnCoords.toShortString());
+				Treasure.LOGGER.debug("biome {} is not a valid biome at -> {}", name, spawnCoords.toShortString());
 			}
 			else {
 				// TODO test if this crashes with the getRegistryName because in 1.12 this was a client side only
-				Treasure.LOGGER.debug("biome {} is not valid at -> {}", ModUtil.getName(biome.value()).toString(), spawnCoords.toShortString());
+				Treasure.LOGGER.debug("biome {} is not valid at -> {}", name, spawnCoords.toShortString());
 			}					
 			return false;
 		}

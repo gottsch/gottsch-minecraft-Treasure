@@ -84,26 +84,4 @@ public class WorldEventHandler {
 			}
 		}
 	}
-
-
-
-//	@SubscribeEvent
-//	public static void onBiomeLoading(final BiomeLoadingEvent event) {
-//		/* 
-//		 * NOTE: 
-//		 * generation must occur in the correct order according to GenerationStep.Decoration
-//		 */
-//		TreasureOreGeneration.generateOres(event);
-//
-//		if (event.getCategory() != BiomeCategory.OCEAN) {
-//			// generate surface/terranean chests
-//			event.getGeneration().addFeature(GenerationStep.Decoration.TOP_LAYER_MODIFICATION, TreasureConfiguredFeatures.TERRANEAN_CHEST_PLACED.getHolder().get());
-//			event.getGeneration().addFeature(GenerationStep.Decoration.TOP_LAYER_MODIFICATION, TreasureConfiguredFeatures.WELL_PLACED.getHolder().get());
-//
-//		}
-//		else {
-//			event.getGeneration().addFeature(GenerationStep.Decoration.TOP_LAYER_MODIFICATION, TreasureConfiguredFeatures.SUBAQUATIC_CHEST_PLACED.getHolder().get());
-//		}
-//	}
-
 }

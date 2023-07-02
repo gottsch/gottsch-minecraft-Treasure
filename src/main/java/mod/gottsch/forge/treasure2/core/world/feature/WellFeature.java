@@ -90,7 +90,7 @@ public class WellFeature extends Feature<NoneFeatureConfiguration> implements IT
 		}
 		
 		// the get first surface y (could be leaves, trunk, water, etc)
-		ICoords spawnCoords = WorldInfo.getDryLandSurfaceCoords(genLevel.getLevel(), context.chunkGenerator(), new Coords(context.origin().offset(WorldInfo.CHUNK_RADIUS - 1, 0, WorldInfo.CHUNK_RADIUS - 1)));
+		ICoords spawnCoords = WorldInfo.getDryLandSurfaceCoords(genLevel, context.chunkGenerator(), new Coords(context.origin().offset(WorldInfo.CHUNK_RADIUS - 1, 0, WorldInfo.CHUNK_RADIUS - 1)));
 		if (spawnCoords == Coords.EMPTY) {
 			return false;
 		}

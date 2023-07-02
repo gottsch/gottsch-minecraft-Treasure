@@ -111,7 +111,7 @@ public class KeyItem extends Item implements IKeyEffects {
 	 * @param properties
 	 */
 	public KeyItem(Item.Properties properties) {
-		super(properties.defaultDurability(DEFAULT_MAX_USES));
+		super(properties);//.defaultDurability(DEFAULT_MAX_USES));
 		setCategory(KeyLockCategory.ELEMENTAL);
 		setBreakable(true);
 		setCraftable(false);

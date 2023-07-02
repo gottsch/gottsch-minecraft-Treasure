@@ -61,7 +61,7 @@ public interface IMarkerGenerator<RESULT extends IGeneratorResult<?>> {
 		// get the biome ID
 		Holder<Biome> biome = context.level().getBiome(coords.toPos());
 		
-		List<TemplateHolder> holders = TreasureTemplateRegistry.getTemplate(category, type, ModUtil.getName(biome.value()));
+		List<TemplateHolder> holders = TreasureTemplateRegistry.getTemplate(category, type, ModUtil.getName(biome));
 		if (!holders.isEmpty()) {
 			holder = Optional.ofNullable(holders.get(context.random().nextInt(holders.size())));
 		}

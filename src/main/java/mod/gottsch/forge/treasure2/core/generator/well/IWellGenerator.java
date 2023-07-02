@@ -88,7 +88,7 @@ public interface IWellGenerator<RESULT extends IGeneratorResult<?>> {
 		Holder<Biome> biome = context.level().getBiome(coords.toPos());
 
 //		List<TemplateHolder> holders = TreasureTemplateRegistry.getTemplate(category, type);
-		List<TemplateHolder> holders = TreasureTemplateRegistry.getTemplate(category, type, ModUtil.getName(biome.value()));
+		List<TemplateHolder> holders = TreasureTemplateRegistry.getTemplate(category, type, ModUtil.getName(biome));
 		if (!holders.isEmpty()) {
 			holder = Optional.ofNullable(holders.get(context.random().nextInt(holders.size())));
 		}

@@ -1,6 +1,6 @@
 {
   "type" : "forge:add_features",
   "biomes" : "#minecraft:is_overworld",
-  "features" : "treasure2:topaz_ore",
+  "features" : "treasure2:topaz_ore_placed",
   "step" : "underground_ores"
 }

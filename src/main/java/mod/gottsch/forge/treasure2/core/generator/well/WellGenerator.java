@@ -103,7 +103,7 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		 */
 		// 1. determine y-coord of land surface for the actual spawn coords
 		//		actualSpawnCoords = WorldInfo.getDryLandSurfaceCoords(world, new Coords(actualSpawnCoords.getX(), 255, actualSpawnCoords.getZ()));
-		actualSpawnCoords = WorldInfo.getDryLandSurfaceCoords(context.level().getLevel(), context.chunkGenerator(), actualSpawnCoords);
+		actualSpawnCoords = WorldInfo.getDryLandSurfaceCoords(context.level(), context.chunkGenerator(), actualSpawnCoords);
 
 		if (actualSpawnCoords == null || actualSpawnCoords == Coords.EMPTY) {
 			Treasure.LOGGER.debug("Returning due to marker coords == null or EMPTY_COORDS");
@@ -112,7 +112,7 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 		Treasure.LOGGER.debug("actual spawn coords after dry land surface check -> {}", actualSpawnCoords);
 
 		// 2. check if it has 50% land
-		if (!WorldInfo.isSolidBase(context.level().getLevel(), actualSpawnCoords, 3, 3, 50)) {
+		if (!WorldInfo.isSolidBase(context.level(), actualSpawnCoords, 3, 3, 50)) {
 			Treasure.LOGGER.debug("Coords [{}] does not meet solid base requires for {} x {}", actualSpawnCoords.toShortString(), 3, 3);
 			return Optional.empty();
 		}	

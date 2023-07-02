@@ -20,7 +20,7 @@ package mod.gottsch.forge.treasure2.core.biome;
 import java.util.ArrayList;
 import java.util.List;
 
-import mod.gottsch.forge.treasure2.core.util.ModUtil;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -85,8 +85,8 @@ public class TreasureBiomeHelper {
 	 * @param blackList
 	 * @return
 	 */
-	public static Result isBiomeAllowed(Biome biome, List<String> whiteList, List<String> blackList) {
-		return isBiomeAllowed(ModUtil.getName(biome), whiteList, blackList);
+	public static Result isBiomeAllowed(ResourceKey<Biome> biome, List<String> whiteList, List<String> blackList) {
+		return isBiomeAllowed(biome.location(), whiteList, blackList);
 	}
 	
 	/**
