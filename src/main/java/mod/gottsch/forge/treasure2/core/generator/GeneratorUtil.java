@@ -69,7 +69,7 @@ public class GeneratorUtil {
 	 */
 	public static boolean replaceWithBlock(ServerLevelAccessor world, ICoords coords, Block block) {
 		// don't change if old block is air
-		BlockContext context = new BlockContext(world.getLevel(), coords);
+		BlockContext context = new BlockContext(world, coords);
 		if (context.isAir()) {
 			return false;
 		}
@@ -86,7 +86,7 @@ public class GeneratorUtil {
 	 */
 	public static boolean replaceWithBlockState(ServerLevelAccessor world, ICoords coords, BlockState blockState) {
 		// don't change if old block is air
-		BlockContext context = new BlockContext(world.getLevel(), coords);
+		BlockContext context = new BlockContext(world, coords);
 		if (context.isAir()) {
 			return false;
 		}
@@ -141,12 +141,12 @@ public class GeneratorUtil {
 
 	/**
 	 * 
-	 * @param world
+	 * @param level
 	 * @param chest
 	 * @param pos
 	 * @return
 	 */
-	public static boolean placeChest(ServerLevelAccessor world, Block chest, ICoords coords, Direction direction, boolean discovered) {
+	public static boolean placeChest(ServerLevelAccessor level, Block chest, ICoords coords, Direction direction, boolean discovered) {
 		// check if spawn pos is valid
 		if (!WorldInfo.isHeightValid(coords)) {
 			Treasure.LOGGER.debug("cannot place chest due to invalid height -> {}", coords.toShortString());
@@ -156,7 +156,7 @@ public class GeneratorUtil {
 		try {
 			BlockPos pos = coords.toPos();
 			// create and place the chest
-			WorldInfo.setBlock(world.getLevel(), coords, chest
+			WorldInfo.setBlock(level, coords, chest
 					.defaultBlockState()
 					.setValue(FACING, direction)
 					.setValue(AbstractTreasureChestBlock.DISCOVERED, discovered));
@@ -165,14 +165,14 @@ public class GeneratorUtil {
 
 			// get the direction the block is facing.
 			Heading heading = Heading.fromDirection(direction);
-			((AbstractTreasureChestBlock) chest).rotateLockStates(world, coords, Heading.NORTH.getRotation(heading));
+			((AbstractTreasureChestBlock) chest).rotateLockStates(level, coords, Heading.NORTH.getRotation(heading));
 
 			// get the tile entity
-			BlockEntity blockEntity = (BlockEntity) world.getBlockEntity(pos);
+			BlockEntity blockEntity = (BlockEntity) level.getBlockEntity(pos);
 
 			if (blockEntity == null) {
 				// remove the chest block
-				WorldInfo.setBlock(world.getLevel(), coords, Blocks.AIR.defaultBlockState());
+				WorldInfo.setBlock(level, coords, Blocks.AIR.defaultBlockState());
 				Treasure.LOGGER.warn("unable to create treasure chest's BlockEntity, removing chest.");
 				return false;
 			}
@@ -196,8 +196,8 @@ public class GeneratorUtil {
 		Direction facing = Direction.Plane.HORIZONTAL.getRandomDirection(context.random());
 		ICoords coords2 = new Coords(coords.toPos().relative(facing));
 
-		BlockContext blockContext = new BlockContext(context.level().getLevel(), coords);
-		BlockContext blockContext2 = new BlockContext(context.level().getLevel(), coords2);
+		BlockContext blockContext = new BlockContext(context.level(), coords);
+		BlockContext blockContext2 = new BlockContext(context.level(), coords2);
 
 		boolean flag = blockContext.isReplaceable();
 		boolean flag1 = blockContext2.isReplaceable();

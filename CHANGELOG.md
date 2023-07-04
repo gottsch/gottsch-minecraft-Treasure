@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added Crate and Moldy Crate mimics.
+- Added 1.19.2 blocks and items to loot tables.
 
 ### Changed
 

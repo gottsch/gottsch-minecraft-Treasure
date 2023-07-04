@@ -164,6 +164,15 @@
         "count" : 5
       } ]
     }, {
+      "entryName" : "mangrove_logs",
+      "type" : "minecraft:item",
+      "name" : "minecraft:mangrove_log",
+      "weight" : 20,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : 5
+      } ]
+    },{
       "entryName" : "raw_gold",
       "type" : "minecraft:item",
       "name" : "minecraft:raw_gold",
@@ -182,16 +191,34 @@
         "count" : 5
       } ]
     }, {
-      "entryName" : "dark_oak_planks",
+      "entryName" : "mangrove_planks",
       "type" : "minecraft:item",
-      "name" : "minecraft:dark_oak_planks",
+      "name" : "minecraft:mangrove_planks",
       "weight" : 10,
       "functions" : [ {
         "function" : "minecraft:set_count",
         "count" : 5
       } ]
     }, {
-      "entryName" : "mossy_stone_bricks",
+      "entryName" : "mangrove_roots",
+      "type" : "minecraft:item",
+      "name" : "minecraft:mangrove_roots",
+      "weight" : 10,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : 5
+      } ]
+    },{
+      "entryName" : "mud_bricks",
+      "type" : "minecraft:item",
+      "name" : "minecraft:mud_bricks",
+      "weight" : 10,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : 5
+      } ]
+    },{
+      "entryName" : "cracked_stone_bricks",
       "type" : "minecraft:item",
       "name" : "minecraft:mossy_stone_bricks",
       "weight" : 20,

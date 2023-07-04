@@ -132,7 +132,7 @@ public interface IWellGenerator<RESULT extends IGeneratorResult<?>> {
 					Treasure.LOGGER.debug("Returning due to marker coords == null or EMPTY_COORDS");
 					continue; 
 				}
-				BlockContext blockContext = new BlockContext(context.level().getLevel(), markerCoords.add(0, -1, 0));
+				BlockContext blockContext = new BlockContext(context.level(), markerCoords.add(0, -1, 0));
 				
 				if (blockContext.equalsBlock(Blocks.GRASS) || blockContext.equalsBlock(Blocks.DIRT)) {
 					blockState = FLOWERS.get(context.random().nextInt(FLOWERS.size())).defaultBlockState();

@@ -138,7 +138,7 @@ public class StructureMarkerGenerator implements IMarkerGenerator<GeneratorResul
 				
 		// if offset is 2 or less, then determine if the solid ground percentage is valid
 		if (offset >= -2) {
-			if (!WorldInfo.isSolidBase(context.level().getLevel(), spawnCoords, transformedSize.getX(), transformedSize.getZ(), 70)) {
+			if (!WorldInfo.isSolidBase(context.level(), spawnCoords, transformedSize.getX(), transformedSize.getZ(), 70)) {
 				Treasure.LOGGER.debug("Coords -> [{}] does not meet {}% solid base requirements for size -> {} x {}", spawnCoords.toShortString(), 70, transformedSize.getX(), transformedSize.getY());
 				 Optional<GeneratorResult<GeneratorData>> genResult = new GravestoneMarkerGenerator().generate(context, coords);
 				 return genResult;

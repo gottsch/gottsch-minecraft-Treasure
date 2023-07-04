@@ -208,7 +208,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 		for (int yIndex = coords.getY() + getOffsetY(); yIndex <= surfaceCoords.getY() - SURFACE_OFFSET_Y; yIndex++) {
 			
 			// if the block to be replaced is air block then skip to the next pos
-			BlockContext cube = new BlockContext(context.level().getLevel(), new Coords(coords.getX(), yIndex, coords.getZ()));
+			BlockContext cube = new BlockContext(context.level(), new Coords(coords.getX(), yIndex, coords.getZ()));
 			if (cube.isAir()) {
 				continue;
 			}
@@ -352,7 +352,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 	 * @param spawnCoords
 	 */
 	public void spawnRandomMob(IWorldGenContext context, ICoords spawnCoords) {
-		WorldInfo.setBlock(context.level().getLevel(), spawnCoords, TreasureBlocks.PROXIMITY_SPAWNER.get().defaultBlockState());
+		WorldInfo.setBlock(context.level(), spawnCoords, TreasureBlocks.PROXIMITY_SPAWNER.get().defaultBlockState());
 //    	context.level().setBlock(spawnCoords.toPos(), TreasureBlocks.PROXIMITY_SPAWNER.defaultBlockState(), 3);
     	ProximitySpawnerBlockEntity blockEntity = (ProximitySpawnerBlockEntity) context.level().getBlockEntity(spawnCoords.toPos());
     	if (blockEntity == null) {

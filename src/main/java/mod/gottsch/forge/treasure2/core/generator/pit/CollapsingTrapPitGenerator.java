@@ -86,7 +86,7 @@ public class CollapsingTrapPitGenerator extends AbstractPitGenerator {
 
 		for (int x = minCoordsX; x <= maxCoordsX; x++) {
 			for (int z = minCoordsZ; z <= maxCoordsZ; z++ ) {
-				ICoords spawnCoords = WorldInfo.getSurfaceCoords(context.level().getLevel(), chunkGenerator, new Coords(x, 0, z));
+				ICoords spawnCoords = WorldInfo.getSurfaceCoords(context.level(), chunkGenerator, new Coords(x, 0, z));
 				spawnCoords = spawnCoords.down(1);
 
 				// skip the corners

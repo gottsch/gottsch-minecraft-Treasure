@@ -77,7 +77,7 @@ public class PitChestFeatureGenerator implements IFeatureGenerator {
 		}
 		
 		// check if it has 50% land
-		if (!WorldInfo.isSolidBase(context.level().getLevel(), spawnCoords, 2, 2, 50)) {
+		if (!WorldInfo.isSolidBase(context.level(), spawnCoords, 2, 2, 50)) {
 			Treasure.LOGGER.debug("coords -> {} does not meet solid base requires for {} x {}", spawnCoords.toShortString(), 2, 2);
 			return Optional.empty();
 		}
@@ -218,7 +218,7 @@ public class PitChestFeatureGenerator implements IFeatureGenerator {
 		Treasure.LOGGER.debug("ySpawn -> {}", ySpawn);
 		ICoords coords = new Coords(startingCoords.getX(), ySpawn, startingCoords.getZ());
 		// get floor pos (if in a cavern or tunnel etc)
-		coords = WorldInfo.getSubterraneanSurfaceCoords(level.getLevel(), coords);
+		coords = WorldInfo.getSubterraneanSurfaceCoords(level, coords);
 
 		return (coords == null || coords == Coords.EMPTY) ? Optional.empty() : Optional.of(coords);
 	}

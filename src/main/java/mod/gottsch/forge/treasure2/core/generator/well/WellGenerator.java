@@ -229,13 +229,13 @@ public class WellGenerator implements IWellGenerator<GeneratorResult<GeneratorDa
 			Treasure.LOGGER.debug("Returning due to marker coords == null or EMPTY_COORDS");
 			return;
 		}
-		BlockContext markerContext = new BlockContext(context.level().getLevel(), markerCoords);
+		BlockContext markerContext = new BlockContext(context.level(), markerCoords);
 		if (!markerContext.isAir() && !markerContext.isReplaceable()) {
 			Treasure.LOGGER.debug("Returning due to marker coords is not air nor replaceable.");
 			return;
 		}
 
-		markerContext = new BlockContext(context.level().getLevel(), markerCoords.add(0, -1, 0));
+		markerContext = new BlockContext(context.level(), markerCoords.add(0, -1, 0));
 		Treasure.LOGGER.debug("Marker on block: {}", markerContext.getState());
 		if (markerContext.equalsBlock(Blocks.GRASS_BLOCK) || markerContext.equalsBlock(Blocks.DIRT)) {
 			blockState = FLOWERS.get(context.random().nextInt(FLOWERS.size())).defaultBlockState();
