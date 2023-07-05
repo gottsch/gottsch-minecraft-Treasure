@@ -113,6 +113,11 @@
       "name" : "minecraft:glow_ink_sac",
       "weight" : 15
     }, {
+      "entryName" : "goat_horn",
+      "type" : "item",
+      "name" : "minecraft:goat_horn",
+      "weight" : 15
+    }, {
       "entryName" : "honeycomb",
       "type" : "item",
       "name" : "minecraft:honeycomb",
