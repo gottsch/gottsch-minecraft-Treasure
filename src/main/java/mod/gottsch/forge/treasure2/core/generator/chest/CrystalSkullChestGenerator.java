@@ -19,7 +19,6 @@ package mod.gottsch.forge.treasure2.core.generator.chest;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 import mod.gottsch.forge.gottschcore.enums.IRarity;
@@ -49,30 +48,6 @@ public class CrystalSkullChestGenerator extends AbstractChestGenerator {
 		super();
 	}
 
-	/**
-	 * 
-	 */
-//	@Override
-//	public void addGenerationContext(ITreasureChestBlockEntity blockEntity, IRarity rarity) {
-//		GenerationContext generationContext = 
-//				((AbstractTreasureChestBlockEntity)blockEntity).new GenerationContext(rarity, ChestGeneratorType.CRYSTAL_SKULL);
-//		blockEntity.setGenerationContext(generationContext);
-//	}
-	
-	/*
-	 * @param random
-	 * @param chestRarity
-	 * @return
-	 */
-//	@Override
-//	public Optional<LootTableShell> selectLootTable(Random random, final IRarity chestRarity) {
-//		return TreasureLootTableRegistry.getSpecialLootTable(SpecialLootTables.CRYSTAL_SKULL_CHEST);
-//	}
-//
-//	@Override
-//	public Optional<LootTableShell> selectLootTable(Supplier<Random> factory, final IRarity rarity) {
-//		return TreasureLootTableRegistry.getSpecialLootTable(SpecialLootTables.CRYSTAL_SKULL_CHEST);
-//	}
 	
 	/**
 	 * Always select a skull chest.
@@ -86,7 +61,8 @@ public class CrystalSkullChestGenerator extends AbstractChestGenerator {
 	/**
 	 * will have at least one lock.
 	 */
-	public int randomizedNumberOfLocksByChestType(Random random, LockLayout type) {
+	@Override
+	public int randomizedNumberOfLocksByChestType(RandomSource random, LockLayout type) {
 		// determine the number of locks to add
 		int numLocks = RandomHelper.randomInt(random, 1, type.getMaxLocks());		
 		Treasure.LOGGER.debug("# of locks to use: {})", numLocks);

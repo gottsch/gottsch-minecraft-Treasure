@@ -17,11 +17,10 @@
  */
 package mod.gottsch.forge.treasure2.core.generator.chest;
 
-import java.util.Random;
-
 import mod.gottsch.forge.gottschcore.random.RandomHelper;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.lock.LockLayout;
+import net.minecraft.util.RandomSource;
 
 /**
  * 
@@ -37,20 +36,12 @@ public class EpicChestGenerator extends AbstractChestGenerator {
 		super();
 	}
 
-	/**
-	 * 
-	 */
-//	@Override
-//	public void addGenerationContext(ITreasureChestBlockEntity blockEntity, IRarity rarity) {
-//		GenerationContext generationContext = 
-//				((AbstractTreasureChestBlockEntity)blockEntity).new GenerationContext(rarity, ChestGeneratorType.EPIC);
-//		blockEntity.setGenerationContext(generationContext);
-//	}
 	
 	/**
 	 * Epic will have at least one lock.
 	 */
-	public int randomizedNumberOfLocksByChestType(Random random, LockLayout type) {
+	@Override
+	public int randomizedNumberOfLocksByChestType(RandomSource random, LockLayout type) {
 		// determine the number of locks to add
 		int numLocks = RandomHelper.randomInt(random, 1, type.getMaxLocks());		
 		Treasure.LOGGER.debug("# of locks to use: {})", numLocks);

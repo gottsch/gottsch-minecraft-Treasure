@@ -19,7 +19,6 @@ package mod.gottsch.forge.treasure2.core.generator.chest;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 import mod.gottsch.forge.gottschcore.enums.IRarity;
@@ -65,7 +64,8 @@ public class ScarceChestGenerator extends AbstractChestGenerator {
 		return tables;
 	}	
 	
-	public int randomizedNumberOfLocksByChestType(Random random, LockLayout type) {
+	@Override
+	public int randomizedNumberOfLocksByChestType(RandomSource random, LockLayout type) {
 		// determine the number of locks to add
 		int numLocks = RandomHelper.randomInt(random, 1, type.getMaxLocks());		
 		Treasure.LOGGER.debug("# of locks to use: {})", numLocks);

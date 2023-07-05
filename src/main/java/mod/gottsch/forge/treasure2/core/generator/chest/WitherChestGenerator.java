@@ -66,7 +66,8 @@ public class WitherChestGenerator extends AbstractChestGenerator {
 	/**
 	 * will have at least one lock.
 	 */
-	public int randomizedNumberOfLocksByChestType(Random random, LockLayout type) {
+	@Override
+	public int randomizedNumberOfLocksByChestType(RandomSource random, LockLayout type) {
 		// determine the number of locks to add
 		int numLocks = RandomHelper.randomInt(random, 1, type.getMaxLocks());		
 		Treasure.LOGGER.debug("# of locks to use: {})", numLocks);

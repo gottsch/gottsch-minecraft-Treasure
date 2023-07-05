@@ -1,6 +1,6 @@
 {
   "type" : "forge:add_features",
-  "biomes" : "#minecraft:is_overworld",
+  "biomes" : "#forge:is_water",
   "features" : "treasure2:subaquatic_chest_placed",
   "step" : "top_layer_modification"
 }
