@@ -46,15 +46,15 @@ import net.minecraftforge.registries.RegistryObject;
  */
 public class TreasureBlocks {
 
-	// TODO all light levels for chests can be removed
 	// functional interfaces
-	static ToIntFunction<BlockState> light = (state) -> {
-//		if (Config.SERVER.effects.enableUndiscoveredEffects.get() 
-//				&& !state.getValue(AbstractTreasureChestBlock.DISCOVERED)
-//				) {
+	static ToIntFunction<BlockState> light = (state) -> {	
+		if (
+//				Config.SERVER.effects.enableUndiscoveredEffects.get() &&
+				!state.getValue(AbstractTreasureChestBlock.DISCOVERED)
+				) {
 			return 14;
-//		}
-//		return 0;
+		}
+		return 0;
 	};
 
 	// chests

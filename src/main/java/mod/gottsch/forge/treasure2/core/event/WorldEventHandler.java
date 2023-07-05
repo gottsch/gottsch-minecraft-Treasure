@@ -27,6 +27,7 @@ import mod.gottsch.forge.treasure2.core.persistence.TreasureSavedData;
 import mod.gottsch.forge.treasure2.core.registry.TreasureLootTableRegistry;
 import mod.gottsch.forge.treasure2.core.registry.TreasureTemplateRegistry;
 import mod.gottsch.forge.treasure2.core.util.ModUtil;
+import mod.gottsch.forge.treasure2.core.util.TreasureDataFixer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
@@ -68,6 +69,9 @@ public class WorldEventHandler {
 			if (worldSavePath.isPresent()) {
 				if ((!isLoaded && Config.SERVER.integration.dimensionsWhiteList.get().contains(dimension.toString())) ||
 						!worldSavePath.get().equals(WorldEventHandler.worldSavePath)) {
+										
+					// fix data		
+					TreasureDataFixer.fix();
 					
 					// cache the folder
 					WorldEventHandler.worldSavePath = worldSavePath.get();

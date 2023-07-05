@@ -39,6 +39,7 @@ import mod.gottsch.forge.treasure2.core.structure.StructureCategory;
 import mod.gottsch.forge.treasure2.core.structure.StructureType;
 import mod.gottsch.forge.treasure2.core.tags.TreasureTags;
 import mod.gottsch.forge.treasure2.core.util.ModUtil;
+import mod.gottsch.forge.treasure2.core.util.TreasureDataFixer;
 import mod.gottsch.forge.treasure2.core.wishable.TreasureWishableHandlers;
 import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 import mod.gottsch.forge.treasure2.core.world.feature.gen.TreasureFeatureGenerators;
@@ -400,7 +401,6 @@ public class CommonSetup {
 		
 		// register network
 		TreasureNetworking.register();
-		
 	}
 
 	@SubscribeEvent

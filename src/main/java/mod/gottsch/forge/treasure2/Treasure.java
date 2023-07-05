@@ -23,6 +23,7 @@ import mod.gottsch.forge.treasure2.core.loot.modifier.TreasureLootModifiers;
 import mod.gottsch.forge.treasure2.core.particle.TreasureParticles;
 import mod.gottsch.forge.treasure2.core.registry.DimensionalGeneratedCache;
 import mod.gottsch.forge.treasure2.core.registry.RarityLevelWeightedChestGeneratorRegistry;
+import mod.gottsch.forge.treasure2.core.registry.TreasureTemplateRegistry;
 import mod.gottsch.forge.treasure2.core.setup.ClientSetup;
 import mod.gottsch.forge.treasure2.core.setup.CommonSetup;
 import mod.gottsch.forge.treasure2.core.sound.TreasureSounds;
@@ -53,7 +54,7 @@ public class Treasure {
 	// constants
 	public static final String MODID = "treasure2";
 
-	private static final String CHESTS_CONFIG_VERSION = "1.19.2-v1";
+	private static final String CHESTS_CONFIG_VERSION = "1.19.2-v2";
 	private static final String STRUCTURES_CONFIG_VERSION = "1.19.2-v1";
 	
 	public static Treasure instance;
@@ -145,9 +146,6 @@ public class Treasure {
 				} 
 				else if (spec == Config.STRUCTURE_CONFIG_SPEC) {
 					Optional<StructureConfiguration> structConfig = Config.transformStructureConfiguration(commentedConfig);
-//					if (structConfig.isPresent()) {
-//						TreasureTemplateRegistry.registerAccesslists(structConfig.get().getWell());
-//					}
 				}
 				else if (spec == Config.SERVER_SPEC) {
 					FeatureCaches.initialize();

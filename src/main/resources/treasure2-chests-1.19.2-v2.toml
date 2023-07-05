@@ -84,6 +84,9 @@
 			weight=6
 			minDepth=20
 			maxDepth=35
+			biomeBlacklist = ["minecraft:plains", "minecraft:sunflower_plains"]
+			biomeTypeBlacklist = ["minecraft:plains"]
+
 		[[chestConfigs.generators.rarities]]
 			# 'skull' rarity is a special rarity for Skull related resources ex. Skull Chest, skull_loot_table, etc.
 			# it is configured the same as 'scarce' rarity except that is occurs less frequently.
@@ -91,6 +94,9 @@
 			weight=5
 			minDepth=25
 			maxDepth=40
+			biomeBlacklist = ["minecraft:plains", "minecraft:sunflower_plains"]
+			biomeTypeBlacklist = ["minecraft:plains"]
+
 		[[chestConfigs.generators.rarities]]
 			# 'skull' rarity is a special rarity for Skull related resources ex. Skull Chest, skull_loot_table, etc.
 			# it is configured the same as 'scarce' rarity except that is occurs less frequently.
@@ -98,11 +104,17 @@
 			weight=4
 			minDepth=30
 			maxDepth=45
+			biomeBlacklist = ["minecraft:plains", "minecraft:sunflower_plains"]
+			biomeTypeBlacklist = ["minecraft:plains"]
+
 		[[chestConfigs.generators.rarities]]
 			rarity="cauldron"
 			weight=4
 			minDepth=30
 			maxDepth=45
+			biomeBlacklist = ["minecraft:plains", "minecraft:sunflower_plains"]
+			biomeTypeBlacklist = ["minecraft:plains"]
+
 		[[chestConfigs.generators.rarities]]
 			rarity="wither"
 			weight=6
@@ -165,9 +177,30 @@
 				"minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"
 			]
 			biomeTypeWhitelist = ["ocean", "deep_ocean"]
+
 		[[chestConfigs.generators.rarities]]
 			rarity="skull"
 			weight=6
+			biomeWhitelist = [
+				"minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
+				"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", 
+				"minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"
+			]
+			biomeTypeWhitelist = ["ocean", "deep_ocean"]
+
+		[[chestConfigs.generators.rarities]]
+			rarity="gold_skull"
+			weight=5
+			biomeWhitelist = [
+				"minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
+				"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", 
+				"minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"
+			]
+			biomeTypeWhitelist = ["ocean", "deep_ocean"]
+
+		[[chestConfigs.generators.rarities]]
+			rarity="crystal_skull"
+			weight=4
 			biomeWhitelist = [
 				"minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
 				"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", 

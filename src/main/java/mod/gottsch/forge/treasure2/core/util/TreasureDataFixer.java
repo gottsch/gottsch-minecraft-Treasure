@@ -17,6 +17,7 @@
  */
 package mod.gottsch.forge.treasure2.core.util;
 
+import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.item.TreasureItems;
 
@@ -46,34 +47,30 @@ public class TreasureDataFixer {
 		ModUtil.setItemMaxStackSize(TreasureItems.WHITE_PEARL.get(), Config.SERVER.wealth.wealthMaxStackSize.get());
 		ModUtil.setItemMaxStackSize(TreasureItems.BLACK_PEARL.get(), Config.SERVER.wealth.wealthMaxStackSize.get());
 		
-//		ModUtil.setItemDurability(TreasureItems.WOOD_KEY.get(), Config.SERVER.keysAndLocks.woodKeyMaxUses.get());
-//		ModUtil.setItemDurability(TreasureItems.STONE_KEY.get(), Config.SERVER.keysAndLocks.stoneKeyMaxUses.get());
-//		ModUtil.setItemDurability(TreasureItems.LEAF_KEY.get(), Config.SERVER.keysAndLocks.leafKeyMaxUses.get());
-//		ModUtil.setItemDurability(TreasureItems.EMBER_KEY.get(), Config.SERVER.keysAndLocks.emberKeyMaxUses.get());
-//		ModUtil.setItemDurability(TreasureItems.LIGHTNING_KEY.get(), Config.SERVER.keysAndLocks.lightningKeyMaxUses.get());
-//		ModUtil.setItemDurability(TreasureItems.IRON_KEY.get(), Config.SERVER.keysAndLocks.ironKeyMaxUses.get());
-//		ModUtil.setItemDurability(TreasureItems.GOLD_KEY.get(), Config.SERVER.keysAndLocks.goldKeyMaxUses.get());
-//		ModUtil.setItemDurability(TreasureItems.METALLURGISTS_KEY.get(), Config.SERVER.keysAndLocks.metallurgistsKeyMaxUses.get());
-//		
-//		ModUtil.setItemDurability(TreasureItems.DIAMOND_KEY.get(), Config.SERVER.keysAndLocks.diamondKeyMaxUses.get());
-//		ModUtil.setItemDurability(TreasureItems.EMERALD_KEY.get(), Config.SERVER.keysAndLocks.emeraldKeyMaxUses.get());
-//		ModUtil.setItemDurability(TreasureItems.TOPAZ_KEY.get(), Config.SERVER.keysAndLocks.topazKeyMaxUses.get());
-//		ModUtil.setItemDurability(TreasureItems.ONYX_KEY.get(), Config.SERVER.keysAndLocks.onyxKeyMaxUses.get());
-//		ModUtil.setItemDurability(TreasureItems.RUBY_KEY.get(), Config.SERVER.keysAndLocks.rubyKeyMaxUses.get());
-//		ModUtil.setItemDurability(TreasureItems.SAPPHIRE_KEY.get(), Config.SERVER.keysAndLocks.sapphireKeyMaxUses.get());
-//		ModUtil.setItemDurability(TreasureItems.JEWELLED_KEY.get(), Config.SERVER.keysAndLocks.jewelledKeyMaxUses.get());
-//		
-//		ModUtil.setItemDurability(TreasureItems.SPIDER_KEY.get(), Config.SERVER.keysAndLocks.spiderKeyMaxUses.get());
-//		ModUtil.setItemDurability(TreasureItems.WITHER_KEY.get(), Config.SERVER.keysAndLocks.witherKeyMaxUses.get());
-//		
-//		ModUtil.setItemDurability(TreasureItems.SKELETON_KEY.get(), Config.SERVER.keysAndLocks.skeletonKeyMaxUses.get());
-//		
-//		ModUtil.setItemDurability(TreasureItems.PILFERERS_LOCK_PICK.get(), Config.SERVER.keysAndLocks.pilferersLockPickMaxUses.get());
-//		ModUtil.setItemDurability(TreasureItems.THIEFS_LOCK_PICK.get(), Config.SERVER.keysAndLocks.thiefsLockPickMaxUses.get());
+		ModUtil.setItemDurability(TreasureItems.WOOD_KEY.get(), Config.SERVER.keysAndLocks.woodKeyMaxUses.get());
+		ModUtil.setItemDurability(TreasureItems.STONE_KEY.get(), Config.SERVER.keysAndLocks.stoneKeyMaxUses.get());
+		ModUtil.setItemDurability(TreasureItems.LEAF_KEY.get(), Config.SERVER.keysAndLocks.leafKeyMaxUses.get());
+		ModUtil.setItemDurability(TreasureItems.EMBER_KEY.get(), Config.SERVER.keysAndLocks.emberKeyMaxUses.get());
+		ModUtil.setItemDurability(TreasureItems.LIGHTNING_KEY.get(), Config.SERVER.keysAndLocks.lightningKeyMaxUses.get());
+		ModUtil.setItemDurability(TreasureItems.IRON_KEY.get(), Config.SERVER.keysAndLocks.ironKeyMaxUses.get());
+		ModUtil.setItemDurability(TreasureItems.GOLD_KEY.get(), Config.SERVER.keysAndLocks.goldKeyMaxUses.get());
+		ModUtil.setItemDurability(TreasureItems.METALLURGISTS_KEY.get(), Config.SERVER.keysAndLocks.metallurgistsKeyMaxUses.get());
 		
-		// TODO do for wealth items as well
-//		WealthItem.super(properties.stacksTo(Config.SERVER.wealth.wealthMaxStackSize.get()));
+		ModUtil.setItemDurability(TreasureItems.DIAMOND_KEY.get(), Config.SERVER.keysAndLocks.diamondKeyMaxUses.get());
+		ModUtil.setItemDurability(TreasureItems.EMERALD_KEY.get(), Config.SERVER.keysAndLocks.emeraldKeyMaxUses.get());
+		ModUtil.setItemDurability(TreasureItems.TOPAZ_KEY.get(), Config.SERVER.keysAndLocks.topazKeyMaxUses.get());
+		ModUtil.setItemDurability(TreasureItems.ONYX_KEY.get(), Config.SERVER.keysAndLocks.onyxKeyMaxUses.get());
+		ModUtil.setItemDurability(TreasureItems.RUBY_KEY.get(), Config.SERVER.keysAndLocks.rubyKeyMaxUses.get());
+		ModUtil.setItemDurability(TreasureItems.SAPPHIRE_KEY.get(), Config.SERVER.keysAndLocks.sapphireKeyMaxUses.get());
+		ModUtil.setItemDurability(TreasureItems.JEWELLED_KEY.get(), Config.SERVER.keysAndLocks.jewelledKeyMaxUses.get());
 		
-		// TODO same with blocks and lighting
+		ModUtil.setItemDurability(TreasureItems.SPIDER_KEY.get(), Config.SERVER.keysAndLocks.spiderKeyMaxUses.get());
+		ModUtil.setItemDurability(TreasureItems.WITHER_KEY.get(), Config.SERVER.keysAndLocks.witherKeyMaxUses.get());
+		
+		ModUtil.setItemDurability(TreasureItems.SKELETON_KEY.get(), Config.SERVER.keysAndLocks.skeletonKeyMaxUses.get());
+		
+		ModUtil.setItemDurability(TreasureItems.PILFERERS_LOCK_PICK.get(), Config.SERVER.keysAndLocks.pilferersLockPickMaxUses.get());
+		ModUtil.setItemDurability(TreasureItems.THIEFS_LOCK_PICK.get(), Config.SERVER.keysAndLocks.thiefsLockPickMaxUses.get());
+
 	}
 }

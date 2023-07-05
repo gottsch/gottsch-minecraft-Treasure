@@ -568,13 +568,13 @@ public class Config extends AbstractConfig {
 		public static class Effects {
 			public BooleanValue enableUndiscoveredEffects;
 
-
 			public Effects(final ForgeConfigSpec.Builder builder)	 {
 				builder.comment(CATEGORY_DIV, " Effects and GUI Elements", CATEGORY_DIV)
 				.push("effects");
 
 				enableUndiscoveredEffects = builder
-						.comment(" Enable/disable whether 'undiscovered' chests (ie spawned and not found) will display effects such as light source, particles, or glow.")
+						.comment(" Enable/disable whether 'undiscovered' chests (ie spawned and not found) will display effects such as light source, particles, or glow.",
+								" Note: due to changes in Forge, this config option will NOT affect the light that undiscovered chests produce in 1.19.2+.")
 						.define("enableUndiscoveredEffects", true);
 
 				builder.pop();

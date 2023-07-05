@@ -83,7 +83,7 @@ public class ModUtil {
 	AT: public net.minecraft.world.item.Item f_41371_ # maxDamage
 	Type: int
 	 */
-	public static final String MAX_DAMAGE_SRG_NAME = " f_41371_";
+	public static final String MAX_DAMAGE_SRG_NAME = "f_41371_";
 	
 	/**
 	 * 

@@ -27,6 +27,7 @@ import mod.gottsch.forge.treasure2.core.registry.KeyLockRegistry;
 import mod.gottsch.forge.treasure2.core.registry.TagRegistry;
 import mod.gottsch.forge.treasure2.core.registry.WishableRegistry;
 import mod.gottsch.forge.treasure2.core.util.ModUtil;
+import mod.gottsch.forge.treasure2.core.util.TreasureDataFixer;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -109,8 +110,9 @@ public class TreasureTags {
 	}
 
 	@SubscribeEvent
-	public static void registerTags(TagsUpdatedEvent event) {
+	public static void registerTags(TagsUpdatedEvent event) {		
 		Treasure.LOGGER.info("in tags updated event");
+		
 		// clear key/locks registries
 		KeyLockRegistry.clearKeysByRarity();
 		KeyLockRegistry.clearLocksByRarity();
