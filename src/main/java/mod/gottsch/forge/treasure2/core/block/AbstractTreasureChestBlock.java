@@ -67,12 +67,17 @@ import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -84,8 +89,8 @@ import net.minecraftforge.registries.ForgeRegistries;
  * @author Mark Gottschling on Sep 16, 2018
  *
  */
-public class AbstractTreasureChestBlock extends BaseEntityBlock implements ITreasureChestBlock {
-
+public class AbstractTreasureChestBlock extends BaseEntityBlock implements ITreasureChestBlock, SimpleWaterloggedBlock {
+	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
 	private static final VoxelShape CHEST = Block.box(1, 0, 1, 15, 14, 15);
 
@@ -133,6 +138,7 @@ public class AbstractTreasureChestBlock extends BaseEntityBlock implements ITrea
 				this.stateDefinition.any()
 				.setValue(FACING, Direction.NORTH)
 				.setValue(DISCOVERED, true)
+				.setValue(WATERLOGGED, Boolean.valueOf(false))
 				);
 	}
 
@@ -216,7 +222,8 @@ public class AbstractTreasureChestBlock extends BaseEntityBlock implements ITrea
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder
 		.add(FACING)
-		.add(DISCOVERED);
+		.add(DISCOVERED)
+		.add(WATERLOGGED);
 	}
 
 	/**
@@ -590,9 +597,26 @@ public class AbstractTreasureChestBlock extends BaseEntityBlock implements ITrea
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		BlockState blockState = this.defaultBlockState().setValue(FACING,
 				context.getHorizontalDirection().getOpposite());
+		//////////
+		FluidState fluidState = context.getLevel().getFluidState(context.getClickedPos());
+		blockState.setValue(WATERLOGGED, Boolean.valueOf(fluidState.getType() == Fluids.WATER));
 		return blockState;
 	}
 
+	@Override
+	public BlockState updateShape(BlockState state, Direction direction, BlockState newState, LevelAccessor levelAccessor, BlockPos pos, BlockPos p_56930_) {
+		if (state.getValue(WATERLOGGED)) {
+			levelAccessor.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(levelAccessor));
+		}
+		return super.updateShape(state, direction, newState, levelAccessor, pos, p_56930_);
+	}
+	
+	@Override
+	public FluidState getFluidState(BlockState blockState) {
+		return blockState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(blockState);
+	}
+
+	   
 	@Override
 	public Class<?> getBlockEntityClass() {
 		return blockEntityClass;

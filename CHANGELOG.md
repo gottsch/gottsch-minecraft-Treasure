@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [3.1.0] - 2023-06-25
+## [3.1.0] - 2023-07-06
 
 ### Added
 
@@ -16,9 +16,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Made 1.18.2 -> 1.192. porting code changes (ex . Random -> RandomSource)
-- Updated the topaz key texture to be more like the onyx key
-- Key durability is no longer setup during item registration but in common setup using Reflection (need to update 1.18.2)
+- Made 1.18.2 -> 1.192. porting code changes (ex . Random -> RandomSource).
+- Updated the topaz key texture to be more like the onyx key.
+- Key durability is no longer setup during item registration but in common setup using Reflection.
+- Updated chest blocks to be waterloggable.
 
 
 ## [3.0.0] - 2023-06-24

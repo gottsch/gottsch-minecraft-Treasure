@@ -232,7 +232,7 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 	}
 	
 	private void buildClearing(IWorldGenContext context, ICoords coords, ICoords originalSpawnCoords) {
-		Instant start = Instant.now();
+//		Instant start = Instant.now();
 		ICoords buildCoords = null;
 		Treasure.LOGGER.debug("build clearing at -> {}", coords.toShortString());
 		// build clearing
@@ -246,17 +246,17 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 					}
 
 					// find the first surface
-					//	Instant start1 = Instant.now();
+//						Instant start1 = Instant.now();
 					buildCoords = coords.add(xOffset, 0, zOffset);
 					buildCoords = WorldInfo.getDryLandSurfaceCoordsWG(context, buildCoords);
-					//	Instant finish1 = Instant.now();
-					//	Treasure.LOGGER.debug( time -> {}ms", Duration.between(start1, finish1).toMillis());
+//						Instant finish1 = Instant.now();
+//						Treasure.LOGGER.debug("find surface time -> {}ms", Duration.between(start1, finish1).toMillis());
 
 					if (buildCoords == Coords.EMPTY) {
 						continue;
 					}
 
-					//	Instant start2 = Instant.now();
+//						Instant start2 = Instant.now();
 					// additional check that it's not a tree and within 2 y-blocks of original
 					if (Math.abs(buildCoords.getY() - coords.getY()) < VERTICAL_MAX_DIFF) {
 						BlockContext cube = new BlockContext(context.level(), buildCoords.down(1));
@@ -271,10 +271,10 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 							}
 						}
 					}
-					//	Instant finish2 = Instant.now();
-					//	Treasure.LOGGER.debug("dirt replacement time -> {}ms", Duration.between(start2, finish2).toMillis());
+//						Instant finish2 = Instant.now();
+//						Treasure.LOGGER.debug("dirt replacement time -> {}ms", Duration.between(start2, finish2).toMillis());
 
-					//	Instant start3 = Instant.now();
+//						Instant start3 = Instant.now();
 					// remove existing tree
 					BlockContext blockContext = new BlockContext(context.level(), buildCoords);
 					ICoords climbCoords = new Coords(buildCoords);
@@ -285,13 +285,13 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 						climbCoords = climbCoords.add(0, 1, 0);
 						blockContext = new BlockContext(context.level(), climbCoords);
 					}
-					//	Instant finish3 = Instant.now();
-					//	Treasure.LOGGER.debug("removing existing tree time -> {}ms", Duration.between(start3, finish3).toMillis());
+//						Instant finish3 = Instant.now();
+//						Treasure.LOGGER.debug("removing existing tree time -> {}ms", Duration.between(start3, finish3).toMillis());
 				}
 			}
 		}
-		Instant finish = Instant.now();
-		Treasure.LOGGER.debug("buildClearing() time -> {}ms", Duration.between(start, finish).toMillis());
+//		Instant finish = Instant.now();
+//		Treasure.LOGGER.debug("buildClearing() time -> {}ms", Duration.between(start, finish).toMillis());
 	}
 	
 	/**
