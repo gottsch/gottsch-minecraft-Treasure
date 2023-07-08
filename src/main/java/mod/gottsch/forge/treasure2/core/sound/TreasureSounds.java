@@ -37,7 +37,8 @@ public class TreasureSounds {
 	
 	
 	private static RegistryObject<SoundEvent> registerSoundEvent(String name) {
-		return SOUND_EVENTS.register(name, () -> new SoundEvent(new ResourceLocation(Treasure.MODID, name)));
+//		return SOUND_EVENTS.register(name, () -> new SoundEvent(new ResourceLocation(Treasure.MODID, name)));
+		return SOUND_EVENTS.register(name, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Treasure.MODID, name)));
 	}
 	
 	public static void register(IEventBus bus) {

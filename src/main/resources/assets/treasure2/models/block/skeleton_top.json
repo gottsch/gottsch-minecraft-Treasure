@@ -2,10 +2,10 @@
 	"credit": "Made with Blockbench",
 	"parent": "treasure2:block/ore_parent",
 	"textures": {
-		"1": "treasure2:blocks/skeleton_body",
-		"2": "treasure2:blocks/skeleton_head",
-		"3": "treasure2:blocks/skeleton_bottom",
-		"particle": "treasure2:blocks/skeleton_head"
+		"1": "treasure2:block/skeleton_body",
+		"2": "treasure2:block/skeleton_head",
+		"3": "treasure2:block/skeleton_bottom",
+		"particle": "treasure2:block/skeleton_head"
 	},
 	"elements": [
 		{

@@ -1,6 +1,6 @@
 {
     "parent": "block/cube_all",
     "textures": {
-        "all": "treasure2:blocks/wither_planks"
+        "all": "treasure2:block/wither_planks"
     }
 }

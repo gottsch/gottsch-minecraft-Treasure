@@ -20,7 +20,6 @@
 package mod.gottsch.forge.treasure2.client.renderer.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3d;
 
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.client.model.blockentity.MilkCrateModel;
@@ -28,6 +27,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -55,7 +55,7 @@ public class MilkCrateRenderer extends AbstractChestBlockEntityRenderer {
 
 	@Override
 	public void updateTranslation(PoseStack matrixStack) {
-		final Vector3d TRANSLATION_OFFSET = new Vector3d(0.5, 1.125F, 0.5);
+		final Vec3 TRANSLATION_OFFSET = new Vec3(0.5, 1.125F, 0.5);
 		matrixStack.translate(TRANSLATION_OFFSET.x, TRANSLATION_OFFSET.y, TRANSLATION_OFFSET.z);
 	}
 }

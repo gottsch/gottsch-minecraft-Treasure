@@ -19,8 +19,9 @@
  */
 package mod.gottsch.forge.treasure2.client.renderer.blockentity;
 
+import org.joml.Vector3d;
+
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3d;
 
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.client.model.blockentity.CompressorChestModel;

@@ -22,8 +22,9 @@ import java.util.function.Consumer;
 import mod.gottsch.forge.treasure2.core.item.TreasureItems;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
@@ -37,16 +38,16 @@ import net.minecraft.world.item.crafting.Ingredient;
  */
 public class Recipes extends RecipeProvider {
 
-		public Recipes(DataGenerator generator) {
-			super(generator);
+		public Recipes(PackOutput output) {
+			super(output);
 		}
 
 		@Override
-		protected void buildCraftingRecipes(Consumer<FinishedRecipe> recipe) {
+		protected void buildRecipes(Consumer<FinishedRecipe> recipe) {
 			/*
 			 * treasure tool
 			 */
-	        ShapedRecipeBuilder.shaped(TreasureItems.TREASURE_TOOL.get())
+	        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, TreasureItems.TREASURE_TOOL.get())
 	        .pattern("  i")
 	        .pattern(" s ")
 	        .pattern("x  ")
@@ -57,7 +58,7 @@ public class Recipes extends RecipeProvider {
 	        .save(recipe);	   
 	        
 	        // pilferer's lock pick
-	        ShapedRecipeBuilder.shaped(TreasureItems.PILFERERS_LOCK_PICK.get())
+	        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, TreasureItems.PILFERERS_LOCK_PICK.get())
 	        .pattern("xt")
 	        .pattern("x ")
 	        .define('x', Items.IRON_NUGGET)
@@ -66,7 +67,7 @@ public class Recipes extends RecipeProvider {
 	        .save(recipe);
 	        
 	        // thief's lock pick
-	        ShapedRecipeBuilder.shaped(TreasureItems.THIEFS_LOCK_PICK.get())
+	        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, TreasureItems.THIEFS_LOCK_PICK.get())
 	        .pattern("xt")
 	        .pattern("x ")
 	        .define('x', Items.IRON_INGOT)
@@ -75,7 +76,7 @@ public class Recipes extends RecipeProvider {
 	        .save(recipe);
 	        
 	        // keyring
-	        ShapedRecipeBuilder.shaped(TreasureItems.KEY_RING.get())
+	        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, TreasureItems.KEY_RING.get())
 	        .pattern("kx ")
 	        .pattern("x x")
 	        .pattern(" x ")
@@ -87,7 +88,7 @@ public class Recipes extends RecipeProvider {
 	        .save(recipe);
 	        
 	        // pouch
-	        ShapedRecipeBuilder.shaped(TreasureItems.POUCH.get())
+	        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, TreasureItems.POUCH.get())
 	        .pattern(" ct")
 	        .pattern(" x ")
 	        .define('t', TreasureItems.TREASURE_TOOL.get())
@@ -100,7 +101,7 @@ public class Recipes extends RecipeProvider {
 	        .save(recipe);
 	        
 	        // spider key
-	        ShapedRecipeBuilder.shaped(TreasureItems.SPIDER_KEY.get())
+	        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, TreasureItems.SPIDER_KEY.get())
 	        .pattern("kt ")
 	        .pattern(" d ")
 	        .pattern(" e ")
@@ -112,7 +113,7 @@ public class Recipes extends RecipeProvider {
 	        .save(recipe);
 	        
 	        // topaz key
-	        ShapedRecipeBuilder.shaped(TreasureItems.TOPAZ_KEY.get())
+	        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, TreasureItems.TOPAZ_KEY.get())
 	        .pattern("kt ")
 	        .pattern(" d ")
 	        .pattern(" g ")
@@ -124,7 +125,7 @@ public class Recipes extends RecipeProvider {
 	        .save(recipe);
 	        
 	        // onyx key
-	        ShapedRecipeBuilder.shaped(TreasureItems.ONYX_KEY.get())
+	        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, TreasureItems.ONYX_KEY.get())
 	        .pattern("kt ")
 	        .pattern(" d ")
 	        .pattern(" g ")
@@ -136,7 +137,7 @@ public class Recipes extends RecipeProvider {
 	        .save(recipe);   
 	        
 	        // ruby key
-	        ShapedRecipeBuilder.shaped(TreasureItems.RUBY_KEY.get())
+	        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, TreasureItems.RUBY_KEY.get())
 	        .pattern("kt ")
 	        .pattern(" d ")
 	        .pattern(" r ")
@@ -148,7 +149,7 @@ public class Recipes extends RecipeProvider {
 	        .save(recipe);
 	        
 	        // sapphire
-	        ShapedRecipeBuilder.shaped(TreasureItems.SAPPHIRE_KEY.get())
+	        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, TreasureItems.SAPPHIRE_KEY.get())
 	        .pattern("kt ")
 	        .pattern(" d ")
 	        .pattern(" s ")
@@ -160,38 +161,38 @@ public class Recipes extends RecipeProvider {
 	        .save(recipe);
 
 	        // copper weapons smelting
-			SimpleCookingRecipeBuilder.smelting(Ingredient.of(TreasureItems.CHIPPED_COPPER_SHORT_SWORD.get()),
+			SimpleCookingRecipeBuilder.smelting(Ingredient.of(TreasureItems.CHIPPED_COPPER_SHORT_SWORD.get()), RecipeCategory.COMBAT, 
 	                Items.COPPER_INGOT, 1.0f, 200)
 	        .unlockedBy("has_weapon", inventoryTrigger(ItemPredicate.Builder.item().of(TreasureItems.CHIPPED_COPPER_SHORT_SWORD.get()).build()))
 	        .save(recipe, "copper_ingot_from_chipped_short_sword");
 			
-			SimpleCookingRecipeBuilder.smelting(Ingredient.of(TreasureItems.COPPER_SHORT_SWORD.get()),
+			SimpleCookingRecipeBuilder.smelting(Ingredient.of(TreasureItems.COPPER_SHORT_SWORD.get()), RecipeCategory.COMBAT, 
 	                Items.COPPER_INGOT, 1.0f, 200)
 	        .unlockedBy("has_weapon", inventoryTrigger(ItemPredicate.Builder.item().of(TreasureItems.COPPER_SHORT_SWORD.get()).build()))
 	        .save(recipe, "copper_ingot_from_short_sword");
 			
-			SimpleCookingRecipeBuilder.smelting(Ingredient.of(TreasureItems.COPPER_BROAD_AXE.get()),
+			SimpleCookingRecipeBuilder.smelting(Ingredient.of(TreasureItems.COPPER_BROAD_AXE.get()), RecipeCategory.COMBAT, 
 	                Items.COPPER_INGOT, 1.0f, 200)
 	        .unlockedBy("has_weapon", inventoryTrigger(ItemPredicate.Builder.item().of(TreasureItems.COPPER_BROAD_AXE.get()).build()))
 	        .save(recipe, "copper_ingot_from_broad_axe");
 			
 			// iron weapons smelting
-			SimpleCookingRecipeBuilder.smelting(Ingredient.of(TreasureItems.CHIPPED_IRON_SHORT_SWORD.get()),
+			SimpleCookingRecipeBuilder.smelting(Ingredient.of(TreasureItems.CHIPPED_IRON_SHORT_SWORD.get()), RecipeCategory.COMBAT, 
 	                Items.IRON_INGOT, 1.0f, 200)
 	        .unlockedBy("has_weapon", inventoryTrigger(ItemPredicate.Builder.item().of(TreasureItems.CHIPPED_IRON_SHORT_SWORD.get()).build()))
 	        .save(recipe, "iron_ingot_from_chipped_short_sword");
 			
-			SimpleCookingRecipeBuilder.smelting(Ingredient.of(TreasureItems.IRON_SHORT_SWORD.get()),
+			SimpleCookingRecipeBuilder.smelting(Ingredient.of(TreasureItems.IRON_SHORT_SWORD.get()), RecipeCategory.COMBAT, 
 	                Items.IRON_INGOT, 1.0f, 200)
 	        .unlockedBy("has_weapon", inventoryTrigger(ItemPredicate.Builder.item().of(TreasureItems.IRON_SHORT_SWORD.get()).build()))
 	        .save(recipe, "iron_ingot_from_short_sword");
 			
-			SimpleCookingRecipeBuilder.smelting(Ingredient.of(TreasureItems.IRON_BROAD_AXE.get()),
+			SimpleCookingRecipeBuilder.smelting(Ingredient.of(TreasureItems.IRON_BROAD_AXE.get()), RecipeCategory.COMBAT, 
 	                Items.IRON_INGOT, 1.0f, 200)
 	        .unlockedBy("has_weapon", inventoryTrigger(ItemPredicate.Builder.item().of(TreasureItems.IRON_BROAD_AXE.get()).build()))
 	        .save(recipe, "iron_ingot_from_broad_axe");
 			
-			SimpleCookingRecipeBuilder.smelting(Ingredient.of(TreasureItems.IRON_DWARVEN_AXE.get()),
+			SimpleCookingRecipeBuilder.smelting(Ingredient.of(TreasureItems.IRON_DWARVEN_AXE.get()), RecipeCategory.COMBAT, 
 	                Items.IRON_INGOT, 1.0f, 200)
 	        .unlockedBy("has_weapon", inventoryTrigger(ItemPredicate.Builder.item().of(TreasureItems.IRON_DWARVEN_AXE.get()).build()))
 	        .save(recipe, "iron_ingot_from_dwarven_axe");

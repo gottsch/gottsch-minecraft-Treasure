@@ -21,7 +21,7 @@ import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.item.TreasureItems;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.LanguageProvider;
 
 /**
@@ -31,8 +31,8 @@ import net.minecraftforge.common.data.LanguageProvider;
  */
 public class LanguageGen extends LanguageProvider {
 
-    public LanguageGen(DataGenerator gen, String locale) {
-        super(gen, Treasure.MODID, locale);
+    public LanguageGen(PackOutput output, String locale) {
+        super(output, Treasure.MODID, locale);
     }
     
     @Override

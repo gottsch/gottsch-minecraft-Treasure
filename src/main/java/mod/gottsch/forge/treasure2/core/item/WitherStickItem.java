@@ -43,7 +43,7 @@ public class WitherStickItem extends BlockItem {
 	 * @param properties
 	 */
 	public WitherStickItem(Block block, Item.Properties properties) {
-		super(block, properties.tab(TreasureItems.TREASURE_ITEM_GROUP));
+		super(block, properties);
 	}
 	
 	@Override

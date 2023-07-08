@@ -1,7 +1,7 @@
 {
     "parent": "treasure2:block/deepslate_ore_parent",
     "textures": {
-    	"end": "treasure2:blocks/deepslate_top_ruby_ore",
-        "side": "treasure2:blocks/deepslate_ruby_ore"
+    	"end": "treasure2:block/deepslate_top_ruby_ore",
+        "side": "treasure2:block/deepslate_ruby_ore"
     }
 }

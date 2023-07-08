@@ -1,6 +1,6 @@
 {
   "type" : "forge:add_features",
   "biomes" : "#minecraft:is_overworld",
-  "features" : "treasure2:ruby_ore_placed",
+  "features" : "treasure2:ruby_placed",
   "step" : "underground_ores"
 }

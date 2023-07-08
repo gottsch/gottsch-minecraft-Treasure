@@ -263,7 +263,7 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 				context.level().setBlock(c.getCoords().toPos(), Blocks.SPAWNER.defaultBlockState(), 3);
 				SpawnerBlockEntity blockEntity = (SpawnerBlockEntity) context.level().getBlockEntity(c.getCoords().toPos());
 				EntityType<?> r = DungeonHooks.getRandomDungeonMob(context.random());
-				blockEntity.getSpawner().setEntityId(r);
+				blockEntity.getSpawner().setEntityId(r, context.level().getLevel(), context.random(), c.getCoords().toPos());
 			}
 			
 			// TODO move to own method

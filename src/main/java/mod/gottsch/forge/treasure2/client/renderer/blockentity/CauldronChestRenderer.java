@@ -20,7 +20,7 @@
 package mod.gottsch.forge.treasure2.client.renderer.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.client.model.blockentity.CauldronChestModel;
@@ -45,8 +45,8 @@ public class CauldronChestRenderer extends AbstractChestBlockEntityRenderer {
 	@Override
 	public void updateLockRotation(PoseStack matrixStack, LockState lockState) {
 		// rotate the locks on the x axis to lay flat
-		matrixStack.mulPose(Vector3f.XP.rotationDegrees(90)); // NOTE changed from Y to X axis
-		matrixStack.mulPose(Vector3f.ZP.rotationDegrees(lockState.getSlot().getRotation()));  // NOTE now Z axis is the Y axis since we rotated on the X axis first.
+		matrixStack.mulPose(Axis.XP.rotationDegrees(90)); // NOTE changed from Y to X axis
+		matrixStack.mulPose(Axis.ZP.rotationDegrees(lockState.getSlot().getRotation()));  // NOTE now Z axis is the Y axis since we rotated on the X axis first.
 	}
 
 	@Override

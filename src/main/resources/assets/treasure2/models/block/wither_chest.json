@@ -5,6 +5,7 @@
 		"1": "treasure2:block/chest/wither_chest",
 		"particle": "treasure2:block/chest/particle/wither_chest_particle"
 	},
+	"render_type": "cutout_mipped",
 	"elements": [
 		{
 			"name": "rfront",

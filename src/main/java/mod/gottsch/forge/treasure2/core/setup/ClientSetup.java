@@ -18,28 +18,75 @@
 package mod.gottsch.forge.treasure2.core.setup;
 
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.client.model.blockentity.*;
-import mod.gottsch.forge.treasure2.client.model.entity.*;
-import mod.gottsch.forge.treasure2.client.renderer.blockentity.*;
-import mod.gottsch.forge.treasure2.client.renderer.entity.*;
-import mod.gottsch.forge.treasure2.client.screen.*;
+import mod.gottsch.forge.treasure2.client.model.blockentity.BandedChestModel;
+import mod.gottsch.forge.treasure2.client.model.blockentity.CardboardBoxModel;
+import mod.gottsch.forge.treasure2.client.model.blockentity.CauldronChestModel;
+import mod.gottsch.forge.treasure2.client.model.blockentity.CompressorChestModel;
+import mod.gottsch.forge.treasure2.client.model.blockentity.CrateChestModel;
+import mod.gottsch.forge.treasure2.client.model.blockentity.DreadPirateChestModel;
+import mod.gottsch.forge.treasure2.client.model.blockentity.MilkCrateModel;
+import mod.gottsch.forge.treasure2.client.model.blockentity.SafeModel;
+import mod.gottsch.forge.treasure2.client.model.blockentity.SkullChestModel;
+import mod.gottsch.forge.treasure2.client.model.blockentity.SpiderChestModel;
+import mod.gottsch.forge.treasure2.client.model.blockentity.StandardChestModel;
+import mod.gottsch.forge.treasure2.client.model.blockentity.StrongboxModel;
+import mod.gottsch.forge.treasure2.client.model.blockentity.VikingChestModel;
+import mod.gottsch.forge.treasure2.client.model.blockentity.WitherChestModel;
+import mod.gottsch.forge.treasure2.client.model.entity.BoundSoulModel;
+import mod.gottsch.forge.treasure2.client.model.entity.CauldronChestMimicModel;
+import mod.gottsch.forge.treasure2.client.model.entity.PirateChestMimicModel;
+import mod.gottsch.forge.treasure2.client.model.entity.VikingChestMimicModel;
+import mod.gottsch.forge.treasure2.client.model.entity.WoodChestMimicModel;
+import mod.gottsch.forge.treasure2.client.renderer.blockentity.CardboardBoxRenderer;
+import mod.gottsch.forge.treasure2.client.renderer.blockentity.CauldronChestRenderer;
+import mod.gottsch.forge.treasure2.client.renderer.blockentity.CompressorChestRenderer;
+import mod.gottsch.forge.treasure2.client.renderer.blockentity.CrateChestRenderer;
+import mod.gottsch.forge.treasure2.client.renderer.blockentity.DreadPirateChestRenderer;
+import mod.gottsch.forge.treasure2.client.renderer.blockentity.IronboundChestRenderer;
+import mod.gottsch.forge.treasure2.client.renderer.blockentity.MilkCrateRenderer;
+import mod.gottsch.forge.treasure2.client.renderer.blockentity.MoldyCrateChestRenderer;
+import mod.gottsch.forge.treasure2.client.renderer.blockentity.PirateChestRenderer;
+import mod.gottsch.forge.treasure2.client.renderer.blockentity.SafeRenderer;
+import mod.gottsch.forge.treasure2.client.renderer.blockentity.SkullChestRenderer;
+import mod.gottsch.forge.treasure2.client.renderer.blockentity.SpiderChestRenderer;
+import mod.gottsch.forge.treasure2.client.renderer.blockentity.StrongboxRenderer;
+import mod.gottsch.forge.treasure2.client.renderer.blockentity.VikingChestRenderer;
+import mod.gottsch.forge.treasure2.client.renderer.blockentity.WitherChestRenderer;
+import mod.gottsch.forge.treasure2.client.renderer.blockentity.WoodChestRenderer;
+import mod.gottsch.forge.treasure2.client.renderer.entity.BoundSoulRenderer;
+import mod.gottsch.forge.treasure2.client.renderer.entity.CauldronChestMimicRenderer;
+import mod.gottsch.forge.treasure2.client.renderer.entity.PirateChestMimicRenderer;
+import mod.gottsch.forge.treasure2.client.renderer.entity.VikingChestMimicRenderer;
+import mod.gottsch.forge.treasure2.client.renderer.entity.WoodChestMimicRenderer;
+import mod.gottsch.forge.treasure2.client.screen.CompressorChestScreen;
+import mod.gottsch.forge.treasure2.client.screen.KeyRingScreen;
+import mod.gottsch.forge.treasure2.client.screen.PouchScreen;
+import mod.gottsch.forge.treasure2.client.screen.SkullChestScreen;
+import mod.gottsch.forge.treasure2.client.screen.StandardChestScreen;
+import mod.gottsch.forge.treasure2.client.screen.StrongboxScreen;
+import mod.gottsch.forge.treasure2.client.screen.VikingChestScreen;
+import mod.gottsch.forge.treasure2.client.screen.WitherChestScreen;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.block.entity.TreasureBlockEntities;
 import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
 import mod.gottsch.forge.treasure2.core.inventory.TreasureContainers;
-import mod.gottsch.forge.treasure2.core.particle.*;
+import mod.gottsch.forge.treasure2.core.particle.BillowingMistParticle;
+import mod.gottsch.forge.treasure2.core.particle.CoinParticle;
+import mod.gottsch.forge.treasure2.core.particle.MistParticle;
+import mod.gottsch.forge.treasure2.core.particle.PoisonMistParticle;
+import mod.gottsch.forge.treasure2.core.particle.SpanishMossParticle;
+import mod.gottsch.forge.treasure2.core.particle.TreasureParticles;
+import mod.gottsch.forge.treasure2.core.particle.WitherMistParticle;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.world.level.GrassColor;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -88,39 +135,11 @@ public class ClientSetup {
             	ItemBlockRenderTypes.setRenderLayer(chest.get(), RenderType.cutoutMipped());
             });
 
-//            ItemBlockRenderTypes.setRenderLayer(TreasureBlocks.SPANISH_MOSS.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(TreasureBlocks.SPANISH_MOSS.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(TreasureBlocks.SKELETON.get(), RenderType.cutout());
         });
     }
-    /**
-     * Add model textures to the atlas.
-     * @param event
-     */
-    @SubscribeEvent
-    public static void onTextureStitch(TextureStitchEvent.Pre event) {
-        if (!event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
-            return;
-        }
-        event.addSprite(WoodChestRenderer.WOOD_CHEST_RENDERER_ATLAS_TEXTURE);
-        event.addSprite(CrateChestRenderer.CRATE_CHEST_RENDERER_ATLAS_TEXTURE);
-        event.addSprite(MoldyCrateChestRenderer.CRATE_CHEST_RENDERER_ATLAS_TEXTURE);
-        event.addSprite(IronboundChestRenderer.IRONBOUND_CHEST_RENDERER_ATLAS_TEXTURE);
-        event.addSprite(PirateChestRenderer.PIRATE_CHEST_RENDERER_ATLAS_TEXTURE);
-        event.addSprite(SafeRenderer.SAFE_RENDERER_ATLAS_TEXTURE);
-        event.addSprite(StrongboxRenderer.IRON_STRONGBOX_RENDERER_ATLAS_TEXTURE);
-        event.addSprite(StrongboxRenderer.GOLD_STRONGBOX_RENDERER_ATLAS_TEXTURE);
-        event.addSprite(DreadPirateChestRenderer.DREAD_PIRATE_CHEST_RENDERER_ATLAS_TEXTURE);
-        event.addSprite(CompressorChestRenderer.COMPRESSOR_CHEST_RENDERER_ATLAS_TEXTURE);
-        event.addSprite(SkullChestRenderer.SKULL_CHEST_RENDERER_ATLAS_TEXTURE);
-        event.addSprite(SkullChestRenderer.GOLD_SKULL_CHEST_RENDERER_ATLAS_TEXTURE);
-        event.addSprite(SkullChestRenderer.CRYSTAL_SKULL_CHEST_RENDERER_ATLAS_TEXTURE);
-        event.addSprite(CauldronChestRenderer.CAULDRON_CHEST_RENDERER_ATLAS_TEXTURE);
-        event.addSprite(SpiderChestRenderer.SPIDER_CHEST_RENDERER_ATLAS_TEXTURE);
-        event.addSprite(VikingChestRenderer.VIKING_CHEST_RENDERER_ATLAS_TEXTURE);
-        event.addSprite(CardboardBoxRenderer.CARDBOARD_BOX_RENDERER_ATLAS_TEXTURE);
-        event.addSprite(MilkCrateRenderer.MILK_CRATE_RENDERER_ATLAS_TEXTURE);
-        event.addSprite(WitherChestRenderer.WITHER_CHEST_RENDERER_ATLAS_TEXTURE);
-    }
+
     
 	/**
 	 * register renderers

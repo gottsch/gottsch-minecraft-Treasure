@@ -17,9 +17,10 @@
  */
 package mod.gottsch.forge.treasure2.client.renderer.blockentity;
 
+import org.joml.Vector3d;
+
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3d;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 
 import mod.gottsch.forge.treasure2.client.model.blockentity.ITreasureChestModel;
 import mod.gottsch.forge.treasure2.core.block.StandardChestBlock;
@@ -56,7 +57,7 @@ public interface ITreasureChestBlockEntityRenderer {
 
 	default public void updateRotation(PoseStack PoseStack, Direction direction) {
 		float angle = getHorizontalAngle(direction);
-		PoseStack.mulPose(Vector3f.YP.rotationDegrees(-angle));
+		PoseStack.mulPose(Axis.YP.rotationDegrees(-angle));
 	}
 
 	/**
@@ -143,7 +144,7 @@ public interface ITreasureChestBlockEntityRenderer {
 	 * @param lockState
 	 */
 	default public void updateLockRotation(PoseStack PoseStack, LockState lockState) {
-		PoseStack.mulPose(Vector3f.YP.rotationDegrees(lockState.getSlot().getRotation()));
+		PoseStack.mulPose(Axis.YP.rotationDegrees(lockState.getSlot().getRotation()));
 	}
 
 	/**

@@ -17,13 +17,12 @@
  */
 package mod.gottsch.forge.treasure2.datagen;
 
+import java.util.concurrent.CompletableFuture;
+
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
-import mod.gottsch.forge.treasure2.core.tags.TreasureTags;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.core.HolderLookup.Provider;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.BiomeTagsProvider;
-import net.minecraft.data.tags.BlockTagsProvider;
-import net.minecraft.world.level.biome.Biomes;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 /**
@@ -37,12 +36,12 @@ public class TreasureBiomeTagsProvider extends BiomeTagsProvider {
      * @param generatorIn
      * @param existingFileHelper
      */
-	public TreasureBiomeTagsProvider(DataGenerator generatorIn, ExistingFileHelper existingFileHelper) {
-        super(generatorIn, Treasure.MODID, existingFileHelper);
+	public TreasureBiomeTagsProvider(PackOutput output, CompletableFuture<Provider> lookup, ExistingFileHelper existingFileHelper) {
+        super(output, lookup, Treasure.MODID, existingFileHelper);
     }
     
     @Override
-    protected void addTags() {
+    protected void addTags(Provider provider) {
     	// blocks rarity
 //    	tag(TreasureTags.Biomes.DESERT_WELL1).add(Biomes.DESERT);
 //    	tag(TreasureTags.Biomes.DESERT_WELL2).add(Biomes.DESERT);

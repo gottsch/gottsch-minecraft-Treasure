@@ -5,6 +5,7 @@
 		"1": "treasure2:block/chest/spider_chest",
 		"particle": "treasure2:block/chest/particle/spider_chest_particle"
 	},
+	"render_type": "cutout_mipped",
 	"elements": [
 		{
 			"name": "chest",

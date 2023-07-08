@@ -20,33 +20,62 @@ package mod.gottsch.forge.treasure2.core.setup;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.api.TreasureApi;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
-import mod.gottsch.forge.treasure2.core.cache.FeatureCaches;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
-import mod.gottsch.forge.treasure2.core.entity.monster.*;
-import mod.gottsch.forge.treasure2.core.enums.*;
-import mod.gottsch.forge.treasure2.core.generator.chest.*;
+import mod.gottsch.forge.treasure2.core.entity.monster.BoundSoul;
+import mod.gottsch.forge.treasure2.core.entity.monster.CauldronChestMimic;
+import mod.gottsch.forge.treasure2.core.entity.monster.PirateChestMimic;
+import mod.gottsch.forge.treasure2.core.entity.monster.VikingChestMimic;
+import mod.gottsch.forge.treasure2.core.entity.monster.WoodChestMimic;
+import mod.gottsch.forge.treasure2.core.enums.LootTableType;
+import mod.gottsch.forge.treasure2.core.enums.MarkerType;
+import mod.gottsch.forge.treasure2.core.enums.PitType;
+import mod.gottsch.forge.treasure2.core.enums.Rarity;
+import mod.gottsch.forge.treasure2.core.enums.SpecialRarity;
+import mod.gottsch.forge.treasure2.core.enums.WishableExtraRarity;
+import mod.gottsch.forge.treasure2.core.generator.chest.CauldronChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.chest.CommonChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.chest.CrystalSkullChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.chest.EpicChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.chest.GoldSkullChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.chest.LegendaryChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.chest.MythicalChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.chest.RareChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.chest.ScarceChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.chest.SkullChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.chest.UncommonChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.chest.WitherChestGenerator;
 import mod.gottsch.forge.treasure2.core.generator.marker.GravestoneMarkerGenerator;
 import mod.gottsch.forge.treasure2.core.generator.marker.StructureMarkerGenerator;
-import mod.gottsch.forge.treasure2.core.generator.pit.*;
+import mod.gottsch.forge.treasure2.core.generator.pit.AirPitGenerator;
+import mod.gottsch.forge.treasure2.core.generator.pit.BigBottomMobTrapPitGenerator;
+import mod.gottsch.forge.treasure2.core.generator.pit.CollapsingTrapPitGenerator;
+import mod.gottsch.forge.treasure2.core.generator.pit.LavaSideTrapPitGenerator;
+import mod.gottsch.forge.treasure2.core.generator.pit.LavaTrapPitGenerator;
+import mod.gottsch.forge.treasure2.core.generator.pit.MobTrapPitGenerator;
+import mod.gottsch.forge.treasure2.core.generator.pit.SimplePitGenerator;
+import mod.gottsch.forge.treasure2.core.generator.pit.StructurePitGenerator;
+import mod.gottsch.forge.treasure2.core.generator.pit.TntTrapPitGenerator;
+import mod.gottsch.forge.treasure2.core.generator.pit.VolcanoPitGenerator;
 import mod.gottsch.forge.treasure2.core.generator.ruin.SubaquaticRuinGenerator;
 import mod.gottsch.forge.treasure2.core.generator.ruin.SurfaceRuinGenerator;
 import mod.gottsch.forge.treasure2.core.generator.well.WellGenerator;
 import mod.gottsch.forge.treasure2.core.item.KeyLockCategory;
+import mod.gottsch.forge.treasure2.core.item.TreasureCreativeModeTabs;
 import mod.gottsch.forge.treasure2.core.item.TreasureItems;
 import mod.gottsch.forge.treasure2.core.network.TreasureNetworking;
 import mod.gottsch.forge.treasure2.core.structure.StructureCategory;
 import mod.gottsch.forge.treasure2.core.structure.StructureType;
 import mod.gottsch.forge.treasure2.core.tags.TreasureTags;
-import mod.gottsch.forge.treasure2.core.util.ModUtil;
-import mod.gottsch.forge.treasure2.core.util.TreasureDataFixer;
 import mod.gottsch.forge.treasure2.core.wishable.TreasureWishableHandlers;
 import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 import mod.gottsch.forge.treasure2.core.world.feature.gen.TreasureFeatureGenerators;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.item.CreativeModeTab.TabVisibility;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraftforge.event.CreativeModeTabEvent.BuildContents;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -403,6 +432,16 @@ public class CommonSetup {
 		TreasureNetworking.register();
 	}
 
+	@SubscribeEvent
+	public static void registemItemsToTab(BuildContents event) {
+		if (event.getTab() == TreasureCreativeModeTabs.MOD_TAB) {
+			// add all items
+			Registration.ITEMS.getEntries().forEach(item -> {
+				event.accept(item.get(), TabVisibility.PARENT_AND_SEARCH_TABS);
+			});
+		}
+	}
+	
 	@SubscribeEvent
 	public static void onAttributeCreate(EntityAttributeCreationEvent event) {
 		event.put(TreasureEntities.BOUND_SOUL_ENTITY_TYPE.get(), BoundSoul.createAttributes().build());

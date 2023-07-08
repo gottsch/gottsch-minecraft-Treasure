@@ -21,8 +21,20 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.*;
-import java.util.*;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -44,9 +56,14 @@ import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.api.TreasureApi;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.config.StructureConfiguration.StructMeta;
-import mod.gottsch.forge.treasure2.core.structure.*;
+import mod.gottsch.forge.treasure2.core.structure.IStructureCategory;
+import mod.gottsch.forge.treasure2.core.structure.IStructureType;
+import mod.gottsch.forge.treasure2.core.structure.StructureCategory;
+import mod.gottsch.forge.treasure2.core.structure.StructureType;
+import mod.gottsch.forge.treasure2.core.structure.TemplateHolder;
 import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import net.minecraft.SharedConstants;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.resources.ResourceLocation;
@@ -56,8 +73,10 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 
 
@@ -72,6 +91,17 @@ public class TreasureTemplateRegistry {
 	private static final Set<String> REGISTERED_MODS;
 	private static final Map<String, Boolean> LOADED_MODS;
 	protected static final Gson GSON_INSTANCE;
+
+	/*
+	MC 1.19.3: net/minecraft/world/level/levelgen/structure/templatesystem/StructureTemplateManager.blockLookup
+	Name: k => f_243724_ => blockLookup
+	Side: BOTH
+	AT: public net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager f_243724_ # blockLookup
+	Type: net/minecraft/core/HolderGetter
+ */
+	private static final String HOLDER_GETTER_SRG_NAME = "f_243724_";
+
+	private static HolderGetter<Block> blockLookup;
 
 	/*
 	 * All structure templates by resource location.
@@ -353,7 +383,7 @@ public class TreasureTemplateRegistry {
 		}
 
 		GottschTemplate template = new GottschTemplate();
-		template.load(nbt, markerBlocks, replacementBlocks);
+		template.load(blockLookup, nbt, markerBlocks, replacementBlocks);
 		//		Treasure.LOGGER.debug("adding template to map with key -> {}", id);
 		//		this.getTemplates().put(id, template);
 		return Optional.ofNullable(template);
@@ -364,6 +394,7 @@ public class TreasureTemplateRegistry {
 	 * @param event
 	 */
 	public static void onWorldLoad(LevelEvent.Load event, Path worldSavePath) {
+		register((ServerLevel)event.getLevel());
 		setWorldSaveFolder(worldSavePath);
 		clearDatapacks();
 		clearAccesslists();
@@ -371,6 +402,17 @@ public class TreasureTemplateRegistry {
 			Treasure.LOGGER.debug("template registry world load event...");
 			loadDataPacks(getMarkerScanList(), getReplacementMap());
 			registerAccesslists(Config.structureConfiguration.getStructMetas());
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	private static void register(ServerLevel level) {
+		Object obj = ObfuscationReflectionHelper.getPrivateValue(StructureTemplateManager.class, level.getServer().getStructureManager(), HOLDER_GETTER_SRG_NAME);
+		Treasure.LOGGER.debug("obj -> {}", obj.getClass().getSimpleName());
+		if (obj instanceof HolderGetter) {
+			blockLookup = ((HolderGetter<Block>) obj);
+		} else {
+			throw new RuntimeException("unable to attain Block HolderGetter");
 		}
 	}
 

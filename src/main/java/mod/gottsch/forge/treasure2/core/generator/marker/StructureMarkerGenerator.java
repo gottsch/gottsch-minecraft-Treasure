@@ -164,7 +164,7 @@ public class StructureMarkerGenerator implements IMarkerGenerator<GeneratorResul
 			context.level().setBlock(c2.toPos(), Blocks.SPAWNER.defaultBlockState(), 3);
 			SpawnerBlockEntity te = (SpawnerBlockEntity) context.level().getBlockEntity(c2.toPos());
 			EntityType<?> r = DungeonHooks.getRandomDungeonMob(context.random());
-			te.getSpawner().setEntityId(r);
+			te.getSpawner().setEntityId(r, context.level().getLevel(), context.random(), c.getCoords().toPos());
 		}
 		
 		// populate proximity spawners

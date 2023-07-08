@@ -17,11 +17,14 @@
  */
 package mod.gottsch.forge.treasure2.datagen;
 
+import java.util.concurrent.CompletableFuture;
+
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.tags.TreasureTags;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.tags.BlockTagsProvider;
+import net.minecraft.core.HolderLookup.Provider;
+import net.minecraft.data.PackOutput;
+import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 /**
@@ -30,17 +33,14 @@ import net.minecraftforge.common.data.ExistingFileHelper;
  *
  */
 public class TreasureBlockTagsProvider extends BlockTagsProvider {
-    /**
-     * 
-     * @param generatorIn
-     * @param existingFileHelper
-     */
-	public TreasureBlockTagsProvider(DataGenerator generatorIn, ExistingFileHelper existingFileHelper) {
-        super(generatorIn, Treasure.MODID, existingFileHelper);
-    }
     
-    @Override
-    protected void addTags() {
+    public TreasureBlockTagsProvider(PackOutput output, CompletableFuture<Provider> lookupProvider,
+			ExistingFileHelper existingFileHelper) {
+    	super(output, lookupProvider, Treasure.MODID, existingFileHelper);
+	}
+
+	@Override
+    protected void addTags(Provider provider) {
     	// blocks rarity
     	tag(TreasureTags.Blocks.COMMON_CHESTS).add(TreasureBlocks.WOOD_CHEST.get());
     	tag(TreasureTags.Blocks.COMMON_CHESTS).add(TreasureBlocks.MOLDY_CRATE_CHEST.get());
@@ -66,4 +66,5 @@ public class TreasureBlockTagsProvider extends BlockTagsProvider {
     	tag(TreasureTags.Blocks.CRYSTAL_SKULL_CHESTS).add(TreasureBlocks.CRYSTAL_SKULL_CHEST.get());
     	tag(TreasureTags.Blocks.WITHER_CHESTS).add(TreasureBlocks.WITHER_CHEST.get());
     }
+
 }

@@ -1,7 +1,7 @@
 {
     "parent": "treasure2:block/deepslate_ore_parent",
     "textures": {
-    	"end": "treasure2:blocks/deepslate_top_onyx_ore",
-        "side": "treasure2:blocks/deepslate_onyx_ore"
+    	"end": "treasure2:block/deepslate_top_onyx_ore",
+        "side": "treasure2:block/deepslate_onyx_ore"
     }
 }

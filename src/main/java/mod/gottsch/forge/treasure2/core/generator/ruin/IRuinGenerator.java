@@ -119,7 +119,7 @@ public interface IRuinGenerator<RESULT extends IGeneratorResult<?>> {
 			SpawnerBlockEntity te = (SpawnerBlockEntity) context.level().getBlockEntity(c.getCoords().toPos());
 			if (te != null) {
 				EntityType<?> r = DungeonHooks.getRandomDungeonMob(context.random());
-				te.getSpawner().setEntityId(r);
+				te.getSpawner().setEntityId(r, context.level().getLevel(), context.random(), c.getCoords().toPos());
 			}
 			else {
 				Treasure.LOGGER.debug("unable to generate vanilla spawner at -> {}", c.getCoords().toShortString());

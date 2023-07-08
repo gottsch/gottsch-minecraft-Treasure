@@ -1,11 +1,11 @@
 {
 	"parent": "block/block",
     "textures": {
-        "0": "treasure2:blocks/skull_north",
-        "1": "treasure2:blocks/skull_east",
-        "2": "treasure2:blocks/skull_south",
-        "3": "treasure2:blocks/crossbone",
-        "particle": "treasure2:blocks/skull_south"
+        "0": "treasure2:block/skull_north",
+        "1": "treasure2:block/skull_east",
+        "2": "treasure2:block/skull_south",
+        "3": "treasure2:block/crossbone",
+        "particle": "treasure2:block/skull_south"
     },
     "elements": [
         {

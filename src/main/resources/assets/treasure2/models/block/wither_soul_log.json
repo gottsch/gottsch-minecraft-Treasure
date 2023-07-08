@@ -1,10 +1,10 @@
 {
 	"parent": "block/block",
 	"textures": {
-		"particle":"treasure2:blocks/wither_log",
-        "1": "treasure2:blocks/wither_log_top",
-        "2": "treasure2:blocks/wither_log",
-        "3": "treasure2:blocks/wither_log_face"
+		"particle":"treasure2:block/wither_log",
+        "1": "treasure2:block/wither_log_top",
+        "2": "treasure2:block/wither_log",
+        "3": "treasure2:block/wither_log_face"
 	},
     "elements": [
         {

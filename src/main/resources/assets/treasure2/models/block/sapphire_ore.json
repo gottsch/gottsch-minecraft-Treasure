@@ -1,6 +1,6 @@
 {
     "parent": "treasure2:block/ore_parent",
     "textures": {
-        "0": "treasure2:blocks/sapphire_ore"
+        "0": "treasure2:block/sapphire_ore"
     }
 }

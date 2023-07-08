@@ -7,16 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [3.1.0] - 2023-07-06
+## [3.1.0] - 2023-0x-xx
 
 ### Added
 
 - Added Crate and Moldy Crate mimics.
-- Added 1.19.2 blocks and items to loot tables.
+- Added 1.19 blocks and items to loot tables.
 
 ### Changed
 
-- Made 1.18.2 -> 1.192. porting code changes (ex . Random -> RandomSource).
+- Made 1.18.2 -> 1.19.3 porting code changes (ex . Random -> RandomSource).
 - Updated the topaz key texture to be more like the onyx key.
 - Key durability is no longer setup during item registration but in common setup using Reflection.
 - Updated chest blocks to be waterloggable.

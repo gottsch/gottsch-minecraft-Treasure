@@ -20,7 +20,7 @@ package mod.gottsch.forge.treasure2.datagen;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.item.TreasureItems;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
@@ -31,8 +31,8 @@ import net.minecraftforge.common.data.ExistingFileHelper;
  */
 public class ItemModelsProvider extends ItemModelProvider {
 
-	public ItemModelsProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
-		super(generator, Treasure.MODID, existingFileHelper);
+	public ItemModelsProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
+		super(output, Treasure.MODID, existingFileHelper);
 	}
 
 	@Override

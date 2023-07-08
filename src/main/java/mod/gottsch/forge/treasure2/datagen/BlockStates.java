@@ -18,8 +18,8 @@
 package mod.gottsch.forge.treasure2.datagen;
 
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
@@ -30,9 +30,9 @@ import net.minecraftforge.common.data.ExistingFileHelper;
  */
 public class BlockStates extends BlockStateProvider {
 
-	public BlockStates(DataGenerator gen, ExistingFileHelper helper) {
-        super(gen, Treasure.MODID, helper);
-    }
+public BlockStates(PackOutput output, ExistingFileHelper exFileHelper) {
+		super(output, Treasure.MODID, exFileHelper);
+	}
 	
 	@Override
 	protected void registerStatesAndModels() {
