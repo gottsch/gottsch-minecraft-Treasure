@@ -5,14 +5,15 @@
       "item": "treasure2:treasure_tool"
     },
     "x": {
-      "item": "minecraft:iron_ingot"
+      "item": "minecraft:polished_granite"
     }
   },
   "pattern": [
-    "xt",
-    "x "
+    " xt",
+    " x ",
+    " x "
   ],
   "result": {
-    "item": "treasure2:thiefs_lock_pick"
+    "item": "treasure2:gravestone3_polished_granite"
   }
 }
