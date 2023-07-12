@@ -1,24 +1,24 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "d": {
+      "item": "minecraft:glowstone_dust"
+    },
+    "k": {
+      "item": "treasure2:gold_key"
+    },
+    "s": {
+      "item": "treasure2:sapphire"
+    },
+    "t": {
+      "item": "treasure2:treasure_tool"
+    }
+  },
   "pattern": [
     "kt ",
     " d ",
     " s "
   ],
-  "key": {
-    "t": {
-      "item": "treasure2:treasure_tool"
-    },
-    "k": {
-      "item": "treasure2:gold_key"
-    },
-    "d": {
-      "item": "minecraft:glowstone_dust"
-    },
-    "s": {
-      "item": "treasure2:sapphire"
-    }
-  },
   "result": {
     "item": "treasure2:sapphire_key"
   }

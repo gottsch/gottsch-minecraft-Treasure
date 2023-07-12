@@ -22,6 +22,7 @@ import java.util.Optional;
 
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
+import mod.gottsch.forge.treasure2.core.cache.FeatureCaches;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.persistence.TreasureSavedData;
 import mod.gottsch.forge.treasure2.core.registry.TreasureLootTableRegistry;
@@ -61,7 +62,7 @@ public class WorldEventHandler {
 
 			ResourceLocation dimension = WorldInfo.getDimension((Level) event.getLevel());			
 			Treasure.LOGGER.info("In world load event for dimension {}", dimension.toString());
-			
+
 			/*
 			 *  cache the world save folder and pass into each registry.
 			 */
@@ -69,7 +70,10 @@ public class WorldEventHandler {
 			if (worldSavePath.isPresent()) {
 				if ((!isLoaded && Config.SERVER.integration.dimensionsWhiteList.get().contains(dimension.toString())) ||
 						!worldSavePath.get().equals(WorldEventHandler.worldSavePath)) {
-										
+					
+					// initialize feature caches
+					FeatureCaches.initialize();
+					
 					// fix data		
 					TreasureDataFixer.fix();
 					

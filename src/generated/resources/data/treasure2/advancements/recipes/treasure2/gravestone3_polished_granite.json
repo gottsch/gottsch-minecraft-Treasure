@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "treasure2:spider_key"
+        "recipe": "treasure2:gravestone3_polished_granite"
       },
       "trigger": "minecraft:recipe_unlocked"
     },
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "treasure2:spider_key"
+      "treasure2:gravestone3_polished_granite"
     ]
   }
 }

@@ -1,24 +1,24 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "kt ",
-    " d ",
-    " e "
-  ],
   "key": {
-    "t": {
-      "item": "treasure2:treasure_tool"
-    },
-    "k": {
-      "item": "treasure2:iron_key"
-    },
     "d": {
       "item": "minecraft:glowstone_dust"
     },
     "e": {
       "item": "minecraft:spider_eye"
+    },
+    "k": {
+      "item": "treasure2:iron_key"
+    },
+    "t": {
+      "item": "treasure2:treasure_tool"
     }
   },
+  "pattern": [
+    "kt ",
+    " d ",
+    " e "
+  ],
   "result": {
     "item": "treasure2:spider_key"
   }
