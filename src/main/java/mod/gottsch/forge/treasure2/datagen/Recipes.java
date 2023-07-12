@@ -19,6 +19,7 @@ package mod.gottsch.forge.treasure2.datagen;
 
 import java.util.function.Consumer;
 
+import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.item.TreasureItems;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
@@ -29,6 +30,7 @@ import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.block.Blocks;
 
 /**
  * 
@@ -195,5 +197,33 @@ public class Recipes extends RecipeProvider {
 	                Items.IRON_INGOT, 1.0f, 200)
 	        .unlockedBy("has_weapon", inventoryTrigger(ItemPredicate.Builder.item().of(TreasureItems.IRON_DWARVEN_AXE.get()).build()))
 	        .save(recipe, "iron_ingot_from_dwarven_axe");
+			
+			// gravestones
+	        ShapedRecipeBuilder.shaped(TreasureBlocks.GRAVESTONE1_POLISHED_GRANITE.get())
+	        .pattern("  t")
+	        .pattern("   ")
+	        .pattern(" x ")
+	        .define('x', Blocks.POLISHED_GRANITE)
+	        .define('t', TreasureItems.TREASURE_TOOL.get())
+	        .unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
+	        .save(recipe);
+	        
+	        ShapedRecipeBuilder.shaped(TreasureBlocks.GRAVESTONE2_POLISHED_GRANITE.get())
+	        .pattern("  t")
+	        .pattern(" x ")
+	        .pattern(" x ")
+	        .define('x', Blocks.POLISHED_GRANITE)
+	        .define('t', TreasureItems.TREASURE_TOOL.get())
+	        .unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
+	        .save(recipe);
+	        
+	        ShapedRecipeBuilder.shaped(TreasureBlocks.GRAVESTONE3_POLISHED_GRANITE.get())
+	        .pattern(" xt")
+	        .pattern(" x ")
+	        .pattern(" x ")
+	        .define('x', Blocks.POLISHED_GRANITE)
+	        .define('t', TreasureItems.TREASURE_TOOL.get())
+	        .unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
+	        .save(recipe);
 		}
 }

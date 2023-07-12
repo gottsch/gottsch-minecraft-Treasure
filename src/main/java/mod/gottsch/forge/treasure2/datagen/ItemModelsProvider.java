@@ -41,8 +41,8 @@ public class ItemModelsProvider extends ItemModelProvider {
 		singleTexture(TreasureItems.TREASURE_TAB.get().getRegistryName().getPath(),
 				mcLoc("item/generated"), "layer0", modLoc("item/treasure_tab"));
 
-		singleTexture(TreasureItems.ADORNMENTS_TAB.get().getRegistryName().getPath(),
-				mcLoc("item/generated"), "layer0", modLoc("item/adornment/ruby_gold_ring"));
+//		singleTexture(TreasureItems.ADORNMENTS_TAB.get().getRegistryName().getPath(),
+//				mcLoc("item/generated"), "layer0", modLoc("item/adornment/ruby_gold_ring"));
 
 		// keys
 		singleTexture(TreasureItems.WOOD_KEY.get().getRegistryName().getPath(),
