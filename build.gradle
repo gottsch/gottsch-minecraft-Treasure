@@ -177,7 +177,7 @@ dependencies {
 	compileOnly fg.deobf("someguyssoftware.gottschcore:GottschCore:mc1.19.2-f43.2.0-v2.1.0")
 	
 	//compileOnly fg.deobf("curse.maven:champions-307152:${cf_champions}")
-	compileOnly fg.deobf("curse.maven:jade-324717:4433884")
+	compileOnly fg.deobf("curse.maven:jade-324717:4433884") // 1.19.1-8.8.1
 	//compileOnly fg.deobf("curse.maven:supplementaries-412082:4615838")
 	//compileOnly fg.deobf("curse.maven:selene-499980:4620027")
 	
