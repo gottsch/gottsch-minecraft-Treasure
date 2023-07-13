@@ -150,6 +150,7 @@ public class GravestoneBlock extends FacingBlock implements ITreasureBlock, IMis
 	 * @deprecated call via {@link IBlockState#withRotation(Rotation)} whenever possible. Implementing/overriding is
 	 * fine.
 	 */
+	@Deprecated
 	@Override
 	public BlockState rotate(BlockState state, Rotation rot) {
 		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
@@ -160,6 +161,7 @@ public class GravestoneBlock extends FacingBlock implements ITreasureBlock, IMis
 	 * blockstate.
 	 * @deprecated call via {@link IBlockState#withMirror(Mirror)} whenever possible. Implementing/overriding is fine.
 	 */
+	@Deprecated
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirrorIn) {
 		return state.rotate(mirrorIn.getRotation(state.getValue(FACING)));

@@ -19,7 +19,11 @@
  */
 package mod.gottsch.forge.treasure2.core.generator.chest;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -53,7 +57,12 @@ import mod.gottsch.forge.treasure2.core.generator.marker.StructureMarkerGenerato
 import mod.gottsch.forge.treasure2.core.item.LockItem;
 import mod.gottsch.forge.treasure2.core.lock.LockLayout;
 import mod.gottsch.forge.treasure2.core.lock.LockState;
-import mod.gottsch.forge.treasure2.core.registry.*;
+import mod.gottsch.forge.treasure2.core.registry.ChestRegistry;
+import mod.gottsch.forge.treasure2.core.registry.DimensionalGeneratedCache;
+import mod.gottsch.forge.treasure2.core.registry.GeneratedCache;
+import mod.gottsch.forge.treasure2.core.registry.KeyLockRegistry;
+import mod.gottsch.forge.treasure2.core.registry.MimicRegistry;
+import mod.gottsch.forge.treasure2.core.registry.TreasureLootTableRegistry;
 import mod.gottsch.forge.treasure2.core.registry.support.GeneratedChestContext;
 import mod.gottsch.forge.treasure2.core.registry.support.GeneratedChestContext.GeneratedType;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
@@ -81,7 +90,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.registries.RegistryObject;
@@ -425,7 +434,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 		}
 
 		// check the inventory
-		IItemHandler itemHandler = chestBlockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElse(null);
+		IItemHandler itemHandler = chestBlockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).orElse(null);
 		if (itemHandler != null) {
 			ItemStackHandler inventory = (ItemStackHandler)itemHandler;
 
