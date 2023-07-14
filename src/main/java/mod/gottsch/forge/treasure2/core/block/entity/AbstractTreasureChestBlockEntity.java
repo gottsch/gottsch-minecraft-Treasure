@@ -25,6 +25,8 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.jetbrains.annotations.NotNull;
+
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.api.TreasureApi;
@@ -208,18 +210,32 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 
 			@Override
 			public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-				// TODO add check for locked property and return false is enabled
-				//                return ForgeHooks.getBurnTime(stack, RecipeType.SMELTING) > 0;
-				return true;
+				return !isLocked();
 			}
 
 			@Nonnull
 			@Override
 			public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-				//                if (ForgeHooks.getBurnTime(stack, RecipeType.SMELTING) <= 0) {
-				//                    return stack;
-				//                }
+				if (isLocked()) {
+					return ItemStack.EMPTY;
+				}
 				return super.insertItem(slot, stack, simulate);
+			}
+			
+			@Override
+			public @NotNull ItemStack getStackInSlot(int slot) {
+				if (isLocked()) {
+					return ItemStack.EMPTY;
+				}
+				return super.getStackInSlot(slot);
+			}
+			
+			@Override
+			public void setStackInSlot(int slot, @NotNull ItemStack stack) {
+				if (isLocked()) {
+					return;
+				}
+				super.setStackInSlot(slot, stack);
 			}
 		};
 	}
@@ -229,7 +245,7 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 			return instanceHandler.cast();
 		}
-		return super.getCapability(cap);
+		return super.getCapability(cap, side);
 	}
 
 	/**

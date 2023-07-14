@@ -19,6 +19,7 @@ package mod.gottsch.forge.treasure2.datagen;
 
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
+import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
 import mod.gottsch.forge.treasure2.core.item.TreasureItems;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.data.DataGenerator;
@@ -216,6 +217,13 @@ public class LanguageGen extends LanguageProvider {
         
 //        add(TreasureItems.WITHER_STICK_ITEM.get(), "Wither Branch");
 //        add(TreasureItems.WITHER_ROOT_ITEM.get(), "Wither Root");
+        
+        // mobs
+        add(TreasureEntities.BOUND_SOUL_ENTITY_TYPE.get(), "Bound Soul");
+        add(TreasureEntities.WOOD_CHEST_MIMIC_ENTITY_TYPE.get(), "Wood Chest Mimic");
+        add(TreasureEntities.PIRATE_CHEST_MIMIC_ENTITY_TYPE.get(), "Pirate Chest Mimic");
+        add(TreasureEntities.VIKING_CHEST_MIMIC_ENTITY_TYPE.get(), "Viking Chest Mimic");
+        add(TreasureEntities.CAULDRON_CHEST_MIMIC_ENTITY_TYPE.get(), "Cauldron Chest Mimic");
         
         // eggs
         add(TreasureItems.BOUND_SOUL_EGG.get(), "Bound Soul Spawn Egg");

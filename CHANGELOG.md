@@ -5,20 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [3.1.2] - 2023-07-13
+
+### Changed
+
+- Updated AbstractTreasureChestBlockEntity to use the sided call to CapabilityProvider#getCapability().
+  This fixes the Jade crash issue.
+
+## [3.1.1] - 2023-07-11
+
+### Changed
+
+- Added names for all mobs.
+- Fixed polished granite gravestone recipes.
 
 ## [3.1.0] - 2023-06-25
 
 ### Added
 
-- Added Crate Chest Mimic.
-- Added Moldy Crate Chest Mimic.
+- Added Crate and Moldy Crate mimics.
 
 ### Changed
 
 - updated the topaz key texture to be more like the onyx key
 - update Cauldron Mimic texture to include mouth skin
-
 
 ## [3.0.0] - 2023-06-24
 
