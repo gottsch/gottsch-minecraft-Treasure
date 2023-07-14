@@ -28,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - updated the topaz key texture to be more like the onyx key
+- update Cauldron Mimic texture to include mouth skin
 
 ## [3.0.0] - 2023-06-24
 
@@ -35,7 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Add topaz and onyx keys and locks.
+- Added topaz and onyx keys and locks.
 - Added a series of weapons (short swords, swords, axes, maces, staff), general and collectable, to populate treasure chests in lieu of charms.
 - Re-added the eye-patch (removed in mc1.16.5).
 - Re-added the Wood Chest and Pirate Chest Mimics (removed in mc1.16.5)

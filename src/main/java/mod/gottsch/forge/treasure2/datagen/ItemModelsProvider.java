@@ -41,9 +41,6 @@ public class ItemModelsProvider extends ItemModelProvider {
 		singleTexture(TreasureItems.TREASURE_TAB.get().getRegistryName().getPath(),
 				mcLoc("item/generated"), "layer0", modLoc("item/treasure_tab"));
 
-//		singleTexture(TreasureItems.ADORNMENTS_TAB.get().getRegistryName().getPath(),
-//				mcLoc("item/generated"), "layer0", modLoc("item/adornment/ruby_gold_ring"));
-
 		// keys
 		singleTexture(TreasureItems.WOOD_KEY.get().getRegistryName().getPath(),
 				modLoc("item/horizontal_left_key"), "layer0", modLoc("item/key/wood_key"));
@@ -327,6 +324,9 @@ public class ItemModelsProvider extends ItemModelProvider {
 		withExistingParent(TreasureItems.PIRATE_CHEST_MIMIC_EGG.get().getRegistryName().getPath(), mcLoc("item/template_spawn_egg"));
 		withExistingParent(TreasureItems.VIKING_CHEST_MIMIC_EGG.get().getRegistryName().getPath(), mcLoc("item/template_spawn_egg"));
 		withExistingParent(TreasureItems.CAULDRON_CHEST_MIMIC_EGG.get().getRegistryName().getPath(), mcLoc("item/template_spawn_egg"));
+		withExistingParent(TreasureItems.CRATE_CHEST_MIMIC_EGG.get().getRegistryName().getPath(), mcLoc("item/template_spawn_egg"));
+		withExistingParent(TreasureItems.MOLDY_CRATE_CHEST_MIMIC_EGG.get().getRegistryName().getPath(), mcLoc("item/template_spawn_egg"));
+		
 		// topaz rings
 		//        singleTexture(TreasureItems.ADORNMENT_ITEMS.get(modLoc("topaz_iron_ring")).getRegistryName().getPath(),        		
 		//        		mcLoc("treasure2:item/adornment"), "layer0", modLoc("item/adornments/topaz_iron_ring"));

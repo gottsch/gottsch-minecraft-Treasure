@@ -19,8 +19,7 @@ package mod.gottsch.forge.treasure2.core.block;
 
 import java.util.Random;
 
-import com.someguyssoftware.gottschcore.block.FacingBlock;
-
+import mod.gottsch.forge.gottschcore.block.FacingBlock;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.particle.CollidingParticleType;

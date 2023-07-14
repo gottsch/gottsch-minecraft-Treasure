@@ -1,5 +1,4 @@
-3ba12cc868e57e6bb6f9229c7b4c459d778c450b assets/treasure2/lang/en_us.json
-ec0affa9af25bb3155f1ffb36624aaf0fa4ef025 assets/treasure2/models/item/adornments_tab.json
+4b3876cd7ea54186c5d858086f410b8525a969c1 assets/treasure2/lang/en_us.json
 541a27aa27dcd17106e9723532d6032ad0f82782 assets/treasure2/models/item/axe_of_durin.json
 8be0b1ec5bf90f3dcb3da00251632ae969418191 assets/treasure2/models/item/black_pearl.json
 b95ce33388c818d6fb37ac91aba9803a85147763 assets/treasure2/models/item/black_sword.json
@@ -16,6 +15,7 @@ c04a176e0e3b5a72821b0887f8e718d89a08b82a assets/treasure2/models/item/copper_coi
 26831dfe53e9dd30c41a8f270ba954c994977e75 assets/treasure2/models/item/copper_rapier.json
 a1409d6fb57001d8ec31d76b2ade187f56a5cf75 assets/treasure2/models/item/copper_short_sword.json
 b6ee03c50f84077f621d35f79d8d14e28704d927 assets/treasure2/models/item/crate_chest.json
+98167609bf3898587f7565736a6fc24a7966cacd assets/treasure2/models/item/crate_chest_mimic_egg.json
 7fd9fc5ed7fb981028c35d3ce676b32c7a8de856 assets/treasure2/models/item/crate_chest_moldy.json
 8eebb224b802835fc4d3293fa210937f6d10be02 assets/treasure2/models/item/crystal_skull_chest.json
 d2ad0575cde43ffcec229f5c87353b8c483390b8 assets/treasure2/models/item/deepslate_onyx_ore.json
@@ -76,6 +76,7 @@ e0d423380a13cdc610bc58bfc526931c942ed426 assets/treasure2/models/item/leaf_key.j
 a07fc522e3d57858deb082797e28e55edecb76aa assets/treasure2/models/item/metallurgists_key.json
 0c675e9424f4a1397487c82afa4817ab15c8a198 assets/treasure2/models/item/milk_crate.json
 c78dad40ac841fe5794d28cc239e358f0d3117ab assets/treasure2/models/item/mjolnir.json
+98167609bf3898587f7565736a6fc24a7966cacd assets/treasure2/models/item/moldy_crate_chest_mimic_egg.json
 6df6bb06d846dd09276dc8e9622a94ffab91ef08 assets/treasure2/models/item/oathbringer.json
 050c1cce3477af87e1d1e8487ebee023beaf6eea assets/treasure2/models/item/one_key.json
 4ee7da3fe4e2a16d91fcac74563917aac8e84eb4 assets/treasure2/models/item/onyx.json

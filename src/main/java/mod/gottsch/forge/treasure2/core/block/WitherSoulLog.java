@@ -5,12 +5,10 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
-import com.someguyssoftware.gottschcore.block.FacingBlock;
-
+import mod.gottsch.forge.gottschcore.block.FacingBlock;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.block.entity.GravestoneProximitySpawnerBlockEntity;
 import mod.gottsch.forge.treasure2.core.block.entity.MistEmitterBlockEntity;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.particle.CollidingParticleType;
