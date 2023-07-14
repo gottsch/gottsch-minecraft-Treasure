@@ -33,10 +33,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [3.1.0] - 2023-06-25
 
-### Added
-
-- Added Crate and Moldy Crate mimics.
-
 ### Changed
 
 - updated the topaz key texture to be more like the onyx key

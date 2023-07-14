@@ -63,6 +63,8 @@
   "chat.treasure2.key.key_unable_unlock": "Your key failed to unlock the lock!",
   "entity.treasure2.bound_soul": "Bound Soul",
   "entity.treasure2.cauldron_chest_mimic": "Cauldron Chest Mimic",
+  "entity.treasure2.crate_chest_mimic": "Crate Chest Mimic",
+  "entity.treasure2.moldy_crate_chest_mimic": "Moldy Crate Chest Mimic",
   "entity.treasure2.pirate_chest_mimic": "Pirate Chest Mimic",
   "entity.treasure2.viking_chest_mimic": "Viking Chest Mimic",
   "entity.treasure2.wood_chest_mimic": "Wood Chest Mimic",
