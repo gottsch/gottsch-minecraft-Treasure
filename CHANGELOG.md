@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.2.0] - 2023-07-14
+
+### Added 
+
+- Added internationalization language entries for Rarities and Key/Lock Categories
+- Actually added the Crate and Moldy Crate mimics (didn't get committed last time).
+
+### Changed
+
+- updated the topaz key texture to be more like the onyx key
+- update Cauldron Mimic texture to include mouth skin
+
 ## [3.1.2] - 2023-07-13
 
 ### Changed

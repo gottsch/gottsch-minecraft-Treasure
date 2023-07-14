@@ -187,8 +187,8 @@ public class KeyItem extends Item implements IKeyEffects {
 			tooltip.add(new TranslatableComponent(LangUtil.tooltip("durability.amount"), stack.getMaxDamage() - stack.getDamageValue(), stack.getMaxDamage()));
 		}
 		
-		tooltip.add(new TranslatableComponent(LangUtil.tooltip("key_lock.rarity"), ChatFormatting.BLUE + getRarity().toString()));
-		tooltip.add(new TranslatableComponent(LangUtil.tooltip("key_lock.category"), ChatFormatting.GOLD + getCategory().toString()));
+		tooltip.add(new TranslatableComponent(LangUtil.tooltip("key_lock.rarity"), ChatFormatting.BLUE + new TranslatableComponent(getRarity().getValue().toLowerCase()).getString().toUpperCase() ));
+		tooltip.add(new TranslatableComponent(LangUtil.tooltip("key_lock.category"), ChatFormatting.GOLD + new TranslatableComponent(getCategory().toString().toLowerCase()).getString().toUpperCase()));
 
 		LangUtil.appendAdvancedHoverText(tooltip, tt -> {
 			
