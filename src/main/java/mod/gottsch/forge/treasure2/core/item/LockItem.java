@@ -97,29 +97,6 @@ public class LockItem extends Item implements ILockEffects {
 	}
 
 	/**
-	 * 
-	 * @param item
-	 * @param keys
-	 */
-	//	@Deprecated
-	//	public LockItem(String modID, String name, Item.Properties properties, KeyItem[] keys) {
-	//		this(modID, name, properties);
-	//		getKeys().addAll(Arrays.asList(keys));
-	//	}
-
-	/**
-	 * 
-	 * @param item
-	 */
-	//	@Deprecated
-	//	public LockItem(String modID, String name, Item.Properties properties) {
-	//		super(modID, name, properties.tab(TreasureItems.TREASURE_ITEM_GROUP));
-	//		setCategory(KeyLockCategory.ELEMENTAL);
-	//		setRarity(Rarity.COMMON);
-	//		setCraftable(false);
-	//	}
-
-	/**
 	 * Format: Item Name (vanilla minecraft) Rarity: [...] [color = Dark Blue]
 	 * Category: [...] [color = Gold] Craftable: [Yes | No] [color = Green | Dark Red] 
 	 * Accepts Keys: [list] [color = Gold]
@@ -129,8 +106,8 @@ public class LockItem extends Item implements ILockEffects {
 		super.appendHoverText(stack, worldIn, tooltip, flag);
 
 		tooltip.add(Component.translatable(LangUtil.tooltip("key_lock.rarity"),
-				ChatFormatting.DARK_BLUE + getRarity().toString()));
-		tooltip.add(Component.translatable(LangUtil.tooltip("key_lock.category"), ChatFormatting.GOLD + getCategory().toString()));
+				ChatFormatting.DARK_BLUE + Component.translatable(getRarity().getValue().toLowerCase()).getString().toUpperCase() ));
+		tooltip.add(Component.translatable(LangUtil.tooltip("key_lock.category"), ChatFormatting.GOLD + Component.translatable(getCategory().toString().toLowerCase()).getString().toUpperCase()));
 
 		LangUtil.appendAdvancedHoverText(tooltip, tt -> {
 			MutableComponent craftable = null;

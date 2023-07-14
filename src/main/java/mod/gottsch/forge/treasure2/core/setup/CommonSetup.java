@@ -20,15 +20,45 @@ package mod.gottsch.forge.treasure2.core.setup;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.api.TreasureApi;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
-import mod.gottsch.forge.treasure2.core.cache.FeatureCaches;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
-import mod.gottsch.forge.treasure2.core.entity.monster.*;
-import mod.gottsch.forge.treasure2.core.enums.*;
-import mod.gottsch.forge.treasure2.core.generator.chest.*;
+import mod.gottsch.forge.treasure2.core.entity.monster.BoundSoul;
+import mod.gottsch.forge.treasure2.core.entity.monster.CauldronChestMimic;
+import mod.gottsch.forge.treasure2.core.entity.monster.CrateChestMimic;
+import mod.gottsch.forge.treasure2.core.entity.monster.MoldyCrateChestMimic;
+import mod.gottsch.forge.treasure2.core.entity.monster.PirateChestMimic;
+import mod.gottsch.forge.treasure2.core.entity.monster.VikingChestMimic;
+import mod.gottsch.forge.treasure2.core.entity.monster.WoodChestMimic;
+import mod.gottsch.forge.treasure2.core.enums.LootTableType;
+import mod.gottsch.forge.treasure2.core.enums.MarkerType;
+import mod.gottsch.forge.treasure2.core.enums.PitType;
+import mod.gottsch.forge.treasure2.core.enums.Rarity;
+import mod.gottsch.forge.treasure2.core.enums.SpecialRarity;
+import mod.gottsch.forge.treasure2.core.enums.WishableExtraRarity;
+import mod.gottsch.forge.treasure2.core.generator.chest.CauldronChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.chest.CommonChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.chest.CrystalSkullChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.chest.EpicChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.chest.GoldSkullChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.chest.LegendaryChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.chest.MythicalChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.chest.RareChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.chest.ScarceChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.chest.SkullChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.chest.UncommonChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.chest.WitherChestGenerator;
 import mod.gottsch.forge.treasure2.core.generator.marker.GravestoneMarkerGenerator;
 import mod.gottsch.forge.treasure2.core.generator.marker.StructureMarkerGenerator;
-import mod.gottsch.forge.treasure2.core.generator.pit.*;
+import mod.gottsch.forge.treasure2.core.generator.pit.AirPitGenerator;
+import mod.gottsch.forge.treasure2.core.generator.pit.BigBottomMobTrapPitGenerator;
+import mod.gottsch.forge.treasure2.core.generator.pit.CollapsingTrapPitGenerator;
+import mod.gottsch.forge.treasure2.core.generator.pit.LavaSideTrapPitGenerator;
+import mod.gottsch.forge.treasure2.core.generator.pit.LavaTrapPitGenerator;
+import mod.gottsch.forge.treasure2.core.generator.pit.MobTrapPitGenerator;
+import mod.gottsch.forge.treasure2.core.generator.pit.SimplePitGenerator;
+import mod.gottsch.forge.treasure2.core.generator.pit.StructurePitGenerator;
+import mod.gottsch.forge.treasure2.core.generator.pit.TntTrapPitGenerator;
+import mod.gottsch.forge.treasure2.core.generator.pit.VolcanoPitGenerator;
 import mod.gottsch.forge.treasure2.core.generator.ruin.SubaquaticRuinGenerator;
 import mod.gottsch.forge.treasure2.core.generator.ruin.SurfaceRuinGenerator;
 import mod.gottsch.forge.treasure2.core.generator.well.WellGenerator;
@@ -38,8 +68,6 @@ import mod.gottsch.forge.treasure2.core.network.TreasureNetworking;
 import mod.gottsch.forge.treasure2.core.structure.StructureCategory;
 import mod.gottsch.forge.treasure2.core.structure.StructureType;
 import mod.gottsch.forge.treasure2.core.tags.TreasureTags;
-import mod.gottsch.forge.treasure2.core.util.ModUtil;
-import mod.gottsch.forge.treasure2.core.util.TreasureDataFixer;
 import mod.gottsch.forge.treasure2.core.wishable.TreasureWishableHandlers;
 import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 import mod.gottsch.forge.treasure2.core.world.feature.gen.TreasureFeatureGenerators;
@@ -304,7 +332,9 @@ public class CommonSetup {
 		TreasureApi.registerMimic(TreasureBlocks.PIRATE_CHEST.getId(), TreasureEntities.PIRATE_CHEST_MIMIC_ENTITY_TYPE.getId());
 		TreasureApi.registerMimic(TreasureBlocks.VIKING_CHEST.getId(), TreasureEntities.VIKING_CHEST_MIMIC_ENTITY_TYPE.getId());
 		TreasureApi.registerMimic(TreasureBlocks.CAULDRON_CHEST.getId(), TreasureEntities.CAULDRON_CHEST_MIMIC_ENTITY_TYPE.getId());
-
+		TreasureApi.registerMimic(TreasureBlocks.CRATE_CHEST.getId(), TreasureEntities.CRATE_CHEST_MIMIC_ENTITY_TYPE.getId());
+		TreasureApi.registerMimic(TreasureBlocks.MOLDY_CRATE_CHEST.getId(), TreasureEntities.MOLDY_CRATE_CHEST_MIMIC_ENTITY_TYPE.getId());
+		
 		/*
 		 *  register wishable handlers
 		 *  NOTE assigning an item to DEFAULT_WISHABLE_HANDLER is redundant an unnecassary
@@ -410,6 +440,8 @@ public class CommonSetup {
 		event.put(TreasureEntities.PIRATE_CHEST_MIMIC_ENTITY_TYPE.get(), PirateChestMimic.createAttributes().build());
 		event.put(TreasureEntities.VIKING_CHEST_MIMIC_ENTITY_TYPE.get(), VikingChestMimic.createAttributes().build());
 		event.put(TreasureEntities.CAULDRON_CHEST_MIMIC_ENTITY_TYPE.get(), CauldronChestMimic.createAttributes().build());
+		event.put(TreasureEntities.CRATE_CHEST_MIMIC_ENTITY_TYPE.get(), CrateChestMimic.createAttributes().build());
+		event.put(TreasureEntities.MOLDY_CRATE_CHEST_MIMIC_ENTITY_TYPE.get(), MoldyCrateChestMimic.createAttributes().build());
 	}
 
 	@SubscribeEvent
@@ -421,6 +453,8 @@ public class CommonSetup {
 		event.register(TreasureEntities.PIRATE_CHEST_MIMIC_ENTITY_TYPE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
 		event.register(TreasureEntities.VIKING_CHEST_MIMIC_ENTITY_TYPE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
 		event.register(TreasureEntities.CAULDRON_CHEST_MIMIC_ENTITY_TYPE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
+		event.register(TreasureEntities.CRATE_CHEST_MIMIC_ENTITY_TYPE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
+		event.register(TreasureEntities.MOLDY_CRATE_CHEST_MIMIC_ENTITY_TYPE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
 
 	}
 }

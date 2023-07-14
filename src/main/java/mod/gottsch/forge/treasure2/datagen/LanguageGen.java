@@ -41,7 +41,7 @@ public class LanguageGen extends LanguageProvider {
     	// tabs
         add("itemGroup." + Treasure.MODID, "Treasure2");
         add("itemGroup." + Treasure.MODID + ".adornments_tab", "Treasure2 Adornments");
-        
+
         // keys
         add(TreasureItems.WOOD_KEY.get(), "Wood Key");
         add(TreasureItems.STONE_KEY.get(), "Stone Key");
@@ -224,6 +224,8 @@ public class LanguageGen extends LanguageProvider {
         add(TreasureEntities.PIRATE_CHEST_MIMIC_ENTITY_TYPE.get(), "Pirate Chest Mimic");
         add(TreasureEntities.VIKING_CHEST_MIMIC_ENTITY_TYPE.get(), "Viking Chest Mimic");
         add(TreasureEntities.CAULDRON_CHEST_MIMIC_ENTITY_TYPE.get(), "Cauldron Chest Mimic");
+        add(TreasureEntities.CRATE_CHEST_MIMIC_ENTITY_TYPE.get(), "Crate Chest Mimic");
+        add(TreasureEntities.MOLDY_CRATE_CHEST_MIMIC_ENTITY_TYPE.get(), "Moldy Chest Mimic");
         
         // eggs
         add(TreasureItems.BOUND_SOUL_EGG.get(), "Bound Soul Spawn Egg");
@@ -231,6 +233,8 @@ public class LanguageGen extends LanguageProvider {
         add(TreasureItems.PIRATE_CHEST_MIMIC_EGG.get(), "Pirate Chest Mimic Spawn Egg");
         add(TreasureItems.VIKING_CHEST_MIMIC_EGG.get(), "Viking Chest Mimic Spawn Egg");
         add(TreasureItems.CAULDRON_CHEST_MIMIC_EGG.get(), "Cauldron Chest Mimic Spawn Egg");
+        add(TreasureItems.CRATE_CHEST_MIMIC_EGG.get(), "Crate Chest Mimic Spawn Egg");
+        add(TreasureItems.MOLDY_CRATE_CHEST_MIMIC_EGG.get(), "Moldy Crate Chest Mimic Spawn Egg");
         
         /*
          *  Util.tooltips
@@ -243,6 +247,26 @@ public class LanguageGen extends LanguageProvider {
         add(LangUtil.tooltip("pouch"), "Holds small valuables - coins, gems, charms, etc.");
         add(LangUtil.tooltip("wishable"), "Can be thrown into Wishing Wells for loot");
         
+        // rarities
+        add(LangUtil.tooltip("rarity.common"), "Common");
+        add(LangUtil.tooltip("rarity.uncommon"), "Uncommon");
+        add(LangUtil.tooltip("rarity.scarce"), "Scarce");
+        add(LangUtil.tooltip("rarity.rare"), "Rare");
+        add(LangUtil.tooltip("rarity.epic"), "Epic");
+        add(LangUtil.tooltip("rarity.legendary"), "Legendary");
+        add(LangUtil.tooltip("rarity.mythical"), "Mythical");
+        
+        // categories
+        add(LangUtil.tooltip("category.none"), "None");
+        add(LangUtil.tooltip("category.elemental"), "Elemental");
+        add(LangUtil.tooltip("category.metals"), "Metals");
+        add(LangUtil.tooltip("category.gems"), "Gems");
+        add(LangUtil.tooltip("category.magic"), "Magic");
+        add(LangUtil.tooltip("category.mob"), "Mob");
+        add(LangUtil.tooltip("category.cryptid"), "Cryptid");
+        add(LangUtil.tooltip("category.wither"), "Wither");
+        add(LangUtil.tooltip("category.unique"), "Unique");
+
         // keys and locks
         add(LangUtil.tooltip("key_lock.rarity"), "Rarity: %s");
         add(LangUtil.tooltip("key_lock.category"), "Category: %s");

@@ -64,9 +64,6 @@ public final class TreasureLootTableRegistry {
 
 	public static final List<ILootTableType> LOOT_TABLES_GROUPS = Arrays.asList(LootTableType.CHESTS, LootTableType.WISHABLES, LootTableType.INJECTS);
 
-//	@Deprecated
-//	private static final String LOOT_TABLES_FOLDER = "loot_tables";
-
 	/*
 	 * Properties to control the loading on mods.
 	 * Prevents unnecessary reloads during OnWorldLoadEvent.

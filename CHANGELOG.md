@@ -5,11 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.2.0] - 2023-07-16
+
+### Added 
+
+-Added internationalization language entries for Rarities and Key/Lock Categories
+
+### Changed
+
+
 ## [3.1.2] - 2023-07-13
-
-### Known Issues / Incompatibilities
-
-- Incompatible with Supplementaries-1.19.2-2.3.20 and below.
 
 ### Changed
 
