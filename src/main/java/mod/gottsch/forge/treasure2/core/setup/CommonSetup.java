@@ -441,7 +441,9 @@ public class CommonSetup {
 		if (event.getTab() == TreasureCreativeModeTabs.MOD_TAB) {
 			// add all items
 			Registration.ITEMS.getEntries().forEach(item -> {
-				event.accept(item.get(), TabVisibility.PARENT_AND_SEARCH_TABS);
+				if (!item.equals(TreasureItems.LOGO)) {
+					event.accept(item.get(), TabVisibility.PARENT_AND_SEARCH_TABS);
+				}
 			});
 		}
 	}

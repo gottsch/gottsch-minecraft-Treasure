@@ -177,7 +177,8 @@ dependencies {
 	compileOnly fg.deobf("someguyssoftware.gottschcore:GottschCore:mc1.19.3-f44.1.0-v2.1.0")
 	
 	//compileOnly fg.deobf("curse.maven:champions-307152:${cf_champions}")
-	compileOnly fg.deobf("curse.maven:jade-324717:4434061") // 1.19.3
+	compileOnly fg.deobf("curse.maven:jade-324717:4434045") // 1.19.3-9.4.1
+	compileOnly fg.deobf("curse.maven:the-twilight-forest-227639:4419066") // 1.19.3-4.2.1620
 	//compileOnly fg.deobf("curse.maven:compass-coords-368398:3765883")
 	
 	// implementation files(gottschcore_path)

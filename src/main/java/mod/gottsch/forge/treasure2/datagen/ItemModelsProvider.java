@@ -38,8 +38,8 @@ public class ItemModelsProvider extends ItemModelProvider {
 	@Override
 	protected void registerModels() {
 		// tabs
-//		singleTexture(TreasureItems.TREASURE_TAB.getId().getPath(),
-//				mcLoc("item/generated"), "layer0", modLoc("item/treasure_tab"));
+		singleTexture(TreasureItems.LOGO.getId().getPath(),
+				mcLoc("item/generated"), "layer0", modLoc("item/treasure_tab"));
 
 		// keys
 		singleTexture(TreasureItems.WOOD_KEY.getId().getPath(),
@@ -326,6 +326,5 @@ public class ItemModelsProvider extends ItemModelProvider {
 		withExistingParent(TreasureItems.CAULDRON_CHEST_MIMIC_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
 		withExistingParent(TreasureItems.CRATE_CHEST_MIMIC_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
 		withExistingParent(TreasureItems.MOLDY_CRATE_CHEST_MIMIC_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
-
 	}
 }
