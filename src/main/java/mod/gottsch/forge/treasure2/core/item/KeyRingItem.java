@@ -61,8 +61,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.network.NetworkHooks;
@@ -131,7 +131,7 @@ public class KeyRingItem extends Item implements MenuProvider {
 
 			try {
 				ItemStack heldItem = context.getPlayer().getItemInHand(context.getHand());
-				IItemHandler handler = 	heldItem.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElseThrow(IllegalStateException::new);
+				IItemHandler handler = 	heldItem.getCapability(ForgeCapabilities.ITEM_HANDLER).orElseThrow(IllegalStateException::new);
 
 				// cycle through all keys in key ring until one is able to fit lock and use it to unlock the lock.
 				for (int i = 0; i < KeyRingCapability.INVENTORY_SIZE; i++) {

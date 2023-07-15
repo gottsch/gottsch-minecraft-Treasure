@@ -24,6 +24,8 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.jetbrains.annotations.NotNull;
+
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.api.TreasureApi;
@@ -64,8 +66,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -207,28 +209,42 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 
 			@Override
 			public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-				// TODO add check for locked property and return false is enabled
-				//                return ForgeHooks.getBurnTime(stack, RecipeType.SMELTING) > 0;
-				return true;
+				return !isLocked();
 			}
 
 			@Nonnull
 			@Override
 			public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-				//                if (ForgeHooks.getBurnTime(stack, RecipeType.SMELTING) <= 0) {
-				//                    return stack;
-				//                }
+				if (isLocked()) {
+					return ItemStack.EMPTY;
+				}
 				return super.insertItem(slot, stack, simulate);
+			}
+			
+			@Override
+			public @NotNull ItemStack getStackInSlot(int slot) {
+				if (isLocked()) {
+					return ItemStack.EMPTY;
+				}
+				return super.getStackInSlot(slot);
+			}
+			
+			@Override
+			public void setStackInSlot(int slot, @NotNull ItemStack stack) {
+				if (isLocked()) {
+					return;
+				}
+				super.setStackInSlot(slot, stack);
 			}
 		};
 	}
 
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+		if (cap == ForgeCapabilities.ITEM_HANDLER) {
 			return instanceHandler.cast();
 		}
-		return super.getCapability(cap);
+		return super.getCapability(cap, side);
 	}
 
 	/**
@@ -237,7 +253,7 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 	 * @param pos
 	 */
 	public void dropContents(Level level, BlockPos pos) {
-		Optional<IItemHandler> handler = 	getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(h -> h);
+		Optional<IItemHandler> handler = 	getCapability(ForgeCapabilities.ITEM_HANDLER).map(h -> h);
 		if (handler.isPresent()) {
 			int numberOfSlots = handler.get().getSlots();
 			for (int i = 0; i < numberOfSlots; i++) {

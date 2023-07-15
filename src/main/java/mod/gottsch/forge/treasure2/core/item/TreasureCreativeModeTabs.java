@@ -37,7 +37,7 @@ public class TreasureCreativeModeTabs {
 	
 	@SubscribeEvent
 	public static void registerTab(CreativeModeTabEvent.Register event) {
-		MOD_TAB = event.registerCreativeModeTab(new ResourceLocation(Treasure.MODID, "treasure2_tab"),
-				builder -> builder.icon(() -> new ItemStack(TreasureItems.LOGO.get())).title(Component.translatable("itemGroup.dungeonblocks")));
+		MOD_TAB = event.registerCreativeModeTab(new ResourceLocation(Treasure.MODID, "treasure_tab"),
+				builder -> builder.icon(() -> new ItemStack(TreasureItems.LOGO.get())).title(Component.translatable("itemGroup.treasure2")));
 	}
 }

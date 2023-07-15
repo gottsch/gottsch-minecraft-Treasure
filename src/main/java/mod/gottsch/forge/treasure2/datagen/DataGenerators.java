@@ -43,16 +43,16 @@ public class DataGenerators {
         
         if (event.includeServer()) {
             generator.addProvider(true, new Recipes(output));
-//        	TreasureBlockTagsProvider blockTags = new TreasureBlockTagsProvider(output, lookupProvider, event.getExistingFileHelper());
-//            generator.addProvider(true, blockTags);
-//            generator.addProvider(true, new TreasureItemTagsProvider(output, lookupProvider, blockTags, event.getExistingFileHelper()));
-//            generator.addProvider(true, new TreasureBiomeTagsProvider(output, lookupProvider, event.getExistingFileHelper()));
+        	TreasureBlockTagsProvider blockTags = new TreasureBlockTagsProvider(output, lookupProvider, event.getExistingFileHelper());
+            generator.addProvider(true, blockTags);
+            generator.addProvider(true, new TreasureItemTagsProvider(output, lookupProvider, blockTags, event.getExistingFileHelper()));
+            generator.addProvider(true, new TreasureBiomeTagsProvider(output, lookupProvider, event.getExistingFileHelper()));
 //            generator.addProvider(true, new TreasureWorldGenProvider(output, lookupProvider));
         }
-//        if (event.includeClient()) {
-//        	 generator.addProvider(true, new BlockStates(output, event.getExistingFileHelper()));
-//            generator.addProvider(true, new ItemModelsProvider(output, event.getExistingFileHelper()));
-//            generator.addProvider(true, new LanguageGen(output, "en_us"));
-//        }
+        if (event.includeClient()) {
+        	 generator.addProvider(true, new BlockStates(output, event.getExistingFileHelper()));
+            generator.addProvider(true, new ItemModelsProvider(output, event.getExistingFileHelper()));
+            generator.addProvider(true, new LanguageGen(output, "en_us"));
+        }
     }
 }

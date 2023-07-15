@@ -1,13 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " ct",
-    " x "
-  ],
+  "category": "equipment",
   "key": {
-    "t": {
-      "item": "treasure2:treasure_tool"
-    },
     "c": [
       {
         "item": "treasure2:copper_coin"
@@ -19,10 +13,17 @@
         "item": "treasure2:gold_coin"
       }
     ],
+    "t": {
+      "item": "treasure2:treasure_tool"
+    },
     "x": {
       "item": "minecraft:leather"
     }
   },
+  "pattern": [
+    " ct",
+    " x "
+  ],
   "result": {
     "item": "treasure2:pouch"
   }

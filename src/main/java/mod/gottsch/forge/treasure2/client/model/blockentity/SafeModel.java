@@ -38,7 +38,7 @@ import net.minecraft.resources.ResourceLocation;
  *
  */
 public class SafeModel extends AbstractTreasureChestModel {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(Treasure.MODID, "wood_chest"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(Treasure.MODID, "safe"), "main");
 	private final ModelPart safe;
 	private final ModelPart lid;
 	private final ModelPart handle;

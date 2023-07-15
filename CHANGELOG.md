@@ -5,22 +5,45 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [3.2.0] - 2023-07-16
 
-## [3.1.0] - 2023-0x-xx
+### Added 
 
-### Added
-
-- Added Crate and Moldy Crate mimics.
-- Added 1.19 blocks and items to loot tables.
+-Added internationalization language entries for Rarities and Key/Lock Categories
+- Actually added the Crate and Moldy Crate mimics (didn't get committed last time).
 
 ### Changed
 
-- Made 1.18.2 -> 1.19.3 porting code changes (ex . Random -> RandomSource).
+- updated the topaz key texture to be more like the onyx key
+- update Cauldron Mimic texture to include mouth skin
+
+## [3.1.2] - 2023-07-13
+
+### Changed
+
+- Updated chest block entities to prevent piping items out/in of locked chests.
+- Updated ITEM_HANDLER capability - replaced old deprecated versions with new ones.
+- Updated AbstractTreasureChestBlockEntity to use the sided call to CapabilityProvider#getCapability(). This fixes the Jade crash issue.
+
+## [3.1.1] - 2023-07-11
+
+### Changed
+
+- Added names for all mobs.
+- Fixed polished granite gravestone recipes.
+
+## [3.1.0] - 2023-07-06
+
+### Added
+
+- Added 1.19.2 blocks and items to loot tables.
+
+### Changed
+
+- Made 1.18.2 -> 1.192. porting code changes (ex . Random -> RandomSource).
 - Updated the topaz key texture to be more like the onyx key.
 - Key durability is no longer setup during item registration but in common setup using Reflection.
 - Updated chest blocks to be waterloggable.
-
 
 ## [3.0.0] - 2023-06-24
 

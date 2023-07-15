@@ -22,10 +22,10 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 /**
@@ -48,7 +48,7 @@ public class KeyRingCapability implements ICapabilitySerializable<CompoundTag> {
 		if (cap == TreasureCapabilities.KEY_RING) {
 			return  LazyOptional.of(() -> dataHandler).cast();
 		}
-		if (cap ==CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+		if (cap ==ForgeCapabilities.ITEM_HANDLER) {
 			return LazyOptional.of(() -> itemHandler).cast();
 		}
 		return LazyOptional.empty();

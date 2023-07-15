@@ -34,6 +34,8 @@ import mod.gottsch.forge.treasure2.client.model.blockentity.VikingChestModel;
 import mod.gottsch.forge.treasure2.client.model.blockentity.WitherChestModel;
 import mod.gottsch.forge.treasure2.client.model.entity.BoundSoulModel;
 import mod.gottsch.forge.treasure2.client.model.entity.CauldronChestMimicModel;
+import mod.gottsch.forge.treasure2.client.model.entity.CrateChestMimicModel;
+import mod.gottsch.forge.treasure2.client.model.entity.MoldyCrateChestMimicModel;
 import mod.gottsch.forge.treasure2.client.model.entity.PirateChestMimicModel;
 import mod.gottsch.forge.treasure2.client.model.entity.VikingChestMimicModel;
 import mod.gottsch.forge.treasure2.client.model.entity.WoodChestMimicModel;
@@ -55,6 +57,8 @@ import mod.gottsch.forge.treasure2.client.renderer.blockentity.WitherChestRender
 import mod.gottsch.forge.treasure2.client.renderer.blockentity.WoodChestRenderer;
 import mod.gottsch.forge.treasure2.client.renderer.entity.BoundSoulRenderer;
 import mod.gottsch.forge.treasure2.client.renderer.entity.CauldronChestMimicRenderer;
+import mod.gottsch.forge.treasure2.client.renderer.entity.CrateChestMimicRenderer;
+import mod.gottsch.forge.treasure2.client.renderer.entity.MoldyCrateChestMimicRenderer;
 import mod.gottsch.forge.treasure2.client.renderer.entity.PirateChestMimicRenderer;
 import mod.gottsch.forge.treasure2.client.renderer.entity.VikingChestMimicRenderer;
 import mod.gottsch.forge.treasure2.client.renderer.entity.WoodChestMimicRenderer;
@@ -173,6 +177,9 @@ public class ClientSetup {
 		event.registerEntityRenderer(TreasureEntities.PIRATE_CHEST_MIMIC_ENTITY_TYPE.get(), PirateChestMimicRenderer::new);
 		event.registerEntityRenderer(TreasureEntities.VIKING_CHEST_MIMIC_ENTITY_TYPE.get(), VikingChestMimicRenderer::new);
 		event.registerEntityRenderer(TreasureEntities.CAULDRON_CHEST_MIMIC_ENTITY_TYPE.get(), CauldronChestMimicRenderer::new);
+		event.registerEntityRenderer(TreasureEntities.CRATE_CHEST_MIMIC_ENTITY_TYPE.get(), CrateChestMimicRenderer::new);
+		event.registerEntityRenderer(TreasureEntities.MOLDY_CRATE_CHEST_MIMIC_ENTITY_TYPE.get(), MoldyCrateChestMimicRenderer::new);
+
 	}
 	
 	/**
@@ -201,6 +208,9 @@ public class ClientSetup {
 		event.registerLayerDefinition(PirateChestMimicModel.LAYER_LOCATION, PirateChestMimicModel::createBodyLayer);
 		event.registerLayerDefinition(VikingChestMimicModel.LAYER_LOCATION, VikingChestMimicModel::createBodyLayer);
 		event.registerLayerDefinition(CauldronChestMimicModel.LAYER_LOCATION, CauldronChestMimicModel::createBodyLayer);
+		event.registerLayerDefinition(CrateChestMimicModel.LAYER_LOCATION, CrateChestMimicModel::createBodyLayer);
+		event.registerLayerDefinition(MoldyCrateChestMimicModel.LAYER_LOCATION, MoldyCrateChestMimicModel::createBodyLayer);
+
 	}
 	
 	

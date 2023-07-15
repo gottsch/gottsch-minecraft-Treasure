@@ -31,7 +31,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
@@ -94,7 +94,7 @@ public abstract class AbstractTreasureContainerMenu extends AbstractContainerMen
 		// get the block entity
 		blockEntity = (AbstractTreasureChestBlockEntity)player.getCommandSenderWorld().getBlockEntity(pos);				
 		if (blockEntity != null) {
-			Optional<IItemHandler> handler = blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(h -> h);
+			Optional<IItemHandler> handler = blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).map(h -> h);
 			if (handler.isPresent()) {
 				itemHandler = handler.get();
 			}

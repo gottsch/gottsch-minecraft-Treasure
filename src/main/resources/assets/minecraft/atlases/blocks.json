@@ -1,9 +1,60 @@
 {
-    "sources": [
-        {
-            "type": "directory",
-            "source": "block",
-            "prefix": "block/"
-        }
-    ]
+  "sources" : [ {
+    "type" : "single",
+    "resource" : "treasure2:entity/chest/wood_chest"
+  }, {
+    "type" : "single",
+    "resource" : "treasure2:entity/chest/cardboard_box"
+  }, {
+    "type" : "single",
+    "resource" : "treasure2:entity/chest/cauldron_chest"
+  }, {
+    "type" : "single",
+    "resource" : "treasure2:entity/chest/compressor_chest"
+  }, {
+    "type" : "single",
+    "resource" : "treasure2:entity/chest/crate_chest_moldy"
+  }, {
+    "type" : "single",
+    "resource" : "treasure2:entity/chest/crate_chest"
+  }, {
+    "type" : "single",
+    "resource" : "treasure2:entity/chest/crystal_skull_chest"
+  }, {
+    "type" : "single",
+    "resource" : "treasure2:entity/chest/dread_pirate_chest"
+  }, {
+    "type" : "single",
+    "resource" : "treasure2:entity/chest/gold_skull_chest"
+  }, {
+    "type" : "single",
+    "resource" : "treasure2:entity/chest/gold_strongbox"
+  }, {
+    "type" : "single",
+    "resource" : "treasure2:entity/chest/iron_strongbox"
+  }, {
+    "type" : "single",
+    "resource" : "treasure2:entity/chest/ironbound_chest"
+  }, {
+    "type" : "single",
+    "resource" : "treasure2:entity/chest/milk_crate"
+  }, {
+    "type" : "single",
+    "resource" : "treasure2:entity/chest/pirate_chest"
+  }, {
+    "type" : "single",
+    "resource" : "treasure2:entity/chest/safe"
+  }, {
+    "type" : "single",
+    "resource" : "treasure2:entity/chest/skull_chest"
+  }, {
+    "type" : "single",
+    "resource" : "treasure2:entity/chest/spider_chest"
+  }, {
+    "type" : "single",
+    "resource" : "treasure2:entity/chest/viking_chest"
+  }, {
+    "type" : "single",
+    "resource" : "treasure2:entity/chest/wither_chest"
+  } ]
 }

@@ -1,17 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "t": {
+      "item": "treasure2:treasure_tool"
+    },
+    "x": {
+      "item": "minecraft:iron_nugget"
+    }
+  },
   "pattern": [
     "xt",
     "x "
   ],
-  "key": {
-    "x": {
-      "item": "minecraft:iron_nugget"
-    },
-    "t": {
-      "item": "treasure2:treasure_tool"
-    }
-  },
   "result": {
     "item": "treasure2:pilferers_lock_pick"
   }

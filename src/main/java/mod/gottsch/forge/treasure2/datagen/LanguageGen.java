@@ -19,6 +19,7 @@ package mod.gottsch.forge.treasure2.datagen;
 
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
+import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
 import mod.gottsch.forge.treasure2.core.item.TreasureItems;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.data.PackOutput;
@@ -39,8 +40,7 @@ public class LanguageGen extends LanguageProvider {
     protected void addTranslations() {
     	// tabs
         add("itemGroup." + Treasure.MODID, "Treasure2");
-        add("itemGroup." + Treasure.MODID + ".adornments_tab", "Treasure2 Adornments");
-        
+
         // keys
         add(TreasureItems.WOOD_KEY.get(), "Wood Key");
         add(TreasureItems.STONE_KEY.get(), "Stone Key");
@@ -214,8 +214,14 @@ public class LanguageGen extends LanguageProvider {
         add(TreasureBlocks.GRAVESTONE2_SPAWNER_COBBLESTONE.get(), "Cobblestone Gravestone Spawner");
         add(TreasureBlocks.GRAVESTONE3_SPAWNER_OBSIDIAN.get(), "Obsidian Gravestone Spawner");
         
-//        add(TreasureItems.WITHER_STICK_ITEM.get(), "Wither Branch");
-//        add(TreasureItems.WITHER_ROOT_ITEM.get(), "Wither Root");
+        // mobs
+        add(TreasureEntities.BOUND_SOUL_ENTITY_TYPE.get(), "Bound Soul");
+        add(TreasureEntities.WOOD_CHEST_MIMIC_ENTITY_TYPE.get(), "Wood Chest Mimic");
+        add(TreasureEntities.PIRATE_CHEST_MIMIC_ENTITY_TYPE.get(), "Pirate Chest Mimic");
+        add(TreasureEntities.VIKING_CHEST_MIMIC_ENTITY_TYPE.get(), "Viking Chest Mimic");
+        add(TreasureEntities.CAULDRON_CHEST_MIMIC_ENTITY_TYPE.get(), "Cauldron Chest Mimic");
+        add(TreasureEntities.CRATE_CHEST_MIMIC_ENTITY_TYPE.get(), "Crate Chest Mimic");
+        add(TreasureEntities.MOLDY_CRATE_CHEST_MIMIC_ENTITY_TYPE.get(), "Moldy Chest Mimic");
         
         // eggs
         add(TreasureItems.BOUND_SOUL_EGG.get(), "Bound Soul Spawn Egg");
@@ -223,6 +229,8 @@ public class LanguageGen extends LanguageProvider {
         add(TreasureItems.PIRATE_CHEST_MIMIC_EGG.get(), "Pirate Chest Mimic Spawn Egg");
         add(TreasureItems.VIKING_CHEST_MIMIC_EGG.get(), "Viking Chest Mimic Spawn Egg");
         add(TreasureItems.CAULDRON_CHEST_MIMIC_EGG.get(), "Cauldron Chest Mimic Spawn Egg");
+        add(TreasureItems.CRATE_CHEST_MIMIC_EGG.get(), "Crate Chest Mimic Spawn Egg");
+        add(TreasureItems.MOLDY_CRATE_CHEST_MIMIC_EGG.get(), "Moldy Crate Chest Mimic Spawn Egg");
         
         /*
          *  Util.tooltips
