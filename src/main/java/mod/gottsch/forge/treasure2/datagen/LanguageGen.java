@@ -215,9 +215,6 @@ public class LanguageGen extends LanguageProvider {
         add(TreasureBlocks.GRAVESTONE2_SPAWNER_COBBLESTONE.get(), "Cobblestone Gravestone Spawner");
         add(TreasureBlocks.GRAVESTONE3_SPAWNER_OBSIDIAN.get(), "Obsidian Gravestone Spawner");
         
-//        add(TreasureItems.WITHER_STICK_ITEM.get(), "Wither Branch");
-//        add(TreasureItems.WITHER_ROOT_ITEM.get(), "Wither Root");
-        
         // mobs
         add(TreasureEntities.BOUND_SOUL_ENTITY_TYPE.get(), "Bound Soul");
         add(TreasureEntities.WOOD_CHEST_MIMIC_ENTITY_TYPE.get(), "Wood Chest Mimic");
