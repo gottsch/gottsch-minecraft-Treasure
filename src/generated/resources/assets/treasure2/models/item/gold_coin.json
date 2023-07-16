@@ -1,0 +1,6 @@
+{
+  "parent": "treasure2:item/coin",
+  "textures": {
+    "layer0": "treasure2:item/coin/gold_coin"
+  }
+}

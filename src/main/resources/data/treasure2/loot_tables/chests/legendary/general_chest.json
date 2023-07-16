@@ -1,0 +1,121 @@
+{
+  "version" : "4.0.0",
+  "category" : "general",
+  "rarity" : "legendary",
+  "pools" : [ {
+    "name" : "treasure",
+    "rolls" : 1,
+    "entries" : [ {
+      "type" : "loot_table",
+      "name" : "treasure2:pools/treasure/legendary_treasure",
+      "weight" : 1
+    } ]
+  }, {
+    "name" : "items",
+    "rolls" : {
+      "min" : 2,
+      "max" : 6
+    },
+    "entries" : [ {
+      "type" : "loot_table",
+      "name" : "treasure2:pools/items/epic",
+      "weight" : 1
+    } ]
+  }, {
+    "name" : "armor",
+    "rolls" : {
+      "min" : 0,
+      "max" : 2
+    },
+    "entries" : [ {
+      "type" : "loot_table",
+      "name" : "treasure2:pools/combat/epic",
+      "weight" : 1
+    } ]
+  }, {
+    "name" : "food",
+    "rolls" : {
+      "min" : 0,
+      "max" : 1
+    },
+    "entries" : [ {
+      "type" : "loot_table",
+      "name" : "treasure2:pools/food/epic",
+      "weight" : 1
+    } ]
+  }, {
+    "name" : "tools",
+    "rolls" : 1,
+    "entries" : [ {
+      "type" : "loot_table",
+      "name" : "treasure2:pools/tools/rare",
+      "weight" : 1
+    } ]
+  }, {
+    "name" : "potions",
+    "rolls" : {
+      "min" : 0,
+      "max" : 2
+    },
+    "entries" : [ {
+      "type" : "loot_table",
+      "name" : "treasure2:pools/potions/epic",
+      "weight" : 1
+    } ]
+  }, {
+    "name" : "rare_items",
+    "rolls" : {
+      "min" : 0,
+      "max" : 5
+    },
+    "entries" : [ {
+      "type" : "loot_table",
+      "name" : "treasure2:pools/items/rare",
+      "weight" : 1
+    } ]
+  }, {
+    "name" : "rare_armor",
+    "rolls" : {
+      "min" : 0,
+      "max" : 2
+    },
+    "entries" : [ {
+      "type" : "loot_table",
+      "name" : "treasure2:pools/combat/rare",
+      "weight" : 1
+    } ]
+  }, {
+    "name" : "rare_food",
+    "rolls" : {
+      "min" : 0,
+      "max" : 3
+    },
+    "entries" : [ {
+      "type" : "loot_table",
+      "name" : "treasure2:pools/food/rare",
+      "weight" : 1
+    } ]
+  }, {
+    "name" : "rare_tools",
+    "rolls" : {
+      "min" : 0,
+      "max" : 2
+    },
+    "entries" : [ {
+      "type" : "loot_table",
+      "name" : "treasure2:pools/tools/rare",
+      "weight" : 1
+    } ]
+  }, {
+    "name" : "rare_potions",
+    "rolls" : {
+      "min" : 0,
+      "max" : 2
+    },
+    "entries" : [ {
+      "type" : "loot_table",
+      "name" : "treasure2:pools/potions/rare",
+      "weight" : 1
+    } ]
+  } ]
+}

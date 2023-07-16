@@ -1,0 +1,4 @@
+{
+  "replace" : false,
+  "entries" : [ "treasure2:fishing_junk", "treasure2:fishing_treasure", "treasure2:uncommon_chests", "treasure2:scarce_chests", "treasure2:rare_chests", "treasure2:epic_chests", "treasure2:legendary_chests", "treasure2:mythical_chests" ]
+}

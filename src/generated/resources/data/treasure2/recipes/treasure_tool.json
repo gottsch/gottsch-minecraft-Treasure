@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  i",
+    " s ",
+    "x  "
+  ],
+  "key": {
+    "i": {
+      "item": "minecraft:iron_ingot"
+    },
+    "s": {
+      "item": "minecraft:stick"
+    },
+    "x": {
+      "item": "minecraft:stone"
+    }
+  },
+  "result": {
+    "item": "treasure2:treasure_tool"
+  }
+}

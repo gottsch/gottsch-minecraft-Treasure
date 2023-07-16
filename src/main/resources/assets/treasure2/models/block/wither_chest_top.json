@@ -1,3 +1,7 @@
 {
-	"parent": "block/block"
+  "parent" : "block/block",
+  "textures" : {
+    "1" : "treasure2:block/chest/wither_chest",
+    "particle" : "treasure2:block/chest/particle/wither_chest_particle"
+  }
 }

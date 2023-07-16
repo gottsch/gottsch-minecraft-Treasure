@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "treasure2:copper_short_sword"
+  },
+  "result": "minecraft:copper_ingot",
+  "experience": 1.0,
+  "cookingtime": 200
+}

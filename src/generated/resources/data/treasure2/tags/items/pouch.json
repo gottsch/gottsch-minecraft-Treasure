@@ -1,0 +1,18 @@
+{
+  "replace": false,
+  "values": [
+    "treasure2:copper_coin",
+    "treasure2:silver_coin",
+    "treasure2:gold_coin",
+    "treasure2:topaz",
+    "treasure2:onyx",
+    "treasure2:ruby",
+    "treasure2:sapphire",
+    "treasure2:white_pearl",
+    "treasure2:black_pearl",
+    "minecraft:diamond",
+    "minecraft:emerald",
+    "#treasure2:key/keys",
+    "#treasure2:lock/locks"
+  ]
+}

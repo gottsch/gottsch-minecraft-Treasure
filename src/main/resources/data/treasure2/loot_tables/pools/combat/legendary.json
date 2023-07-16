@@ -1,0 +1,105 @@
+{
+  "version" : "2.0.0",
+  "type" : "minecraft:chest",
+  "pools" : [ {
+    "name" : "epic_armor",
+    "rolls" : 1,
+    "entries" : [ {
+      "entryName" : "netherite_chestplate",
+      "type" : "minecraft:item",
+      "name" : "minecraft:netherite_chestplate",
+      "weight" : 10,
+      "functions" : [ {
+        "function" : "minecraft:enchant_with_levels",
+        "levels" : 30,
+        "treasure" : true
+      }, {
+        "function" : "minecraft:enchant_randomly"
+      } ]
+    }, {
+      "entryName" : "netherite_leggings",
+      "type" : "minecraft:item",
+      "name" : "minecraft:netherite_leggings",
+      "weight" : 10,
+      "functions" : [ {
+        "function" : "minecraft:enchant_with_levels",
+        "levels" : 30,
+        "treasure" : true
+      }, {
+        "function" : "minecraft:enchant_randomly"
+      } ]
+    }, {
+      "entryName" : "netherite_helmet",
+      "type" : "minecraft:item",
+      "name" : "minecraft:netherite_helmet",
+      "weight" : 10,
+      "functions" : [ {
+        "function" : "minecraft:enchant_with_levels",
+        "levels" : 30,
+        "treasure" : true
+      }, {
+        "function" : "minecraft:enchant_randomly"
+      } ]
+    }, {
+      "entryName" : "netherite_boots",
+      "type" : "minecraft:item",
+      "name" : "minecraft:netherite_boots",
+      "weight" : 10,
+      "functions" : [ {
+        "function" : "minecraft:enchant_with_levels",
+        "levels" : 30,
+        "treasure" : true
+      }, {
+        "function" : "minecraft:enchant_randomly"
+      } ]
+    } ]
+  }, {
+    "name" : "legendary_weapons",
+    "rolls" : 1,
+    "entries" : [ {
+      "entryName" : "trident",
+      "type" : "minecraft:item",
+      "name" : "minecraft:trident",
+      "weight" : 5,
+      "functions" : [ {
+        "function" : "minecraft:enchant_with_levels",
+        "levels" : 30,
+        "treasure" : true
+      }, {
+        "function" : "minecraft:enchant_randomly"
+      } ]
+    }, {
+      "entryName" : "netherite_sword",
+      "type" : "minecraft:item",
+      "name" : "minecraft:netherite_sword",
+      "weight" : 5,
+      "functions" : [ {
+        "function" : "minecraft:enchant_with_levels",
+        "levels" : 30,
+        "treasure" : true
+      }, {
+        "function" : "minecraft:enchant_randomly"
+      } ]
+    }, {
+      "entryName" : "headsmans_axe",
+      "type" : "minecraft:item",
+      "name" : "treasure2:headsmans_axe",
+      "weight" : 5
+    }, {
+      "entryName" : "sword_of_omens",
+      "type" : "minecraft:item",
+      "name" : "treasure2:sword_of_omens",
+      "weight" : 5
+    }, {
+      "entryName" : "orcus",
+      "type" : "minecraft:item",
+      "name" : "treasure2:orcus",
+      "weight" : 10
+    }, {
+      "entryName" : "axe_of_durin",
+      "type" : "minecraft:item",
+      "name" : "treasure2:axe_of_durin",
+      "weight" : 10
+    } ]
+  } ]
+}

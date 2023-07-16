@@ -1,0 +1,6 @@
+{
+  "parent": "treasure2:item/scythe",
+  "textures": {
+    "layer0": "treasure2:item/weapon/orcus_x32"
+  }
+}

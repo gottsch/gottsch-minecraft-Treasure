@@ -1,7 +1,0 @@
-{
-	"parent": "item/generated",
-	"textures": {
-		"__comment": "default",
-		"layer0": "treasure2:item/adornment/peasants_fortune_ring"
-	}
-}

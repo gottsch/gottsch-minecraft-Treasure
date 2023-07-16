@@ -1,0 +1,25 @@
+{
+  "conditions" : [ {
+    "condition" : "minecraft:alternative",
+    "terms" : [ {
+      "condition" : "forge:loot_table_id",
+      "loot_table_id" : "minecraft:desert_pyramid"
+    }, {
+      "condition" : "forge:loot_table_id",
+      "loot_table_id" : "minecraft:igloo_chest"
+    }, {
+      "condition" : "forge:loot_table_id",
+      "loot_table_id" : "minecraft:jungle_temple"
+    }, {
+      "condition" : "forge:loot_table_id",
+      "loot_table_id" : "minecraft:shipwrech_treasure"
+    }, {
+      "condition" : "forge:loot_table_id",
+      "loot_table_id" : "minecraft:under_water_ruin_big"
+    } ]
+  } ],
+  "count" : 2,
+  "rarity" : "epic",
+  "chance" : 0.2,
+  "type" : "treasure2:default"
+}

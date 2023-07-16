@@ -1,4 +1,5 @@
 /*
+/*.launch
 gradle.log
 !/src/
 !.gitignore
@@ -12,3 +13,4 @@ gradle.log
 !*.json
 !*.gradlew
 !/models/
+!*.md

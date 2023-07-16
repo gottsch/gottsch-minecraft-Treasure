@@ -1,0 +1,16 @@
+{
+  "conditions" : [ {
+    "condition" : "minecraft:alternative",
+    "terms" : [ {
+      "condition" : "forge:loot_table_id",
+      "loot_table_id" : "minecraft:end_city_treasure"
+    }, {
+      "condition" : "forge:loot_table_id",
+      "loot_table_id" : "minecraft:woodland_mansion"
+    } ]
+  } ],
+  "count" : 2,
+  "rarity" : "mythical",
+  "chance" : 0.2,
+  "type" : "treasure2:default"
+}

@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "#treasure2:wishable/common",
+    "#treasure2:wishable/uncommon",
+    "#treasure2:wishable/scarce",
+    "#treasure2:wishable/rare",
+    "#treasure2:wishable/epic"
+  ]
+}

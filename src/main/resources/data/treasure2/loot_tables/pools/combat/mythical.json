@@ -1,0 +1,96 @@
+{
+  "version" : "2.1.0",
+  "type" : "minecraft:chest",
+  "pools" : [ {
+    "name" : "epic_armor",
+    "rolls" : 1,
+    "entries" : [ {
+      "entryName" : "netherite_chestplate",
+      "type" : "minecraft:item",
+      "name" : "minecraft:netherite_chestplate",
+      "weight" : 10,
+      "functions" : [ {
+        "function" : "minecraft:enchant_with_levels",
+        "levels" : 30,
+        "treasure" : true
+      }, {
+        "function" : "minecraft:enchant_randomly"
+      } ]
+    }, {
+      "entryName" : "netherite_leggings",
+      "type" : "minecraft:item",
+      "name" : "minecraft:netherite_leggings",
+      "weight" : 10,
+      "functions" : [ {
+        "function" : "minecraft:enchant_with_levels",
+        "levels" : 30,
+        "treasure" : true
+      }, {
+        "function" : "minecraft:enchant_randomly"
+      } ]
+    }, {
+      "entryName" : "netherite_helmet",
+      "type" : "minecraft:item",
+      "name" : "minecraft:netherite_helmet",
+      "weight" : 10,
+      "functions" : [ {
+        "function" : "minecraft:enchant_with_levels",
+        "levels" : 30,
+        "treasure" : true
+      }, {
+        "function" : "minecraft:enchant_randomly"
+      } ]
+    }, {
+      "entryName" : "netherite_boots",
+      "type" : "minecraft:item",
+      "name" : "minecraft:netherite_boots",
+      "weight" : 10,
+      "functions" : [ {
+        "function" : "minecraft:enchant_with_levels",
+        "levels" : 30,
+        "treasure" : true
+      }, {
+        "function" : "minecraft:enchant_randomly"
+      } ]
+    } ]
+  }, {
+    "name" : "mythical_weapons",
+    "rolls" : 1,
+    "entries" : [ {
+      "entryName" : "orcus",
+      "type" : "minecraft:item",
+      "name" : "treasure2:orcus",
+      "weight" : 5
+    }, {
+      "entryName" : "axe_of_durin",
+      "type" : "minecraft:item",
+      "name" : "treasure2:axe_of_durin",
+      "weight" : 5
+    }, {
+      "entryName" : "sword_of_power",
+      "type" : "minecraft:item",
+      "name" : "treasure2:sword_of_power",
+      "weight" : 10
+    }, {
+      "entryName" : "black_sword",
+      "type" : "minecraft:item",
+      "name" : "treasure2:black_sword",
+      "weight" : 10
+    }, {
+      "entryName" : "oathbringer",
+      "type" : "minecraft:item",
+      "name" : "treasure2:oathbringer",
+      "weight" : 10
+    }, {
+      "entryName" : "mjolnir",
+      "type" : "minecraft:item",
+      "name" : "treasure2:mjolnir",
+      "weight" : 8
+    }, {
+      "entryName" : "callandor",
+      "type" : "minecraft:item",
+      "name" : "treasure2:oathbringer",
+      "weight" : 8
+    } ]
+  } ]
+}

@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "treasure2:wood_key",
+    "treasure2:stone_key",
+    "treasure2:pilferers_lock_pick"
+  ]
+}

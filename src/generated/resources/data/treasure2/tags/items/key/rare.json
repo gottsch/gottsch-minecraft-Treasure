@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "treasure2:metallurgists_key",
+    "treasure2:diamond_key",
+    "treasure2:emerald_key",
+    "treasure2:skeleton_key",
+    "treasure2:wither_key"
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "ambient_mimic" : {
+    "subtitle" : "sounds.treasure2.ambient_mimic",
+    "sounds" : [ "treasure2:ambient_mimic" ]
+  }
+}

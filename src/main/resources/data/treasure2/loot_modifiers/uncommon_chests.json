@@ -1,0 +1,55 @@
+{
+  "conditions" : [ {
+    "condition" : "minecraft:alternative",
+    "terms" : [ {
+      "condition" : "forge:loot_table_id",
+      "loot_table_id" : "minecraft:village/village_armorer"
+    }, {
+      "condition" : "forge:loot_table_id",
+      "loot_table_id" : "minecraft:village/village_butcher"
+    }, {
+      "condition" : "forge:loot_table_id",
+      "loot_table_id" : "minecraft:village/village_cartographer"
+    }, {
+      "condition" : "forge:loot_table_id",
+      "loot_table_id" : "minecraft:village/village_desert_house"
+    }, {
+      "condition" : "forge:loot_table_id",
+      "loot_table_id" : "minecraft:village/village_fisher"
+    }, {
+      "condition" : "forge:loot_table_id",
+      "loot_table_id" : "minecraft:village/village_fletcher"
+    }, {
+      "condition" : "forge:loot_table_id",
+      "loot_table_id" : "minecraft:village/village_mason"
+    }, {
+      "condition" : "forge:loot_table_id",
+      "loot_table_id" : "minecraft:village/village_plains_house"
+    }, {
+      "condition" : "forge:loot_table_id",
+      "loot_table_id" : "minecraft:village/village_savanna_house"
+    }, {
+      "condition" : "forge:loot_table_id",
+      "loot_table_id" : "minecraft:village/village_sheperd"
+    }, {
+      "condition" : "forge:loot_table_id",
+      "loot_table_id" : "minecraft:village/village_snowy_house"
+    }, {
+      "condition" : "forge:loot_table_id",
+      "loot_table_id" : "minecraft:village/village_taiga_house"
+    }, {
+      "condition" : "forge:loot_table_id",
+      "loot_table_id" : "minecraft:village/village_tanner"
+    }, {
+      "condition" : "forge:loot_table_id",
+      "loot_table_id" : "minecraft:village/village_toolsmith"
+    }, {
+      "condition" : "forge:loot_table_id",
+      "loot_table_id" : "minecraft:village/village_weaponsmith"
+    } ]
+  } ],
+  "count" : 1,
+  "rarity" : "uncommon",
+  "chance" : 0.1,
+  "type" : "treasure2:default"
+}

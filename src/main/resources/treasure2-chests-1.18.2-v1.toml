@@ -1,0 +1,177 @@
+#####
+# TODO rename
+#####
+[[chestConfigs]]
+	# List of dimension ID to apply this chest config against. ie. dimension whitelist. 
+	# Any dimension listed here, must appear in the treasure2-server.toml > integration > dimensionsWhiteList property.
+	# Treasure2 was designed for 'normal' overworld-type dimensions. 
+	# This setting does not use any wildcards (*). You must explicitly set the dimensions that are allowed. 
+	# ex. minecraft:overworld
+	dimensions=["minecraft:overworld"]
+	# The probability that a chest will contain a treasure map to another chest.
+	treasureMapProbability=20.0
+
+	[[chestConfigs.generators]]
+		#key options for Treasure2 generators are terrestrial, aquatic, well, wither.
+		key="terranean"
+		registrySize=1000
+		probability=80.0
+		minBlockDistance=192
+		waitChunks=25	
+		surfaceProbability=15.0
+		structureProbability=25.0
+		# the default featureGeneratorSelector for 'terranean' feature is a WeightedGeneratorSelector.
+		[[chestConfigs.generators.featureGenerators]]
+			name="treasure2:simple_surface"
+			weight=10
+		[[chestConfigs.generators.featureGenerators]]
+			name="treasure2:pit"
+			weight=65
+		[[chestConfigs.generators.featureGenerators]]
+			name="treasure2:surface_structure"
+			weight=25
+
+		[[chestConfigs.generators.rarities]]
+			rarity="common"
+			weight=100
+			minDepth=6
+			maxDepth=15
+			mimicProbability=20.0
+		[[chestConfigs.generators.rarities]]
+			rarity="uncommon"
+			weight=70
+			minDepth=10
+			maxDepth=25	
+		[[chestConfigs.generators.rarities]]
+			rarity="scarce"
+			weight=40
+			minDepth=20
+			maxDepth=35
+		[[chestConfigs.generators.rarities]]
+			rarity="rare"
+			weight=20
+			minDepth=30
+			maxDepth=45
+			biomeWhitelist = []
+			biomeBlacklist = ["minecraft:plains", "minecraft:sunflower_plains"]
+			biomeTypeWhitelist = []
+			biomeTypeBlacklist = ["minecraft:plains"]	
+		[[chestConfigs.generators.rarities]]
+			rarity="epic"
+			weight=10
+			minDepth=40
+			maxDepth=55
+			biomeBlacklist = ["minecraft:plains", "minecraft:sunflower_plains"]
+			biomeTypeBlacklist = ["minecraft:plains"]
+		[[chestConfigs.generators.rarities]]
+			rarity="legendary"
+			weight=5
+			minDepth=50
+			maxDepth=65
+			biomeBlacklist = ["minecraft:plains", "minecraft:sunflower_plains"]
+			biomeTypeBlacklist = ["minecraft:plains"]
+		[[chestConfigs.generators.rarities]]
+			rarity="mythical"
+			weight=2
+			minDepth=60
+			maxDepth=75
+			biomeBlacklist = ["minecraft:plains", "minecraft:sunflower_plains"]
+			biomeTypeBlacklist = ["minecraft:plains"]
+		[[chestConfigs.generators.rarities]]
+			# 'skull' rarity is a special rarity for Skull related resources ex. Skull Chest, skull_loot_table, etc.
+			# it is configured the same as 'scarce' rarity except that is occurs less frequently.
+			rarity="skull"
+			weight=6
+			minDepth=20
+			maxDepth=35
+		[[chestConfigs.generators.rarities]]
+			# 'skull' rarity is a special rarity for Skull related resources ex. Skull Chest, skull_loot_table, etc.
+			# it is configured the same as 'scarce' rarity except that is occurs less frequently.
+			rarity="gold_skull"
+			weight=5
+			minDepth=25
+			maxDepth=40
+		[[chestConfigs.generators.rarities]]
+			# 'skull' rarity is a special rarity for Skull related resources ex. Skull Chest, skull_loot_table, etc.
+			# it is configured the same as 'scarce' rarity except that is occurs less frequently.
+			rarity="crystal_skull"
+			weight=4
+			minDepth=30
+			maxDepth=45
+		[[chestConfigs.generators.rarities]]
+			rarity="cauldron"
+			weight=4
+			minDepth=30
+			maxDepth=45
+		[[chestConfigs.generators.rarities]]
+			rarity="wither"
+			weight=6
+			minDepth=20
+			maxDepth=35
+
+	[[chestConfigs.generators]]
+		key="aquatic"
+		registrySize=500
+		probability=90.0
+		minBlockDistance=560
+		# aquatic generator does not make use of the waitChunks
+		waitChunks=0
+		# These 2 probabilities are moot as all aquatic chests will be in a "structure"
+		# on the ocean floor "surface".
+		surfaceProbability=0.0
+		structureProbability=100.0
+			[[chestConfigs.generators.rarities]]
+			rarity="scarce"
+			weight=36
+			biomeWhitelist = [
+				"minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
+				"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", 
+				"minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"
+			]
+			biomeTypeWhitelist = ["ocean", "deep_ocean"]
+		[[chestConfigs.generators.rarities]]
+			rarity="rare"
+			weight=16
+			biomeWhitelist = [
+				"minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
+				"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", 
+				"minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"
+			]
+			biomeTypeWhitelist = ["ocean", "deep_ocean"]	
+		[[chestConfigs.generators.rarities]]
+			rarity="epic"
+			weight=9
+			biomeWhitelist = [
+				"minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
+				"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", 
+				"minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"
+			]
+			biomeTypeWhitelist = ["ocean", "deep_ocean"]
+		[[chestConfigs.generators.rarities]]
+			rarity="legendary"
+			weight=5
+			biomeWhitelist = [
+				"minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
+				"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", 
+				"minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"
+			]
+			biomeTypeWhitelist = ["ocean", "deep_ocean"]
+		[[chestConfigs.generators.rarities]]
+			rarity="mythical"
+			weight=2
+			biomeWhitelist = [
+				"minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
+				"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", 
+				"minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"
+			]
+			biomeTypeWhitelist = ["ocean", "deep_ocean"]
+		[[chestConfigs.generators.rarities]]
+			rarity="skull"
+			weight=6
+			biomeWhitelist = [
+				"minecraft:ocean", "minecraft:deep_ocean", "minecraft:cold_ocean", "minecraft:deep_cold_ocean", 
+				"minecraft:frozen_ocean", "minecraft:deep_frozen_ocean", "minecraft:lukewarm_ocean", 
+				"minecraft:deep_lukewarm_ocean", "minecraft:warm_ocean", "minecraft:deep_warm_ocean"
+			]
+			biomeTypeWhitelist = ["ocean", "deep_ocean"]
+		
