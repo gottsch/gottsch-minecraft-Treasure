@@ -1,15 +1,22 @@
-# Changelog
+# Changelog for Treasure2 1.19.2
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.2.0] - 2023-07-16
+
+### Added 
+
+-Added internationalization language entries for Rarities and Key/Lock Categories
+- Added name for Wither Chest top block.
+-Added Callandor sword.
+
+### Changed
+
+
 ## [3.1.2] - 2023-07-13
-
-### Known Issues / Incompatibilities
-
-- Incompatible with Supplementaries-1.19.2-2.3.20 and below.
 
 ### Changed
 
@@ -33,7 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Made 1.18.2 -> 1.192. porting code changes (ex . Random -> RandomSource).
+- Made 1.18.2 -> 1.19.2 porting code changes (ex . Random -> RandomSource).
 - Updated the topaz key texture to be more like the onyx key.
 - Key durability is no longer setup during item registration but in common setup using Reflection.
 - Updated chest blocks to be waterloggable.

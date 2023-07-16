@@ -231,6 +231,9 @@ public class ItemModelsProvider extends ItemModelProvider {
 		singleTexture(TreasureItems.SWORD_POWER.getId().getPath(),
 				mcLoc("item/handheld"), "layer0", modLoc("item/weapon/sword_of_power"));
 		
+		singleTexture(TreasureItems.CALLANDOR.getId().getPath(),
+				mcLoc("item/handheld"), "layer0", modLoc("item/weapon/callandor"));
+		
 		singleTexture(TreasureItems.BLACK_SWORD.getId().getPath(),
 				modLoc("item/large_sword"), "layer0", modLoc("item/weapon/the_black_sword_x32"));
 		
@@ -327,6 +330,7 @@ public class ItemModelsProvider extends ItemModelProvider {
 		withExistingParent(TreasureItems.PIRATE_CHEST_MIMIC_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
 		withExistingParent(TreasureItems.VIKING_CHEST_MIMIC_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
 		withExistingParent(TreasureItems.CAULDRON_CHEST_MIMIC_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
-	
+		withExistingParent(TreasureItems.CRATE_CHEST_MIMIC_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+		withExistingParent(TreasureItems.MOLDY_CRATE_CHEST_MIMIC_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
 	}
 }

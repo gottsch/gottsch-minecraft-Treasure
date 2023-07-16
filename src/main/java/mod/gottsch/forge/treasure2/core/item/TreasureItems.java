@@ -383,6 +383,8 @@ public class TreasureItems {
 	public static final RegistryObject<Item> PIRATE_CHEST_MIMIC_EGG = Registration.ITEMS.register("pirate_chest_mimic_egg", () -> new ForgeSpawnEggItem(TreasureEntities.PIRATE_CHEST_MIMIC_ENTITY_TYPE, 0x010101, 0x3b3b3b, TREASURE_PROPS_SUPPLIER.get()));
 	public static final RegistryObject<Item> VIKING_CHEST_MIMIC_EGG = Registration.ITEMS.register("viking_chest_mimic_egg", () -> new ForgeSpawnEggItem(TreasureEntities.VIKING_CHEST_MIMIC_ENTITY_TYPE, 0x642e1e, 0x753c27, TREASURE_PROPS_SUPPLIER.get()));
 	public static final RegistryObject<Item> CAULDRON_CHEST_MIMIC_EGG = Registration.ITEMS.register("cauldron_chest_mimic_egg", () -> new ForgeSpawnEggItem(TreasureEntities.CAULDRON_CHEST_MIMIC_ENTITY_TYPE, 0x6e5c30, 0x4a4a4a, TREASURE_PROPS_SUPPLIER.get()));
+	public static final RegistryObject<Item> CRATE_CHEST_MIMIC_EGG = Registration.ITEMS.register("crate_chest_mimic_egg", () -> new ForgeSpawnEggItem(TreasureEntities.CRATE_CHEST_MIMIC_ENTITY_TYPE, 0x6e5c60, 0x434343, TREASURE_PROPS_SUPPLIER.get()));
+	public static final RegistryObject<Item> MOLDY_CRATE_CHEST_MIMIC_EGG = Registration.ITEMS.register("moldy_crate_chest_mimic_egg", () -> new ForgeSpawnEggItem(TreasureEntities.MOLDY_CRATE_CHEST_MIMIC_ENTITY_TYPE, 0x635360, 0x464646, TREASURE_PROPS_SUPPLIER.get()));
 
 	// tiers
 	public static final ForgeTier COPPER = new ForgeTier(1, 200, 5.0F, 1.0F, 10, BlockTags.NEEDS_STONE_TOOL, () -> Ingredient.of(Items.COPPER_INGOT));
@@ -518,6 +520,29 @@ public class TreasureItems {
 					tooltip.add(Component.literal(LangUtil.INDENT4)
 							.append(Component.translatable(LangUtil.tooltip("weapons.sword_of_omens.lore"))
 									.append(Component.literal(LangUtil.INDENT4)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC)));
+					tooltip.add(Component.literal(LangUtil.NEWLINE));
+				}
+				@Override
+				public boolean isUnique() {
+					return true;
+				}
+				@Override
+				public boolean isValidRepairItem(ItemStack itemStack, ItemStack repairStack) {
+					return false;
+				}
+			});
+	
+	public static final RegistryObject<Item> CALLANDOR = Registration.ITEMS.register("callandor", 
+			() -> new Sword(MYTHICAL, 3, -2.0F, 75F, 9F, TREASURE_ITEM_PROPERTIES) {
+				@Override
+				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
+					tooltip.add(Component.literal(LangUtil.NEWLINE));
+					// lore may be multiple lines, so separate on ~ and add to tooltip
+					Component lore = Component.translatable(LangUtil.tooltip("weapons.callandor.lore"));
+					for (String s : lore.getString().split("~")) {	
+						tooltip.add(Component.literal(LangUtil.INDENT4)
+								.append(Component.translatable(s)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC));
+					}
 					tooltip.add(Component.literal(LangUtil.NEWLINE));
 				}
 				@Override
