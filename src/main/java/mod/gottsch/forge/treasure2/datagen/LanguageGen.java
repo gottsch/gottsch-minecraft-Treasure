@@ -126,6 +126,7 @@ public class LanguageGen extends LanguageProvider {
         add(TreasureItems.BLACK_SWORD.get(), "The Black Sword");
         add(TreasureItems.SWORD_OMENS.get(), "The Sword of Omens");
         add(TreasureItems.SWORD_POWER.get(), "The Sword of Power");
+        add(TreasureItems.CALLANDOR.get(), "Callandor");
         add(TreasureItems.ORCUS.get(), "Orcus");
         add(TreasureItems.SNAKE_EYES_KATANA.get(), "Snake Eye's Katana");
         add(TreasureItems.STORM_SHADOWS_KATANA.get(), "Storm Shadow's Daisho");
@@ -309,11 +310,15 @@ public class LanguageGen extends LanguageProvider {
         add(LangUtil.tooltip("weapons.snake_eyes_katana.lore"), "Move with the wind, and you will never be heard.~" 
         		+ "    -Snake Eyes");
         add(LangUtil.tooltip("weapons.storm_shadows_katana.lore"), "Most people will tell you that ninjas dont exist.~"
-        		+ "Thats what the ninjas want you to believe ..."
+        		+ "Thats what the ninjas want you to believe ...~"
         		+ "    -Storm Shadow");
         add(LangUtil.tooltip("weapons.oathbringer.lore"), "Life before death,~"
         		+ "strength before weakness,~"
         		+ "journey before destination.");
+        
+        add(LangUtil.tooltip("weapons.callandor.lore"), "Who wields me wields destiny.~"
+        		+ "Take me, and begin the final journey.~"
+        		+ "    -from The Dragon Reborn");
         
         add(LangUtil.tooltip("weapons.mjolnir.lore"), "'Whosoever holds this hammer,~"
         		+ "if they be worthy, shall possess the power of Thor.'");
