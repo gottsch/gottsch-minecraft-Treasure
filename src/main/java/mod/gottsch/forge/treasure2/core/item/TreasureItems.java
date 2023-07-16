@@ -529,6 +529,29 @@ public class TreasureItems {
 					return false;
 				}
 			});
+	
+	public static final RegistryObject<Item> CALLANDOR = Registration.ITEMS.register("callandor", 
+			() -> new Sword(MYTHICAL, 3, -2.0F, 75F, 9F, TREASURE_ITEM_PROPERTIES) {
+				@Override
+				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
+					tooltip.add(new TextComponent(LangUtil.NEWLINE));
+					// lore may be multiple lines, so separate on ~ and add to tooltip
+					Component lore = new TranslatableComponent(LangUtil.tooltip("weapons.callandor.lore"));
+					for (String s : lore.getString().split("~")) {	
+						tooltip.add(new TextComponent(LangUtil.INDENT4)
+								.append(new TranslatableComponent(s)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC));
+					}
+					tooltip.add(new TextComponent(LangUtil.NEWLINE));
+				}
+				@Override
+				public boolean isUnique() {
+					return true;
+				}
+				@Override
+				public boolean isValidRepairItem(ItemStack itemStack, ItemStack repairStack) {
+					return false;
+				}
+			});
 
 	// broad/bastard swords (steel, black)
 	public static final RegistryObject<Item> IRON_BROADSWORD = Registration.ITEMS.register("iron_broadsword", 

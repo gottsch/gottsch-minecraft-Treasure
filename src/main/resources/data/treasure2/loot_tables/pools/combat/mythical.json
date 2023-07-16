@@ -1,5 +1,5 @@
 {
-  "version" : "2.0.0",
+  "version" : "2.1.0",
   "type" : "minecraft:chest",
   "pools" : [ {
     "name" : "epic_armor",
@@ -54,7 +54,7 @@
       } ]
     } ]
   }, {
-    "name" : "legendary_weapons",
+    "name" : "mythical_weapons",
     "rolls" : 1,
     "entries" : [ {
       "entryName" : "orcus",
@@ -85,7 +85,12 @@
       "entryName" : "mjolnir",
       "type" : "minecraft:item",
       "name" : "treasure2:mjolnir",
-      "weight" : 10
+      "weight" : 8
+    }, {
+      "entryName" : "callandor",
+      "type" : "minecraft:item",
+      "name" : "treasure2:oathbringer",
+      "weight" : 8
     } ]
   } ]
 }
