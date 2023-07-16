@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -Added internationalization language entries for Rarities and Key/Lock Categories
 - Added name for Wither Chest top block.
+-Added Callandor sword.
 
 ### Changed
 

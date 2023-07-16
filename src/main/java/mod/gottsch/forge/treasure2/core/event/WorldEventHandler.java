@@ -22,6 +22,7 @@ import java.util.Optional;
 
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
+import mod.gottsch.forge.treasure2.core.cache.FeatureCaches;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.persistence.TreasureSavedData;
 import mod.gottsch.forge.treasure2.core.registry.TreasureLootTableRegistry;
@@ -69,7 +70,10 @@ public class WorldEventHandler {
 			if (worldSavePath.isPresent()) {
 				if ((!isLoaded && Config.SERVER.integration.dimensionsWhiteList.get().contains(dimension.toString())) ||
 						!worldSavePath.get().equals(WorldEventHandler.worldSavePath)) {
-										
+								
+					// initialize feature caches
+					FeatureCaches.initialize();
+					
 					// fix data		
 					TreasureDataFixer.fix();
 					

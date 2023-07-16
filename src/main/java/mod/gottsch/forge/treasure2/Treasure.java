@@ -148,7 +148,7 @@ public class Treasure {
 					Optional<StructureConfiguration> structConfig = Config.transformStructureConfiguration(commentedConfig);
 				}
 				else if (spec == Config.SERVER_SPEC) {
-					FeatureCaches.initialize();
+//					FeatureCaches.initialize();
 				}
 			}
 		}

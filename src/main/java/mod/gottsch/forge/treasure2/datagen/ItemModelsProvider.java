@@ -218,16 +218,19 @@ public class ItemModelsProvider extends ItemModelProvider {
 		singleTexture(TreasureItems.SWORD_OMENS.getId().getPath(),
 				mcLoc("item/handheld"), "layer0", modLoc("item/weapon/sword_of_omens"));
 		
+		singleTexture(TreasureItems.SWORD_POWER.getId().getPath(),
+				mcLoc("item/handheld"), "layer0", modLoc("item/weapon/sword_of_power"));
+		
+		singleTexture(TreasureItems.CALLANDOR.getId().getPath(),
+				mcLoc("item/handheld"), "layer0", modLoc("item/weapon/callandor"));
+		
 		// broad / bastard swords
 		singleTexture(TreasureItems.IRON_BROADSWORD.getId().getPath(),
 				mcLoc("item/handheld"), "layer0", modLoc("item/weapon/iron_broadsword"));
 		singleTexture(TreasureItems.STEEL_BROADSWORD.getId().getPath(),
 				mcLoc("item/handheld"), "layer0", modLoc("item/weapon/steel_broadsword"));
-		
+				
 		// large swords (x32)
-		singleTexture(TreasureItems.SWORD_POWER.getId().getPath(),
-				mcLoc("item/handheld"), "layer0", modLoc("item/weapon/sword_of_power"));
-		
 		singleTexture(TreasureItems.BLACK_SWORD.getId().getPath(),
 				modLoc("item/large_sword"), "layer0", modLoc("item/weapon/the_black_sword_x32"));
 		
