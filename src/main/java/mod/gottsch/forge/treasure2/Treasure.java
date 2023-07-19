@@ -78,7 +78,7 @@ public class Treasure {
 		TreasureContainers.register(modEventBus);
 		TreasureParticles.register(modEventBus);
 		TreasureEntities.register(modEventBus);
-//		TreasureConfiguredFeatures.register(modEventBus);
+		TreasureConfiguredFeatures.register(modEventBus);
 		TreasureSounds.register(modEventBus);
 		TreasureLootModifiers.register(modEventBus);
 		
@@ -140,9 +140,9 @@ public class Treasure {
 					Config.transform(commentedConfig);
 	
 					// init generated chest registry
-					LOGGER.debug("reading in chests config...");
-					DimensionalGeneratedCache.initialize();
-					RarityLevelWeightedChestGeneratorRegistry.initialize();
+//					LOGGER.debug("reading in chests config...");
+//					DimensionalGeneratedCache.initialize();
+//					RarityLevelWeightedChestGeneratorRegistry.initialize();
 				} 
 				else if (spec == Config.STRUCTURE_CONFIG_SPEC) {
 					Optional<StructureConfiguration> structConfig = Config.transformStructureConfiguration(commentedConfig);

@@ -89,10 +89,10 @@ public class WishableHandler implements IWishableHandler {
 //			Treasure.LOGGER.debug("item as a tag");
 			Player player = null;
 //			if (tag != null && tag.contains(DROPPED_BY)) {
-			if (itemEntity.getThrower() != null) {
+			if (itemEntity.getOwner() != null) {
 				try {
 //					UUID playerUuid = tag.getUUID(DROPPED_BY);
-					UUID playerUuid = itemEntity.getThrower();
+					UUID playerUuid = itemEntity.getOwner().getUUID();
 					player = world.getPlayerByUUID(playerUuid);
 				}
 				catch(Exception e) {

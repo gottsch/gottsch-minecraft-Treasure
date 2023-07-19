@@ -25,6 +25,8 @@ import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.cache.FeatureCaches;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.persistence.TreasureSavedData;
+import mod.gottsch.forge.treasure2.core.registry.DimensionalGeneratedCache;
+import mod.gottsch.forge.treasure2.core.registry.RarityLevelWeightedChestGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.registry.TreasureLootTableRegistry;
 import mod.gottsch.forge.treasure2.core.registry.TreasureTemplateRegistry;
 import mod.gottsch.forge.treasure2.core.util.ModUtil;
@@ -70,7 +72,11 @@ public class WorldEventHandler {
 			if (worldSavePath.isPresent()) {
 				if ((!isLoaded && Config.SERVER.integration.dimensionsWhiteList.get().contains(dimension.toString())) ||
 						!worldSavePath.get().equals(WorldEventHandler.worldSavePath)) {
-								
+							
+					Treasure.LOGGER.debug("reading in chests config...");
+					DimensionalGeneratedCache.initialize();
+					RarityLevelWeightedChestGeneratorRegistry.initialize();
+					
 					// initialize feature caches
 					FeatureCaches.initialize();
 					

@@ -27,14 +27,13 @@ import mod.gottsch.forge.treasure2.core.tags.TreasureTags;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
-import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class TreasureItemTagsProvider extends ItemTagsProvider {
 	public TreasureItemTagsProvider(PackOutput output, CompletableFuture<Provider> lookup,
-			TagsProvider<Block> blockTagProvider, @Nullable ExistingFileHelper existingFileHelper) {
+			CompletableFuture<TagLookup<Block>> blockTagProvider, @Nullable ExistingFileHelper existingFileHelper) {
 		super(output, lookup, blockTagProvider, Treasure.MODID, existingFileHelper);
 	}
 

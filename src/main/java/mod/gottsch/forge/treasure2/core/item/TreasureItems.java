@@ -25,7 +25,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeableArmorItem;
 import net.minecraft.world.item.Item;
@@ -346,7 +346,7 @@ public class TreasureItems {
 
 	// vanity items
 	public static final RegistryObject<Item> EYE_PATCH = Registration.ITEMS.register("eye_patch", 
-			() ->  new DyeableArmorItem(TreasureArmorMaterial.PATCH, EquipmentSlot.HEAD, TREASURE_PROPS_SUPPLIER.get()));
+			() ->  new DyeableArmorItem(TreasureArmorMaterial.PATCH, ArmorItem.Type.HELMET, TREASURE_PROPS_SUPPLIER.get()));
 
 	// eggs
 	public static final RegistryObject<Item> BOUND_SOUL_EGG = Registration.ITEMS.register("bound_soul_egg", () -> new ForgeSpawnEggItem(TreasureEntities.BOUND_SOUL_ENTITY_TYPE, 0x000000, 0x2b2b2b, TREASURE_PROPS_SUPPLIER.get()));

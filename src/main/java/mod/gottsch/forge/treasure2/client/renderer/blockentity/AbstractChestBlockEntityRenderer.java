@@ -30,12 +30,12 @@ import mod.gottsch.forge.treasure2.core.lock.LockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -149,7 +149,15 @@ public abstract class AbstractChestBlockEntityRenderer implements BlockEntityRen
 				// PoseStack.mulPose(Vector3f.YP.rotationDegrees(lockState.getSlot().getRotation()));
 				updateLockScale(poseStack);
 				// PoseStack.scale(getLocksScaleModifier(), getLocksScaleModifier(), getLocksScaleModifier());
-				Minecraft.getInstance().getItemRenderer().renderStatic(lockStack, ItemTransforms.TransformType.NONE, combinedLight, OverlayTexture.NO_OVERLAY, poseStack, renderBuffer, OverlayTexture.NO_OVERLAY);
+				Minecraft.getInstance().getItemRenderer().renderStatic(
+						lockStack, 
+						ItemDisplayContext.NONE,
+						combinedLight, 
+						OverlayTexture.NO_OVERLAY, 
+						poseStack, 
+						renderBuffer,
+						blockEntity.getLevel(),
+						OverlayTexture.NO_OVERLAY);
 				poseStack.popPose();
 			}
 		}

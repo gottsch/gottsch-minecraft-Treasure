@@ -45,7 +45,7 @@ public class DataGenerators {
             generator.addProvider(true, new Recipes(output));
         	TreasureBlockTagsProvider blockTags = new TreasureBlockTagsProvider(output, lookupProvider, event.getExistingFileHelper());
             generator.addProvider(true, blockTags);
-            generator.addProvider(true, new TreasureItemTagsProvider(output, lookupProvider, blockTags, event.getExistingFileHelper()));
+            generator.addProvider(true, new TreasureItemTagsProvider(output, lookupProvider, blockTags.contentsGetter(), event.getExistingFileHelper()));
             generator.addProvider(true, new TreasureBiomeTagsProvider(output, lookupProvider, event.getExistingFileHelper()));
 //            generator.addProvider(true, new TreasureWorldGenProvider(output, lookupProvider));
         }

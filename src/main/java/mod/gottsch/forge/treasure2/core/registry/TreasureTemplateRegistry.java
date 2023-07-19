@@ -62,10 +62,10 @@ import mod.gottsch.forge.treasure2.core.structure.StructureCategory;
 import mod.gottsch.forge.treasure2.core.structure.StructureType;
 import mod.gottsch.forge.treasure2.core.structure.TemplateHolder;
 import mod.gottsch.forge.treasure2.core.util.ModUtil;
-import net.minecraft.SharedConstants;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -376,14 +376,15 @@ public class TreasureTemplateRegistry {
 	private static Optional<GottschTemplate> loadTemplateFromStream(InputStream stream, List<Block> markerBlocks, 
 			Map<BlockState, BlockState> replacementBlocks) throws IOException {
 
-		CompoundTag nbt = NbtIo.readCompressed(stream);
+		CompoundTag tag = NbtIo.readCompressed(stream);
 
-		if (!nbt.contains("DataVersion", 99)) {
-			nbt.putInt("DataVersion", SharedConstants.getCurrentVersion().getWorldVersion());//500);
-		}
+//		if (!nbt.contains("DataVersion", 99)) {
+//			nbt.putInt("DataVersion", SharedConstants.getCurrentVersion().getWorldVersion());//500);
+//		}
+		NbtUtils.addCurrentDataVersion(tag);
 
 		GottschTemplate template = new GottschTemplate();
-		template.load(blockLookup, nbt, markerBlocks, replacementBlocks);
+		template.load(blockLookup, tag, markerBlocks, replacementBlocks);
 		//		Treasure.LOGGER.debug("adding template to map with key -> {}", id);
 		//		this.getTemplates().put(id, template);
 		return Optional.ofNullable(template);

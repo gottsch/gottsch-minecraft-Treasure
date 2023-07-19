@@ -79,7 +79,7 @@ public class TerraneanChestFeature extends ChestFeature {
 	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
 		WorldGenLevel genLevel = context.level();
 		ResourceLocation dimension = WorldInfo.getDimension(genLevel.getLevel());
-		//		Treasure.LOGGER.debug("dimension -> {}", dimension.toString());
+//		Treasure.LOGGER.debug("dimension -> {}", dimension.toString());
 		// test the dimension
 		if (!meetsDimensionCriteria(dimension)) { 
 			return false;
