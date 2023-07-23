@@ -35,7 +35,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.DungeonHooks;
 
 
@@ -74,7 +73,7 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
 		BlockState blockState = context.level().getBlockState(spawnCoords.add(0, 1, 0).toPos());
 		
 		// if there is air above the origin, then in cavern. (pos in isAir() doesn't matter)
-		if (blockState == null || blockState.getMaterial() == Material.AIR) {
+		if (blockState == null || blockState.isAir()) {
 			Treasure.LOGGER.debug("spawn coords is in cavern.");
 			inCavern = true;
 		}

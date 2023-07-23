@@ -21,7 +21,7 @@ package mod.gottsch.forge.treasure2.core.block;
 
 import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
 import mod.gottsch.forge.treasure2.core.lock.LockLayout;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 
 /**
  * @author Mark Gottschling on Jan 9, 2018
@@ -37,7 +37,7 @@ public class StandardChestBlock extends AbstractTreasureChestBlock {
 	 * @param type
 	 */
 	public StandardChestBlock(Class<? extends AbstractTreasureChestBlockEntity> blockEntityClass, LockLayout type) {
-		this(blockEntityClass, type, Properties.of(Material.WOOD));
+		this(blockEntityClass, type, Properties.of().mapColor(MapColor.WOOD));
 	}
 
 	/**

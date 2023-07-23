@@ -18,12 +18,10 @@
 package mod.gottsch.forge.treasure2.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.inventory.AbstractTreasureContainerMenu;
-import mod.gottsch.forge.treasure2.core.inventory.StandardChestContainerMenu;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -61,34 +59,34 @@ public abstract class AbstractChestScreen<T extends AbstractTreasureContainerMen
 	}
 	
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(matrixStack);
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
-        this.renderTooltip(matrixStack, mouseX, mouseY);
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(guiGraphics);
+        super.render(guiGraphics, mouseX, mouseY, partialTicks);
+        this.renderTooltip(guiGraphics, mouseX, mouseY);
     }
 
     @Override
-    protected void renderBg(PoseStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+    protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
         	RenderSystem.setShaderTexture(0, getBgTexture());
             int relX = (this.width - this.imageWidth) / 2;
             int relY = (this.height - this.imageHeight) / 2;
-            this.blit(matrixStack, relX, relY, 0, 0, this.imageWidth, this.imageHeight);
+            guiGraphics.blit(getBgTexture(), relX, relY, 0, 0, this.imageWidth, this.imageHeight);
     }
     
     /**
      * 
-     * @param matrixStack
+     * @param guiGraphics
      * @param mouseX
      * @param mouseY
      */
-    protected void renderCustomLabels(PoseStack matrixStack, int mouseX, int mouseY) {
-		drawShadowLabel(matrixStack, title, this.titleLabelX, this.titleLabelY, getCustomColor(), getCustomShadowColor());
-		drawShadowLabel(matrixStack, getInventory().getDisplayName(), this.inventoryLabelX, this.inventoryLabelY, getCustomColor(), getCustomShadowColor());
+    protected void renderCustomLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+		drawShadowLabel(guiGraphics, title, this.titleLabelX, this.titleLabelY, getCustomColor(), getCustomShadowColor());
+		drawShadowLabel(guiGraphics, getInventory().getDisplayName(), this.inventoryLabelX, this.inventoryLabelY, getCustomColor(), getCustomShadowColor());
     }
     
-    protected void drawShadowLabel(PoseStack matrixStack, Component title, int xpos, int ypos, int color, int shadow) {
-    	this.font.draw(matrixStack, title, xpos+1, ypos+1, shadow);
-    	this.font.draw(matrixStack, title, xpos, ypos, color);
+    protected void drawShadowLabel(GuiGraphics guiGraphics, Component title, int xpos, int ypos, int color, int shadow) {
+    	guiGraphics.drawString(this.font, title, xpos+1, ypos+1, shadow);
+    	guiGraphics.drawString(this.font, title, xpos, ypos, color);
     }
     
 	public Inventory getInventory() {

@@ -28,7 +28,6 @@ import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 
 /**
  * 
@@ -57,22 +56,22 @@ public class SimpleShortPitGenerator extends AbstractPitGenerator {
 
 		checkCoords = spawnCoords.add(0, 1, 0);
 		BlockState blockState = context.level().getBlockState(checkCoords.toPos());
-		if (blockState.getMaterial() != Material.AIR) {
+		if (!blockState.isAir()) {
 			buildLogLayer(context, checkCoords, DEFAULT_LOG);
 		}
 		
 		checkCoords = spawnCoords.add(0, 2, 0);
-		if (blockState.getMaterial() != Material.AIR) {
+		if (!blockState.isAir()) {
 			buildLayer(context, checkCoords, Blocks.SAND);
 		}
 		
 		checkCoords = surfaceCoords.add(0, -2, 0);
-		if (blockState.getMaterial() != Material.AIR) {
+		if (!blockState.isAir()) {
 			buildLayer(context, checkCoords, Blocks.SAND);
 		}
 		
 		checkCoords = surfaceCoords.add(0, -3, 0);
-		if (blockState.getMaterial() != Material.AIR) {
+		if (!blockState.isAir()) {
 			buildLogLayer(context, checkCoords, DEFAULT_LOG);
 		}
 		

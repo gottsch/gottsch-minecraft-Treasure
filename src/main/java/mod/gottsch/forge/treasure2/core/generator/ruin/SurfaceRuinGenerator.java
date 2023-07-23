@@ -46,7 +46,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.material.Material;
 
 /**
  * 
@@ -315,8 +314,8 @@ public class SurfaceRuinGenerator implements IRuinGenerator<GeneratorResult<Ches
 				return Coords.EMPTY;
 			}	
 
-			if (blockContext.equalsMaterial(Material.AIR) || blockContext.isReplaceable()
-					|| blockContext.equalsMaterial(Material.LEAVES) || blockContext.isFluid()
+			if (blockContext.isAir() || blockContext.isReplaceable()
+					|| blockContext.isLeaves() || blockContext.isFluid()
 					|| blockContext.isBurning()) {
 //				Treasure.LOGGER.debug("block is air, leaves, replacable, liquid or burning");
 				newCoords = newCoords.down(1);

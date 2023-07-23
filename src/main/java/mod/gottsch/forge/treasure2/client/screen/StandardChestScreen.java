@@ -19,11 +19,10 @@ package mod.gottsch.forge.treasure2.client.screen;
 
 import java.awt.Color;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.inventory.StandardChestContainerMenu;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -59,7 +58,7 @@ public class StandardChestScreen extends AbstractChestScreen<StandardChestContai
 	}
 	
     @Override
-    protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
+    protected void renderLabels(GuiGraphics matrixStack, int mouseX, int mouseY) {
     	if (Config.CLIENT.gui.enableCustomChestInventoryGui.get()) {
     		renderCustomLabels(matrixStack, mouseX, mouseY);
     	}

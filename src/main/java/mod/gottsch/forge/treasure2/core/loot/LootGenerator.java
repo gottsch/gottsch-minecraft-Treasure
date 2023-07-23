@@ -43,6 +43,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -75,7 +76,7 @@ public abstract class LootGenerator implements ILootGenerator {
 		}
 
 		// get the vanilla table from shell
-		LootTable table = world.getServer().getLootTables().get(tableShell.get().getResourceLocation());
+		LootTable table = world.getServer().getLootData().getLootTable(tableShell.get().getResourceLocation());
 		// get a list of loot pools
 		List<LootPoolShell> lootPoolShells = tableShell.get().getPools();
 
@@ -167,11 +168,21 @@ public abstract class LootGenerator implements ILootGenerator {
 	 * @return
 	 */
 	public LootContext getLootContext(Level world, Player player, ICoords coords) {
-		return new LootContext.Builder((ServerLevel) world)
-				.withLuck((player != null) ? player.getLuck() : 0)
-				.withOptionalParameter(LootContextParams.THIS_ENTITY, player)
-				.withParameter(LootContextParams.ORIGIN, coords.toVec3())
-				.create(LootContextParamSets.CHEST);
+//		return new LootContext.Builder((ServerLevel) world)
+//				.withLuck((player != null) ? player.getLuck() : 0)
+//				.withOptionalParameter(LootContextParams.THIS_ENTITY, player)
+//				.withParameter(LootContextParams.ORIGIN, coords.toVec3())
+//				.create(LootContextParamSets.CHEST);
+		
+		LootParams.Builder lootParamsBuilder = (new LootParams.Builder((ServerLevel)world))
+				.withParameter(LootContextParams.ORIGIN, coords.toVec3());
+        
+        if (player != null) {
+           lootParamsBuilder.withLuck(player.getLuck()).withParameter(LootContextParams.THIS_ENTITY, player);
+        }
+        LootParams params = lootParamsBuilder.create(LootContextParamSets.CHEST);
+        LootContext lootContext = new LootContext.Builder(params).create(null);
+        return lootContext;
 	}
 	
 	/**
@@ -256,7 +267,7 @@ public abstract class LootGenerator implements ILootGenerator {
 			Treasure.LOGGER.debug("injectable resource -> {}", injectLootTableShell.getResourceLocation());
 
 			// get the vanilla managed loot table
-			LootTable injectLootTable = world.getServer().getLootTables().get(injectLootTableShell.getResourceLocation());
+			LootTable injectLootTable = world.getServer().getLootData().getLootTable(injectLootTableShell.getResourceLocation());
 
 			if (injectLootTable != null) {
 				// TODO why do i want this filter!! can't inject into treasure or charms pool??!!

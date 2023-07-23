@@ -19,7 +19,6 @@ package mod.gottsch.forge.treasure2.core.entity.monster;
 
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.entity.GravestoneProximitySpawnerBlockEntity;
-import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -147,7 +146,7 @@ public class BoundSoul extends Monster {
 		
 		// regeneration
 		if (hasHome()) {
-			BlockEntity homeBlockEntity = this.level.getBlockEntity(getHomePos());
+			BlockEntity homeBlockEntity = this.level().getBlockEntity(getHomePos());
 			if (homeBlockEntity == null || !(homeBlockEntity instanceof GravestoneProximitySpawnerBlockEntity)) {
 				setHomePos(BlockPos.ZERO);
 			} else {

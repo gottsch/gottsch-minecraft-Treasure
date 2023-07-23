@@ -17,8 +17,6 @@
  */
 package mod.gottsch.forge.treasure2.core.block;
 
-import mod.gottsch.forge.gottschcore.world.WorldInfo;
-import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
 import mod.gottsch.forge.treasure2.core.lock.LockLayout;
 import net.minecraft.core.BlockPos;
@@ -74,23 +72,13 @@ public class WitherChestBlock extends StandardChestBlock {
 		level.setBlock(pos.above(), TreasureBlocks.WITHER_CHEST_TOP.get().defaultBlockState(), 3);
 	}
 
-	/**
-	 * Check if the wither chest (double high) can be placed at location.
-	 */
-	//	 @Override
-	//	public boolean isReplaceable(BlockState state, BlockItemUseContext useContext) {
-	//		// TODO Auto-generated method stub
-	//		return super.isReplaceable(state, useContext);
-	//	}
-
-
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 
 		// TODO hopefully this prevents block from being placed if it can't
 		BlockState blockState = context.getLevel().getBlockState(context.getClickedPos().above());
 		// TODO wrap these check in BlockContext
-		if (blockState.isAir() && blockState.getMaterial().isReplaceable()) {
+		if (blockState.isAir() && blockState.canBeReplaced()) {
 			return super.getStateForPlacement(context);
 		}
 		return null;

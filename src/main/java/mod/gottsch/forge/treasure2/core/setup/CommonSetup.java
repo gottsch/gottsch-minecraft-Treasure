@@ -63,7 +63,6 @@ import mod.gottsch.forge.treasure2.core.generator.ruin.SubaquaticRuinGenerator;
 import mod.gottsch.forge.treasure2.core.generator.ruin.SurfaceRuinGenerator;
 import mod.gottsch.forge.treasure2.core.generator.well.WellGenerator;
 import mod.gottsch.forge.treasure2.core.item.KeyLockCategory;
-import mod.gottsch.forge.treasure2.core.item.TreasureCreativeModeTabs;
 import mod.gottsch.forge.treasure2.core.item.TreasureItems;
 import mod.gottsch.forge.treasure2.core.network.TreasureNetworking;
 import mod.gottsch.forge.treasure2.core.structure.StructureCategory;
@@ -74,10 +73,8 @@ import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 import mod.gottsch.forge.treasure2.core.world.feature.gen.TreasureFeatureGenerators;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacements;
-import net.minecraft.world.item.CreativeModeTab.TabVisibility;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraftforge.event.CreativeModeTabEvent.BuildContents;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -436,17 +433,17 @@ public class CommonSetup {
 		TreasureNetworking.register();
 	}
 
-	@SubscribeEvent
-	public static void registemItemsToTab(BuildContents event) {
-		if (event.getTab() == TreasureCreativeModeTabs.MOD_TAB) {
-			// add all items
-			Registration.ITEMS.getEntries().forEach(item -> {
-				if (!item.equals(TreasureItems.LOGO)) {
-					event.accept(item.get(), TabVisibility.PARENT_AND_SEARCH_TABS);
-				}
-			});
-		}
-	}
+//	@SubscribeEvent
+//	public static void registemItemsToTab(BuildContents event) {
+//		if (event.getTab() == TreasureCreativeModeTabs.MOD_TAB) {
+//			// add all items
+//			Registration.ITEMS.getEntries().forEach(item -> {
+//				if (!item.equals(TreasureItems.LOGO)) {
+//					event.accept(item.get(), TabVisibility.PARENT_AND_SEARCH_TABS);
+//				}
+//			});
+//		}
+//	}
 	
 	@SubscribeEvent
 	public static void onAttributeCreate(EntityAttributeCreationEvent event) {

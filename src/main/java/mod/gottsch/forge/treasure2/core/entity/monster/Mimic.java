@@ -88,7 +88,7 @@ public abstract class Mimic extends Monster {
 	
 	@Override
 	public void aiStep() {
-		if (!WorldInfo.isClientSide(level)) {
+		if (!WorldInfo.isClientSide(level())) {
 			if (!isActive() && amount < 1F) {
 				amount += 0.05;
 				setAmount(amount);

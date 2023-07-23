@@ -17,15 +17,11 @@
  */
 package mod.gottsch.forge.treasure2.core.block;
 
-import java.util.Collections;
-import java.util.List;
-
 import mod.gottsch.forge.treasure2.Treasure;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
@@ -33,7 +29,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -107,12 +102,6 @@ public class WitherChestTopBlock extends Block implements ITreasureChestBlockPro
 		if (downBlock == TreasureBlocks.WITHER_CHEST.get()) {
 			downBlock.onBlockExploded(state, level, downPos, explosion);
 		}
-	}
-
-	@Override
-	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-		// if this is called somehow, return and empty list for the drops
-        return Collections.emptyList();
 	}
 	
 	@Override

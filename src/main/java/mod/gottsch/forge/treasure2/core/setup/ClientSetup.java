@@ -216,7 +216,7 @@ public class ClientSetup {
 	
 	@SubscribeEvent
 	public static void registerParticleProviders(RegisterParticleProvidersEvent event) {
-		event.register(TreasureParticles.SPANISH_MOSS_PARTICLE.get(), SpanishMossParticle.Provider::new);		
+		event.registerSpecial(TreasureParticles.SPANISH_MOSS_PARTICLE.get(), SpanishMossParticle.Provider::new);		
 		event.register(TreasureParticles.MIST_PARTICLE.get(), MistParticle.Provider::new);		
 		event.register(TreasureParticles.BILLOWING_MIST_PARTICLE.get(), BillowingMistParticle.Provider::new);		
 		event.register(TreasureParticles.POISON_MIST_PARTICLE.get(), 	PoisonMistParticle.Provider::new);		
@@ -224,5 +224,6 @@ public class ClientSetup {
 		event.register(TreasureParticles.COPPER_COIN_PARTICLE.get(), CoinParticle.Provider::new);
 		event.register(TreasureParticles.SILVER_COIN_PARTICLE.get(), CoinParticle.Provider::new);
 		event.register(TreasureParticles.GOLD_COIN_PARTICLE.get(), CoinParticle.Provider::new);
+		event.
 	}
 }

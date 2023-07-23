@@ -43,7 +43,7 @@ public class SkullChestContainerMenu extends AbstractTreasureContainerMenu {
 		super(containerId,TreasureContainers.SKULL_CHEST_CONTAINER.get(), pos, playerInventory, player);
 
 		// determine the chest by the pos
-		BlockEntity blockEntity = player.level.getBlockEntity(pos);
+		BlockEntity blockEntity = player.level().getBlockEntity(pos);
 		if (blockEntity instanceof SkullChestBlockEntity) {
 			this.skullType = ((SkullChestBlockEntity)blockEntity).getSkullType();
 		}

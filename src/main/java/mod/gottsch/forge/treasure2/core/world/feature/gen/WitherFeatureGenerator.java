@@ -31,7 +31,12 @@ import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.block.*;
+import mod.gottsch.forge.treasure2.core.block.ITreasureBlock;
+import mod.gottsch.forge.treasure2.core.block.SpanishMossBlock;
+import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
+import mod.gottsch.forge.treasure2.core.block.WitherBranchBlock;
+import mod.gottsch.forge.treasure2.core.block.WitherRootBlock;
+import mod.gottsch.forge.treasure2.core.block.WitherSoulLog;
 import mod.gottsch.forge.treasure2.core.config.ChestFeaturesConfiguration.ChestRarity;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.enums.PitType;
@@ -49,7 +54,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.AABB;
 
 /**
@@ -278,7 +283,9 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 					// remove existing tree
 					BlockContext blockContext = new BlockContext(context.level(), buildCoords);
 					ICoords climbCoords = new Coords(buildCoords);
-					while (blockContext.equalsMaterial(Material.WOOD) && !(blockContext.getState().getBlock() instanceof ITreasureBlock)) {
+					while (blockContext.getState().getBlock().defaultMapColor() == MapColor.WOOD 
+							&& !(blockContext.getState().getBlock() instanceof ITreasureBlock)) {
+						
 						// remove log
 						context.level().setBlock(climbCoords.toPos(), Blocks.AIR.defaultBlockState(), 3);
 						// climb upwards

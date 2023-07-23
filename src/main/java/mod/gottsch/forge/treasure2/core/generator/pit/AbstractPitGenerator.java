@@ -46,7 +46,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.DungeonHooks;
 
 /**
@@ -129,7 +128,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator<GeneratorRes
 		BlockState blockState = context.level().getBlockState(spawnCoords.add(0, 1, 0).toPos());
 		
 		// if there is air above the origin, then in cavern. (pos in isAir() doesn't matter)
-		if (blockState == null || blockState.getMaterial() == Material.AIR) {
+		if (blockState == null || blockState.isAir()) {
 			Treasure.LOGGER.debug("spawn coords is in a cavern.");
 			inCavern = true;
 		}

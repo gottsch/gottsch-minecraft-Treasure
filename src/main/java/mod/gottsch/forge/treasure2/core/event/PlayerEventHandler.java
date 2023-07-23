@@ -33,7 +33,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Items;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -66,7 +65,7 @@ public class PlayerEventHandler {
 	 */
 	private static void checkForWishables(Player player) {
 		// gather items within x radius
-		List<ItemEntity> items = player.level.getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(Config.SERVER.wells.scanForItemRadius.get()));
+		List<ItemEntity> items = player.level().getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(Config.SERVER.wells.scanForItemRadius.get()));
 		for (ItemEntity item : items) {
 			// if non-wealth, wishables-tag item
 			if (!(item.getItem().getItem() instanceof WealthItem) && item.getItem().is(TreasureTags.Items.WISHABLES)) {

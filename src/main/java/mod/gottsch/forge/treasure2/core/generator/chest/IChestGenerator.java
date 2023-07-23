@@ -85,6 +85,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.saveddata.maps.MapDecoration;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -350,7 +351,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 
 		Treasure.LOGGER.debug("loot table resource -> {}", lootTableResourceLocation); 
 
-		LootTable lootTable = level.getServer().getLootTables().get(lootTableResourceLocation);
+		LootTable lootTable = level.getServer().getLootData().getLootTable(lootTableResourceLocation);
 		if (lootTable == null) {
 			Treasure.LOGGER.warn("Unable to select a lootTable.");
 			return;
@@ -371,17 +372,17 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 		}
 
 		// setup context
-		LootContext lootContext = null;
-		lootContext = new LootContext.Builder((ServerLevel) level)
-				.withLuck(player.getLuck())
-				.withParameter(LootContextParams.THIS_ENTITY, player)
-				.withParameter(LootContextParams.ORIGIN, 
-						new Vec3(blockEntity.getBlockPos().getX(), 
-								blockEntity.getBlockPos().getY(), 
-								blockEntity.getBlockPos().getZ()))
-				.create(LootContextParamSets.CHEST);
-
-
+		LootParams.Builder lootParamsBuilder = (new LootParams.Builder((ServerLevel)level)).withParameter(LootContextParams.ORIGIN, 
+        		new Vec3(blockEntity.getBlockPos().getX(), 
+				blockEntity.getBlockPos().getY(), 
+				blockEntity.getBlockPos().getZ()));
+        
+        if (player != null) {
+           lootParamsBuilder.withLuck(player.getLuck()).withParameter(LootContextParams.THIS_ENTITY, player);
+        }
+        LootParams params = lootParamsBuilder.create(LootContextParamSets.CHEST);
+        LootContext lootContext = new LootContext.Builder(params).create(lootTableResourceLocation);
+        
 		//		Treasure.LOGGER.debug("loot context -> {}", lootContext);
 
 		for (LootPoolShell pool : lootPoolShells) {
@@ -464,7 +465,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 			Treasure.LOGGER.debug("injectable resource -> {}", injectLootTableShell.getResourceLocation());
 
 			// get the vanilla managed loot table
-			LootTable injectLootTable = world.getServer().getLootTables().get(injectLootTableShell.getResourceLocation());
+			LootTable injectLootTable = world.getServer().getLootData().getLootTable(injectLootTableShell.getResourceLocation());
 
 			if (injectLootTable != null) {
 				// filter the pool

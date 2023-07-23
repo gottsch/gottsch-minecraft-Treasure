@@ -42,7 +42,7 @@ public class LivingEventHandler {
 	// NOTE FINAL damage to be applied
 	@SubscribeEvent
 	public void checkCharmsInteractionWithDamage(LivingDamageEvent event) {
-		if (WorldInfo.isClientSide(event.getEntity().getLevel())) {
+		if (WorldInfo.isClientSide(event.getEntity().level())) {
 			return;
 		}
 	}
@@ -53,7 +53,7 @@ public class LivingEventHandler {
 	 */
 	@SubscribeEvent
 	public void checkCharmsInteractionWithAttack(LivingHurtEvent event) {
-		if (WorldInfo.isClientSide(event.getEntity().getLevel())) {
+		if (WorldInfo.isClientSide(event.getEntity().level())) {
 			return;
 		}
 

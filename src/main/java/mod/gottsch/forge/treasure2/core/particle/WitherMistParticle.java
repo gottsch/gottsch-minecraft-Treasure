@@ -21,7 +21,6 @@ package mod.gottsch.forge.treasure2.core.particle;
 
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
-import mod.gottsch.forge.treasure2.core.network.PoisonMistMessageToServer;
 import mod.gottsch.forge.treasure2.core.network.TreasureNetworking;
 import mod.gottsch.forge.treasure2.core.network.WitherMistMessageToServer;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -67,7 +66,7 @@ public class WitherMistParticle extends AbstractCollidingMistParticle {
 	 */
 	@Override
 	public void inflictEffectOnPlayer(Player player) {
-		if (WorldInfo.isServerSide(player.level)) {
+		if (WorldInfo.isServerSide(player.level())) {
 			return;
 		}
 

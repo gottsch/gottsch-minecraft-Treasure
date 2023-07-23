@@ -48,13 +48,13 @@ public interface IWishableHandler {
 	default public boolean isValidLocation(ItemEntity itemEntity) {
 		int count = 0;
 		// check if in water
-		if (itemEntity.level.getBlockState(itemEntity.blockPosition()).is(Blocks.WATER)) {
+		if (itemEntity.level().getBlockState(itemEntity.blockPosition()).is(Blocks.WATER)) {
 			// NOTE use vanilla classes as this scan will be performed frequentlly and don't need the overhead.
 			int scanRadius = Config.SERVER.wells.scanForWellRadius.get();
 			BlockPos pos = itemEntity.blockPosition().offset(-scanRadius, 0, -scanRadius);
 			for (int z = 0; z < (scanRadius * 2) + 1; z++) {
 				for (int x = 0; x < (scanRadius * 2) + 1; x++) {
-					Block block = itemEntity.level.getBlockState(pos).getBlock();
+					Block block = itemEntity.level().getBlockState(pos).getBlock();
 					if (block instanceof IWishingWellBlock) {
 						count++;
 					}					
@@ -76,10 +76,10 @@ public interface IWishableHandler {
 			for (int itemIndex = 0; itemIndex < itemEntity.getItem().getCount(); itemIndex++) {
 				// generate an item for each item in the stack
 				ICoords coords = new Coords(itemEntity.blockPosition());
-				Optional<ItemStack> lootStack = generateLoot(itemEntity.level, random, itemEntity, coords);
+				Optional<ItemStack> lootStack = generateLoot(itemEntity.level(), random, itemEntity, coords);
 				if (lootStack.isPresent()) {
 					// spawn the item 
-					Containers.dropItemStack(itemEntity.level, (double)coords.getX(), (double)coords.getY()+1, (double)coords.getZ(), lootStack.get());
+					Containers.dropItemStack(itemEntity.level(), (double)coords.getX(), (double)coords.getY()+1, (double)coords.getZ(), lootStack.get());
 				}
 			}
 			// remove the item entity

@@ -66,7 +66,7 @@ public class PoisonMistParticle extends AbstractCollidingMistParticle {
 	 */
 	@Override
 	public void inflictEffectOnPlayer(Player player) {
-		if (WorldInfo.isServerSide(player.level)) {
+		if (WorldInfo.isServerSide(player.level())) {
 			return;
 		}
 

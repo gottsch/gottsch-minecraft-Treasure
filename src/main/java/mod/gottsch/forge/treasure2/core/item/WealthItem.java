@@ -23,7 +23,6 @@ package mod.gottsch.forge.treasure2.core.item;
 import java.util.List;
 
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
-import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.tags.TreasureTags;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import mod.gottsch.forge.treasure2.core.wishable.IWishable;
@@ -69,7 +68,7 @@ public class WealthItem extends Item implements IWishable {
 	 */
 	@Override
 	public boolean onEntityItemUpdate(ItemStack stack, ItemEntity entityItem) {
-		Level level = entityItem.level;
+		Level level = entityItem.level();
 		if (WorldInfo.isClientSide(level)) {
 			return super.onEntityItemUpdate(stack, entityItem);
 		}
