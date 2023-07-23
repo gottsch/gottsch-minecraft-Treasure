@@ -78,7 +78,7 @@ public class Treasure {
 		TreasureContainers.register(modEventBus);
 		TreasureParticles.register(modEventBus);
 		TreasureEntities.register(modEventBus);
-//		TreasureConfiguredFeatures.register(modEventBus);
+		TreasureConfiguredFeatures.register(modEventBus);
 		TreasureSounds.register(modEventBus);
 		TreasureLootModifiers.register(modEventBus);
 		
