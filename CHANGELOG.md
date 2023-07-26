@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Updated IChestGeneator.buildLootTableList() to use the ILootTableType param instead of defaulting to CHESTS.
--Updated IChestGenerator.fillChest() to only use the rarity that was selected for the chest for the injects.
+- Updated IChestGenerator.fillChest() to only use the rarity that was selected for the chest for the injects.
 
 ## [3.2.0] - 2023-07-16
 

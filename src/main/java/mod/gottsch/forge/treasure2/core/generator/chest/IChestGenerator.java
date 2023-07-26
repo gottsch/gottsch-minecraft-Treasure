@@ -340,7 +340,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 			lootTableShell = selectLootTable(random, rarity);
 			// is valid loot table shell
 			if (lootTableShell.isPresent()) {
-				Treasure.LOGGER.debug("using loot table shell -> {}, {}", lootTableShell.get().getCategory(), lootTableShell.get().getRarity());
+				Treasure.LOGGER.debug("using loot table shell -> {}", lootTableShell.get().getRarity());
 				lootTableResourceLocation = lootTableShell.get().getResourceLocation();
 			}
 			else {
@@ -366,7 +366,6 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 		// TODO maybe should go the other way. path.getName(4)
 		Path rarityPath = Paths.get(lootTableResourceLocation.getPath());
 		IRarity selectedRarity = TreasureApi.getRarity(rarityPath.getName(rarityPath.getNameCount()-2).toString().toUpperCase()).orElse(rarity);
-//		IRarity selectedRarity = TreasureApi.getRarity(lootTableShell.get().getRarity()).orElse(rarity);
 		
 		// setup lists of items
 		List<ItemStack> treasureStacks = new ArrayList<>();
