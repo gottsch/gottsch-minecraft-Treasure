@@ -19,6 +19,8 @@
  */
 package mod.gottsch.forge.treasure2.core.generator.chest;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -35,6 +37,7 @@ import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
+import mod.gottsch.forge.treasure2.api.TreasureApi;
 import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
@@ -286,7 +289,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 	 * @return
 	 */
 	default public List<LootTableShell> buildLootTableList(ILootTableType key, IRarity rarity) {
-		return TreasureLootTableRegistry.getLootTableByRarity(LootTableType.CHESTS, rarity);
+		return TreasureLootTableRegistry.getLootTableByRarity(key, rarity);
 	}
 
 	/**
@@ -331,7 +334,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 			lootTableShell = selectLootTable(random, rarity);
 			// is valid loot table shell
 			if (lootTableShell.isPresent()) {
-				Treasure.LOGGER.debug("using loot table shell -> {}, {}", lootTableShell.get().getCategory(), lootTableShell.get().getRarity());
+				Treasure.LOGGER.debug("using loot table shell -> {}", lootTableShell.get().getRarity());
 				lootTableResourceLocation = lootTableShell.get().getResourceLocation();
 			}
 			else {
@@ -351,6 +354,9 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 		}		
 		Treasure.LOGGER.debug("selected loot table -> {} from resource -> {}", lootTable, lootTableResourceLocation);
 
+		Path rarityPath = Paths.get(lootTableResourceLocation.getPath());
+		IRarity selectedRarity = TreasureApi.getRarity(rarityPath.getName(rarityPath.getNameCount()-2).toString().toUpperCase()).orElse(rarity);
+		
 		// setup lists of items
 		List<ItemStack> treasureStacks = new ArrayList<>();
 		List<ItemStack> itemStacks = new ArrayList<>();
@@ -411,10 +417,11 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 		injectLootTableShells = injectLootTableShells
 				.stream()
 				.filter(s -> s.getResourceLocation().getPath().contains(LootTableType.CHESTS.getValue()))
+				.filter(s -> s.getResourceLocation().getPath().toLowerCase().contains(selectedRarity.getName().toLowerCase()))
 				.toList();
 
 		if (!injectLootTableShells.isEmpty()) {
-			Treasure.LOGGER.debug("found injectable tables for category ->{}, rarity -> {}", lootTableShell.get().getCategory(), rarity);
+			Treasure.LOGGER.debug("found injectable tables for category ->{}, rarity -> {}", LootTableType.INJECTS, rarity);
 			Treasure.LOGGER.debug("size of injectable tables -> {}", injectLootTableShells.size());
 
 			// add predicate
@@ -427,6 +434,11 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 			//			itemStacks.addAll(TreasureLootTableRegistry.getLootTableMaster().getInjectedLootItems(world, random, injectLootTableShells.get(), lootContext));
 		}
 
+		// TEMP
+//		itemStacks.forEach(stack -> {
+//			Treasure.LOGGER.debug("all item stack candidate -> {}", stack.getDisplayName().getString());
+//		});
+		
 		// check the inventory
 		IItemHandler itemHandler = chestBlockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElse(null);
 		if (itemHandler != null) {
@@ -474,6 +486,10 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 					}
 				});
 				Treasure.LOGGER.debug("size of item stacks after inject -> {}", itemStacks.size());
+				// TEMP
+//				itemStacks.forEach(stack -> {
+//					Treasure.LOGGER.debug("inject item candidate -> {}", stack.getDisplayName().getString());
+//				});
 			}
 		}
 		return itemStacks;
@@ -613,6 +629,8 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 				inventory.setStackInSlot(((Integer) emptySlots.remove(emptySlots.size() - 1)).intValue(), ItemStack.EMPTY);
 			} 
 			else {
+				// TEMP
+//				Treasure.LOGGER.debug("adding item candidate -> {}", itemstack.getDisplayName().getString());
 				inventory.setStackInSlot(((Integer) emptySlots.remove(emptySlots.size() - 1)).intValue(), itemstack);
 			}
 		}
