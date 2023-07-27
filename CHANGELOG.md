@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.3.0] - 2023-07-26
+
+### Changed
+
+- Moved registry of structure templates to TreasureTemplateRegistry.onWorldEvent()
+- Updated IChestGeneator.buildLootTableList() to use the ILootTableType param instead of defaulting to CHESTS.
+- Updated IChestGenerator.fillChest() to only use the rarity that was selected for the chest for the injects.
+
 ## [3.2.1] - 2023-07-21
 
 ### Added
@@ -17,7 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -Added internationalization language entries for Rarities and Key/Lock Categories
 - Added name for Wither Chest top block.
--Added Callandor sword.
+- Added Callandor sword.
 
 ### Changed
 

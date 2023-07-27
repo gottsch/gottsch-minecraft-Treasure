@@ -399,6 +399,8 @@ public class TreasureTemplateRegistry {
 		clearDatapacks();
 		clearAccesslists();
 		if (!event.getLevel().isClientSide()) {
+			// regiser templates
+			TreasureApi.registerTemplates(Treasure.MODID);
 			Treasure.LOGGER.debug("template registry world load event...");
 			loadDataPacks(getMarkerScanList(), getReplacementMap());
 			registerAccesslists(Config.structureConfiguration.getStructMetas());
@@ -408,8 +410,8 @@ public class TreasureTemplateRegistry {
 	@SuppressWarnings("unchecked")
 	private static void register(ServerLevel level) {
 		Object obj = ObfuscationReflectionHelper.getPrivateValue(StructureTemplateManager.class, level.getServer().getStructureManager(), HOLDER_GETTER_SRG_NAME);
-		Treasure.LOGGER.debug("obj -> {}", obj.getClass().getSimpleName());
 		if (obj instanceof HolderGetter) {
+			Treasure.LOGGER.debug("obj -> {}", ((HolderGetter<Block>)obj).getClass().getSimpleName());
 			blockLookup = ((HolderGetter<Block>) obj);
 		} else {
 			throw new RuntimeException("unable to attain Block HolderGetter");
