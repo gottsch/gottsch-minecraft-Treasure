@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.3.0] - 2023-07-26
+
+### Changed
+
+- Updated IChestGeneator.buildLootTableList() to use the ILootTableType param instead of defaulting to CHESTS.
+- Updated IChestGenerator.fillChest() to only use the rarity that was selected for the chest for the injects.
+
+## [3.2.0] - 2023-07-16
+
+### Added 
+
+- Added internationalization language entries for Rarities and Key/Lock Categories
+- Actually added the Crate and Moldy Crate mimics (didn't get committed last time).
+- Added name for Wither Chest top block.
+-Added Callandor sword.
+
+### Changed
+
+- updated the topaz key texture to be more like the onyx key
+- update Cauldron Mimic texture to include mouth skin
+
 ## [3.1.2] - 2023-07-13
 
 ### Changed
@@ -21,13 +42,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [3.1.0] - 2023-06-25
 
-### Added
-
-- Added Crate and Moldy Crate mimics.
-
 ### Changed
 
 - updated the topaz key texture to be more like the onyx key
+- update Cauldron Mimic texture to include mouth skin
 
 ## [3.0.0] - 2023-06-24
 
@@ -35,7 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Add topaz and onyx keys and locks.
+- Added topaz and onyx keys and locks.
 - Added a series of weapons (short swords, swords, axes, maces, staff), general and collectable, to populate treasure chests in lieu of charms.
 - Re-added the eye-patch (removed in mc1.16.5).
 - Re-added the Wood Chest and Pirate Chest Mimics (removed in mc1.16.5)

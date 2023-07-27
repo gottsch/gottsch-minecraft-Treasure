@@ -17,8 +17,6 @@
  */
 package mod.gottsch.forge.treasure2.core.block;
 
-import mod.gottsch.forge.gottschcore.world.WorldInfo;
-import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
 import mod.gottsch.forge.treasure2.core.lock.LockLayout;
 import net.minecraft.core.BlockPos;

@@ -126,6 +126,7 @@ public class LanguageGen extends LanguageProvider {
         add(TreasureItems.BLACK_SWORD.get(), "The Black Sword");
         add(TreasureItems.SWORD_OMENS.get(), "The Sword of Omens");
         add(TreasureItems.SWORD_POWER.get(), "The Sword of Power");
+        add(TreasureItems.CALLANDOR.get(), "Callandor");
         add(TreasureItems.ORCUS.get(), "Orcus");
         add(TreasureItems.SNAKE_EYES_KATANA.get(), "Snake Eye's Katana");
         add(TreasureItems.STORM_SHADOWS_KATANA.get(), "Storm Shadow's Daisho");
@@ -171,6 +172,7 @@ public class LanguageGen extends LanguageProvider {
         add(TreasureBlocks.CARDBOARD_BOX.get(), "Cardboard Box");
         add(TreasureBlocks.MILK_CRATE.get(), "Milk Crate");
         add(TreasureBlocks.WITHER_CHEST.get(), "Wither Chest");
+        add(TreasureBlocks.WITHER_CHEST_TOP.get(), "Wither Chest");
         add(TreasureBlocks.WITHER_BRANCH.get(), "Wither Branch");
         add(TreasureBlocks.WITHER_ROOT.get(), "Wither Root");
         add(TreasureBlocks.WITHER_LOG.get(), "Wither Log");
@@ -224,14 +226,16 @@ public class LanguageGen extends LanguageProvider {
         add(TreasureEntities.PIRATE_CHEST_MIMIC_ENTITY_TYPE.get(), "Pirate Chest Mimic");
         add(TreasureEntities.VIKING_CHEST_MIMIC_ENTITY_TYPE.get(), "Viking Chest Mimic");
         add(TreasureEntities.CAULDRON_CHEST_MIMIC_ENTITY_TYPE.get(), "Cauldron Chest Mimic");
-        
+        add(TreasureEntities.CRATE_CHEST_MIMIC_ENTITY_TYPE.get(), "Crate Chest Mimic");
+        add(TreasureEntities.MOLDY_CRATE_CHEST_MIMIC_ENTITY_TYPE.get(), "Moldy Crate Chest Mimic");
         // eggs
         add(TreasureItems.BOUND_SOUL_EGG.get(), "Bound Soul Spawn Egg");
         add(TreasureItems.WOOD_CHEST_MIMIC_EGG.get(), "Wood Chest Mimic Spawn Egg");
         add(TreasureItems.PIRATE_CHEST_MIMIC_EGG.get(), "Pirate Chest Mimic Spawn Egg");
         add(TreasureItems.VIKING_CHEST_MIMIC_EGG.get(), "Viking Chest Mimic Spawn Egg");
         add(TreasureItems.CAULDRON_CHEST_MIMIC_EGG.get(), "Cauldron Chest Mimic Spawn Egg");
-        
+        add(TreasureItems.CRATE_CHEST_MIMIC_EGG.get(), "Crate Chest Mimic Spawn Egg");
+        add(TreasureItems.MOLDY_CRATE_CHEST_MIMIC_EGG.get(), "Moldy Crate Chest Mimic Spawn Egg");
         /*
          *  Util.tooltips
          */
@@ -287,11 +291,15 @@ public class LanguageGen extends LanguageProvider {
         add(LangUtil.tooltip("weapons.snake_eyes_katana.lore"), "Move with the wind, and you will never be heard.~" 
         		+ "    -Snake Eyes");
         add(LangUtil.tooltip("weapons.storm_shadows_katana.lore"), "Most people will tell you that ninjas dont exist.~"
-        		+ "Thats what the ninjas want you to believe ..."
+        		+ "Thats what the ninjas want you to believe ...~"
         		+ "    -Storm Shadow");
         add(LangUtil.tooltip("weapons.oathbringer.lore"), "Life before death,~"
         		+ "strength before weakness,~"
         		+ "journey before destination.");
+        
+        add(LangUtil.tooltip("weapons.callandor.lore"), "Who wields me wields destiny.~"
+        		+ "Take me, and begin the final journey.~"
+        		+ "    -from The Dragon Reborn");
         
         add(LangUtil.tooltip("weapons.mjolnir.lore"), "'Whosoever holds this hammer,~"
         		+ "if they be worthy, shall possess the power of Thor.'");

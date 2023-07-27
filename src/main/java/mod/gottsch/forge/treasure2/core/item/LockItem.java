@@ -130,8 +130,8 @@ public class LockItem extends Item implements ILockEffects {
 		super.appendHoverText(stack, worldIn, tooltip, flag);
 
 		tooltip.add(new TranslatableComponent(LangUtil.tooltip("key_lock.rarity"),
-				ChatFormatting.DARK_BLUE + getRarity().toString()));
-		tooltip.add(new TranslatableComponent(LangUtil.tooltip("key_lock.category"), ChatFormatting.GOLD + getCategory().toString()));
+				ChatFormatting.DARK_BLUE + new TranslatableComponent(getRarity().getValue().toLowerCase()).getString().toUpperCase() ));
+		tooltip.add(new TranslatableComponent(LangUtil.tooltip("key_lock.category"), ChatFormatting.GOLD + new TranslatableComponent(getCategory().toString().toLowerCase()).getString().toUpperCase()));
 
 		LangUtil.appendAdvancedHoverText(tooltip, tt -> {
 			MutableComponent craftable = null;
