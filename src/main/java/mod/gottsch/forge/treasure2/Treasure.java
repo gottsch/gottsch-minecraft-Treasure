@@ -18,6 +18,7 @@ import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.config.StructureConfiguration;
 import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
 import mod.gottsch.forge.treasure2.core.inventory.TreasureContainers;
+import mod.gottsch.forge.treasure2.core.item.TreasureCreativeModeTabs;
 import mod.gottsch.forge.treasure2.core.item.TreasureItems;
 import mod.gottsch.forge.treasure2.core.loot.modifier.TreasureLootModifiers;
 import mod.gottsch.forge.treasure2.core.particle.TreasureParticles;
@@ -54,8 +55,8 @@ public class Treasure {
 	// constants
 	public static final String MODID = "treasure2";
 
-	private static final String CHESTS_CONFIG_VERSION = "1.19.3-v2";
-	private static final String STRUCTURES_CONFIG_VERSION = "1.19.3-v1";
+	private static final String CHESTS_CONFIG_VERSION = "1.20.1-v2";
+	private static final String STRUCTURES_CONFIG_VERSION = "1.20.1-v1";
 	
 	public static Treasure instance;
 
@@ -81,6 +82,7 @@ public class Treasure {
 		TreasureConfiguredFeatures.register(modEventBus);
 		TreasureSounds.register(modEventBus);
 		TreasureLootModifiers.register(modEventBus);
+		TreasureCreativeModeTabs.TABS.register(modEventBus);
 		
 		// register the setup method for mod loading
 		

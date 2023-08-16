@@ -23,7 +23,7 @@ version="3.2.0" #mandatory
 displayName="Treasure2" #mandatory
 
 # A URL to query for updates for this mod. See the JSON update specification <here>
-updateJSONURL="https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/1.19.4-main/update.json" #optional
+updateJSONURL="https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/1.20.1-main/update.json" #optional
 
 # A URL for the "homepage" for this mod, displayed in the mod UI
 displayURL="https://www.curseforge.com/minecraft/mc-mods/treasure2" #optional
@@ -47,7 +47,7 @@ description="Adds new chests filled with loot to be discovered."
     # Does this dependency have to exist - if not, ordering below must be specified
     mandatory=true #mandatory
     # The version range of the dependency
-    versionRange="[45,)" #mandatory
+    versionRange="[47,)" #mandatory
     # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
     ordering="NONE"
     # Side this dependency is applied on - BOTH, CLIENT or SERVER
@@ -57,7 +57,7 @@ description="Adds new chests filled with loot to be discovered."
     modId="minecraft"
     mandatory=true
 # This version range declares a minimum of the current minecraft version up to but not including the next major version
-    versionRange="[1.19.4,1.20)"
+    versionRange="[1.20.1,1.21)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.treasure2]]
@@ -67,9 +67,3 @@ description="Adds new chests filled with loot to be discovered."
     versionRange="[2.1.0,)"
     ordering="BEFORE"
     side="BOTH"
-[[dependencies.treasure2]]
-    modId="configured"
-    mandatory=false
-    versionRange="[1.5.1,)"
-    ordering="NONE"
-    side="CLIENT"

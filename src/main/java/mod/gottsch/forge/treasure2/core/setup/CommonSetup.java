@@ -63,6 +63,7 @@ import mod.gottsch.forge.treasure2.core.generator.ruin.SubaquaticRuinGenerator;
 import mod.gottsch.forge.treasure2.core.generator.ruin.SurfaceRuinGenerator;
 import mod.gottsch.forge.treasure2.core.generator.well.WellGenerator;
 import mod.gottsch.forge.treasure2.core.item.KeyLockCategory;
+import mod.gottsch.forge.treasure2.core.item.TreasureCreativeModeTabs;
 import mod.gottsch.forge.treasure2.core.item.TreasureItems;
 import mod.gottsch.forge.treasure2.core.network.TreasureNetworking;
 import mod.gottsch.forge.treasure2.core.structure.StructureCategory;
@@ -75,6 +76,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -433,9 +435,10 @@ public class CommonSetup {
 		TreasureNetworking.register();
 	}
 
+	// ONLY NEED this event if adding items to an existing tab.
 //	@SubscribeEvent
-//	public static void registemItemsToTab(BuildContents event) {
-//		if (event.getTab() == TreasureCreativeModeTabs.MOD_TAB) {
+//	public static void registemItemsToTab(BuildCreativeModeTabContentsEvent event) {
+//		if (event.getTab() == TreasureCreativeModeTabs.MOD_TAB.get()) {
 //			// add all items
 //			Registration.ITEMS.getEntries().forEach(item -> {
 //				if (!item.equals(TreasureItems.LOGO)) {

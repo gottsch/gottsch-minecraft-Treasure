@@ -214,16 +214,15 @@ public class ClientSetup {
 	}
 	
 	
-	@SubscribeEvent
-	public static void registerParticleProviders(RegisterParticleProvidersEvent event) {
-		event.registerSpecial(TreasureParticles.SPANISH_MOSS_PARTICLE.get(), SpanishMossParticle.Provider::new);		
-		event.register(TreasureParticles.MIST_PARTICLE.get(), MistParticle.Provider::new);		
-		event.register(TreasureParticles.BILLOWING_MIST_PARTICLE.get(), BillowingMistParticle.Provider::new);		
-		event.register(TreasureParticles.POISON_MIST_PARTICLE.get(), 	PoisonMistParticle.Provider::new);		
-		event.register(TreasureParticles.WITHER_MIST_PARTICLE.get(), 	WitherMistParticle.Provider::new);		
-		event.register(TreasureParticles.COPPER_COIN_PARTICLE.get(), CoinParticle.Provider::new);
-		event.register(TreasureParticles.SILVER_COIN_PARTICLE.get(), CoinParticle.Provider::new);
-		event.register(TreasureParticles.GOLD_COIN_PARTICLE.get(), CoinParticle.Provider::new);
-		event.
-	}
+//	@SubscribeEvent
+//	public static void registerParticleProviders(RegisterParticleProvidersEvent event) {
+//		event.registerSpecial(TreasureParticles.SPANISH_MOSS_PARTICLE.get(), SpanishMossParticle.Provider::new);		
+//		event.register(TreasureParticles.MIST_PARTICLE.get(), MistParticle.Provider::new);		
+//		event.register(TreasureParticles.BILLOWING_MIST_PARTICLE.get(), BillowingMistParticle.Provider::new);		
+//		event.register(TreasureParticles.POISON_MIST_PARTICLE.get(), 	PoisonMistParticle.Provider::new);		
+//		event.register(TreasureParticles.WITHER_MIST_PARTICLE.get(), 	WitherMistParticle.Provider::new);		
+//		event.register(TreasureParticles.COPPER_COIN_PARTICLE.get(), CoinParticle.Provider::new);
+//		event.register(TreasureParticles.SILVER_COIN_PARTICLE.get(), CoinParticle.Provider::new);
+//		event.register(TreasureParticles.GOLD_COIN_PARTICLE.get(), CoinParticle.Provider::new);
+//	}
 }

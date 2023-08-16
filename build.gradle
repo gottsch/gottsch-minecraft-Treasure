@@ -98,7 +98,7 @@ dependencies {
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     //minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-	compileOnly fg.deobf("gottsch.gottschcore:GottschCore:mc1.20.1-f47.1.0-2.1.0")
+	implementation fg.deobf("gottsch.gottschcore:GottschCore:1.20.1-47.1.0-2.1.0")
 	
 }
 
