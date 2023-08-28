@@ -400,6 +400,8 @@ public class TreasureTemplateRegistry {
 		clearDatapacks();
 		clearAccesslists();
 		if (!event.getLevel().isClientSide()) {
+			// regiser templates
+			TreasureApi.registerTemplates(Treasure.MODID);
 			Treasure.LOGGER.debug("template registry world load event...");
 			loadDataPacks(getMarkerScanList(), getReplacementMap());
 			registerAccesslists(Config.structureConfiguration.getStructMetas());

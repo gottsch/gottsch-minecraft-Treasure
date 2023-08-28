@@ -349,9 +349,6 @@ public class CommonSetup {
 		
 		// register loot tables
 		TreasureApi.registerLootTables(Treasure.MODID);
-		
-		// regiser templates
-		TreasureApi.registerTemplates(Treasure.MODID);
 
 		/*
 		 *  in order for chest context to know what generator to use, we need a registry (map)

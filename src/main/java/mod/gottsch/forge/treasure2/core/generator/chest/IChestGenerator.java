@@ -19,6 +19,8 @@
  */
 package mod.gottsch.forge.treasure2.core.generator.chest;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -39,6 +41,7 @@ import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
+import mod.gottsch.forge.treasure2.api.TreasureApi;
 import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
@@ -296,7 +299,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 	 * @return
 	 */
 	default public List<LootTableShell> buildLootTableList(ILootTableType key, IRarity rarity) {
-		return TreasureLootTableRegistry.getLootTableByRarity(LootTableType.CHESTS, rarity);
+		return TreasureLootTableRegistry.getLootTableByRarity(key, rarity);
 	}
 
 	/**
@@ -337,7 +340,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 			lootTableShell = selectLootTable(random, rarity);
 			// is valid loot table shell
 			if (lootTableShell.isPresent()) {
-				Treasure.LOGGER.debug("using loot table shell -> {}, {}", lootTableShell.get().getCategory(), lootTableShell.get().getRarity());
+				Treasure.LOGGER.debug("using loot table shell -> {}", lootTableShell.get().getRarity());
 				lootTableResourceLocation = lootTableShell.get().getResourceLocation();
 			}
 			else {
@@ -357,6 +360,14 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 		}		
 		Treasure.LOGGER.debug("selected loot table -> {} from resource -> {}", lootTable, lootTableResourceLocation);
 
+		// get the selected Rarity
+		// TODO there is no rarity in the loot table shell anymore - need to extract it from the resourceLocation
+		// determine rarity
+		// TODO maybe should go the other way. path.getName(4)
+		Path rarityPath = Paths.get(lootTableResourceLocation.getPath());
+		IRarity selectedRarity = TreasureApi.getRarity(rarityPath.getName(rarityPath.getNameCount()-2).toString().toUpperCase()).orElse(rarity);
+
+		
 		// setup lists of items
 		List<ItemStack> treasureStacks = new ArrayList<>();
 		List<ItemStack> itemStacks = new ArrayList<>();
@@ -417,10 +428,11 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 		injectLootTableShells = injectLootTableShells
 				.stream()
 				.filter(s -> s.getResourceLocation().getPath().contains(LootTableType.CHESTS.getValue()))
+				.filter(s -> s.getResourceLocation().getPath().toLowerCase().contains(selectedRarity.getName().toLowerCase()))
 				.toList();
 
 		if (!injectLootTableShells.isEmpty()) {
-			Treasure.LOGGER.debug("found injectable tables for category ->{}, rarity -> {}", lootTableShell.get().getCategory(), rarity);
+			Treasure.LOGGER.debug("found injectable tables for category ->{}, rarity -> {}", LootTableType.INJECTS, selectedRarity);
 			Treasure.LOGGER.debug("size of injectable tables -> {}", injectLootTableShells.size());
 
 			// add predicate
