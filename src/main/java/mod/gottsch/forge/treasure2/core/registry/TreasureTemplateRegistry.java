@@ -400,6 +400,7 @@ public class TreasureTemplateRegistry {
 		clearDatapacks();
 		clearAccesslists();
 		if (!event.getLevel().isClientSide()) {
+			TreasureApi.registerTemplates(Treasure.MODID);
 			Treasure.LOGGER.debug("template registry world load event...");
 			loadDataPacks(getMarkerScanList(), getReplacementMap());
 			registerAccesslists(Config.structureConfiguration.getStructMetas());
@@ -409,7 +410,7 @@ public class TreasureTemplateRegistry {
 	@SuppressWarnings("unchecked")
 	private static void register(ServerLevel level) {
 		Object obj = ObfuscationReflectionHelper.getPrivateValue(StructureTemplateManager.class, level.getServer().getStructureManager(), HOLDER_GETTER_SRG_NAME);
-		Treasure.LOGGER.debug("obj -> {}", obj.getClass().getSimpleName());
+		Treasure.LOGGER.debug("obj -> {}", obj);
 		if (obj instanceof HolderGetter) {
 			blockLookup = ((HolderGetter<Block>) obj);
 		} else {
