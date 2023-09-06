@@ -175,8 +175,6 @@ public class CommonSetup {
 		TreasureApi.registerFeatureGeneatorSelector(FeatureType.AQUATIC, SpecialRarity.GOLD_SKULL, TreasureFeatureGenerators.AQUATIC_CHEST_FEATURE_GENERATOR_SELECTOR);
 		TreasureApi.registerFeatureGeneatorSelector(FeatureType.AQUATIC, SpecialRarity.CRYSTAL_SKULL, TreasureFeatureGenerators.AQUATIC_CHEST_FEATURE_GENERATOR_SELECTOR);
 		TreasureApi.registerFeatureGeneatorSelector(FeatureType.AQUATIC, SpecialRarity.CAULDRON, TreasureFeatureGenerators.AQUATIC_CHEST_FEATURE_GENERATOR_SELECTOR);
-
-		// ... FINISH
 		
 		// register structure categories
 		TreasureApi.registerStructureCategory(StructureCategory.SUBAQUATIC);
@@ -260,7 +258,7 @@ public class CommonSetup {
 		TreasureApi.registerKey(TreasureItems.METALLURGISTS_KEY);
 
 		TreasureApi.registerKey(TreasureItems.DIAMOND_KEY);
-		TreasureApi.registerKey(TreasureItems.EMBER_KEY);
+		TreasureApi.registerKey(TreasureItems.EMERALD_KEY);
 		TreasureApi.registerKey(TreasureItems.TOPAZ_KEY);
 		TreasureApi.registerKey(TreasureItems.ONYX_KEY);
 		TreasureApi.registerKey(TreasureItems.RUBY_KEY);
