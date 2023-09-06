@@ -59,8 +59,8 @@ public class ChestRegistry {
 	}
 	
 	public static void registerByRarity(IRarity rarity, RegistryObject<Block> chest) {
-		if (!CHESTS_BY_RARITY.containsKey(rarity)) {
-			CHESTS_BY_RARITY.put(rarity, chest);
+		CHESTS_BY_RARITY.put(rarity, chest);
+		if (!CHEST_RARITY_BY_NAME.containsKey(chest.getId())) {
 			CHEST_RARITY_BY_NAME.put(chest.getId(), rarity);
 		}
 	}
