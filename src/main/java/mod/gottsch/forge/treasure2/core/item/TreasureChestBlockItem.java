@@ -55,8 +55,8 @@ public class TreasureChestBlockItem extends BlockItem {
 		AbstractTreasureChestBlock tb = (AbstractTreasureChestBlock) getBlock();
 
 		// chest info		
-		tooltip.add(Component.translatable(LangUtil.tooltip("chest.rarity"), ChatFormatting.DARK_BLUE + tb.getRarity().toString()));
-		tooltip.add(Component.translatable(LangUtil.tooltip("chest.max_locks"), ChatFormatting.DARK_BLUE + String.valueOf(tb.getLockLayout().getMaxLocks())));
+		tooltip.add(Component.translatable(LangUtil.tooltip("chest.rarity"), ChatFormatting.BLUE + tb.getRarity().toString()));
+		tooltip.add(Component.translatable(LangUtil.tooltip("chest.max_locks"), ChatFormatting.BLUE + String.valueOf(tb.getLockLayout().getMaxLocks())));
 		int size = tb.getBlockEntityInstance() != null ? tb.getBlockEntityInstance().getInventorySize() : 0;
 		tooltip.add(Component.translatable(LangUtil.tooltip("chest.container_size"), ChatFormatting.DARK_GREEN + String.valueOf(size)));
 	}	
