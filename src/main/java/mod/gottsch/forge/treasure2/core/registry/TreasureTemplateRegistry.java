@@ -663,14 +663,10 @@ public class TreasureTemplateRegistry {
 
 		AccessKey key = new AccessKey(category, type);
 		
-//		List<TemplateHolder> whitelistHolders = WHITELIST_TABLE.get(key, biome);
 		List<TemplateHolder> blacklistHolders = BLACKLIST_TABLE.get(key, biome);
 		
 		// grab all templates by category + type
-		List<TemplateHolder> templateHolders = DATAPACK_TABLE.get(category, type);
-		if (templateHolders == null) {
-			templateHolders = TABLE.get(category, type);
-		}
+		List<TemplateHolder> templateHolders = getTemplate(category, type);
 
 		// filter out any in the black list
 		if (templateHolders != null && !templateHolders.isEmpty() && blacklistHolders != null && !blacklistHolders.isEmpty()) {
