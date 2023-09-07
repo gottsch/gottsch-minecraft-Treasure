@@ -36,7 +36,6 @@ import net.minecraft.world.level.block.Block;
  * @author Mark Gottschling on Nov 10, 2022
  *
  */
-// TODO rename TagRegistry
 public class TagRegistry {
 //	private static final Map<String, IRarity> REGISTRY = Maps.newHashMap();
 	// L = key, M = lock, R = chest
