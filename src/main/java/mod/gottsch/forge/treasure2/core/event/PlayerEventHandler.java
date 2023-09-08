@@ -70,7 +70,7 @@ public class PlayerEventHandler {
 			// if non-wealth, wishables-tag item
 			if (!(item.getItem().getItem() instanceof WealthItem) && item.getItem().is(TreasureTags.Items.WISHABLES)) {
 				// if player is the source of the drop
-				if (Objects.equals(item.getOwner().getUUID(), player.getUUID())) {
+				if (item.getOwner() != null && Objects.equals(item.getOwner().getUUID(), player.getUUID())) {
 					// get the WishableHandler for the Item
 					IWishableHandler handler = WishableRegistry.getHandler(item.getItem().getItem()).orElse(TreasureWishableHandlers.DEFAULT_WISHABLE_HANDLER);
 					// check if valid location

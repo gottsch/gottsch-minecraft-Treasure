@@ -171,6 +171,7 @@ public class StructureMarkerGenerator implements IMarkerGenerator<GeneratorResul
 		for (BlockInfoContext c : proximityContexts) {
 			ICoords c2 = spawnCoords.add(c.getCoords());
 	    	context.level().setBlock(c2.toPos(), TreasureBlocks.PROXIMITY_SPAWNER.get().defaultBlockState(), 3);
+	    	// TODO add try {} for RuntimeException (out of bound chunk)
 	    	TreasureProximitySpawnerBlockEntity te = (TreasureProximitySpawnerBlockEntity) context.level().getBlockEntity(c2.toPos());
 	    	EntityType<?> r = DungeonHooks.getRandomDungeonMob(context.random());
 	    	

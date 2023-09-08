@@ -1,6 +1,6 @@
 {
   "conditions" : [ {
-    "condition" : "minecraft:alternative",
+    "condition" : "minecraft:any_of",
     "terms" : [ {
       "condition" : "forge:loot_table_id",
       "loot_table_id" : "minecraft:village/village_armorer"
