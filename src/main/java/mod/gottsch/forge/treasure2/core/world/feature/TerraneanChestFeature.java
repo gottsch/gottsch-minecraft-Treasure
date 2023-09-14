@@ -71,7 +71,6 @@ public class TerraneanChestFeature extends ChestFeature {
 	private int waitChunksCount = 0;
 	
 	/**
-	 * NOTE equivalent to 1.12 generate()
 	 * NOTE only use seedReader.setblockState() and that only allows you to access the 3x3 chunk area.
 	 *  chest/pit spawn IS doable as long as you keep it within the 3x3 chunk area, else would have to use a Jigsaw Structures setup
 	 */
@@ -79,7 +78,7 @@ public class TerraneanChestFeature extends ChestFeature {
 	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
 		WorldGenLevel genLevel = context.level();
 		ResourceLocation dimension = WorldInfo.getDimension(genLevel.getLevel());
-		//		Treasure.LOGGER.debug("dimension -> {}", dimension.toString());
+//		Treasure.LOGGER.debug("dimension -> {}", dimension.toString());
 		// test the dimension
 		if (!meetsDimensionCriteria(dimension)) { 
 			return false;

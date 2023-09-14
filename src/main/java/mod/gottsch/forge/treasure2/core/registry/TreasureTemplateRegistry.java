@@ -98,11 +98,11 @@ public class TreasureTemplateRegistry {
 	Side: BOTH
 	AT: public net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager f_243724_ # blockLookup
 	Type: net/minecraft/core/HolderGetter
- */
+    */
 	private static final String HOLDER_GETTER_SRG_NAME = "f_243724_";
 
 	private static HolderGetter<Block> blockLookup;
-
+	
 	/*
 	 * All structure templates by resource location.
 	 */
@@ -267,6 +267,7 @@ public class TreasureTemplateRegistry {
 					Optional<GottschTemplate> template = loadFromJar(path, getMarkerScanList(), getReplacementMap()); // ie readTemplate
 					// register
 					if (template.isPresent()) {
+						Treasure.LOGGER.debug("registering from jar -> {}", path);
 						registerTemplate(path, template.get());
 					}
 				}
@@ -323,12 +324,13 @@ public class TreasureTemplateRegistry {
 		// add to map
 		MAP.put(resourceLocation, holder);
 
-		Treasure.LOGGER.debug("adding template to table with category, type -> {}", category.get(), type.get());
+		Treasure.LOGGER.debug("adding template to table with category -> {}, type -> {}", category.get(), type.get());
 		// add to table
-		if (!TABLE.contains(category, type)) {
-			TABLE.put(category.get(), type.get(),new ArrayList<>());
+		if (!TABLE.contains(category.get(), type.get())) {
+			TABLE.put(category.get(), type.get(), new ArrayList<>());
 		}
 		TABLE.get(category.get(), type.get()).add(holder);
+		Treasure.LOGGER.debug("size of list for -> {}, {} -> {}", category.get(), type.get(), TABLE.get(category.get(), type.get()).size());
 	}
 
 	/**
@@ -399,23 +401,25 @@ public class TreasureTemplateRegistry {
 		clearDatapacks();
 		clearAccesslists();
 		if (!event.getLevel().isClientSide()) {
+			// regiser templates
+			TreasureApi.registerTemplates(Treasure.MODID);
 			Treasure.LOGGER.debug("template registry world load event...");
 			loadDataPacks(getMarkerScanList(), getReplacementMap());
 			registerAccesslists(Config.structureConfiguration.getStructMetas());
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private static void register(ServerLevel level) {
 		Object obj = ObfuscationReflectionHelper.getPrivateValue(StructureTemplateManager.class, level.getServer().getStructureManager(), HOLDER_GETTER_SRG_NAME);
-		Treasure.LOGGER.debug("obj -> {}", obj.getClass().getSimpleName());
 		if (obj instanceof HolderGetter) {
+			Treasure.LOGGER.debug("obj -> {}", ((HolderGetter<Block>)obj).getClass().getSimpleName());
 			blockLookup = ((HolderGetter<Block>) obj);
 		} else {
 			throw new RuntimeException("unable to attain Block HolderGetter");
 		}
 	}
-
+	
 	/**
 	 * 
 	 * @param zipPath
@@ -564,6 +568,8 @@ public class TreasureTemplateRegistry {
 	 * @param template
 	 */
 	private static void registerDatapacksTemplate(Path path, GottschTemplate template) {
+		Treasure.LOGGER.warn("attempting to register from datapack -> {}", path);
+
 		// extract the category
 		String categoryToken = path.getName(3).toString();
 		Optional<IStructureCategory> category = TreasureApi.getStructureCategory(categoryToken);
@@ -598,26 +604,47 @@ public class TreasureTemplateRegistry {
 			}
 		}
 
-		// add to map
+		// add to map - will replace previous existing
 		DATAPACK_MAP.put(resourceLocation, holder);
 
 		// add to table
 		if (!DATAPACK_TABLE.contains(category.get(), type.get())) {
 			DATAPACK_TABLE.put(category.get(), type.get(),new ArrayList<>());
 		}
-		DATAPACK_TABLE.get(category.get(), type.get()).add(holder);
+		
+		// compare resource location to all other resource locations 
+		// TODO see loot table DATAPACK add, for multiple datapacks.
+		List<TemplateHolder> holders = DATAPACK_TABLE.get(category.get(), type.get());
+		Optional<TemplateHolder> foundTemplate = holders.stream().filter(h -> h.getLocation().equals(resourceLocation)).findFirst();
+		// remove element if it matches the new holder location
+		if (foundTemplate.isPresent()) {
+			holders.remove(foundTemplate.get());
+		}
+		holders.add(holder);
 		Treasure.LOGGER.debug("tabling datapack template -> [{}, {}] -> {}", category.get(), type.get(), holder.getLocation().toString());
 	}
 
-	public static Collection<TemplateHolder> getTemplate(StructureType well) {
+	public static Collection<TemplateHolder> getTemplate(StructureType structureType) {
 		List<TemplateHolder> templateHolders = new ArrayList<>();
-		DATAPACK_TABLE.column(well).forEach((key, list) -> {
-			templateHolders.addAll(list);		
+		// get all built-in templates
+		TABLE.column(structureType).forEach((key, list) -> {
+			templateHolders.addAll(list);
+		});
+		
+		// get all datapack templates
+		List<TemplateHolder> datapackTemplateHolders = new ArrayList<>();
+		DATAPACK_TABLE.column(structureType).forEach((key, list) -> {
+			datapackTemplateHolders.addAll(list);		
 		});
 
-		if (templateHolders.isEmpty()) {
-			TABLE.column(well).forEach((key, list) -> {
-				templateHolders.addAll(list);
+		// if datapack holder exists with same name as built-in, replace the built-in.
+		if (!datapackTemplateHolders.isEmpty()) {
+			datapackTemplateHolders.stream().forEach(holder -> {
+				Optional<TemplateHolder> foundHolder = templateHolders.stream().filter(h -> h.getLocation().equals(holder.getLocation())).findFirst();
+				if (foundHolder.isPresent()) {
+					templateHolders.remove(foundHolder.get());
+				}
+				templateHolders.add(holder);
 			});
 		}
 		return templateHolders;
@@ -644,18 +671,24 @@ public class TreasureTemplateRegistry {
 	 * @return
 	 */
 	public static List<TemplateHolder> getTemplate(IStructureCategory category, IStructureType type) {
-		List<TemplateHolder> templateHolders = DATAPACK_TABLE.get(category, type);
-		if (templateHolders == null) {
-			templateHolders = TABLE.get(category, type);
-		}
+		final List<TemplateHolder> templateHolders = TABLE.get(category, type);
+		final List<TemplateHolder> datapackTemplateHolders = DATAPACK_TABLE.get(category, type);
 
-		if (templateHolders == null || templateHolders.isEmpty()) {
-			Treasure.LOGGER.debug("could not find template holders for category -> {}, type -> {}", category, type);
-		}
+		// if datapack holder exists with same name as built-in, replace the built-in.
+		if (templateHolders != null && datapackTemplateHolders != null 
+				&& !datapackTemplateHolders.isEmpty()) {
+			datapackTemplateHolders.stream().forEach(holder -> {
+				Optional<TemplateHolder> foundHolder = templateHolders.stream().filter(h -> h.getLocation().equals(holder.getLocation())).findFirst();
+				if (foundHolder.isPresent()) {
+					templateHolders.remove(foundHolder.get());
+				}
+				templateHolders.add(holder);
+			});
+		}		
 		Treasure.LOGGER.debug("selected template holders -> {} ", templateHolders);
 
 		if (templateHolders == null) {
-			templateHolders = new ArrayList<>();
+			return new ArrayList<>();
 		}
 		return templateHolders;
 	}
@@ -671,14 +704,10 @@ public class TreasureTemplateRegistry {
 
 		AccessKey key = new AccessKey(category, type);
 		
-//		List<TemplateHolder> whitelistHolders = WHITELIST_TABLE.get(key, biome);
 		List<TemplateHolder> blacklistHolders = BLACKLIST_TABLE.get(key, biome);
 		
 		// grab all templates by category + type
-		List<TemplateHolder> templateHolders = DATAPACK_TABLE.get(category, type);
-		if (templateHolders == null) {
-			templateHolders = TABLE.get(category, type);
-		}
+		List<TemplateHolder> templateHolders = getTemplate(category, type);
 
 		// filter out any in the black list
 		if (templateHolders != null && !templateHolders.isEmpty() && blacklistHolders != null && !blacklistHolders.isEmpty()) {
