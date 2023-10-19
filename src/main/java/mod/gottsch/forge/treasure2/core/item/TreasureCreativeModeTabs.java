@@ -45,7 +45,7 @@ public class TreasureCreativeModeTabs {
 	
 	public static final RegistryObject<CreativeModeTab> MOD_TAB = TABS.register("treasure_tab", 
 			() -> CreativeModeTab.builder()
-			.title(Component.translatable("itemGoup.treasure2"))
+			.title(Component.translatable("itemGroup.treasure2"))
 			.icon(TreasureItems.LOGO.get()::getDefaultInstance)
 			.displayItems((displayParams, output) -> {
 				// add all items

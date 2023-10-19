@@ -53,16 +53,12 @@ import net.minecraftforge.registries.RegistryObject;
  */
 @Mod.EventBusSubscriber(modid = Treasure.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TreasureItems {
-
+	// tab items
 	public static final RegistryObject<Item> LOGO = Registration.ITEMS.register("treasure_tab", () -> new Item(new Item.Properties()));
 
 	// item properties
 	public static final Item.Properties TREASURE_ITEM_PROPERTIES = new Item.Properties();
 	public static final Supplier<Item.Properties> TREASURE_PROPS_SUPPLIER = () -> new Item.Properties();
-
-	// tab items
-//	public static final RegistryObject<Item> TREASURE_TAB = Registration.ITEMS.register("treasure_tab", () -> new Item(new Item.Properties()));
-//	public static final RegistryObject<Item> ADORNMENTS_TAB = Registration.ITEMS.register("adornments_tab", () -> new Item(new Item.Properties()));
 
 	// 
 	public static final Map<RegistryObject<Block>, RegistryObject<Item>> BLOCK_ITEM_MAP = Maps.newHashMap();
@@ -713,7 +709,7 @@ public class TreasureItems {
 					return false;
 				}
 			});
-	
+
 	static {
 		// register all the chests
 		TreasureBlocks.CHESTS.forEach(g -> {
