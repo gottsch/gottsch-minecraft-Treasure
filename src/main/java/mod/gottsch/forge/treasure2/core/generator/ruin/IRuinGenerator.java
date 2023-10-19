@@ -22,15 +22,8 @@ package mod.gottsch.forge.treasure2.core.generator.ruin;
 import java.util.List;
 import java.util.Optional;
 
-import mod.gottsch.forge.gottschcore.random.RandomHelper;
-import mod.gottsch.forge.gottschcore.size.DoubleRange;
-import mod.gottsch.forge.gottschcore.size.Quantity;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
-import mod.gottsch.forge.gottschcore.world.gen.structure.BlockInfoContext;
-import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
-import mod.gottsch.forge.treasure2.core.block.entity.TreasureProximitySpawnerBlockEntity;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.IGeneratorResult;
@@ -40,11 +33,7 @@ import mod.gottsch.forge.treasure2.core.structure.IStructureType;
 import mod.gottsch.forge.treasure2.core.structure.TemplateHolder;
 import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import net.minecraft.core.Holder;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
-import net.minecraftforge.common.DungeonHooks;
 
 /**
  * @author Mark Gottschling on Aug 23, 2019
@@ -75,55 +64,5 @@ public interface IRuinGenerator<RESULT extends IGeneratorResult<?>> {
 			holder = Optional.ofNullable(holders.get(context.random().nextInt(holders.size())));
 		}
 		return holder;
-	}
-
-	/**
-	 * 
-	 * @param world
-	 * @param random
-	 * @param proximityContexts
-	 * @param quantity
-	 * @param d
-	 */
-	default public void buildOneTimeSpawners(IWorldGenContext context, List<BlockInfoContext> proximityContexts, Quantity quantity, double proximity) {
-		for (BlockInfoContext c : proximityContexts) {
-			Treasure.LOGGER.debug("placing proximity spawner at -> {}", c.getCoords().toShortString());
-	    	context.level().setBlock(c.getCoords().toPos(), TreasureBlocks.PROXIMITY_SPAWNER.get().defaultBlockState(), 3);
-	    	TreasureProximitySpawnerBlockEntity te = (TreasureProximitySpawnerBlockEntity) context.level().getBlockEntity(c.getCoords().toPos());
-	    	if (te != null) {	    		
-	 	    	EntityType<?> r = DungeonHooks.getRandomDungeonMob(context.random());
-	 	    	if (RandomHelper.checkProbability(context.random(), 20)) {
-	 	    		r = EntityType.VINDICATOR;
-	 	    	}
-		    	Treasure.LOGGER.debug("using mob -> {} for poximity spawner.", EntityType.getKey(r).toString());
-		    	te.setMobName(EntityType.getKey(r));
-		    	te.setMobNum(new DoubleRange(1, 2));
-		    	te.setProximity(proximity);
-	    	}
-	    	else {
-	    		Treasure.LOGGER.debug("unable to generate proximity spawner at -> {}", c.getCoords().toShortString());
-	    	}
-		}
-	}
-
-	/**
-	 * 
-	 * @param world
-	 * @param random
-	 * @param spawnerContexts
-	 */
-	default public void buildVanillaSpawners(IWorldGenContext context, List<BlockInfoContext> spawnerContexts) {
-		for (BlockInfoContext c : spawnerContexts) {
-			Treasure.LOGGER.debug("placing vanilla spawner at -> {}", c.getCoords().toShortString());
-			context.level().setBlock(c.getCoords().toPos(), Blocks.SPAWNER.defaultBlockState(), 3);
-			SpawnerBlockEntity te = (SpawnerBlockEntity) context.level().getBlockEntity(c.getCoords().toPos());
-			if (te != null) {
-				EntityType<?> r = DungeonHooks.getRandomDungeonMob(context.random());
-				te.getSpawner().setEntityId(r, context.level().getLevel(), context.random(), c.getCoords().toPos());
-			}
-			else {
-				Treasure.LOGGER.debug("unable to generate vanilla spawner at -> {}", c.getCoords().toShortString());
-			}
-		}
 	}
 }
