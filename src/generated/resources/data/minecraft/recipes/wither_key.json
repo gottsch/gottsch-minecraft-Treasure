@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "b": {
+      "item": "treasure2:wither_stick_item"
+    },
+    "r": {
+      "item": "treasure2:wither_root_item"
+    },
+    "t": {
+      "item": "treasure2:treasure_tool"
+    }
+  },
+  "pattern": [
+    " bt",
+    " b ",
+    " br"
+  ],
+  "result": {
+    "item": "treasure2:wither_key"
+  },
+  "show_notification": true
+}

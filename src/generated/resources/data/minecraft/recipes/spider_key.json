@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "d": {
+      "item": "minecraft:glowstone_dust"
+    },
+    "e": {
+      "item": "minecraft:spider_eye"
+    },
+    "k": {
+      "item": "treasure2:iron_key"
+    },
+    "t": {
+      "item": "treasure2:treasure_tool"
+    }
+  },
+  "pattern": [
+    "kt ",
+    " d ",
+    " e "
+  ],
+  "result": {
+    "item": "treasure2:spider_key"
+  },
+  "show_notification": true
+}
