@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "k": [
+      {
+        "item": "treasure2:wood_key"
+      },
+      {
+        "item": "treasure2:stone_key"
+      },
+      {
+        "item": "treasure2:iron_key"
+      }
+    ],
+    "x": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "pattern": [
+    "kx ",
+    "x x",
+    " x "
+  ],
+  "result": {
+    "item": "treasure2:key_ring"
+  },
+  "show_notification": true
+}

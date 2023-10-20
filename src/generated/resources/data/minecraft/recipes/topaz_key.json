@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "d": {
+      "item": "minecraft:glowstone_dust"
+    },
+    "g": {
+      "item": "treasure2:topaz"
+    },
+    "k": {
+      "item": "treasure2:gold_key"
+    },
+    "t": {
+      "item": "treasure2:treasure_tool"
+    }
+  },
+  "pattern": [
+    "kt ",
+    " d ",
+    " g "
+  ],
+  "result": {
+    "item": "treasure2:topaz_key"
+  },
+  "show_notification": true
+}

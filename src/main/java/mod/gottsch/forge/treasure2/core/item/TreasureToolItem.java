@@ -60,4 +60,10 @@ public class TreasureToolItem extends Item {
         }
         return true;
 	}
+	
+	@Override
+	public ItemStack getCraftingRemainingItem(ItemStack itemStack) {
+		return itemStack.copy();
+	}
+
 }
