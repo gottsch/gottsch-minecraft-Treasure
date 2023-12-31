@@ -26,5 +26,6 @@
   ],
   "result": {
     "item": "treasure2:pouch"
-  }
+  },
+  "show_notification": true
 }

@@ -15,5 +15,6 @@
   ],
   "result": {
     "item": "treasure2:pilferers_lock_pick"
-  }
+  },
+  "show_notification": true
 }

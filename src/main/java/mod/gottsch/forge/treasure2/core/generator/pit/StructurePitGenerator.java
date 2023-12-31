@@ -1,6 +1,6 @@
 /*
  * This file is part of  Treasure2.
- * Copyright (c) 2021, Mark Gottschling (gottsch)
+ * Copyright (c) 2021 Mark Gottschling (gottsch)
  * 
  * All rights reserved.
  *
@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Optional;
 
 import mod.gottsch.forge.gottschcore.size.DoubleRange;
-import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.gottschcore.world.gen.structure.BlockInfoContext;
@@ -31,8 +30,6 @@ import mod.gottsch.forge.gottschcore.world.gen.structure.GottschTemplate;
 import mod.gottsch.forge.gottschcore.world.gen.structure.PlacementSettings;
 import mod.gottsch.forge.gottschcore.world.gen.structure.StructureMarkers;
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
-import mod.gottsch.forge.treasure2.core.block.entity.TreasureProximitySpawnerBlockEntity;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorUtil;
@@ -42,15 +39,11 @@ import mod.gottsch.forge.treasure2.core.registry.TreasureTemplateRegistry;
 import mod.gottsch.forge.treasure2.core.structure.StructureCategory;
 import mod.gottsch.forge.treasure2.core.structure.StructureType;
 import mod.gottsch.forge.treasure2.core.structure.TemplateHolder;
+import mod.gottsch.forge.treasure2.core.util.GeometryUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
-import net.minecraftforge.common.DungeonHooks;
 
 
 /**
@@ -93,7 +86,6 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 	/**
 	 * 
 	 * @param context
-	 * @param random
 	 * @param surfaceCoords
 	 * @param spawnCoords
 	 * @return
@@ -109,7 +101,7 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 		BlockState blockState = context.level().getBlockState(spawnCoords.add(0, 1, 0).toPos());
 		
 		// if there is air above the origin, then in cavern. (pos in isAir() doesn't matter)
-		if (blockState == null || blockState.getMaterial() == Material.AIR) {
+		if (blockState == null || blockState.isAir()) {
 			Treasure.LOGGER.debug("spawn coords is in a cavern.");
 			inCavern = true;
 		}
@@ -132,12 +124,7 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 		
 		if (verticalDist > getMinSurfaceToSpawnDistance()) {
 			Treasure.LOGGER.debug("generating structure room at -> {}", spawnCoords.toShortString());
-			
-			// get the biome
-//			Biome biome = context.level().getBiome(spawnCoords.toPos());
-//			ResourceLocation biomeID = biome.getRegistryName();
-//			List<TemplateHolder> templateHolders = TreasureTemplateRegistry.getManager().getTemplatesByArchetypeTypeBiomeTable().get(key, biomeID);
-			
+
 			// TODO should the TemplateHolder be returned here instead?
 			Optional<GottschTemplate> template = getRandomTemplate(context.random());
 			if (!template.isPresent()) {
@@ -170,9 +157,9 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 					return Optional.empty();
 				}
 			}
-	
+
+			// TODO test the other gens before tinkering with this
 			// find the entrance block
-//			ICoords entranceCoords = template.findCoords(random, GenUtil.getMarkerBlock(StructureMarkers.ENTRANCE));
 			ICoords entranceCoords = TreasureTemplateRegistry.getOffsetFrom(context.random(), template.get(), StructureMarkers.ENTRANCE);
 			if (entranceCoords == null) {
 				Treasure.LOGGER.debug("Unable to locate entrance position.");
@@ -191,14 +178,18 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			placement.setRotation(rotation).setRandom(context.random());
 			
 			// NOTE these values are still relative to origin (spawnCoords);
-			ICoords newEntrance = new Coords(GottschTemplate.transformedVec3d(placement, entranceCoords.toVec3()));
+//			ICoords newEntrance = new Coords(GottschTemplate.transformedVec3d(placement, entranceCoords.toVec3()));
+			ICoords newEntrance = GeometryUtil.rotate(entranceCoords, rotation);
 			Treasure.LOGGER.debug("new entrance coords -> {}", newEntrance.toShortString());
-			
+
+
 			/*
 			 *  adjust spawn coords to line up room entrance and the pit
 			 */
 			BlockPos transformedSize = template.get().getSize(rotation);
+//			ICoords roomCoords = ITemplateGenerator.alignEntranceToCoords(spawnCoords, newEntrance, transformedSize, placement);
 			ICoords roomCoords = alignToPit(spawnCoords, newEntrance, transformedSize, placement);
+
 			Treasure.LOGGER.debug("aligned room coords -> {}", roomCoords.toShortString());
 			
 			// generate the structure
@@ -208,7 +199,6 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			}
 			Treasure.LOGGER.debug("template result -> {}", genResult);
 			result.getData().setSpawnCoords(genResult.getData().getSpawnCoords());
-			
 			// interrogate info for spawners and any other special block processing (except chests that are handler by caller
 			List<BlockInfoContext> bossChestContexts =
 					(List<BlockInfoContext>) genResult.getData().getMap().get(GeneratorUtil.getMarkerBlock(StructureMarkers.BOSS_CHEST));
@@ -218,7 +208,7 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 					(List<BlockInfoContext>) genResult.getData().getMap().get(GeneratorUtil.getMarkerBlock(StructureMarkers.SPAWNER));
 			List<BlockInfoContext> proximityContexts =
 					(List<BlockInfoContext>) genResult.getData().getMap().get(GeneratorUtil.getMarkerBlock(StructureMarkers.PROXIMITY_SPAWNER));
-			
+
 			/*
 			 *  NOTE currently only 1 chest is allowed per structure - the rest are ignored.
 			 */
@@ -256,40 +246,34 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			 *  		map.put(ResourceLocation("treasure2:underground/basic1", SPAWNER, new SpawnerInfo("minecraft:Spider"));
 			 *  		map.put(ResourceLocation("treasure2:underground/basic1", PROXIMITY, new SpawnerInfo("minecraft:Spider", new Quantity(1,2), 5D));
 			 */
-			
+
+			/**
+			 * NOTE Vanilla Spawner blocks are part of the original structure NBTs.
+			 * Need to replace any vanilla spawners with DeferredRandomVanillaSpawnerBlocks at this point.
+			 * This is a hacky work-around to the fact that the spawners are causing the game to hang during
+			 * generation. Remove/update when the reason is discovered and fixed.
+ 			 */
+
 			// TODO move to own method
 			// populate vanilla spawners
-			for (BlockInfoContext c : spawnerContexts) {
-				context.level().setBlock(c.getCoords().toPos(), Blocks.SPAWNER.defaultBlockState(), 3);
-				SpawnerBlockEntity blockEntity = (SpawnerBlockEntity) context.level().getBlockEntity(c.getCoords().toPos());
-				EntityType<?> r = DungeonHooks.getRandomDungeonMob(context.random());
-				blockEntity.getSpawner().setEntityId(r, context.level().getLevel(), context.random(), c.getCoords().toPos());
-			}
-			
-			// TODO move to own method
+			GeneratorUtil.buildVanillaSpawners(context, spawnerContexts);
+
 			// populate proximity spawners
-			for (BlockInfoContext c : proximityContexts) {
-		    	context.level().setBlock(c.getCoords().toPos(), TreasureBlocks.PROXIMITY_SPAWNER.get().defaultBlockState(), 3);
-		    	TreasureProximitySpawnerBlockEntity blockEntity = (TreasureProximitySpawnerBlockEntity) context.level().getBlockEntity(c.getCoords().toPos());
-		    	EntityType<?> r = DungeonHooks.getRandomDungeonMob(context.random());
-		    	blockEntity.setMobName(EntityType.getKey(r));
-		    	blockEntity.setMobNum(new DoubleRange(1, 2));
-		    	blockEntity.setProximity(5D);
-			}
+			GeneratorUtil.buildOneTimeSpawners(context, proximityContexts, new DoubleRange(1, 2), 5D);
 
 			// shaft enterance
 			generateEntrance(context, surfaceCoords, spawnCoords.add(0, size.getY()+1, 0));
-			
+
 			// build the pit
 			generatePit(context, surfaceCoords, spawnCoords.add(0, size.getY(), 0));
 		}			
 		// shaft is only 2-6 blocks long - can only support small covering
 		else if (verticalDist >= 2) {
-			// simple short pit
+				// simple short pit
 			return new SimpleShortPitGenerator().generate(context, surfaceCoords, spawnCoords);
 		}		
 		Treasure.LOGGER.debug("Generated Structure Pit at " + spawnCoords.toShortString());
-		return Optional.ofNullable(result);
+		return Optional.of(result);
 	}
 
 	/**
@@ -316,34 +300,21 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 	}
 
 	/**
-	 * Aligns or "centers" the structure to the pit coords based on the structure's entrance coords.
+	 * Aligns or "centers" the structure to the pit coords based on the structure's offset from a point
 	 * @param spawnCoords
-	 * @param newEntrance
+	 * @param offsetCoords
 	 * @param transformedSize
 	 * @param placement
 	 * @return
 	 */
-	private ICoords alignToPit(ICoords spawnCoords, ICoords newEntrance, BlockPos transformedSize, PlacementSettings placement) {
+	// TODO same as ITemplateGenerate.alignEntranceToCoords
+	@Deprecated
+	private ICoords alignToPit(ICoords spawnCoords, ICoords offsetCoords, BlockPos transformedSize, PlacementSettings placement) {
 		ICoords startCoords = null;
-		// NOTE work with rotations only for now
-		
-		// first offset spawnCoords by newEntrance
-		startCoords = spawnCoords.add(-newEntrance.getX(), 0, -newEntrance.getZ());
-		
-		// make adjustments for the rotation. REMEMBER that pits are 2x2
-		switch (placement.getRotation()) {
-		case CLOCKWISE_90:
-			startCoords = startCoords.add(1, 0, 0);
-			break;
-		case CLOCKWISE_180:
-			startCoords = startCoords.add(1, 0, 1);
-			break;
-		case COUNTERCLOCKWISE_90:
-			startCoords = startCoords.add(0, 0, 1);
-			break;
-		default:
-			break;
-		}
+
+		// NOTE this method is using a offset from the spawnpoint. so the rotation doesn't matter,
+		// it will always be a subtraction from the spawn coords. ie .add(-c) or .subtract(c)
+		startCoords = spawnCoords.add(-offsetCoords.getX(), 0, -offsetCoords.getZ());
 		return startCoords;
 	}
 	

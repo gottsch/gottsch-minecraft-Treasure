@@ -20,7 +20,7 @@ package mod.gottsch.forge.treasure2.core.generator.ruin;
 import java.util.List;
 import java.util.Optional;
 
-import mod.gottsch.forge.gottschcore.size.Quantity;
+import mod.gottsch.forge.gottschcore.size.DoubleRange;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
@@ -37,7 +37,6 @@ import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorUtil;
 import mod.gottsch.forge.treasure2.core.generator.TemplateGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.template.TemplateGenerator;
-import mod.gottsch.forge.treasure2.core.registry.TreasureTemplateRegistry;
 import mod.gottsch.forge.treasure2.core.structure.StructureCategory;
 import mod.gottsch.forge.treasure2.core.structure.StructureType;
 import mod.gottsch.forge.treasure2.core.structure.TemplateHolder;
@@ -74,8 +73,6 @@ public class SubaquaticRuinGenerator implements IRuinGenerator<GeneratorResult<C
 		
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
 
-		// TODO create a method selectTemplate() in abstract that will be overridden by concrete classes, provided the archetype and type
-
 		/*
 		 * Setup
 		 */
@@ -100,15 +97,20 @@ public class SubaquaticRuinGenerator implements IRuinGenerator<GeneratorResult<C
 			Treasure.LOGGER.debug("could not find random template");
 			return Optional.empty();
 		}
-		
-		// find the 'entrance' block
-		ICoords entranceCoords = TreasureTemplateRegistry.getOffsetFrom(context.random(), template, StructureMarkers.ENTRANCE);
-		if (entranceCoords == null) {
-			Treasure.LOGGER.debug("Unable to locate entrance position.");
-			return Optional.empty();
+		Treasure.LOGGER.debug("original spawn coords -> {}", originalSpawnCoords.toShortString());
+
+		Optional<StructMeta> meta = Config.getStructMeta(holder.getLocation());
+		ICoords offsetCoords = Coords.EMPTY;
+		if (meta.isPresent()) {
+			offsetCoords = meta.get().getOffset().asCoords();
 		}
-		Treasure.LOGGER.debug("entrance coords -> {}", entranceCoords.toShortString());
-		
+		else {
+			// TEMP dump map
+//			Treasure.LOGGER.debug("dump struct meta map -> {}", Config.structConfigMetaMap);
+			Treasure.LOGGER.debug("... was looking for -> {}", holder.getLocation());
+		}
+		Treasure.LOGGER.debug("using offset coords -> {}", offsetCoords.toShortString());
+
 		// select a random rotation
 		Rotation rotation = Rotation.values()[context.random().nextInt(Rotation.values().length)];
 		Treasure.LOGGER.debug("rotation used -> {}", rotation);
@@ -117,24 +119,18 @@ public class SubaquaticRuinGenerator implements IRuinGenerator<GeneratorResult<C
 		PlacementSettings placement = new PlacementSettings();
 		placement.setRotation(rotation).setRandom(context.random());
 
-		// NOTE these values are still relative to origin (spawnCoords);
-		ICoords newEntrance = new Coords(GottschTemplate.transformedVec3d(placement, entranceCoords.toVec3()));
-		Treasure.LOGGER.debug("new entrance coords -> {}", newEntrance.toShortString());
-	
-		// determine the rotated spawn coords
 		ICoords templateSize = new Coords(holder.getTemplate().getSize(placement.getRotation()));
+		Treasure.LOGGER.debug("template size / footprint -> {}", templateSize.toShortString());
 
-		Treasure.LOGGER.debug("original coords -> {}",originalSpawnCoords.toShortString());
-		
-		/*
-		 * we want to align the new entrance (rotated structure) to the center of the chunk ie. original spawn
-		 */
-		BlockPos transformedSize = template.getSize(rotation);
-		ICoords alignedSpawnCoords = align(originalSpawnCoords, newEntrance, transformedSize, placement);
+		BlockPos rotatedSize = template.getSize(rotation);
+		Treasure.LOGGER.debug("rotated size -> {}", rotatedSize.toShortString());
+
+		ICoords alignedSpawnCoords = GeneratorUtil.align(originalSpawnCoords, rotatedSize, placement);
 		Treasure.LOGGER.debug("aligned spawn coords -> {}", alignedSpawnCoords.toShortString());
 
-		// NOTE these checks don't really belong in a generator as their task is to just generate.
-		// however, the template is unknown outside this call and thus the rotate, placement, size and rotated coords would be unknown.
+		ICoords standardizedSpawnCoords = GeneratorUtil.standardizePosition(alignedSpawnCoords, rotatedSize, placement);
+		Treasure.LOGGER.debug("new rotated standardized coords -> {}", standardizedSpawnCoords.toShortString());
+
 		/**
 		 * Environment Checks
 		 */
@@ -144,15 +140,23 @@ public class SubaquaticRuinGenerator implements IRuinGenerator<GeneratorResult<C
 		if (alignedSpawnCoords == Coords.EMPTY) {
 			return Optional.empty();
 		}
-		
+		// update standardized with the correct y value -> same as aligned
+		standardizedSpawnCoords.withY(alignedSpawnCoords.getY());
+
+		// if offset coords are set, move to that y for testing solid base
+		if (offsetCoords != Coords.EMPTY) {
+			standardizedSpawnCoords = standardizedSpawnCoords.add(0, offsetCoords.getY(), 0);
+		}
+
 		// check if it has % land
 		for (int i = 0; i < 3; i++) {
-			if (!WorldInfo.isSolidBase(context.level(), alignedSpawnCoords, templateSize.getX(), templateSize.getZ(), REQUIRED_BASE_SIZE)) {
+			if (!WorldInfo.isSolidBase(context.level(), standardizedSpawnCoords, templateSize.getX(), templateSize.getZ(), REQUIRED_BASE_SIZE)) {
 				if (i == 2) {
-					Treasure.LOGGER.debug("Coords -> [{}] does not meet {}% solid base requirements for size -> {} x {}", REQUIRED_BASE_SIZE, alignedSpawnCoords.toShortString(), templateSize.getX(), templateSize.getY());
+					Treasure.LOGGER.debug("Coords -> [{}] does not meet {}% solid base requirements for size -> {} x {}", REQUIRED_BASE_SIZE, standardizedSpawnCoords.toShortString(), templateSize.getX(), templateSize.getY());
 					return Optional.empty();
 				}
 				else {
+					standardizedSpawnCoords = standardizedSpawnCoords.add(0, -1, 0);
 					alignedSpawnCoords = alignedSpawnCoords.add(0, -1, 0);
 				}
 			}
@@ -163,45 +167,54 @@ public class SubaquaticRuinGenerator implements IRuinGenerator<GeneratorResult<C
 
 		// get the x-z plane above alignedSpawn Coords
 		int offset = 1;
-		if (templateSize.getY() > 6) {
+		if (rotatedSize.getY() > 6) {
 			offset = 3;
 		}
-		else if (templateSize.getY() >=4) {
+		else if (rotatedSize.getY() >=4) {
 			offset =2;
 		}
 
 		Treasure.LOGGER.debug("checking for {} % water using offset of -> {} at coords -> {} for dimensions -> {} x {}", REQUIRED_WATER_SIZE, offset, alignedSpawnCoords.add(0, offset, 0), templateSize.getX(), templateSize.getZ());
-		if (!WorldInfo.isLiquidBase(context.level(), alignedSpawnCoords.add(0, offset, 0), templateSize.getX(), templateSize.getZ(), REQUIRED_WATER_SIZE)) {
+		if (!WorldInfo.isLiquidBase(context.level(), alignedSpawnCoords.add(0, offset, 0), rotatedSize.getX(), rotatedSize.getZ(), REQUIRED_WATER_SIZE)) {
 			Treasure.LOGGER.debug("Coords -> [{}] does not meet {} % water base requirements for size -> {} x {}", alignedSpawnCoords.toShortString(), REQUIRED_WATER_SIZE, templateSize.getX(), templateSize.getZ());
 			return Optional.empty();
+		}
+
+		// move back by the amount of offsetCoords to get in the right position
+		// (because the generate will apply the offset again)
+		if (offsetCoords != Coords.EMPTY) {
+			standardizedSpawnCoords = standardizedSpawnCoords.add(0, -offsetCoords.getY(), 0);
 		}
 
 		/**
 		 * Build
 		 */
-		Optional<StructMeta> meta = Config.getStructMeta(holder.getLocation());
-		ICoords offsetCoords = Coords.EMPTY;
-		if (meta.isPresent()) {
-			offsetCoords = meta.get().getOffset().asCoords();
-		}
-		else {
-			// TEMP dump map
-			Treasure.LOGGER.debug("dump struct meta map -> {}", Config.structConfigMetaMap);
-			Treasure.LOGGER.debug("... was looking for -> {}", holder.getLocation());
-		}
-		
-		// update original spawn coords' y-value to be that of aligned spawn coords.
-		// this is the coords that need to be supplied to the template generator to allow
-		// the structure to generator in the correct place, because it will perform the rotation
-		// when generating and need it to be at the correct height.
-//		originalSpawnCoords = new Coords(originalSpawnCoords.getX(), alignedSpawnCoords.getY(), originalSpawnCoords.getZ());
+//		Optional<StructMeta> meta = Config.getStructMeta(holder.getLocation());
+//		ICoords offsetCoords = Coords.EMPTY;
+//		if (meta.isPresent()) {
+//			offsetCoords = meta.get().getOffset().asCoords();
+//		}
+//		else {
+//			// TEMP dump map
+////			Treasure.LOGGER.debug("dump struct meta map -> {}", Config.structConfigMetaMap);
+//			Treasure.LOGGER.debug("... was looking for -> {}", holder.getLocation());
+//		}
 
-		GeneratorResult<TemplateGeneratorData> genResult = templateGenerator.generate(context, template, placement, /*originalSpawnCoords*/alignedSpawnCoords, offsetCoords);
+		Treasure.LOGGER.debug("using spawn coords to generate -> {} with rotationg -> {}", alignedSpawnCoords, rotation);
+
+		GeneratorResult<TemplateGeneratorData> genResult = templateGenerator.generate(context, template, placement, alignedSpawnCoords, offsetCoords);
 		 if (!genResult.isSuccess()) {
 			 return Optional.empty();
 		 }
 
 		Treasure.LOGGER.debug("submerged gen result -> {}", genResult);
+
+		 /*
+		  * adjust coords with offset and fill below
+		  * NOTE the offset value here uses only what is provided by the meta value,
+		  * it does not check the structure itself for a marker
+		  */
+		GeneratorUtil.fillBelow(context, genResult.getData().getSpawnCoords(), rotatedSize, 3, Blocks.GRAVEL.defaultBlockState());
 
 		// interrogate info for spawners and any other special block processing (except chests that are handler by caller
 		List<BlockInfoContext> bossChestContexts =
@@ -218,7 +231,7 @@ public class SubaquaticRuinGenerator implements IRuinGenerator<GeneratorResult<C
 		 */
 		// check if there is a boss chest(s)
 		BlockInfoContext chestContext = null;
-		if (bossChestContexts != null && bossChestContexts.size() > 0) {
+		if (bossChestContexts != null && !bossChestContexts.isEmpty()) {
 			if (bossChestContexts.size() > 1) {
 				chestContext = bossChestContexts.get(context.random().nextInt(bossChestContexts.size()));
 			}
@@ -230,7 +243,7 @@ public class SubaquaticRuinGenerator implements IRuinGenerator<GeneratorResult<C
 		// TODO turn these checks into methods
 		// if a boss chest wasn't found, search for regular chests
 		if (chestContext == null) {
-			if (chestContexts != null && chestContexts.size() > 0) {
+			if (chestContexts != null && !chestContexts.isEmpty()) {
 				if (chestContexts.size() > 1) {
 					chestContext = chestContexts.get(context.random().nextInt(chestContexts.size()));
 				}
@@ -252,11 +265,11 @@ public class SubaquaticRuinGenerator implements IRuinGenerator<GeneratorResult<C
 		if (chestCoords == null) {
 			return Optional.empty();
 		}
-		
-		buildVanillaSpawners(context, spawnerContexts);
-		
+
+		GeneratorUtil.buildVanillaSpawners(context, spawnerContexts);
+
 		// populate proximity spawners
-		buildOneTimeSpawners(context, proximityContexts, new Quantity(1,2), 5D);
+		GeneratorUtil.buildOneTimeSpawners(context, proximityContexts, new DoubleRange(1,2), 5D);
 
 		result.getData().setSpawnCoords(genResult.getData().getSpawnCoords());
 		
