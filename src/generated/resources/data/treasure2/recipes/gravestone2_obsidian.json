@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "s": {
+      "item": "minecraft:obsidian"
+    },
+    "t": {
+      "item": "treasure2:treasure_tool"
+    }
+  },
+  "pattern": [
+    "  t",
+    " s ",
+    " s "
+  ],
+  "result": {
+    "item": "treasure2:gravestone2_obsidian"
+  },
+  "show_notification": true
+}

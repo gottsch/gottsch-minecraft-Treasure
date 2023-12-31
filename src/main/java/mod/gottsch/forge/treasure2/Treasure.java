@@ -55,7 +55,7 @@ public class Treasure {
 	public static final String MODID = "treasure2";
 
 	private static final String CHESTS_CONFIG_VERSION = "1.19.4-v2";
-	private static final String STRUCTURES_CONFIG_VERSION = "1.19.4-v1";
+	private static final String STRUCTURES_CONFIG_VERSION = "1.19.4-v2";
 	
 	public static Treasure instance;
 

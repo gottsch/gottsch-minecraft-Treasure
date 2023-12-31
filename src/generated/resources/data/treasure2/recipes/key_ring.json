@@ -24,5 +24,6 @@
   ],
   "result": {
     "item": "treasure2:key_ring"
-  }
+  },
+  "show_notification": true
 }
