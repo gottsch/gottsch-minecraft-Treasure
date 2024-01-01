@@ -17,21 +17,29 @@
  */
 package mod.gottsch.forge.treasure2.core.generator;
 
+import java.util.List;
+
 import mod.gottsch.forge.gottschcore.block.BlockContext;
+import mod.gottsch.forge.gottschcore.random.RandomHelper;
+import mod.gottsch.forge.gottschcore.size.DoubleRange;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.Heading;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
+import mod.gottsch.forge.gottschcore.world.gen.structure.BlockInfoContext;
+import mod.gottsch.forge.gottschcore.world.gen.structure.PlacementSettings;
 import mod.gottsch.forge.gottschcore.world.gen.structure.StructureMarkers;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
 import mod.gottsch.forge.treasure2.core.block.SkeletonBlock;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
+import mod.gottsch.forge.treasure2.core.block.entity.TreasureProximitySpawnerBlockEntity;
 import mod.gottsch.forge.treasure2.core.registry.TreasureTemplateRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -39,6 +47,7 @@ import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraftforge.common.DungeonHooks;
 
 
 /**
@@ -243,5 +252,102 @@ public class GeneratorUtil {
 		// add 1 height to the final pos
 		coords = coords.add(0, 1, 0);
 		return coords;
+	}
+
+
+
+	/**
+	 *
+	 * @param coords
+	 * @param rotatedSize
+	 * @param placement
+	 * @return
+	 */
+	public static ICoords align(ICoords coords, BlockPos rotatedSize, PlacementSettings placement) {
+		return switch(placement.getRotation()) {
+			default -> coords;
+			case CLOCKWISE_90 -> coords.add((rotatedSize.getX() - 1) / 2, 0, -rotatedSize.getZ() / 2);
+			case CLOCKWISE_180 -> coords.add((rotatedSize.getX() - 1) / 2, 0, (rotatedSize.getZ() - 1) / 2);
+			case COUNTERCLOCKWISE_90 -> coords.add(-rotatedSize.getX() / 2, 0, (rotatedSize.getZ() - 1) / 2);
+		};
+	}
+
+	/**
+	 *
+	 * @param coords
+	 * @param rotatedSize
+	 * @param placement
+	 * @return
+	 */
+	public static ICoords standardizePosition(ICoords coords, BlockPos rotatedSize, PlacementSettings placement) {
+		return switch(placement.getRotation()) {
+			case CLOCKWISE_90 -> coords.add(-(rotatedSize.getX() - 1), 0, 0);
+			case CLOCKWISE_180 -> coords.add(-(rotatedSize.getX() - 1), 0, -(rotatedSize.getZ() - 1));
+			case COUNTERCLOCKWISE_90 -> coords.add(0, 0, -(rotatedSize.getZ() - 1));
+			default ->coords;
+		};
+	}
+
+
+	public static void fillBelow(IWorldGenContext context, ICoords coords, BlockPos size, int depth, BlockState blockState) {
+		Treasure.LOGGER.debug("filling starting at -> {}", coords.toShortString());
+
+		for (int y = 1; y <= depth; y++) {
+			for (int x = 0; x < size.getX(); x++) {
+				for (int z = 0; z < size.getZ(); z++) {
+					ICoords c = coords.add(x, -y, z);
+//					Treasure.LOGGER.debug("checking fill block -> {} is air -> {}", c.toShortString(), context.level().getBlockState(c.toPos()).isAir());
+
+					if (context.level().getBlockState(c.toPos()).isAir()) {
+						Treasure.LOGGER.debug("placing fill block -> {}", c.toShortString());
+						context.level().setBlock(c.toPos(), blockState, 3);
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 *
+	 * @param context
+	 * @param spawnerContexts
+	 */
+	public static void buildVanillaSpawners(IWorldGenContext context, List<BlockInfoContext> spawnerContexts) {
+		for (BlockInfoContext spawnerContext : spawnerContexts) {
+			try {
+				Treasure.LOGGER.debug("placing vanilla spawner at -> {}", spawnerContext.getCoords().toShortString());
+				context.level().setBlock(spawnerContext.getCoords().toPos(), TreasureBlocks.DEFERRED_RANDOM_VANILLA_SPAWNER.get().defaultBlockState(), 3);
+			} catch(Exception e) {
+				Treasure.LOGGER.error("error placing vanilla spawner", e);
+			}
+		}
+	}
+
+	/**
+	 *
+	 * @param context
+	 * @param proximityContexts
+	 * @param quantity
+	 * @param proximity
+	 */
+	public static void buildOneTimeSpawners(IWorldGenContext context, List<BlockInfoContext> proximityContexts, DoubleRange range, double proximity) {
+		for (BlockInfoContext c : proximityContexts) {
+			Treasure.LOGGER.debug("placing proximity spawner at -> {}", c.getCoords().toShortString());
+			context.level().setBlock(c.getCoords().toPos(), TreasureBlocks.PROXIMITY_SPAWNER.get().defaultBlockState(), 3);
+			TreasureProximitySpawnerBlockEntity te = (TreasureProximitySpawnerBlockEntity) context.level().getBlockEntity(c.getCoords().toPos());
+			if (te != null) {
+				EntityType<?> r = DungeonHooks.getRandomDungeonMob(context.random());
+				if (RandomHelper.checkProbability(context.random(), 20)) {
+					r = EntityType.VINDICATOR;
+				}
+				Treasure.LOGGER.debug("using mob -> {} for poximity spawner.", EntityType.getKey(r).toString());
+				te.setMobName(EntityType.getKey(r));
+				te.setMobNum(range);
+				te.setProximity(proximity);
+			}
+			else {
+				Treasure.LOGGER.debug("unable to generate proximity spawner at -> {}", c.getCoords().toShortString());
+			}
+		}
 	}
 }

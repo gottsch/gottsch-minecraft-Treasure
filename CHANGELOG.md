@@ -5,6 +5,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.6.2] - 2023-10-23
+
+### Changed
+
+- Properly referenced the treasure2-structures-1.93.3-v2.toml resource which caused crashes if not found.
+
+## [3.6.1] - 2023-10-16
+
+### Changed
+
+- Fixed crash when removing item from crafting table (anything requiring the Treasure Tool.)
+- Data generated all recipes.
+
+## [3.6.0] - 2023-10-16
+
+### Changed
+
+- Fixed generation crashes.
+- Fixed structure alignments.
+- Fixed treasure tab name display.
+- Updated SurfaceStructureFeatureGenerator to return an Optional.
+- Updated treasure2-structures-1.20.1 to version 2.
+- Updated sunken-ship structures.
+
+### Added
+
+- Blackrock and Deepslate variations of towers.
+- Deferred Random Vanilla Spawner generation classes.
+- Deferred Wither Tree generation classes. 
+- GeometryUtil class.
+
 ## [3.5.0] - 2023-09-05
 
 ### Changed

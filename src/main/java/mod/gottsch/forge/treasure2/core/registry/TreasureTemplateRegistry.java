@@ -62,7 +62,6 @@ import mod.gottsch.forge.treasure2.core.structure.StructureCategory;
 import mod.gottsch.forge.treasure2.core.structure.StructureType;
 import mod.gottsch.forge.treasure2.core.structure.TemplateHolder;
 import mod.gottsch.forge.treasure2.core.util.ModUtil;
-import net.minecraft.SharedConstants;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
@@ -93,7 +92,7 @@ public class TreasureTemplateRegistry {
 	protected static final Gson GSON_INSTANCE;
 
 	/*
-	MC 1.19.3: net/minecraft/world/level/levelgen/structure/templatesystem/StructureTemplateManager.blockLookup
+	MC 1.20.1: net/minecraft/world/level/levelgen/structure/templatesystem/StructureTemplateManager.blockLookup
 	Name: k => f_243724_ => blockLookup
 	Side: BOTH
 	AT: public net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager f_243724_ # blockLookup
@@ -253,7 +252,6 @@ public class TreasureTemplateRegistry {
 	 * @param jarPath
 	 */
 	private static void registerFromJar(Path jarPath) {
-		//		StructureType.getNames().forEach(category -> {
 		List<Path> lootTablePaths;
 		try {
 			// get all the paths in folder
@@ -380,9 +378,9 @@ public class TreasureTemplateRegistry {
 
 		CompoundTag nbt = NbtIo.readCompressed(stream);
 
-		if (!nbt.contains("DataVersion", 99)) {
-			nbt.putInt("DataVersion", SharedConstants.getCurrentVersion().getWorldVersion());//500);
-		}
+//		if (!nbt.contains("DataVersion", 99)) {
+//			nbt.putInt("DataVersion", SharedConstants.getCurrentVersion().getWorldVersion());//500);
+//		}
 
 		GottschTemplate template = new GottschTemplate();
 		template.load(blockLookup, nbt, markerBlocks, replacementBlocks);
@@ -396,11 +394,13 @@ public class TreasureTemplateRegistry {
 	 * @param event
 	 */
 	public static void onWorldLoad(LevelEvent.Load event, Path worldSavePath) {
+		Treasure.LOGGER.debug("TemplateRegistry.onWorldLoad...");
 		register((ServerLevel)event.getLevel());
 		setWorldSaveFolder(worldSavePath);
 		clearDatapacks();
 		clearAccesslists();
 		if (!event.getLevel().isClientSide()) {
+			TreasureApi.registerTemplates(Treasure.MODID);
 			// regiser templates
 			TreasureApi.registerTemplates(Treasure.MODID);
 			Treasure.LOGGER.debug("template registry world load event...");
@@ -411,11 +411,13 @@ public class TreasureTemplateRegistry {
 
 	@SuppressWarnings("unchecked")
 	private static void register(ServerLevel level) {
+		Treasure.LOGGER.debug("attempting to get HolderGetter from StructureTemplateManager...");
 		Object obj = ObfuscationReflectionHelper.getPrivateValue(StructureTemplateManager.class, level.getServer().getStructureManager(), HOLDER_GETTER_SRG_NAME);
 		if (obj instanceof HolderGetter) {
-			Treasure.LOGGER.debug("obj -> {}", ((HolderGetter<Block>)obj).getClass().getSimpleName());
+			Treasure.LOGGER.debug("obj -> {}", obj);
 			blockLookup = ((HolderGetter<Block>) obj);
 		} else {
+			Treasure.LOGGER.debug("should be throwing a RuntimeException...");
 			throw new RuntimeException("unable to attain Block HolderGetter");
 		}
 	}
@@ -685,7 +687,7 @@ public class TreasureTemplateRegistry {
 				templateHolders.add(holder);
 			});
 		}		
-		Treasure.LOGGER.debug("selected template holders -> {} ", templateHolders);
+		Treasure.LOGGER.trace("selected template holders -> {} ", templateHolders);
 
 		if (templateHolders == null) {
 			return new ArrayList<>();
@@ -711,25 +713,18 @@ public class TreasureTemplateRegistry {
 
 		// filter out any in the black list
 		if (templateHolders != null && !templateHolders.isEmpty() && blacklistHolders != null && !blacklistHolders.isEmpty()) {
-			Treasure.LOGGER.debug("blacklist check template holders -> {}", templateHolders);
-			Treasure.LOGGER.debug("blacklist check current biome -> {}", biome.toString());
-			templateHolders = templateHolders.stream()
+					templateHolders = templateHolders.stream()
 					.filter(h -> blacklistHolders.stream().noneMatch(b -> b.getLocation().equals(h.getLocation())))
 					.collect(Collectors.toList());			
 		}
 		
 		// filter if the template has a whitelist and this biome is not included
 		if (templateHolders != null && !templateHolders.isEmpty()) {
-			Treasure.LOGGER.debug("whitelist check template holders -> {}", templateHolders);
-			Treasure.LOGGER.debug("whtielist check current biome -> {}", biome.toString());
 			templateHolders = templateHolders.stream()
 				.filter(h -> {
 				StructMeta meta = Config.structConfigMetaMap.get(h.getLocation());
-				Treasure.LOGGER.debug("template meta -> {}", meta);
 				if (meta != null) {
-					Treasure.LOGGER.debug("template meta whitelist -> {}", meta.getBiomeWhitelist());
 					if ((meta.getBiomeWhitelist() != null && !meta.getBiomeWhitelist().isEmpty())) {
-						Treasure.LOGGER.debug("comparing template whitelist biome...");
 						if (!meta.getBiomeWhitelist().contains(biome.toString())) {
 							Treasure.LOGGER.debug("biome not found in whitelist");
 							return false;
@@ -744,7 +739,6 @@ public class TreasureTemplateRegistry {
 		if (templateHolders == null || templateHolders.isEmpty()) {
 			Treasure.LOGGER.debug("could not find template holders for category -> {}, type -> {}", category, type);
 		}
-		Treasure.LOGGER.debug("selected template holders -> {} ", templateHolders);
 
 		if (templateHolders == null) {
 			templateHolders = new ArrayList<>();
