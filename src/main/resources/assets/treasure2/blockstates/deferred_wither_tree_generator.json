@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "": { "model": "treasure2:block/deferred_wither_tree_generator" }
+    }
+}

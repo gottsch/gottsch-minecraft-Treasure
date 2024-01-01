@@ -1,17 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
   "key": {
+    "s": {
+      "item": "minecraft:polished_granite"
+    },
     "t": {
       "item": "treasure2:treasure_tool"
-    },
-    "x": {
-      "item": "minecraft:polished_granite"
     }
   },
   "pattern": [
     "  t",
     "   ",
-    " x "
+    " s "
   ],
   "result": {
     "item": "treasure2:gravestone1_polished_granite"
