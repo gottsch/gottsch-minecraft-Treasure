@@ -1,6 +1,6 @@
 {
-    "parent": "treasure2:item/horizontal_left_key",
-    "textures": {
-        "layer0": "treasure2:item/keys/topaz_key"
-    }
+  "parent": "treasure2:item/horizontal_left_key",
+  "textures": {
+    "layer0": "treasure2:item/keys/topaz_key"
+  }
 }

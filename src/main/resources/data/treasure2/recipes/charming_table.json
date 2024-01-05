@@ -1,0 +1,49 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+	" GT",
+	" C ",
+	"   "
+  ],
+  "key": {
+    "T": {
+		"item": "treasure2:treasure_tool"
+	},
+	"C": {
+		"item": "minecraft:crafting_table"
+	},
+	"G": [
+		{
+			"item": "treasure2:copper_charm"
+		},
+		{
+			"item": "treasure2:silver_charm"
+		},
+		{
+			"item": "treasure2:gold_charm"
+		},
+		{
+			"item": "treasure2:ruby_charm"
+		},
+		{
+			"item": "treasure2:sapphire_charm"
+		},
+		{
+			"item": "treasure2:topaz_charm"
+		},
+		{
+			"item": "treasure2:onyx_charm"
+		},
+		{
+			"item": "treasure2:diamond_charm"
+		},
+		{
+			"item": "treasure2:emerald_charm"
+		}		
+	]
+  },
+  "result": {
+    "item": "treasure2:charming_table",
+    "count": 1
+  }
+}

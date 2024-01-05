@@ -1,0 +1,17 @@
+{
+  "ambient_mimic" : {
+    "category" : "entity",
+    "subtitle" : "sounds.treasure2.ambient_mimic",
+    "sounds" : [ "treasure2:ambient_mimic" ]
+  },
+    "ambient_mimic2" : {
+    "category" : "entity",
+    "subtitle" : "sounds.treasure2.ambient_mimic2",
+    "sounds" : [ "treasure2:ambient_mimic2" ]
+  },
+    "ambient_mimic3" : {
+    "category" : "entity",
+    "subtitle" : "sounds.treasure2.ambient_mimic3",
+    "sounds" : [ "treasure2:ambient_mimic3" ]
+  }
+}

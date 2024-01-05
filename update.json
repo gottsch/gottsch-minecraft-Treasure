@@ -1,8 +1,8 @@
 {
     "homepage": "https://minecraft.curseforge.com/projects/treasure2",
     "promos": {
-    "1.16.5-latest": "2.5.0",
-    "1.16.5-recommended": "2.5.0"
+    "1.16.5-latest": "3.0.0",
+    "1.16.5-recommended": "3.0.0"
   },
     "1.16.5": {
         "1.0.0": "Initial version release.",
@@ -19,6 +19,7 @@
         "2.2.0": "Refactor chest/well/wither tree spawn calculation and registration.\nAdd Poison/Wither resistance and immunity charms.\nUpdate Key and Lock items for future expansions.\nAdd injectable loot tables for treasure loot pools.\nFix duplicate load of loot table resources.\nFix file system subfolder creation in datapacks folder.\nFix Pouch duplication bug.\nFix Keyring duplication bug.\n",
         "2.3.0": "Updates to be more extensible.\nFix whitelisted dimensions server crash bug.",
         "2.4.0": "Added Chinese language file by Kasualix.",
-        "2.5.0": "Fixed missing setCostEvaluator() in Charm.createEntity().\nFixed EquipmentCostEvaluator not using default if nothing is equipped.\nFixed EquipmentCostEvaluator calculations."
+        "2.5.0": "Fixed missing setCostEvaluator() in Charm.createEntity().\nFixed EquipmentCostEvaluator not using default if nothing is equipped.\nFixed EquipmentCostEvaluator calculations.",
+        "3.0.0": "See https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/1.16.5-master/CHANGELOG.md"
 	}
 }

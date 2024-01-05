@@ -104,7 +104,17 @@
 					"type": "item",
 					"name": "treasure2:spider_key",
 					"weight": 10
-				}
+				}, {
+      "entryName" : "topaz_key",
+      "type" : "item",
+      "name" : "treasure2:topaz_key",
+      "weight" : 10
+    }, {
+      "entryName" : "onyx_key",
+      "type" : "item",
+      "name" : "treasure2:onyx_key",
+      "weight" : 10
+    }
 			]
 		},
 		{

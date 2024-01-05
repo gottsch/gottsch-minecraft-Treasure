@@ -1,0 +1,331 @@
+/**
+ * 
+ */
+package mod.gottsch.forge.treasure2.core.command;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
+import java.util.Optional;
+import java.util.Random;
+import java.util.Set;
+
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.suggestion.SuggestionProvider;
+import com.someguyssoftware.gottschcore.spatial.Coords;
+import com.someguyssoftware.gottschcore.world.gen.structure.IDecayRuleSet;
+
+import mod.gottsch.forge.treasure2.core.Treasure;
+import mod.gottsch.forge.treasure2.core.command.argument.DecayArgument;
+import mod.gottsch.forge.treasure2.core.command.argument.TemplateLocation;
+import mod.gottsch.forge.treasure2.core.command.argument.TemplateLocationArgument;
+import mod.gottsch.forge.treasure2.core.enums.Pits;
+import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
+import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
+import mod.gottsch.forge.treasure2.core.generator.ruins.IRuinGenerator;
+import mod.gottsch.forge.treasure2.core.generator.ruins.SurfaceRuinGenerator;
+import mod.gottsch.forge.treasure2.core.meta.StructureArchetype;
+import mod.gottsch.forge.treasure2.core.registry.TreasureDecayRegistry;
+import mod.gottsch.forge.treasure2.core.registry.TreasureTemplateRegistry;
+import mod.gottsch.forge.treasure2.core.world.gen.structure.TemplateHolder;
+import mod.gottsch.forge.treasure2.core.world.gen.structure.TreasureTemplateManager;
+import net.minecraft.command.CommandSource;
+import net.minecraft.command.Commands;
+import net.minecraft.command.ISuggestionProvider;
+import net.minecraft.command.arguments.BlockPosArgument;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.gen.feature.template.Template;
+import net.minecraft.world.server.ServerWorld;
+
+/**
+ * Usage: /t2-ruins <x> <y> <z> [-modid <mod id> -archetype <archetype> -name <name>] [-decay <relative filepath>] [-rarity <rarity>]
+ * Spawns ruins at location (x, y, z) using the optional structure name, and option decay ruleset.
+ * @author Mark Gottschling on Jan 25, 2018
+ *
+ */
+public class SpawnRuinsCommand {
+	private static final String MOD_ID_ARG = "modid";
+	private static final String ARCHETYPE_ARG = "archetype";
+	private static final String NAME_ARG = "name";
+//	private static final String DECAY_ARG = "decay";
+	private static final String RARITY_ARG = "rarity";
+	
+	public static void register(CommandDispatcher<CommandSource> dispatcher) {
+		dispatcher
+			.register(Commands.literal("t2-ruins")
+					.requires(source -> {
+						return source.hasPermission(2);
+					})
+					.then(Commands.argument("pos", BlockPosArgument.blockPos())
+							.executes(source -> {
+								return spawn(source.getSource(), BlockPosArgument.getOrLoadBlockPos(source, "pos"), Treasure.MODID, StructureArchetype.SURFACE.getValue(), "", "");
+							})
+							.then(Commands.literal("-"+MOD_ID_ARG)
+								.then(Commands.argument(MOD_ID_ARG, StringArgumentType.string())
+										.suggests(SUGGEST_MODID).executes(source -> {
+											return spawn(source.getSource(),
+													BlockPosArgument.getOrLoadBlockPos(source, "pos"),
+													StringArgumentType.getString(source, MOD_ID_ARG),
+													StructureArchetype.SURFACE.getValue(),
+													"",
+													"");
+										})
+										.then(Commands.literal("-"+ARCHETYPE_ARG)
+												.then(Commands.argument(ARCHETYPE_ARG, StringArgumentType.string())
+														.suggests(SUGGEST_ARCHETYPE)
+														.executes(source -> {
+															return spawn(source.getSource(),
+																	BlockPosArgument.getOrLoadBlockPos(source, "pos"),
+																	StringArgumentType.getString(source, MOD_ID_ARG),
+																	StringArgumentType.getString(source, ARCHETYPE_ARG),
+			    													"",
+			    													"");														
+														})
+														.then(Commands.literal("-"+NAME_ARG)
+																.then(Commands.argument(NAME_ARG, StringArgumentType.string())
+																		.executes(source -> {
+																			return spawn(source.getSource(),
+																					BlockPosArgument.getOrLoadBlockPos(source, "pos"),
+																					StringArgumentType.getString(source, MOD_ID_ARG),
+																					StringArgumentType.getString(source, ARCHETYPE_ARG),
+							    													StringArgumentType.getString(source, NAME_ARG),
+							    													"");
+																		})
+//											                             .then(Commands.literal("-"+DECAY_ARG)
+//											                                     .then(Commands.argument(DECAY_ARG, StringArgumentType.string())
+//											                                         .suggests(SUGGEST_DECAY).executes(source -> {
+//											    											return spawn(source.getSource(),
+//											    													BlockPosArgument.getOrLoadBlockPos(source, "pos"),
+//											    													StringArgumentType.getString(source, MOD_ID_ARG),
+//											    													StringArgumentType.getString(source, ARCHETYPE_ARG),
+//											    													StringArgumentType.getString(source, NAME_ARG),
+//											    													StringArgumentType.getString(source, DECAY_ARG));		
+//											                                         })
+//											                             )
+//									                            	)
+																		
+																)
+														)
+												)
+										)
+								)
+							)
+//							.then(Commands.argument("template", TemplateLocationArgument.templateLocation())
+//									.executes(source -> {
+//										return spawn(
+//                                            source.getSource(), 
+//                                            BlockPosArgument.getBlockPos(source, "pos"), 
+//                                            TemplateLocationArgument.getTemplateLocation(source, "template"));
+//                                    })
+//                            )
+//                             .then(Commands.literal("-"+DECAY_ARG)
+//                                 .then(Commands.argument(DECAY_ARG, StringArgumentType.string())
+//                                     .suggests(SUGGEST_DECAY).executes(source -> {
+//											return spawn(source.getSource(),
+//													BlockPosArgument.getOrLoadBlockPos(source, "pos"),
+//													Treasure.MODID,
+//													StructureArchetype.SURFACE.getValue(),
+//													"",
+//													StringArgumentType.getString(source, DECAY_ARG));		
+//                                     })
+//                             )
+//                            .then(Commands.argument("decay", DecayArgument.decay())
+//                                    .executes(source -> {
+//                                        return spawn(
+//                                            source.getSource(), 
+//                                            BlockPosArgument.getBlockPos(source, "pos"), 
+//                                            Optional.empty());
+//                                })
+//                            )
+//					)
+                             )
+			);
+	}
+    
+	// TODO read all the loaded mods OR all the registered mods in TreasureTemplateRegistry
+    private static final SuggestionProvider<CommandSource> SUGGEST_MODID = (source, builder) -> {
+		return ISuggestionProvider.suggest(Arrays.asList("minecraft", "treasure2").stream(), builder);
+    };
+    
+    // TODO where does this go? In the arugment class
+    private static final SuggestionProvider<CommandSource> SUGGEST_ARCHETYPE = (source, builder) -> {
+		return ISuggestionProvider.suggest(StructureArchetype.getNames().stream(), builder);
+    };
+    
+    // TODO get all the names
+    private static final SuggestionProvider<CommandSource> SUGGEST_NAME = (source, builder) -> {    	
+		return ISuggestionProvider.suggest(TreasureDecayRegistry.getDecayManager().getRuleSetMap().keySet().stream(), builder);
+    };
+
+    private static final SuggestionProvider<CommandSource> SUGGEST_DECAY = (source, builder) -> {    	
+		return ISuggestionProvider.suggest(TreasureDecayRegistry.getDecayManager().getRuleSetMap().keySet().stream(), builder);
+    };
+    
+	/**
+	 * 
+	 * @param source
+	 * @param pos
+	 * @param modID
+	 * @param archetype
+	 * @param name
+	 * @param decay
+	 * @return
+	 */
+	public static int spawn(CommandSource source, BlockPos pos, String modID, String archetype, String name, String decay) {
+		ServerWorld world = source.getLevel();
+		Random random = new Random();
+		
+        modID = (modID == null || modID.isEmpty()) ? Treasure.MODID : modID;
+        archetype = (archetype == null || archetype.isEmpty()) ? StructureArchetype.SURFACE.getValue() : archetype;
+        
+        if (name == null || name.isEmpty()) {
+        	return 0;
+        }
+
+        try {
+		// TODO for now just use the surface ruins generator
+		IRuinGenerator<GeneratorResult<ChestGeneratorData>> ruinGenerator = new SurfaceRuinGenerator();
+		
+       ResourceLocation templateKey = new ResourceLocation(modID, archetype.toLowerCase()	+ "/" + name);
+
+		TemplateHolder holder = TreasureTemplateRegistry.getManager().getTemplatesByResourceLocationMap().get(templateKey);
+		if (holder == null) {
+			Treasure.LOGGER.debug("Unable to locate template by key -> {}", templateKey.toString());
+		}
+        
+		// TODO check/add decay set
+		GeneratorResult<ChestGeneratorData> result = ruinGenerator.generate(world, null, random, new Coords(pos), holder);
+        }
+		catch(Exception e) {
+			Treasure.LOGGER.error("an error occurred: ", e);
+		}
+		return 0;
+	}
+    
+
+    
+//    
+//	@Override
+//	public void execute(MinecraftServer server, ICommandSender commandSender, String[] args) {
+//		Treasure.logger.debug("Starting to build Treasure! ruins ...");
+//		
+//		try {
+//			// extract the coords args
+//			int x, y, z = 0;
+//			x = Integer.parseInt(args[0]);
+//			y = Integer.parseInt(args[1]);
+//			z = Integer.parseInt(args[2]);
+//
+//			String[] parserArgs = (String[]) Arrays.copyOfRange(args, 3, args.length);
+//			
+//			// create the parser
+//			CommandLineParser parser = new DefaultParser();			
+//
+//			// create Options object
+//			Options options = new Options();
+//			options.addOption(MOD_ID_ARG, true, "");
+//			options.addOption(ARCHETYPE_ARG, true, "");
+//			options.addOption(NAME_ARG, true, "");
+//			options.addOption(DECAY_ARG, true, "");
+//			options.addOption(RARITY_ARG, true, "");
+//			
+//			// parse the command line arguments
+//			CommandLine line = parser.parse( options, parserArgs);
+//
+//			String modID = Treasure.MODID;
+//			if (line.hasOption(MOD_ID_ARG)) {
+//				modID = line.getOptionValue(MOD_ID_ARG);
+//			}
+//			
+//			String archetype = StructureArchetype.SURFACE.getValue();
+//			if (line.hasOption(ARCHETYPE_ARG)) {
+//				archetype = line.getOptionValue(ARCHETYPE_ARG).toLowerCase();
+//			}
+//			
+//			String name = line.getOptionValue(NAME_ARG);
+//			if (name != null && !name.contains(".nbt")) {
+//				name += ".nbt";
+//			}
+//			
+//			// get the ruleset to use from the decay manager
+//			IDecayRuleSet ruleSet = null;
+//			if (line.hasOption(DECAY_ARG)) {
+//				String ruleSetName = line.getOptionValue(DECAY_ARG);
+//				if (!ruleSetName.contains(".json")) {
+//					ruleSetName += ".json";
+//				}
+//				// build the key
+//				String key = (Treasure.MODID + ":" + "decay/" + ruleSetName).replace("\\", "/");
+//				ruleSet = Treasure.DECAY_MANAGER.getRuleSetMap().get(key);
+//			}
+//			
+//			Rarity rarity = null;
+//			if (line.hasOption(RARITY_ARG)) {
+//				String rarityArg = line.getOptionValue(RARITY_ARG);
+//				rarity = Rarity.valueOf(rarityArg.toUpperCase());			
+//			}	
+//			
+//			World world = commandSender.getEntityWorld();
+//			Random random = new Random();
+//			ICoords coords = new Coords(x, y, z);
+//			
+//			// get the structure generator
+//			SurfaceChestWorldGenerator worldGen = 
+//					(SurfaceChestWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGeneratorType.SURFACE_CHEST);
+//			
+//			// build the template key
+//			ResourceLocation templateKey = new ResourceLocation(Treasure.MODID + ":" + Treasure.TEMPLATE_MANAGER.getBaseResourceFolder()
+//							+ "/" + modID + "/" + archetype	+ "/" + name);
+//			
+//			TemplateHolder holder = Treasure.TEMPLATE_MANAGER.getTemplatesByResourceLocationMap().get(templateKey);
+//			if (holder == null) {
+//				Treasure.logger.debug("Unable to locate template by key -> {}", templateKey.toString());
+//			}
+//				
+//			// select a chest
+//			if (rarity == null) {
+//				rarity = Rarity.values()[random.nextInt(Rarity.values().length)];
+//			}
+////			IChestConfig config = TreasureConfig.CHESTS.surfaceChests.configMap.get(rarity);
+//			
+//			// generate
+//			GeneratorResult<ChestGeneratorData> result = worldGen.generateSurfaceRuins(world, random,coords, holder, ruleSet, null);
+//			Treasure.logger.debug("result from t2-ruins -> {}", result);
+//			if (result.isSuccess() && result.getData().getChestContext().getCoords() != null) {
+//				IChestGenerator chestGen = worldGen.getChestGenMap().get(rarity).next();
+//				ICoords chestCoords = result.getData().getChestContext().getCoords();
+//				Treasure.logger.debug("chestCoords -> {}", chestCoords);
+//				// move the chest coords to the first dry land beneath it.
+////				chestCoords = WorldInfo.getDryLandSurfaceCoords(world, chestCoords);
+//				if (chestCoords == WorldInfo.EMPTY_COORDS) chestCoords = null;
+//				
+//				if (chestCoords != null) {
+//					GeneratorResult<ChestGeneratorData> chestResult = chestGen.generate(world, random, chestCoords, rarity, result.getData().getChestContext().getState());
+//				}
+//			}
+//		}
+//		catch(Exception e) {
+//			Treasure.logger.error("Error generating Treasure! ruins:", e);
+//		}
+//	}
+//	
+//    /**
+//     * Get a list of options for when the user presses the TAB key
+//     */
+//	@Override
+//    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
+//        if (args.length > 3) {
+//        	if (args[args.length - 2].equals("-" + RARITY_ARG)) {
+//        		return getListOfStringsMatchingLastWord(args, Rarity.getNames());
+//        	}
+//        	else if(args[args.length - 2].equals("-" + ARCHETYPE_ARG)) {
+//        		return getListOfStringsMatchingLastWord(args, StructureArchetype.getNames());
+//        	}        	
+//        }		
+//		return Collections.emptyList();
+//    }
+}

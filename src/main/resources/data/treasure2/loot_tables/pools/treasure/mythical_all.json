@@ -1,6 +1,6 @@
 {
-	"version": "3.0",
-	"since": "mc1.16.5-v2.1.0",
+	"version": "4.0",
+	"since": "mc1.16.5-v3.0.0",
 	"pools": [{
 			"name": "mythical_treasure",
 			"rolls": {
@@ -10,8 +10,13 @@
 			"entries": [{
 				"type": "loot_table",
 				"name": "treasure2:pools/treasure/epic_treasure",
-				"weight": 1
-			}]
+				"weight": 100
+			}, {
+      "entryName" : "one_key",
+      "type" : "item",
+      "name" : "treasure2:one_key",
+      "weight" : 10
+    }]
 		},
 		{
 			"name": "mythical_charms",

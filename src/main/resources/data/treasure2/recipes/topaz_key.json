@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "kt ",
+    " d ",
+    " g "
+  ],
+  "key": {
+    "t": {
+      "item": "treasure2:treasure_tool"
+    },
+    "k": {
+      "item": "treasure2:gold_key"
+    },
+    "d": {
+      "item": "minecraft:glowstone_dust"
+    },
+    "g": {
+      "item": "treasure2:topaz"
+    }
+  },
+  "result": {
+    "item": "treasure2:topaz_key"
+  }
+}
