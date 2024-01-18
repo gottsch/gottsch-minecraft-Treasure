@@ -30,5 +30,6 @@
     "recipes": [
       "treasure2:key_ring"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

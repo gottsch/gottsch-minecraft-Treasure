@@ -30,5 +30,6 @@
     "recipes": [
       "treasure2:thiefs_lock_pick"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

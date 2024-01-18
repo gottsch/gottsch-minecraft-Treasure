@@ -85,7 +85,9 @@ public abstract class Mimic extends Monster {
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
 	}
-	
+
+	// TODO refactor so that the amount does not have to be sent to the client side
+	// OR once active, amount doesn't have to be sent.
 	@Override
 	public void aiStep() {
 		if (!WorldInfo.isClientSide(level())) {

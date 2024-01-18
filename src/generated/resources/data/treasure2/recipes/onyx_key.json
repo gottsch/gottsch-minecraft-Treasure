@@ -22,5 +22,6 @@
   ],
   "result": {
     "item": "treasure2:onyx_key"
-  }
+  },
+  "show_notification": true
 }

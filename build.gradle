@@ -146,7 +146,8 @@ tasks.named('jar', Jar).configure {
 // run "gradlew build" to build the jars without mavening them
 publishing {
     publications {
-        register('mavenJava', MavenPublication) {
+        mavenJava(MavenPublication) {
+            artifactId project.archivesBaseName
             artifact jar
         }
     }

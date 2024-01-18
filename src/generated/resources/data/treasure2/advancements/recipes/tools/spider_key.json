@@ -30,5 +30,6 @@
     "recipes": [
       "treasure2:spider_key"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

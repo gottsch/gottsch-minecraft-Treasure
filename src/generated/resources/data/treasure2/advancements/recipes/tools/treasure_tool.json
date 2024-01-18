@@ -30,5 +30,6 @@
     "recipes": [
       "treasure2:treasure_tool"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }
