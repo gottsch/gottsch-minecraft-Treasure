@@ -1,8 +1,8 @@
 {
     "homepage": "https://minecraft.curseforge.com/projects/treasure2",
     "promos": {
-    "1.19.4-latest": "3.6.2",
-    "1.19.4-recommended": "3.6.2"
+    "1.19.4-latest": "3.7.0",
+    "1.19.4-recommended": "3.7.0"
   },
     "1.19.4": {
         "3.2.0": "See https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/1.19.4-main/CHANGELOG.md",
@@ -10,6 +10,7 @@
        	"3.4.0": "See https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/1.19.4-main/CHANGELOG.md",
         "3.5.0": "See https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/1.19.4-main/CHANGELOG.md",
         "3.5.1": "See https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/1.19.4-main/CHANGELOG.md",
-        "3.6.2": "See https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/1.19.4-main/CHANGELOG.md"   
+       "3.6.2": "See https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/1.19.4-main/CHANGELOG.md",
+        "3.7.0": "See https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/1.19.4-main/CHANGELOG.md"   
    	}
 }
