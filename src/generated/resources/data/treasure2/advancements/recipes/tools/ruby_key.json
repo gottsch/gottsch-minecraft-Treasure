@@ -30,5 +30,6 @@
     "recipes": [
       "treasure2:ruby_key"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }
