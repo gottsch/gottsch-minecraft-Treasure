@@ -225,6 +225,7 @@ public class LanguageGen extends LanguageProvider {
         add(TreasureEntities.CAULDRON_CHEST_MIMIC_ENTITY_TYPE.get(), "Cauldron Chest Mimic");
         add(TreasureEntities.CRATE_CHEST_MIMIC_ENTITY_TYPE.get(), "Crate Chest Mimic");
         add(TreasureEntities.MOLDY_CRATE_CHEST_MIMIC_ENTITY_TYPE.get(), "Moldy Chest Mimic");
+        add(TreasureEntities.CARDBOARD_BOX_MIMIC_ENTITY_TYPE.get(), "Cardboard Box Mimic");
         
         // eggs
         add(TreasureItems.BOUND_SOUL_EGG.get(), "Bound Soul Spawn Egg");
@@ -234,6 +235,7 @@ public class LanguageGen extends LanguageProvider {
         add(TreasureItems.CAULDRON_CHEST_MIMIC_EGG.get(), "Cauldron Chest Mimic Spawn Egg");
         add(TreasureItems.CRATE_CHEST_MIMIC_EGG.get(), "Crate Chest Mimic Spawn Egg");
         add(TreasureItems.MOLDY_CRATE_CHEST_MIMIC_EGG.get(), "Moldy Crate Chest Mimic Spawn Egg");
+        add(TreasureItems.CARDBOARD_BOX_MIMIC_EGG.get(), "Cardboard Box Mimic Spawn Egg");
         
         /*
          *  Util.tooltips

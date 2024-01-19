@@ -1,0 +1,21 @@
+// 1.19.2	2024-01-01T12:57:47.0903281	Tags for minecraft:item
+7ba25f6b415b48824b3f8c80916cf6c117a26139 data/treasure2/tags/items/key/common.json
+b36ff40c1386bb4f9a4836d7dfafd3c54aa4acf8 data/treasure2/tags/items/key/epic.json
+f313c76ff1ae6bad2d3bdb7fbf505fffc998f1a2 data/treasure2/tags/items/key/keys.json
+a242efd6fc365b861972beaf5d752fe0d3938529 data/treasure2/tags/items/key/mythical.json
+f94000a2e7e655f604a51685f711e802123f37ff data/treasure2/tags/items/key/rare.json
+86c5bef350e771acf2dce9576c6a488999ae69c8 data/treasure2/tags/items/key/scarce.json
+3f035521504e87d208ae06186e5821f2cc1ad225 data/treasure2/tags/items/key/uncommon.json
+4d3e631b779cad6e46f97f1f9d98f2fe23032d00 data/treasure2/tags/items/lock/common.json
+135b1d361fdd3852961a60b713ac8dc8aa2e832b data/treasure2/tags/items/lock/epic.json
+a38523ce2dfb06d2d36bc8b47c92606882492bfa data/treasure2/tags/items/lock/locks.json
+09b1c3d09e9b9cfe14ed4ccc77d7b926efbe1db7 data/treasure2/tags/items/lock/rare.json
+5425d6b334d8314608c58569b2d73446960691fb data/treasure2/tags/items/lock/scarce.json
+fc08a254de50621bb8fb35a081f820b6f0aaae34 data/treasure2/tags/items/lock/uncommon.json
+7f94c5808c5cfeb96330880beb03c0fa5d3582e8 data/treasure2/tags/items/pouch.json
+cbcc36b46a69f5a19d1a50cf84a003769b5e0a4f data/treasure2/tags/items/wishable/common.json
+764c3205ee0199a961becc51fa4f76006c394845 data/treasure2/tags/items/wishable/epic.json
+784f1a327446aa6e9371a405a8181602c704ef9d data/treasure2/tags/items/wishable/rare.json
+5f19cc9843c65061d9f8256ad399c4b955cfe1e0 data/treasure2/tags/items/wishable/scarce.json
+a29a49b546dd4d19cf01c22697bdd63a4cb4ea9e data/treasure2/tags/items/wishable/uncommon.json
+2127dd04f3d5d5fdeb1946e0d4ad492e90a6e989 data/treasure2/tags/items/wishable/wishables.json
