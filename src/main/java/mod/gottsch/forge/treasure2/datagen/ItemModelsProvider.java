@@ -329,6 +329,7 @@ public class ItemModelsProvider extends ItemModelProvider {
 		withExistingParent(TreasureItems.CAULDRON_CHEST_MIMIC_EGG.get().getRegistryName().getPath(), mcLoc("item/template_spawn_egg"));
 		withExistingParent(TreasureItems.CRATE_CHEST_MIMIC_EGG.get().getRegistryName().getPath(), mcLoc("item/template_spawn_egg"));
 		withExistingParent(TreasureItems.MOLDY_CRATE_CHEST_MIMIC_EGG.get().getRegistryName().getPath(), mcLoc("item/template_spawn_egg"));
+		withExistingParent(TreasureItems.CARDBOARD_BOX_MIMIC_EGG.get().getRegistryName().getPath(), mcLoc("item/template_spawn_egg"));
 		
 		// topaz rings
 		//        singleTexture(TreasureItems.ADORNMENT_ITEMS.get(modLoc("topaz_iron_ring")).getRegistryName().getPath(),        		
