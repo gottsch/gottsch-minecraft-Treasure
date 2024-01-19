@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "b": {
+      "item": "minecraft:bone"
+    },
+    "t": {
+      "item": "treasure2:treasure_tool"
+    }
+  },
+  "pattern": [
+    "  t",
+    " b ",
+    "b b"
+  ],
+  "result": {
+    "item": "treasure2:skull_and_crossbones"
+  }
+}
