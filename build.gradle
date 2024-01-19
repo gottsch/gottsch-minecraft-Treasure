@@ -204,10 +204,10 @@ dependencies {
 jar {
     manifest {
         attributes([
-                "Specification-Title"     : "Enemy Echelons",
+                "Specification-Title"     : "Treasure2",
                 "Specification-Vendor"    : "gottsch",
                 "Specification-Version"   : "1",
-                "Implementation-Title"    : "Enemy Echelons",
+                "Implementation-Title"    : "Treasure2",
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : "gottsch",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
@@ -228,8 +228,6 @@ publishing {
         mavenJava(MavenPublication) {
             artifactId project.archivesBaseName
             artifact jar
-            //artifact sourcesJar
-            //artifact javadocJar
         }
     }
     repositories {
