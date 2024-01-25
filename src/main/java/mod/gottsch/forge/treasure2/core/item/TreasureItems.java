@@ -9,9 +9,6 @@ import com.google.common.collect.Maps;
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
-import mod.gottsch.forge.treasure2.core.capability.DurabilityCapability;
-import mod.gottsch.forge.treasure2.core.capability.DurabilityHandler;
-import mod.gottsch.forge.treasure2.core.capability.IDurabilityHandler;
 import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.item.weapon.Axe;
@@ -189,16 +186,10 @@ public class TreasureItems {
 			.setSuccessProbability(48)
 			);
 
+	// TODO update
 	// opens all locks and is infinite users
-	public static RegistryObject<KeyItem> ONE_KEY = Registration.ITEMS.register("one_key", () -> new KeyItem(new Item.Properties()
-			.durability(1000)			
-			) {
-		@Override
-		public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
-			IDurabilityHandler handler = new DurabilityHandler();
-			handler.setInfinite(true);
-			return new DurabilityCapability(handler);
-		};
+	public static RegistryObject<KeyItem> ONE_KEY = Registration.ITEMS.register("one_key",
+			() -> new KeyItem(new Item.Properties().durability(1000), true) {
 
 		@Override
 		public boolean isFoil(ItemStack stack) {

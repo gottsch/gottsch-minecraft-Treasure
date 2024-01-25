@@ -118,8 +118,12 @@ public class ModUtil {
 	}
 	
 	public static void setItemDurability(Item item, int durability) {
-		ObfuscationReflectionHelper.setPrivateValue(Item.class, item, durability, MAX_DAMAGE_SRG_NAME);
-		setItemMaxStackSize(item, 1);
+		try {
+			ObfuscationReflectionHelper.setPrivateValue(Item.class, item, durability, MAX_DAMAGE_SRG_NAME);
+			setItemMaxStackSize(item, 1);
+		} catch(Exception e) {
+			Treasure.LOGGER.error("error setting item durability ->", e);
+		}
 	}
 	
 	/**

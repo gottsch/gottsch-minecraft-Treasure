@@ -19,14 +19,10 @@
  */
 package mod.gottsch.forge.treasure2.core.item;
 
-import static mod.gottsch.forge.treasure2.core.capability.TreasureCapabilities.DURABILITY;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
-
-import javax.annotation.Nullable;
 
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.gottschcore.random.RandomHelper;
@@ -36,8 +32,6 @@ import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
 import mod.gottsch.forge.treasure2.core.block.ITreasureChestBlockProxy;
 import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
 import mod.gottsch.forge.treasure2.core.block.entity.ITreasureChestBlockEntity;
-import mod.gottsch.forge.treasure2.core.capability.DurabilityCapability;
-import mod.gottsch.forge.treasure2.core.capability.IDurabilityHandler;
 import mod.gottsch.forge.treasure2.core.capability.TreasureCapabilities;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
@@ -62,6 +56,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
+import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nullable;
 
 /**
  * 
@@ -70,6 +67,7 @@ import net.minecraftforge.common.util.LazyOptional;
  */
 public class KeyItem extends Item implements IKeyEffects {
 	public static final int DEFAULT_MAX_USES = 25;
+	public static final String DURABILITY = "treasure2:durability";
 
 	/*
 	 * The category that the key belongs to
@@ -106,52 +104,66 @@ public class KeyItem extends Item implements IKeyEffects {
 	 */
 	private List<Predicate<LockItem >> breaksLock;
 
+	private boolean infinite;
+
 	/**
 	 * 
 	 * @param properties
 	 */
 	public KeyItem(Item.Properties properties) {
+		this(properties, false);
+	}
+
+	public KeyItem(Item.Properties properties, boolean infinite) {
 		super(properties);//.defaultDurability(DEFAULT_MAX_USES));
 		setCategory(KeyLockCategory.ELEMENTAL);
 		setBreakable(true);
 		setCraftable(false);
-		setSuccessProbability(90D);	
+		setSuccessProbability(90D);
+		setInfinite(infinite);
 	}
 
 	@Override
-	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
-		DurabilityCapability provider = new DurabilityCapability();
-		LazyOptional<IDurabilityHandler> cap = provider.getCapability(TreasureCapabilities.DURABILITY, null);
-		cap.ifPresent(c -> {
-			c.setDurability(stack.getMaxDamage());
-		});
-		return provider;
+	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag tag) {
+
+		if (!hasDurability(stack)) {
+			setDurability(stack, getMaxDamage(stack));
+			Treasure.LOGGER.debug("initCap: setting key max damage to -> {}", getMaxDamage(stack));
+		}
+
+
+		// NOTE not sure if this does anything
+		// add durability to the tag
+//		if (tag == null) {
+//			tag = new CompoundTag();
+//		}
+//		tag.putInt("treasure2:durability", stack.getMaxDamage());
+//		stack.setTag(tag);
+
+		return super.initCapabilities(stack, tag);
 	}
+
 
 	/**
 	 * NOTE getShareTag() and readShareTag() are required to sync item capabilities server -> client. I needed this when holding charms in hands and then swapping hands
 	 * or having the client update when the Anvil GUI is open.
 	 */
-	@Override
-	public CompoundTag getShareTag(ItemStack stack) {
-		CompoundTag tag = null;
-
-		IDurabilityHandler handler = stack.getCapability(DURABILITY).map(h -> h).orElse(null);
-		if (handler != null) {
-			tag = handler.save();
-		}
-		return tag;
-	}
-
-	@Override
-	public void readShareTag(ItemStack stack, @Nullable CompoundTag tag) {
-		super.readShareTag(stack, tag);
-
-		IDurabilityHandler handler = stack.getCapability(DURABILITY).map(h -> h).orElse(null);
-		if (handler != null) {
-			handler.load(tag);
-		}
-	}
+//	@Override
+//	public CompoundTag getShareTag(ItemStack stack) {
+//		CompoundTag tag = new CompoundTag();
+//		if (hasDurability(stack)) {
+//			tag.putInt(DURABILITY, getDurability(stack));
+//		}
+//		return tag;
+//	}
+//
+//	@Override
+//	public void readShareTag(ItemStack stack, @Nullable CompoundTag tag) {
+//		super.readShareTag(stack, tag);
+//		if (tag.contains(DURABILITY)) {
+//			setDurability(stack, tag.getInt(DURABILITY));
+//		}
+//	}
 
 	/**
 	 * Format:
@@ -167,15 +179,14 @@ public class KeyItem extends Item implements IKeyEffects {
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flag) {
 
-		if (stack.getCapability(DURABILITY).isPresent()) {
-			stack.getCapability(DURABILITY).ifPresent(cap -> {
-				if (cap.isInfinite()) {
-					tooltip.add(Component.translatable(LangUtil.tooltip("cap.durability.amount.infinite"), cap.getDurability() - stack.getDamageValue(), cap.getDurability()));					
-				}
-				else {
-					tooltip.add(Component.translatable(LangUtil.tooltip("cap.durability.amount"), cap.getDurability() - stack.getDamageValue(), cap.getDurability()));
-				}
-			});
+		CompoundTag tag = stack.getTag();
+		if (isInfinite()) {
+			tooltip.add(Component.translatable(LangUtil.tooltip("durability.amount.infinite")));
+
+		} else if (hasDurability(stack)) {
+			int durability = getDurability(stack);
+			tooltip.add(Component.translatable(LangUtil.tooltip("durability.amount"), durability - stack.getDamageValue(), durability));
+
 		}
 		else {
 			tooltip.add(Component.translatable(LangUtil.tooltip("durability.amount"), stack.getMaxDamage() - stack.getDamageValue(), stack.getMaxDamage()));
@@ -233,11 +244,14 @@ public class KeyItem extends Item implements IKeyEffects {
 	 * @return 
 	 * @return 0.0 for 100% (no damage / full bar), 1.0 for 0% (fully damaged / empty bar)
 	 */
-	@Override
-	public int getBarWidth(ItemStack stack) {
-		return stack.getCapability(DURABILITY).map(cap -> {
-			return Math.round(13.0F - (float)stack.getDamageValue() * 13.0F / (float)cap.getDurability());
-		}).orElse(Math.round(13.0F - (float)stack.getDamageValue() * 13.0F / (float)this.getMaxDamage(stack)));
+//	@Override
+	public int getBarWidth(@NotNull ItemStack stack) {
+		CompoundTag tag = stack.getTag();
+		if (isInfinite() || !hasDurability(stack)) {
+			return super.getBarWidth(stack);
+		} else {
+			return Math.round(13.0F - (float)stack.getDamageValue() * 13.0F / (float)tag.getInt(DURABILITY));
+		}
 	}
 
 	/**
@@ -310,19 +324,20 @@ public class KeyItem extends Item implements IKeyEffects {
 					}
 				}
 
-				IDurabilityHandler cap = heldItemStack.getCapability(DURABILITY).orElseThrow(IllegalStateException::new);
-				
+				// get the durability from the tag
+				int durability = getDurability(heldItemStack, heldItemStack.getMaxDamage());
+
 				// check key's breakability
 				if (breakKey) {
 					if ((isBreakable() || anyLockBreaksKey(chestBlockEntity.getLockStates(), this)) && Config.SERVER.keysAndLocks.enableKeyBreaks.get()) {
 
-						// this damage block is considering if a key has been merged with another key.
+						// this damage block is considered if a key has been merged with another key.
 						// it is only 'breaking' 1 key's worth of damage
 						// ex k1(1/10d) + k2(0/10d) = k3(1/20d), only apply 9 damage
 						// so k3 = (10/20d) ie 1 key's worth damage was applied.
 						int damage = heldItemStack.getDamageValue() + (heldItemStack.getMaxDamage() - (heldItemStack.getDamageValue() % heldItemStack.getMaxDamage()));
 						heldItemStack.setDamageValue(damage);
-						if (heldItemStack.getDamageValue() >= cap.getDurability()) {
+						if (heldItemStack.getDamageValue() >= durability) {
 							// break key;
 							heldItemStack.shrink(1);
 						}
@@ -344,7 +359,7 @@ public class KeyItem extends Item implements IKeyEffects {
 				// user attempted to use key - increment the damage
 				if (isDamageable(heldItemStack) && !isKeyBroken) {
 					heldItemStack.setDamageValue(heldItemStack.getDamageValue() + 1);
-					if (heldItemStack.getDamageValue() >= cap.getDurability()) {
+					if (heldItemStack.getDamageValue() >= durability) {
 						heldItemStack.shrink(1);
 					}
 				}
@@ -516,7 +531,7 @@ public class KeyItem extends Item implements IKeyEffects {
 	 * @return
 	 */
 	public boolean isBreakable() {
-		return breakable;
+		return breakable && !isInfinite();
 	}
 
 	/**
@@ -572,17 +587,46 @@ public class KeyItem extends Item implements IKeyEffects {
 	 * @return the damageable
 	 */
 	public boolean isDamageable(ItemStack stack) {
-		IDurabilityHandler handler = stack.getCapability(TreasureCapabilities.DURABILITY).map(h -> h).orElse(null);
-		if (handler != null) {
-			return !handler.isInfinite();
-		}
-		return true;
+		// TODO check the stack property of infinite
+//		IDurabilityHandler handler = stack.getCapability(TreasureCapabilities.DURABILITY).map(h -> h).orElse(null);
+//		if (handler != null) {
+//			return !handler.isInfinite();
+//		}
+//		return true;
+		return !isInfinite();
 	}
 
-	/**
-	 * @param damageable the damageable to set
-	 */
+//	/**
+//	 * @param damageable the damageable to set
+//	 */
 //	public void setDamageable(boolean damageable) {
 //		this.damageable = damageable;
 //	}
+
+	public int getDurability(ItemStack stack) {
+		return getDurability(stack, 0);
+	}
+
+	public int getDurability(ItemStack stack, int defaultValue) {
+		if (hasDurability(stack)) {
+			return stack.getTag().getInt(DURABILITY);
+		}
+		return defaultValue;
+	}
+
+	public void setDurability(ItemStack stack, int durability) {
+		stack.getOrCreateTag().putInt(DURABILITY, Math.max(0, durability));
+	}
+
+	public boolean hasDurability(ItemStack stack) {
+		return stack.hasTag() && stack.getTag().contains(DURABILITY);
+	}
+
+	public boolean isInfinite() {
+		return infinite;
+	}
+
+	private void setInfinite(boolean infinite) {
+		this.infinite = infinite;
+	}
 }

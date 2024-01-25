@@ -50,24 +50,26 @@ public interface ITreasureFeature {
 	}
 
 	/**
-	 * 
+	 *
+	 *
 	 * @param world
 	 * @param spawnCoords
-	 * @param chestConfig
+	 * @param whitelist
+	 * @param blacklist
 	 * @return
 	 */
 	default public boolean meetsBiomeCriteria(ServerLevel world, ICoords spawnCoords, List<String> whitelist, List<String> blacklist) {
 		ResourceLocation name = ModUtil.getName(world.getBiome(spawnCoords.toPos()));
+
+//		Treasure.LOGGER.debug("whitelist -> {}", whitelist);
+//		Treasure.LOGGER.debug("blacklist -> {}", blacklist);
+//		Treasure.LOGGER.debug("biome -> {}", name);
+
 		TreasureBiomeHelper.Result biomeCheck =TreasureBiomeHelper.isBiomeAllowed(name, whitelist, blacklist);
-		
+//		Treasure.LOGGER.debug("biomeCheck -> {}", biomeCheck);
+
 		if(biomeCheck == TreasureBiomeHelper.Result.BLACK_LISTED ) {
-			if (WorldInfo.isClientSide(world)) {
-				Treasure.LOGGER.debug("biome {} is not a valid biome at -> {}", name, spawnCoords.toShortString());
-			}
-			else {
-				// TODO test if this crashes with the getRegistryName because in 1.12 this was a client side only
 				Treasure.LOGGER.debug("biome {} is not valid at -> {}", name, spawnCoords.toShortString());
-			}					
 			return false;
 		}
 		return true;

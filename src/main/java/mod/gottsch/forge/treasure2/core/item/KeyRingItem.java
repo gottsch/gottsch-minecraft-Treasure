@@ -19,8 +19,6 @@
  */
 package mod.gottsch.forge.treasure2.core.item;
 
-import static mod.gottsch.forge.treasure2.core.capability.TreasureCapabilities.DURABILITY;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +30,6 @@ import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
 import mod.gottsch.forge.treasure2.core.block.ITreasureChestBlockProxy;
 import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
 import mod.gottsch.forge.treasure2.core.block.entity.ITreasureChestBlockEntity;
-import mod.gottsch.forge.treasure2.core.capability.IDurabilityHandler;
 import mod.gottsch.forge.treasure2.core.capability.IKeyRingHandler;
 import mod.gottsch.forge.treasure2.core.capability.KeyRingCapability;
 import mod.gottsch.forge.treasure2.core.capability.TreasureCapabilities;
@@ -167,7 +164,9 @@ public class KeyRingItem extends Item implements MenuProvider {
 								breakKey = false;
 							}
 
-							IDurabilityHandler cap = keyStack.getCapability(DURABILITY).orElseThrow(IllegalStateException::new);
+							// get the durability from the tag
+							int durability = ((KeyItem)keyStack.getItem()).getDurability(keyStack, keyStack.getMaxDamage());
+
 							// TODO make into method in KeyItem
 							if (breakKey) {
 								if ((key.isBreakable() ||  key.anyLockBreaksKey(chestBlockEntity.getLockStates(), key))  && Config.SERVER.keysAndLocks.enableKeyBreaks.get()) {
@@ -177,7 +176,7 @@ public class KeyRingItem extends Item implements MenuProvider {
 									// so k3 = (10/20d) ie 1 key's worth damage was applied.
 									int damage = keyStack.getDamageValue() + (keyStack.getMaxDamage() - (keyStack.getDamageValue() % keyStack.getMaxDamage()));
 									keyStack.setDamageValue(damage);
-									if (keyStack.getDamageValue() >= cap.getDurability()) {
+									if (keyStack.getDamageValue() >= durability) {
 										// break key;
 										keyStack.shrink(1);
 									}								
@@ -196,7 +195,7 @@ public class KeyRingItem extends Item implements MenuProvider {
 							}
 							if (key.isDamageable(keyStack) && !isKeyBroken) {
 								keyStack.setDamageValue(keyStack.getDamageValue() + 1);
-								if (keyStack.getDamageValue() >= cap.getDurability()) {
+								if (keyStack.getDamageValue() >= durability) {
 									keyStack.shrink(1);
 								}
 							}

@@ -271,8 +271,11 @@ public class LanguageGen extends LanguageProvider {
         add(LangUtil.tooltip("chest.rarity"), "Rarity: %s");
         add(LangUtil.tooltip("chest.max_locks"), "Max Locks: %s");
         add(LangUtil.tooltip("chest.container_size"), "Inventory Size: %s");
-        
-        // capabilities
+
+        add(LangUtil.tooltip("durability.amount"), "Durability: [%s/%s]");
+        add(LangUtil.tooltip("durability.amount.infinite"), "Durability: Infinite");
+
+        // capabilities - deprecated
         add(LangUtil.tooltip("cap.durability.amount"), "Durability: [%s/%s]");
         add(LangUtil.tooltip("cap.durability.amount.infinite"), "Durability: Infinite");
         add(LangUtil.tooltip("cap.durability.repairs"), "R[%s/%s]");

@@ -67,3 +67,10 @@ description="Adds new chests filled with loot to be discovered."
     versionRange="[2.1.0,)"
     ordering="BEFORE"
     side="BOTH"
+[[dependencies.treasure2]]
+modId="biomesoplenty"
+mandatory=false
+# This version range declares a minimum of the current minecraft version up to but not including the next major version
+versionRange="[18.0.0,)"
+ordering="BEFORE"
+side="BOTH"

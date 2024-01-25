@@ -36,7 +36,6 @@ import net.minecraftforge.items.IItemHandler;
 @Mod.EventBusSubscriber(modid = Treasure.MODID, bus = Bus.MOD)
 public class TreasureCapabilities {
 
-	public static Capability<IDurabilityHandler> DURABILITY = CapabilityManager.get(new CapabilityToken<>() {	});
 	public static Capability<IKeyRingHandler> KEY_RING = CapabilityManager.get(new CapabilityToken<>() {	});
 	public static Capability<IItemHandler> KEY_RING_INV = CapabilityManager.get(new CapabilityToken<>() {	});
 	public static Capability<IItemHandler> POUCH = CapabilityManager.get(new CapabilityToken<>() {	});
@@ -46,7 +45,6 @@ public class TreasureCapabilities {
 	 */
 	@SubscribeEvent
 	public static void register(final RegisterCapabilitiesEvent event) {
-		DurabilityCapability.register(event);
 		KeyRingCapability.register(event);
 	}
 }

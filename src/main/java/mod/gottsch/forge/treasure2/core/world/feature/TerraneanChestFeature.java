@@ -130,6 +130,7 @@ public class TerraneanChestFeature extends ChestFeature {
 			return false;
 		}
 		// test if the override (global) biome is allowed
+		Treasure.LOGGER.debug("rarity -> {}", rarity);
 
 		// TODO might have feature generator specific biome and proximity criteria checks. ie Wither
 		if (!meetsBiomeCriteria(genLevel.getLevel(), spawnCoords, rarityConfig.get().getBiomeWhitelist(), rarityConfig.get().getBiomeBlacklist())) {
