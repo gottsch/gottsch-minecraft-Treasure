@@ -106,9 +106,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 public class ClientSetup {
 
 	/**
-	 * Register the {@link IBlockColor} handlers.
 	 *
-	 * @param event The event
+	 * @param event
 	 */
 	@OnlyIn(Dist.CLIENT)
 	@SubscribeEvent
@@ -137,12 +136,12 @@ public class ClientSetup {
             MenuScreens.register(TreasureContainers.KEY_RING_CONTAINER.get(), KeyRingScreen::new);           
             MenuScreens.register(TreasureContainers.POUCH_CONTAINER.get(), PouchScreen::new);           
             
-            TreasureBlocks.CHESTS.forEach(chest -> {
-            	ItemBlockRenderTypes.setRenderLayer(chest.get(), RenderType.cutoutMipped());
-            });
-
-            ItemBlockRenderTypes.setRenderLayer(TreasureBlocks.SPANISH_MOSS.get(), RenderType.cutout());
-            ItemBlockRenderTypes.setRenderLayer(TreasureBlocks.SKELETON.get(), RenderType.cutout());
+//            TreasureBlocks.CHESTS.forEach(chest -> {
+//            	ItemBlockRenderTypes.setRenderLayer(chest.get(), RenderType.cutoutMipped());
+//            });
+//
+//            ItemBlockRenderTypes.setRenderLayer(TreasureBlocks.SPANISH_MOSS.get(), RenderType.cutout());
+//            ItemBlockRenderTypes.setRenderLayer(TreasureBlocks.SKELETON.get(), RenderType.cutout());
         });
     }
 
@@ -220,13 +219,13 @@ public class ClientSetup {
 	
 	@SubscribeEvent
 	public static void registerParticleProviders(RegisterParticleProvidersEvent event) {
-		event.register(TreasureParticles.SPANISH_MOSS_PARTICLE.get(), SpanishMossParticle.Provider::new);		
-		event.register(TreasureParticles.MIST_PARTICLE.get(), MistParticle.Provider::new);		
-		event.register(TreasureParticles.BILLOWING_MIST_PARTICLE.get(), BillowingMistParticle.Provider::new);		
-		event.register(TreasureParticles.POISON_MIST_PARTICLE.get(), 	PoisonMistParticle.Provider::new);		
-		event.register(TreasureParticles.WITHER_MIST_PARTICLE.get(), 	WitherMistParticle.Provider::new);		
-		event.register(TreasureParticles.COPPER_COIN_PARTICLE.get(), CoinParticle.Provider::new);
-		event.register(TreasureParticles.SILVER_COIN_PARTICLE.get(), CoinParticle.Provider::new);
-		event.register(TreasureParticles.GOLD_COIN_PARTICLE.get(), CoinParticle.Provider::new);
+		event.registerSpriteSet(TreasureParticles.SPANISH_MOSS_PARTICLE.get(), SpanishMossParticle.Provider::new);
+		event.registerSpriteSet(TreasureParticles.MIST_PARTICLE.get(), MistParticle.Provider::new);
+		event.registerSpriteSet(TreasureParticles.BILLOWING_MIST_PARTICLE.get(), BillowingMistParticle.Provider::new);
+		event.registerSpriteSet(TreasureParticles.POISON_MIST_PARTICLE.get(), PoisonMistParticle.Provider::new);
+		event.registerSpriteSet(TreasureParticles.WITHER_MIST_PARTICLE.get(), WitherMistParticle.Provider::new);
+		event.registerSpriteSet(TreasureParticles.COPPER_COIN_PARTICLE.get(), CoinParticle.Provider::new);
+		event.registerSpriteSet(TreasureParticles.SILVER_COIN_PARTICLE.get(), CoinParticle.Provider::new);
+		event.registerSpriteSet(TreasureParticles.GOLD_COIN_PARTICLE.get(), CoinParticle.Provider::new);
 	}
 }

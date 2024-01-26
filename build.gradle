@@ -146,7 +146,7 @@ repositories {
 
 	// if using maven, DO NOT have the jar in the flatDir dir.
     maven {
-        url "${project.projectDir}/../maven"
+        url "file:///${project.projectDir}/../maven"
     }
     maven {
         name = "CurseMaven"
@@ -173,8 +173,8 @@ dependencies {
     // runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}") // Adds the full JEI mod as a runtime dependency
     // implementation fg.deobf("com.tterrag.registrate:Registrate:MC${mc_version}-${registrate_version}") // Adds registrate as a dependency
 	//compileOnly files(gottschcore_path)
-	//compileOnly fg.deobf("curse.maven:gottschcore-272450:3933614")
-	compileOnly fg.deobf("someguyssoftware.gottschcore:GottschCore:mc1.19.4-f45.1.0-v2.1.0")
+	compileOnly fg.deobf("curse.maven:gottschcore-272450:4653257")
+	//compileOnly fg.deobf("someguyssoftware.gottschcore:GottschCore:mc1.19.4-f45.1.0-v2.1.0")
 	
 	//compileOnly fg.deobf("curse.maven:champions-307152:${cf_champions}")
 	//compileOnly fg.deobf("curse.maven:jade-324717:4434045") // 1.19.3-9.4.1
