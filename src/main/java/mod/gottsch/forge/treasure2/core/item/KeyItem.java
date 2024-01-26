@@ -70,6 +70,7 @@ import net.minecraftforge.common.util.LazyOptional;
  */
 public class KeyItem extends Item implements IKeyEffects {
 	public static final int DEFAULT_MAX_USES = 25;
+	public static final String DURABILITY_TAG = "treasure2:durability";
 
 	/*
 	 * The category that the key belongs to
@@ -115,7 +116,7 @@ public class KeyItem extends Item implements IKeyEffects {
 		setCategory(KeyLockCategory.ELEMENTAL);
 		setBreakable(true);
 		setCraftable(false);
-		setSuccessProbability(90D);	
+		setSuccessProbability(90D);
 	}
 
 	@Override
@@ -131,25 +132,36 @@ public class KeyItem extends Item implements IKeyEffects {
 	/**
 	 * NOTE getShareTag() and readShareTag() are required to sync item capabilities server -> client. I needed this when holding charms in hands and then swapping hands
 	 * or having the client update when the Anvil GUI is open.
+	 *
+	 * 1/25/2024 in 1.19.3+ these methods are not needed and in fact caused the mod
+	 * not to work properly.
 	 */
 	@Override
 	public CompoundTag getShareTag(ItemStack stack) {
-		CompoundTag tag = null;
+		super.getShareTag(stack);
 
+		CompoundTag capabilityTag = null;
 		IDurabilityHandler handler = stack.getCapability(DURABILITY).map(h -> h).orElse(null);
 		if (handler != null) {
-			tag = handler.save();
+			capabilityTag = handler.save();
 		}
-		return tag;
+		CompoundTag stackTag = stack.getOrCreateTag();
+		// NOTE must ensure to add the capability tag to the original stack tag.
+		if (capabilityTag != null) {
+			stackTag.put(DURABILITY_TAG, capabilityTag);
+		}
+		return stackTag;
 	}
 
 	@Override
 	public void readShareTag(ItemStack stack, @Nullable CompoundTag tag) {
 		super.readShareTag(stack, tag);
 
-		IDurabilityHandler handler = stack.getCapability(DURABILITY).map(h -> h).orElse(null);
-		if (handler != null) {
-			handler.load(tag);
+		if (tag.contains(DURABILITY_TAG)) {
+			IDurabilityHandler handler = stack.getCapability(DURABILITY).map(h -> h).orElse(null);
+			if (handler != null) {
+				handler.load(tag.get(DURABILITY_TAG));
+			}
 		}
 	}
 
@@ -166,7 +178,7 @@ public class KeyItem extends Item implements IKeyEffects {
 	 */
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flag) {
-
+//		Treasure.LOGGER.debug("appendHoverText damage -> {}", stack.getDamageValue());
 		if (stack.getCapability(DURABILITY).isPresent()) {
 			stack.getCapability(DURABILITY).ifPresent(cap -> {
 				if (cap.isInfinite()) {
@@ -178,7 +190,7 @@ public class KeyItem extends Item implements IKeyEffects {
 			});
 		}
 		else {
-			tooltip.add(Component.translatable(LangUtil.tooltip("durability.amount"), stack.getMaxDamage() - stack.getDamageValue(), stack.getMaxDamage()));
+			tooltip.add(Component.translatable(LangUtil.tooltip("cap.durability.amount"), stack.getMaxDamage() - stack.getDamageValue(), stack.getMaxDamage()));
 		}
 		
 		tooltip.add(Component.translatable(LangUtil.tooltip("key_lock.rarity"), ChatFormatting.BLUE + Component.translatable(getRarity().getValue().toLowerCase()).getString().toUpperCase() ));
@@ -254,7 +266,7 @@ public class KeyItem extends Item implements IKeyEffects {
 		if (WorldInfo.isClientSide(context.getLevel())) {			
 			return InteractionResult.FAIL;
 		}
-		
+
 		BlockPos chestPos = context.getClickedPos();
 		BlockState state = context.getLevel().getBlockState(chestPos);
 		Block block = state.getBlock();
@@ -314,7 +326,7 @@ public class KeyItem extends Item implements IKeyEffects {
 				
 				// check key's breakability
 				if (breakKey) {
-					if ((isBreakable() || anyLockBreaksKey(chestBlockEntity.getLockStates(), this)) && Config.SERVER.keysAndLocks.enableKeyBreaks.get()) {
+					if (!context.getPlayer().isCreative() && (isBreakable() || anyLockBreaksKey(chestBlockEntity.getLockStates(), this)) && Config.SERVER.keysAndLocks.enableKeyBreaks.get()) {
 
 						// this damage block is considering if a key has been merged with another key.
 						// it is only 'breaking' 1 key's worth of damage
@@ -322,6 +334,7 @@ public class KeyItem extends Item implements IKeyEffects {
 						// so k3 = (10/20d) ie 1 key's worth damage was applied.
 						int damage = heldItemStack.getDamageValue() + (heldItemStack.getMaxDamage() - (heldItemStack.getDamageValue() % heldItemStack.getMaxDamage()));
 						heldItemStack.setDamageValue(damage);
+						Treasure.LOGGER.debug("damaging key -> {}", heldItemStack.getDamageValue());
 						if (heldItemStack.getDamageValue() >= cap.getDurability()) {
 							// break key;
 							heldItemStack.shrink(1);
@@ -342,8 +355,10 @@ public class KeyItem extends Item implements IKeyEffects {
 				}
 
 				// user attempted to use key - increment the damage
-				if (isDamageable(heldItemStack) && !isKeyBroken) {
+				if (!context.getPlayer().isCreative() && isDamageable(heldItemStack) && !isKeyBroken) {
 					heldItemStack.setDamageValue(heldItemStack.getDamageValue() + 1);
+					Treasure.LOGGER.debug("damaging key -> {}", heldItemStack.getDamageValue());
+
 					if (heldItemStack.getDamageValue() >= cap.getDurability()) {
 						heldItemStack.shrink(1);
 					}
