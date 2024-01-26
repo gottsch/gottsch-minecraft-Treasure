@@ -41,16 +41,21 @@ public class AnvilEventHandler {
 	@Mod.EventBusSubscriber(modid = Treasure.MODID, bus = EventBusSubscriber.Bus.FORGE)
 	public static class RegistrationHandler {
 
+		private static final int MAX_DURABILITY = 100;
+
 		@SubscribeEvent
 		public static void onAnvilUpdate(AnvilUpdateEvent event) {
 			ItemStack leftStack = event.getLeft();
 			ItemStack rightStack = event.getRight();
 
 			// check for KeyItems and having the durability capability
-			if (leftStack.getItem() instanceof KeyItem && leftStack.getCapability(DURABILITY).isPresent()
+			if (leftStack.getItem() instanceof KeyItem
+					&& leftStack.getItem() == rightStack.getItem()
+					&& leftStack.getCapability(DURABILITY).isPresent()
 					&& leftStack.getCapability(DURABILITY).map(h -> !h.isInfinite()).orElse(true)					
-					&& rightStack.getItem() instanceof KeyItem &&  rightStack.getCapability(DURABILITY).isPresent()
-					&& rightStack.getCapability(DURABILITY).map(h -> !h.isInfinite()).orElse(true)) {
+					&& rightStack.getCapability(DURABILITY).isPresent()
+					&& rightStack.getCapability(DURABILITY).map(h -> !h.isInfinite()).orElse(true)
+					) {
 
 				event.setCost(1);
 				LazyOptional<IDurabilityHandler> leftHandler = leftStack.getCapability(DURABILITY);
@@ -61,24 +66,28 @@ public class AnvilEventHandler {
 				int leftRemainingUses = leftDurability - leftStack.getDamageValue();
 				int rightRemainingUses = rightDurability - rightStack.getDamageValue();
 
-				ItemStack outputItem = new ItemStack(leftStack.getItem());
-				LazyOptional<IDurabilityHandler> outputHandler = outputItem.getCapability(DURABILITY);
+				// create output stack
+				ItemStack outputStack = new ItemStack(leftStack.getItem());
+				LazyOptional<IDurabilityHandler> outputHandler = outputStack.getCapability(DURABILITY);
+
+				Treasure.LOGGER.debug("left damange -> {}", leftStack.getDamageValue());
+				Treasure.LOGGER.debug("right damange -> {}", rightStack.getDamageValue());
 
 				int remainingUses = leftRemainingUses + rightRemainingUses;
 				if (remainingUses > Math.max(leftDurability, rightDurability)) {
-					outputHandler.ifPresent(cap -> cap.setDurability(Math.max(leftDurability, rightDurability) + leftStack.getMaxDamage()));
-					outputItem.setDamageValue(leftStack.getDamageValue() + rightStack.getDamageValue());
+					outputHandler.ifPresent(cap -> cap.setDurability(Math.min(remainingUses, MAX_DURABILITY)));
+					outputStack.setDamageValue(0);
 				}
 				else {
-					if (remainingUses < Math.min(leftDurability,  rightDurability)) {
+					if (remainingUses < Math.min(leftDurability, rightDurability)) {
 						outputHandler.ifPresent(cap -> cap.setDurability(Math.min(leftDurability, rightDurability)));
 					}
 					else {
 						outputHandler.ifPresent(cap -> cap.setDurability(Math.max(leftDurability, rightDurability)));
 					}
-					outputItem.setDamageValue(outputHandler.map(c -> c.getDurability()).orElse(leftStack.getMaxDamage()) - remainingUses);
+					outputStack.setDamageValue(outputHandler.map(c -> c.getDurability()).orElse(leftStack.getMaxDamage()) - remainingUses);
 				}
-				event.setOutput(outputItem);
+				event.setOutput(outputStack);
 			}
 		}
 	}

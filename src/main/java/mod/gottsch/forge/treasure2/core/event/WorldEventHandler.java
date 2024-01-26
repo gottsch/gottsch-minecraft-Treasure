@@ -50,6 +50,7 @@ public class WorldEventHandler {
 
 	private static Path worldSavePath;
 	private static boolean isLoaded = false;
+	private static boolean isClientLoaded = false;
 
 	@SubscribeEvent(priority = EventPriority.HIGH)
 	public static void onWorldLoad(LevelEvent.Load event) {
@@ -72,7 +73,7 @@ public class WorldEventHandler {
 			if (worldSavePath.isPresent()) {
 				if ((!isLoaded && Config.SERVER.integration.dimensionsWhiteList.get().contains(dimension.toString())) ||
 						!worldSavePath.get().equals(WorldEventHandler.worldSavePath)) {
-							
+
 					Treasure.LOGGER.debug("reading in chests config...");
 					DimensionalGeneratedCache.initialize();
 					RarityLevelWeightedChestGeneratorRegistry.initialize();
@@ -95,6 +96,11 @@ public class WorldEventHandler {
 
 			} else {
 				Treasure.LOGGER.warn("unable to locate the world save folder.");
+			}
+		} else {
+			if (!isClientLoaded) {
+				TreasureDataFixer.fix();
+				isClientLoaded = true;
 			}
 		}
 	}
