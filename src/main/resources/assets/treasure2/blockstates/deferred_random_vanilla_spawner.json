@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "": { "model": "treasure2:block/deferred_random_vanilla_spawner" }
+    }
+}

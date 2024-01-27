@@ -1,0 +1,10 @@
+// 1.19.2	2024-01-01T12:57:47.089328	Tags for minecraft:block
+78a76e483eddd7602fa921f0009a4f67626afab6 data/treasure2/tags/blocks/chests/rarity/core/common.json
+8e07903c1d6612b12b0f7a8dcbe7d016f97d23f7 data/treasure2/tags/blocks/chests/rarity/core/epic.json
+bf7fa9b5db946b2c51018b3a1bf54281176546ee data/treasure2/tags/blocks/chests/rarity/core/rare.json
+22be65bd166e9efe85912479339a33e7d93fd8e5 data/treasure2/tags/blocks/chests/rarity/core/scarce.json
+80406290d9747be092000e29dcdd076e450341cd data/treasure2/tags/blocks/chests/rarity/core/uncommon.json
+5c8c119e91601ea39ba7b67c33de16a644d40f60 data/treasure2/tags/blocks/chests/rarity/special/crystal_skull.json
+8d44b187e03c47b8cef572afbfd253a522dd9599 data/treasure2/tags/blocks/chests/rarity/special/gold_skull.json
+58d0af9b785a5df001cc4fe50d0c7c68ffa8b81b data/treasure2/tags/blocks/chests/rarity/special/skull.json
+baed03df2e7f328a1be9f1036a31ba3e15a44bc1 data/treasure2/tags/blocks/chests/rarity/special/wither.json

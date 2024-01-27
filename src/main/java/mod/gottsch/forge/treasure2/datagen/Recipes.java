@@ -27,10 +27,10 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.block.Blocks;
 
 /**
  * 
@@ -161,6 +161,227 @@ public class Recipes extends RecipeProvider {
 	        .unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
 	        .save(recipe);
 
+			// wither key
+			ShapedRecipeBuilder.shaped(TreasureItems.WITHER_KEY.get())
+					.pattern(" bt")
+					.pattern(" b ")
+					.pattern(" br")
+					.define('t', TreasureItems.TREASURE_TOOL.get())
+					.define('b', TreasureItems.WITHER_STICK_ITEM.get())
+					.define('r', TreasureItems.WITHER_ROOT_ITEM.get())
+					.unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
+					.save(recipe);
+
+			// skull chest
+			ShapelessRecipeBuilder.shapeless(TreasureBlocks.SKULL_CHEST.get())
+					.requires(TreasureItems.TREASURE_TOOL.get())
+					.requires(Items.SKELETON_SKULL)
+					.unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
+					.save(recipe);
+
+			// gold skull chest
+			ShapedRecipeBuilder.shaped(TreasureBlocks.GOLD_SKULL_CHEST.get())
+					.pattern("ggt")
+					.pattern("gxg")
+					.pattern("ggg")
+					.define('t', TreasureItems.TREASURE_TOOL.get())
+					.define('x', Items.SKELETON_SKULL)
+					.define('g', Items.GOLD_INGOT)
+					.unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
+					.save(recipe);
+
+			// crystal skull chest
+			ShapedRecipeBuilder.shaped(TreasureBlocks.CRYSTAL_SKULL_CHEST.get())
+					.pattern("ggt")
+					.pattern("gxg")
+					.pattern("ggg")
+					.define('t', TreasureItems.TREASURE_TOOL.get())
+					.define('x', Items.SKELETON_SKULL)
+					.define('g', Items.DIAMOND)
+					.unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
+					.save(recipe);
+
+			// wither planks
+			ShapelessRecipeBuilder.shapeless(TreasureBlocks.WITHER_PLANKS.get())
+					.requires(TreasureBlocks.WITHER_LOG.get())
+					.unlockedBy("has_log", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureBlocks.WITHER_LOG.get()))
+					.save(recipe);
+
+
+			// gravestones
+			ShapedRecipeBuilder.shaped(TreasureBlocks.SKULL_CROSSBONES.get())
+					.pattern("  t")
+					.pattern(" b ")
+					.pattern("b b")
+					.define('t', TreasureItems.TREASURE_TOOL.get())
+					.define('b', Items.BONE)
+					.unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
+					.save(recipe);
+
+			ShapedRecipeBuilder.shaped(TreasureBlocks.GRAVESTONE1_COBBLESTONE.get())
+					.pattern("  t")
+					.pattern("   ")
+					.pattern(" s ")
+					.define('t', TreasureItems.TREASURE_TOOL.get())
+					.define('s', Items.COBBLESTONE)
+					.unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
+					.save(recipe);
+
+			ShapedRecipeBuilder.shaped(TreasureBlocks.GRAVESTONE1_MOSSY_COBBLESTONE.get())
+					.pattern("  t")
+					.pattern("   ")
+					.pattern(" s ")
+					.define('t', TreasureItems.TREASURE_TOOL.get())
+					.define('s', Items.MOSSY_COBBLESTONE)
+					.unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
+					.save(recipe);
+
+			ShapedRecipeBuilder.shaped(TreasureBlocks.GRAVESTONE1_OBSIDIAN.get())
+					.pattern("  t")
+					.pattern("   ")
+					.pattern(" s ")
+					.define('t', TreasureItems.TREASURE_TOOL.get())
+					.define('s', Items.OBSIDIAN)
+					.unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
+					.save(recipe);
+
+			ShapedRecipeBuilder.shaped(TreasureBlocks.GRAVESTONE1_POLISHED_GRANITE.get())
+					.pattern("  t")
+					.pattern("   ")
+					.pattern(" s ")
+					.define('t', TreasureItems.TREASURE_TOOL.get())
+					.define('s', Items.POLISHED_GRANITE)
+					.unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
+					.save(recipe);
+
+			ShapedRecipeBuilder.shaped(TreasureBlocks.GRAVESTONE1_SMOOTH_QUARTZ.get())
+					.pattern("  t")
+					.pattern("   ")
+					.pattern(" s ")
+					.define('t', TreasureItems.TREASURE_TOOL.get())
+					.define('s', Items.SMOOTH_QUARTZ)
+					.unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
+					.save(recipe);
+
+			ShapedRecipeBuilder.shaped(TreasureBlocks.GRAVESTONE1_STONE.get())
+					.pattern("  t")
+					.pattern("   ")
+					.pattern(" s ")
+					.define('t', TreasureItems.TREASURE_TOOL.get())
+					.define('s', Items.STONE)
+					.unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
+					.save(recipe);
+
+			// gravestone 2
+			ShapedRecipeBuilder.shaped(TreasureBlocks.GRAVESTONE2_COBBLESTONE.get())
+					.pattern("  t")
+					.pattern(" s ")
+					.pattern(" s ")
+					.define('t', TreasureItems.TREASURE_TOOL.get())
+					.define('s', Items.COBBLESTONE)
+					.unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
+					.save(recipe);
+
+			ShapedRecipeBuilder.shaped(TreasureBlocks.GRAVESTONE2_MOSSY_COBBLESTONE.get())
+					.pattern("  t")
+					.pattern(" s ")
+					.pattern(" s ")
+					.define('t', TreasureItems.TREASURE_TOOL.get())
+					.define('s', Items.MOSSY_COBBLESTONE)
+					.unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
+					.save(recipe);
+
+			ShapedRecipeBuilder.shaped(TreasureBlocks.GRAVESTONE2_OBSIDIAN.get())
+					.pattern("  t")
+					.pattern(" s ")
+					.pattern(" s ")
+					.define('t', TreasureItems.TREASURE_TOOL.get())
+					.define('s', Items.OBSIDIAN)
+					.unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
+					.save(recipe);
+
+			ShapedRecipeBuilder.shaped(TreasureBlocks.GRAVESTONE2_POLISHED_GRANITE.get())
+					.pattern("  t")
+					.pattern(" s ")
+					.pattern(" s ")
+					.define('t', TreasureItems.TREASURE_TOOL.get())
+					.define('s', Items.POLISHED_GRANITE)
+					.unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
+					.save(recipe);
+
+			ShapedRecipeBuilder.shaped(TreasureBlocks.GRAVESTONE2_SMOOTH_QUARTZ.get())
+					.pattern("  t")
+					.pattern(" s ")
+					.pattern(" s ")
+					.define('t', TreasureItems.TREASURE_TOOL.get())
+					.define('s', Items.SMOOTH_QUARTZ)
+					.unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
+					.save(recipe);
+
+			ShapedRecipeBuilder.shaped(TreasureBlocks.GRAVESTONE2_STONE.get())
+					.pattern("  t")
+					.pattern(" s ")
+					.pattern(" s ")
+					.define('t', TreasureItems.TREASURE_TOOL.get())
+					.define('s', Items.STONE)
+					.unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
+					.save(recipe);
+
+			// gravestone 3
+			ShapedRecipeBuilder.shaped(TreasureBlocks.GRAVESTONE3_COBBLESTONE.get())
+					.pattern(" st")
+					.pattern(" s ")
+					.pattern(" s ")
+					.define('t', TreasureItems.TREASURE_TOOL.get())
+					.define('s', Items.COBBLESTONE)
+					.unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
+					.save(recipe);
+
+			ShapedRecipeBuilder.shaped(TreasureBlocks.GRAVESTONE3_MOSSY_COBBLESTONE.get())
+					.pattern(" st")
+					.pattern(" s ")
+					.pattern(" s ")
+					.define('t', TreasureItems.TREASURE_TOOL.get())
+					.define('s', Items.MOSSY_COBBLESTONE)
+					.unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
+					.save(recipe);
+
+			ShapedRecipeBuilder.shaped(TreasureBlocks.GRAVESTONE3_OBSIDIAN.get())
+					.pattern(" st")
+					.pattern(" s ")
+					.pattern(" s ")
+					.define('t', TreasureItems.TREASURE_TOOL.get())
+					.define('s', Items.OBSIDIAN)
+					.unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
+					.save(recipe);
+
+			ShapedRecipeBuilder.shaped(TreasureBlocks.GRAVESTONE3_POLISHED_GRANITE.get())
+					.pattern(" st")
+					.pattern(" s ")
+					.pattern(" s ")
+					.define('t', TreasureItems.TREASURE_TOOL.get())
+					.define('s', Items.POLISHED_GRANITE)
+					.unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
+					.save(recipe);
+
+			ShapedRecipeBuilder.shaped(TreasureBlocks.GRAVESTONE3_SMOOTH_QUARTZ.get())
+					.pattern(" st")
+					.pattern(" s ")
+					.pattern(" s ")
+					.define('t', TreasureItems.TREASURE_TOOL.get())
+					.define('s', Items.SMOOTH_QUARTZ)
+					.unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
+					.save(recipe);
+
+			ShapedRecipeBuilder.shaped(TreasureBlocks.GRAVESTONE3_STONE.get())
+					.pattern(" st")
+					.pattern(" s ")
+					.pattern(" s ")
+					.define('t', TreasureItems.TREASURE_TOOL.get())
+					.define('s', Items.STONE)
+					.unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
+					.save(recipe);
+
 	        // copper weapons smelting
 			SimpleCookingRecipeBuilder.smelting(Ingredient.of(TreasureItems.CHIPPED_COPPER_SHORT_SWORD.get()),
 	                Items.COPPER_INGOT, 1.0f, 200)
@@ -197,34 +418,5 @@ public class Recipes extends RecipeProvider {
 	                Items.IRON_INGOT, 1.0f, 200)
 	        .unlockedBy("has_weapon", inventoryTrigger(ItemPredicate.Builder.item().of(TreasureItems.IRON_DWARVEN_AXE.get()).build()))
 	        .save(recipe, "iron_ingot_from_dwarven_axe");
-		
-	
-			// gravestones
-	        ShapedRecipeBuilder.shaped(TreasureBlocks.GRAVESTONE1_POLISHED_GRANITE.get())
-	        .pattern("  t")
-	        .pattern("   ")
-	        .pattern(" x ")
-	        .define('x', Blocks.POLISHED_GRANITE)
-	        .define('t', TreasureItems.TREASURE_TOOL.get())
-	        .unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
-	        .save(recipe);
-	        
-	        ShapedRecipeBuilder.shaped(TreasureBlocks.GRAVESTONE2_POLISHED_GRANITE.get())
-	        .pattern("  t")
-	        .pattern(" x ")
-	        .pattern(" x ")
-	        .define('x', Blocks.POLISHED_GRANITE)
-	        .define('t', TreasureItems.TREASURE_TOOL.get())
-	        .unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
-	        .save(recipe);
-	        
-	        ShapedRecipeBuilder.shaped(TreasureBlocks.GRAVESTONE3_POLISHED_GRANITE.get())
-	        .pattern(" xt")
-	        .pattern(" x ")
-	        .pattern(" x ")
-	        .define('x', Blocks.POLISHED_GRANITE)
-	        .define('t', TreasureItems.TREASURE_TOOL.get())
-	        .unlockedBy("has_tool", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureItems.TREASURE_TOOL.get()))
-	        .save(recipe);
 		}
 }

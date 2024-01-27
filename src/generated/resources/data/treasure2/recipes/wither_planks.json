@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "treasure2:wither_log"
+    }
+  ],
+  "result": {
+    "item": "treasure2:wither_planks"
+  }
+}

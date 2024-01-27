@@ -189,6 +189,11 @@ public class TreasureBlocks {
 	public static final RegistryObject<Block> GRAVESTONE3_SPAWNER_OBSIDIAN = Registration.BLOCKS.register("gravestone3_spawner_obsidian", () -> new GravestoneSpawnerBlock(Block.Properties.of(Material.STONE, MaterialColor.STONE)
 			.strength(3.0F).sound(SoundType.STONE)).setBounds(TreasureShapeBuilder.buildGravestone3()));
 
+	public static final RegistryObject<Block> DEFERRED_RANDOM_VANILLA_SPAWNER = Registration.BLOCKS.register("deferred_random_vanilla_spawner", () -> new DeferredRandomVanillaSpawnerBlock(Block.Properties.of(Material.STONE, MaterialColor.STONE)
+			.strength(3.0F).sound(SoundType.STONE)));
+	public static final RegistryObject<Block> DEFERRED_WITHER_TREE_GENERATOR = Registration.BLOCKS.register("deferred_wither_tree_generator", () -> new DeferredWitherTreeGeneratorBlock(Block.Properties.of(Material.STONE, MaterialColor.STONE)
+			.strength(3.0F).sound(SoundType.STONE)));
+	
 	// falling blocks
 	public static final RegistryObject<Block> FALLING_GRASS = Registration.BLOCKS.register("falling_grass", () -> new FallingGrassBlock(Properties.of(Material.DIRT, MaterialColor.WOOD)
 			.strength(0.6F).sound(SoundType.GRASS)));

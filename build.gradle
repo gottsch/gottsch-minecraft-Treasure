@@ -221,8 +221,6 @@ publishing {
         mavenJava(MavenPublication) {
             artifactId project.archivesBaseName
             artifact jar
-            //artifact sourcesJar
-            //artifact javadocJar
         }
     }
     repositories {
