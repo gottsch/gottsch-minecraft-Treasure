@@ -70,15 +70,6 @@ public class DurabilityHandler implements IDurabilityHandler {
 		setMaxDurability(max);
 		setDurability(durability);
 	}
-	
-	// if given a material, setup default maxRepairs
-	// note: material is not saved as part of the durability
-//	public DurabilityHandler(int durability, int max, CharmableMaterial material) {
-//		this(durability, max);
-//		this.setRepairs(material.getMaxRepairs());
-//		this.setMaxRepairs(material.getMaxRepairs());
-//	}
-	
 	@Override
 	public CompoundTag save() {
 		CompoundTag mainTag = new CompoundTag();
@@ -96,8 +87,7 @@ public class DurabilityHandler implements IDurabilityHandler {
 	
 	@Override
 	public void load(Tag tag) {
-		if (tag instanceof CompoundTag) {
-			CompoundTag compound = (CompoundTag)tag;
+		if (tag instanceof CompoundTag compound) {
 			
 			if (compound.contains(MAX_DURABILITY_TAG)) {
 				setMaxDurability(compound.getInt(MAX_DURABILITY_TAG));

@@ -136,7 +136,7 @@ public class KeyRingItem extends Item implements MenuProvider {
 				// cycle through all keys in key ring until one is able to fit lock and use it to unlock the lock.
 				for (int i = 0; i < KeyRingCapability.INVENTORY_SIZE; i++) {
 					ItemStack keyStack = handler.getStackInSlot(i);
-					if (keyStack != null && keyStack != ItemStack.EMPTY)  {
+					if (!keyStack.isEmpty())  {
 						KeyItem key = (KeyItem) keyStack.getItem();
 						Treasure.LOGGER.debug("using key from keyring -> {}", ModUtil.getName(key));
 						boolean breakKey = true;
@@ -170,7 +170,7 @@ public class KeyRingItem extends Item implements MenuProvider {
 							IDurabilityHandler cap = keyStack.getCapability(DURABILITY).orElseThrow(IllegalStateException::new);
 							// TODO make into method in KeyItem
 							if (breakKey) {
-								if ((key.isBreakable() ||  key.anyLockBreaksKey(chestBlockEntity.getLockStates(), key))  && Config.SERVER.keysAndLocks.enableKeyBreaks.get()) {
+								if (!context.getPlayer().isCreative() && (key.isBreakable() ||  key.anyLockBreaksKey(chestBlockEntity.getLockStates(), key))  && Config.SERVER.keysAndLocks.enableKeyBreaks.get()) {									// this damage block is considering if a key has been merged with another key.
 									// this damage block is considering if a key has been merged with another key.
 									// it is only 'breaking' 1 key's worth of damage
 									// ex k1(1/10d) + k2(0/10d) = k3(1/20d), only apply 9 damage
@@ -194,7 +194,7 @@ public class KeyRingItem extends Item implements MenuProvider {
 									key.doKeyUnableToUnlockEffects(context.getLevel(), context.getPlayer(), chestPos);
 								}						
 							}
-							if (key.isDamageable(keyStack) && !isKeyBroken) {
+							if (!context.getPlayer().isCreative() && key.isDamageable(keyStack) && !isKeyBroken) {
 								keyStack.setDamageValue(keyStack.getDamageValue() + 1);
 								if (keyStack.getDamageValue() >= cap.getDurability()) {
 									keyStack.shrink(1);
