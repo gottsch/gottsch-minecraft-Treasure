@@ -27,11 +27,15 @@ import mod.gottsch.forge.treasure2.core.registry.KeyLockRegistry;
 import mod.gottsch.forge.treasure2.core.registry.TagRegistry;
 import mod.gottsch.forge.treasure2.core.registry.WishableRegistry;
 import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.event.TagsUpdatedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -104,6 +108,15 @@ public class TreasureTags {
 
 		public static TagKey<Block> mod(String domain, String path) {
 			return BlockTags.create(new ResourceLocation(domain, path));
+		}
+	}
+	
+	public static class Biomes {
+		public static final TagKey<Biome> ALL_OVERWORLD = mod(Treasure.MODID, "all_overworld");
+		public static final TagKey<Biome> BOP_OVERWORLD = mod(Treasure.MODID, "bop_overworld");
+
+		public static TagKey<Biome> mod(String domain, String path) {
+			return TagKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(domain, path));
 		}
 	}
 

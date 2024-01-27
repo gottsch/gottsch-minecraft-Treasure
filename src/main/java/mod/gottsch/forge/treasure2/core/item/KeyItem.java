@@ -76,7 +76,8 @@ import net.minecraftforge.items.IItemHandler;
  */
 public class KeyItem extends Item implements IKeyEffects {
 	public static final int DEFAULT_MAX_USES = 25;
-
+	public static final String DURABILITY_TAG = "treasure2:durability";
+	
 	/*
 	 * The category that the key belongs to
 	 */
@@ -140,22 +141,31 @@ public class KeyItem extends Item implements IKeyEffects {
 	 */
 	@Override
 	public CompoundTag getShareTag(ItemStack stack) {
-		CompoundTag tag = null;
+		super.getShareTag(stack);
+
+		CompoundTag capabilityTag = null;
 
 		IDurabilityHandler handler = stack.getCapability(DURABILITY).map(h -> h).orElse(null);
 		if (handler != null) {
-			tag = handler.save();
+			capabilityTag = handler.save();
 		}
-		return tag;
+		CompoundTag stackTag = stack.getOrCreateTag();
+		// NOTE must ensure to add the capability tag to the original stack tag.
+		if (capabilityTag != null) {
+			stackTag.put(DURABILITY_TAG, capabilityTag);
+		}
+		return stackTag;
 	}
 
 	@Override
 	public void readShareTag(ItemStack stack, @Nullable CompoundTag tag) {
 		super.readShareTag(stack, tag);
 
-		IDurabilityHandler handler = stack.getCapability(DURABILITY).map(h -> h).orElse(null);
-		if (handler != null) {
-			handler.load(tag);
+		if (tag.contains(DURABILITY_TAG)) {
+			IDurabilityHandler handler = stack.getCapability(DURABILITY).map(h -> h).orElse(null);
+			if (handler != null) {
+				handler.load(tag.get(DURABILITY_TAG));
+			}
 		}
 	}
 
@@ -184,7 +194,7 @@ public class KeyItem extends Item implements IKeyEffects {
 			});
 		}
 		else {
-			tooltip.add(new TranslatableComponent(LangUtil.tooltip("durability.amount"), stack.getMaxDamage() - stack.getDamageValue(), stack.getMaxDamage()));
+			tooltip.add(new TranslatableComponent(LangUtil.tooltip("cap.durability.amount"), stack.getMaxDamage() - stack.getDamageValue(), stack.getMaxDamage()));
 		}
 		
 		tooltip.add(new TranslatableComponent(LangUtil.tooltip("key_lock.rarity"), ChatFormatting.BLUE + new TranslatableComponent(getRarity().getValue().toLowerCase()).getString().toUpperCase() ));
@@ -320,8 +330,7 @@ public class KeyItem extends Item implements IKeyEffects {
 				
 				// check key's breakability
 				if (breakKey) {
-					if ((isBreakable() || anyLockBreaksKey(chestBlockEntity.getLockStates(), this)) && Config.SERVER.keysAndLocks.enableKeyBreaks.get()) {
-
+					if (!context.getPlayer().isCreative() && (isBreakable() || anyLockBreaksKey(chestBlockEntity.getLockStates(), this)) && Config.SERVER.keysAndLocks.enableKeyBreaks.get()) {
 						// this damage block is considering if a key has been merged with another key.
 						// it is only 'breaking' 1 key's worth of damage
 						// ex k1(1/10d) + k2(0/10d) = k3(1/20d), only apply 9 damage
@@ -348,7 +357,7 @@ public class KeyItem extends Item implements IKeyEffects {
 				}
 
 				// user attempted to use key - increment the damage
-				if (isDamageable(heldItemStack) && !isKeyBroken) {
+				if (!context.getPlayer().isCreative() && isDamageable(heldItemStack) && !isKeyBroken) {
 					heldItemStack.setDamageValue(heldItemStack.getDamageValue() + 1);
 					if (heldItemStack.getDamageValue() >= cap.getDurability()) {
 						heldItemStack.shrink(1);
