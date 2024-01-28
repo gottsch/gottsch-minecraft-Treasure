@@ -58,9 +58,13 @@ public class EquipmentManaRune extends Rune {
 		}
 		ICharmableCapability charmableCap = itemStack.getCapability(TreasureCapabilities.CHARMABLE, null);
 		charmableCap.getCharmEntities().forEach((type, charmEntity) -> {
-			charmEntity.setCostEvaluator(new EquipmentCostEvaluator(charmEntity.getCostEvaluator()));
-			Treasure.LOGGER.debug("setting entity -> {} to use cost eval -> {} with child eval -> {}", charmEntity.getCharm().getName().toString(), charmEntity.getCostEvaluator().getClass().getSimpleName(),
-					((EquipmentCostEvaluator)charmEntity.getCostEvaluator()).getEvaluator().getClass().getSimpleName());
+			if (charmEntity.getCostEvaluator() instanceof EquipmentCostEvaluator) {
+				// NOTE do nothing as the charm already has the EquipmentCostEvaluator
+			} else {
+				charmEntity.setCostEvaluator(new EquipmentCostEvaluator(charmEntity.getCostEvaluator()));
+				Treasure.LOGGER.debug("setting entity -> {} to use cost eval -> {} with child eval -> {}", charmEntity.getCharm().getName().toString(), charmEntity.getCostEvaluator().getClass().getSimpleName(),
+						((EquipmentCostEvaluator)charmEntity.getCostEvaluator()).getEvaluator().getClass().getSimpleName());
+			}
 		});
 		runestoneEntity.setApplied(true);
 	}

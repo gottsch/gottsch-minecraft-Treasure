@@ -21,8 +21,8 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.buildship.core.gradleclasspathcontainer"/>
 	<classpathentry kind="lib" path="E:/Development/workspace/git/ModCommonLibs/libs/Baubles-1.12-1.5.2.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/forge-1.12.2-2859"/>
 	<classpathentry kind="lib" path="E:/Development/workspace/git/ModCommonLibs/libs/commons-cli-1.4.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/GottschCore"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/GottschCore-1.12.2"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/forge-1.12.2"/>
 	<classpathentry kind="output" path="bin/default"/>
 </classpath>
