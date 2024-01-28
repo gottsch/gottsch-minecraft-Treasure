@@ -83,7 +83,7 @@ repositories {
     }
 }
 
-def gottschcore_path="../GottschCore/build/libs/GottschCore-mc${mc_version}-f${gottschcore_forge_version}-v${gottschcore_version}.jar"
+def gottschcore_path="../GottschCore-1.12.2/build/libs/GottschCore-mc${mc_version}-f${gottschcore_forge_version}-v${gottschcore_version}.jar"
 def baubles_path="../ModCommonLibs/libs/Baubles-1.12-1.5.2.jar"
 println gottschcore_path
 println baubles_path

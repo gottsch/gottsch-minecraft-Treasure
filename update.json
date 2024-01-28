@@ -1,8 +1,8 @@
 {
 	"homepage": "https://minecraft.curseforge.com/projects/treasure2",
 	"promos": {
-		"1.12.2-latest": "2.2.0",
-		"1.12.2-recommended": "2.2.0"
+		"1.12.2-latest": "2.2.1",
+		"1.12.2-recommended": "2.2.1"
 	},
 	"1.12.2": {
 		"0.5.0": "alpha release",
@@ -56,6 +56,7 @@
 		"2.0.1": "Updated requirement for GottschCore 1.15.0.\nFixed the no loot from wishing wells bug.",
 		"2.1.0": "Added 5 million downloads reward ring.\nFixed Jewelers Table bug.\n",
 		"2.1.1": "Fixed [1.12.2] Key duplication with the Key Ring. #290.\n",
-		"2.2.0": "Fixed missing setCostEvaluator() in Charm.createEntity().\nFixed EquipmentCostEvaluator calculations."
+		"2.2.0": "Fixed missing setCostEvaluator() in Charm.createEntity().\nFixed EquipmentCostEvaluator calculations.",
+		"2.2.1": "Fixed charm EquipmentCostEvaluator being recursively saved to item nbt."
 	}
 }

@@ -47,29 +47,44 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 public class EquipmentCostEvaluator extends CostEvaluator {
 
 	private ICostEvaluator evaluator;
-	
+
+	/**
+	 * 
+	 */
 	public EquipmentCostEvaluator() {
 		evaluator = new CostEvaluator();
 	}
-	
+
+	/**
+	 * 
+	 * @param evaluator
+	 */
 	public EquipmentCostEvaluator(ICostEvaluator evaluator) {
 		Treasure.LOGGER.debug("receiving child evaluator of -> {}", evaluator.getClass().getSimpleName());
-		this.evaluator = evaluator;
+		if (isSame(evaluator)) {
+			this.evaluator = new CostEvaluator();
+		} else {
+			this.evaluator = evaluator;
+		}
 	}
-	
+
+	public boolean isSame(ICostEvaluator evaluator) {
+		return (evaluator instanceof EquipmentCostEvaluator);
+	}
+
 	@Override
 	public double apply(World world, Random random, ICoords coords, EntityPlayer player, Event event,
 			ICharmEntity entity, double amount) {
 		Treasure.LOGGER.debug("executing...");
-//		double newAmount = amount * 2;
-//		boolean isDamaged = true;
-		
+		//		double newAmount = amount * 2;
+		//		boolean isDamaged = true;
+
 		// search for equipment
 		List<ItemStack> equipmentList = new ArrayList<>();
 		player.getEquipmentAndArmor().iterator().forEachRemaining(itemStack -> {
-				if (itemStack.isItemStackDamageable() && !(itemStack.getItem() instanceof Adornment) && !(itemStack.getItem() instanceof CharmItem)) {
-					equipmentList.add(itemStack);
-				}
+			if (itemStack.isItemStackDamageable() && !(itemStack.getItem() instanceof Adornment) && !(itemStack.getItem() instanceof CharmItem)) {
+				equipmentList.add(itemStack);
+			}
 		});
 		if (!equipmentList.isEmpty()) {
 			double newAmount = amount * 2;
@@ -89,54 +104,60 @@ public class EquipmentCostEvaluator extends CostEvaluator {
 
 		// if not damaged, process against default evaluator
 		return entity.getCharm().getCostEvaluator().apply(world, random, coords, player, event, entity, amount);
-//		if (!isDamaged) {
-//			Treasure.LOGGER.debug("no damage done, use mana using cost eval ->{}", evaluator.getClass().getSimpleName());
-//			// execute the orignal evaluator
-//			newAmount = entity.getCharm().getCostEvaluator().apply(world, random, coords, player, event, entity, amount);
-//		}		
-//		return newAmount;
+		//		if (!isDamaged) {
+		//			Treasure.LOGGER.debug("no damage done, use mana using cost eval ->{}", evaluator.getClass().getSimpleName());
+		//			// execute the orignal evaluator
+		//			newAmount = entity.getCharm().getCostEvaluator().apply(world, random, coords, player, event, entity, amount);
+		//		}		
+		//		return newAmount;
 	}
-	
+
 	@Override
 	public NBTTagCompound save(NBTTagCompound nbt) {
 		try {
 			super.save(nbt); // save my className to nbt
-			
-			NBTTagCompound tag = new NBTTagCompound();		
-			evaluator.save(tag);
-			nbt.setTag("evaluator", tag);
+
+			NBTTagCompound tag = new NBTTagCompound();
+			// protect from recursive save
+			if (!isSame(evaluator)) {
+				evaluator.save(tag);
+				nbt.setTag("evaluator", tag);
+			}
 		}
 		catch(Exception e) {
 			Treasure.LOGGER.error("error saving EquipmentCostEvaluator -> ", e);
 		}
 		return nbt;
 	}
-	
+
 	@Override
 	public void load(NBTTagCompound nbt) {
 		try {
-		super.load(nbt);
-//		Treasure.logger.debug("loading equipment cost eval...");
-		// (do what charm does to load evaluator)
-		if (nbt.hasKey("evaluator") && nbt.getCompoundTag("evaluator").hasKey("costClass")) {
-			try {
-				NBTTagCompound tag = nbt.getCompoundTag("evaluator");
+			super.load(nbt);
+			//		Treasure.logger.debug("loading equipment cost eval...");
+			// (do what charm does to load evaluator)
+			if (nbt.hasKey("evaluator") && nbt.getCompoundTag("evaluator").hasKey("costClass")) {
+				try {
+					NBTTagCompound tag = nbt.getCompoundTag("evaluator");
 					String costEvalClass = nbt.getString("costClass");
-//					Treasure.logger.debug("child cost class -> {}", costEvalClass);
-					Object o = Class.forName(costEvalClass).newInstance();
-					((ICostEvaluator)o).load(tag);
-					this.evaluator = (ICostEvaluator)o;
-
+					if (!this.getClass().getCanonicalName().equals(costEvalClass)) {
+						//					Treasure.logger.debug("child cost class -> {}", costEvalClass);
+						Object o = Class.forName(costEvalClass).newInstance();
+						((ICostEvaluator)o).load(tag);
+						this.evaluator = (ICostEvaluator)o;
+					} else {
+						this.evaluator = new CostEvaluator();
+					}
+				}
+				catch(Exception e) {
+					Treasure.LOGGER.warn("unable to create cost evaluator from class string:");
+					Treasure.LOGGER.error(e);
+					this.evaluator = new CostEvaluator();
+				}
 			}
-			catch(Exception e) {
-				Treasure.LOGGER.warn("unable to create cost evaluator from class string:");
-				Treasure.LOGGER.error(e);
+			else {
 				this.evaluator = new CostEvaluator();
 			}
-		}
-		else {
-			this.evaluator = new CostEvaluator();
-		}
 		}
 		catch(Exception e) {
 			Treasure.LOGGER.error("error loading EquipmentCostEvaluator -> ", e);
