@@ -44,6 +44,12 @@ minecraft {
             }
         }
 
+        // required for using mixin in forge
+        client {
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+        }
+
         client {
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             property 'forge.enabledGameTestNamespaces', mod_id
@@ -85,7 +91,8 @@ repositories {
     maven {
         url = "https://maven.theillusivec4.top/"
     }
-    
+    maven { url 'https://maven.blamejared.com' }
+
     // If you have mod jar dependencies in ./libs, you can declare them as a repository like so:
     // flatDir {
     //     dir 'libs'
@@ -99,7 +106,8 @@ dependencies {
     //minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 	implementation fg.deobf("gottsch:gottschcore:1.20.1-2.1.0")
-	
+    compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.20.1-84-FORGE:api")
+    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.20.1-84-FORGE")
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

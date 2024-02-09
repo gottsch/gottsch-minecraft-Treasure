@@ -1,0 +1,8 @@
+{
+  "components": [
+    {
+      "type": "patchouli:text",
+      "text": "$(l)Rarity:$() #rarity"
+    }
+  ]
+}

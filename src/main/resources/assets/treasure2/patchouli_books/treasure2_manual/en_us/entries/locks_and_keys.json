@@ -1,0 +1,162 @@
+{
+  "name": "Locks and Keys",
+  "icon": "treasure2:iron_lock",
+  "category": "treasure2:manual",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Locks",
+      "text": "Locks are used to lock treasure chests. All locks have a corresponding $(l:locks_and_keys#keys)Key$() that is used to unlock it. However, certain locks can be unlocked by special keys and lock picks. You can view the lock's attributes by hovering over the item in your inventory. You can re-use locks to protect your own loot that is stored in treasure chests.",
+      "anchor": "locks"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Lock List",
+      "text": "$(l)$(l:locks_and_keys#wood_lock)Wood Lock$(/l)$()$(br)$(l)$(l:locks_and_keys#stone_lock)Stone Lock$(/l)$()$(br)"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Wood Lock",
+      "item": {
+        "item": "treasure2:wood_lock"
+      },
+      "text": "$(l)Rarity:$() $(1)COMMON$()$(br)$(l)Category:$() $(6)ELEMENTAL$()$(br)$(l)Craftable:$() $(4)No$()$(br)$(l)Accepts Keys:$() $(2)Wood Key, Ember Key, Lightning Key, Skeleton Key, One Key$()",
+      "anchor": "wood_lock"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Stone Lock",
+      "item": {
+        "item": "treasure2:stone_lock"
+      },
+      "text": "$(l)Rarity:$() $(1)COMMON$()$(br)$(l)Category:$() $(6)ELEMENTAL$()$(br)$(l)Craftable:$() $(4)No$()$(br)$(l)Accepts Keys:$() $(2)Stone Key, Lightning Key, Skeleton Key, One Key$()",
+      "anchor": "stone_lock"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Leaf Lock",
+      "item": {
+        "item": "treasure2:leaf_lock"
+      },
+      "text": "$(l)Rarity:$() $(1)UNCOMMON$()$(br)$(l)Category:$() $(6)ELEMENTAL$()$(br)$(l)Craftable:$() $(4)No$()$(br)$(l)Accepts Keys:$() $(2)Leaf Key, Ember Key, Lightning Key, Skeleton Key, One Key$()",
+      "anchor": "leaf_lock"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Ember Lock",
+      "item": {
+        "item": "treasure2:ember_lock"
+      },
+      "text": "$(l)Rarity:$() $(1)SCARCE$()$(br)$(l)Category:$() $(6)ELEMENTAL$()$(br)$(l)Craftable:$() $(4)No$()$(br)$(l)Accepts Keys:$() $(2)Ember Key, Lightning Key, Skeleton Key, One Key$()",
+      "anchor": "ember_lock"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Iron Lock",
+      "item": {
+        "item": "treasure2:iron_lock"
+      },
+      "text": "$(l)Rarity:$() $(1)UNCOMMON$()$(br)$(l)Category:$() $(6)METAL$()$(br)$(l)Craftable:$() $(4)No$()$(br)$(l)Accepts Keys:$() $(2)Iron Key, Metallurgists Key, Skeleton Key, One Key$()",
+      "anchor": "iron_lock"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Gold Lock",
+      "item": {
+        "item": "treasure2:gold_lock"
+      },
+      "text": "$(l)Rarity:$() $(1)SCARCE$()$(br)$(l)Category:$() $(6)METAL$()$(br)$(l)Craftable:$() $(4)No$()$(br)$(l)Accepts Keys:$() $(2)Gold Key, Metallurgists Key, Skeleton Key, One Key$()",
+      "anchor": "gold_lock"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Diamond Lock",
+      "item": {
+        "item": "treasure2:diamond_lock"
+      },
+      "text": "$(l)Rarity:$() $(1)RARE$()$(br)$(l)Category:$() $(6)GEMS$()$(br)$(l)Craftable:$() $(4)No$()$(br)$(l)Accepts Keys:$() $(2)Diamond Key, Jewelled Key, Skeleton Key, One Key$()",
+      "anchor": "diamond_lock"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Emerald Lock",
+      "item": {
+        "item": "treasure2:emerald_lock"
+      },
+      "text": "$(l)Rarity:$() $(1)RARE$()$(br)$(l)Category:$() $(6)GEMS$()$(br)$(l)Craftable:$() $(4)No$()$(br)$(l)Accepts Keys:$() $(2)Emerald Key, Jewelled Key, Skeleton Key, One Key$()",
+      "anchor": "emerald_lock"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Topaz Lock",
+      "item": {
+        "item": "treasure2:topaz_lock"
+      },
+      "text": "$(l)Rarity:$() $(1)SCARCE$()$(br)$(l)Category:$() $(6)GEMS$()$(br)$(l)Craftable:$() $(4)No$()$(br)$(l)Accepts Keys:$() $(2)Topaz Key, Jewelled Key, Skeleton Key, One Key$()",
+      "anchor": "topaz_lock"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Onyx Lock",
+      "item": {
+        "item": "treasure2:onyx_lock"
+      },
+      "text": "$(l)Rarity:$() $(1)SCARCE$()$(br)$(l)Category:$() $(6)GEMS$()$(br)$(l)Craftable:$() $(4)No$()$(br)$(l)Accepts Keys:$() $(2)Onyx Key, Jewelled Key, Skeleton Key, One Key$()",
+      "anchor": "onyx_lock"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Ruby Lock",
+      "item": {
+        "item": "treasure2:ruby_lock"
+      },
+      "text": "$(l)Rarity:$() $(1)EPIC$()$(br)$(l)Category:$() $(6)GEMS$()$(br)$(l)Craftable:$() $(4)No$()$(br)$(l)Accepts Keys:$() $(2)Ruby Key, Jewelled Key, One Key$()",
+      "anchor": "ruby_lock"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Sapphire Lock",
+      "item": {
+        "item": "treasure2:sapphire_lock"
+      },
+      "text": "$(l)Rarity:$() $(1)EPIC$()$(br)$(l)Category:$() $(6)GEMS$()$(br)$(l)Craftable:$() $(4)No$()$(br)$(l)Accepts Keys:$() $(2)Sapphire Key, Jewelled Key, One Key$()",
+      "anchor": "sapphire_lock"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Spider Lock",
+      "item": {
+        "item": "treasure2:spider_lock"
+      },
+      "text": "$(l)Rarity:$() $(1)SCARCE$()$(br)$(l)Category:$() $(6)MOB$()$(br)$(l)Craftable:$() $(4)No$()$(br)$(l)Accepts Keys:$() $(2)Spider Key, Skeleton Key, One Key$()",
+      "anchor": "spider_lock"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Wither Lock",
+      "item": {
+        "item": "treasure2:wither_lock"
+      },
+      "text": "$(l)Rarity:$() $(1)SCARCE$()$(br)$(l)Category:$() $(6)WITHER$()$(br)$(l)Craftable:$() $(4)No$()$(br)$(l)Accepts Keys:$() $(2)Wither Key, Skeleton Key, One Key$()",
+      "anchor": "wither_lock"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Keys",
+      "text": "Keys are used to unlock Locks. Most keys have a corresponding $(l:locks_and_keys#locks)Lock$() that it is able to unlock. However, there are some special keys that have additional unlocking abilities. Ex. unlocking all METAL locks. To use a key, you must sneak + use it. You can view the key's attributes by hovering over the item in your inventory.",
+      "anchor": "keys"
+    },
+    "$(#ddd)$(l)Note:$() Keys are non-stackable. However, keys are mergeable. By placing 2 keys in an anvil you can merge them, which will combine their max. uses in the resultant key, up to a max of 1000 uses.$()",
+    "[add a key list here]",
+    "[add all the keys here]",
+    {
+      "type": "patchouli:spotlight",
+      "title": "Key Ring",
+      "item": {
+        "item": "treasure2:key_ring"
+      },
+      "text": "A key ring is a special container that only holds keys. You can save valuable inventory space by placing your keys in a key ring. You can use a key ring to unlock chests just as you would use a key. A key ring will check all keys it contains to determine if the key is able to unlock a lock, and then attempt to unlock it.",
+      "anchor": "key_ring"
+    }
+  ]
+}

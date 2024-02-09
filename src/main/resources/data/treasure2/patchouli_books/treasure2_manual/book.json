@@ -1,0 +1,8 @@
+{
+  "name": "Treasure2 Manual",
+  "landing_text": "Welcome to Treasure2",
+  "version": 1,
+
+  "creative_tab": "treasure2:treasure_tab",
+  "use_resource_pack": true
+}
