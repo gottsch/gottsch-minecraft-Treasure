@@ -9,11 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- 
+- Fixed the inventory size of chests display in inventory.
+- Increased the success probability of Pilferers and Thiefs Locks Picks to 48/60 respectively.
+- Fixed the IChestGenerator.buildLootTableList not using the correct key when searching for injectable loot tables.
 
 ### Added
 
--
+- Config options for Pilferers and Thiefs Lock Picks success probabilities for different rarities.
+- Patchouli book support with entries for Chests, Keys, Locks and Key Ring. Added to your inventory on first join.
 
 ## [3.7.1] - 2024-01-25
 

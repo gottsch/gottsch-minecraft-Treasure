@@ -1,0 +1,262 @@
+{
+  "name": "Keys",
+  "icon": "treasure2:iron_key",
+  "category": "treasure2:manual",
+  "sortnum": 2,
+  "pages": [
+      {
+      "type": "patchouli:text",
+      "title": "Keys",
+      "text": "Keys are used to unlock Locks. Most keys have a corre- sponding $(l:keys#locks)Lock$() that it is able to unlock. However, there are some special keys that have additional unlocking abilities. Ex. unlocking all METAL locks. To use a key, you must sneak + use it. You can view the key's attributes by hovering over the item in your inventory.",
+      "anchor": "keys"
+    },
+    "$(#777)$(l)Note:$() $(o)Keys are non-stackable. However, keys are merge-able. By placing 2 keys in an anvil you can merge them, which will combine their max. uses in the resultant key, up to a max of 1000 uses.$()",
+    {
+      "type": "patchouli:text",
+      "title": "Key List",
+      "text": "$(l)$(l:keys#wood_key)Wood Key$(/l)$()$(br)$(l)$(l:keys#stone_key)Stone Key$(/l)$()$(br)$(l)$(l:keys#leaf_key)Leaf Key$(/l)$()$(br)$(l)$(l:keys#ember_key)Ember Key$(/l)$()$(br)$(l)$(l:keys#Iron_key)Iron Key$(/l)$()$(br)$(l)$(l:keys#gold_key)Gold Key$(/l)$()$(br)$(l)$(l:keys#diamond_key)Diamond Key$(/l)$()$(br)$(l)$(l:keys#emerald_key)Emerald Key$(/l)$()$(br)$(l)$(l:keys#topaz_key)Topaz Key$(/l)$()$(br)$(l)$(l:keys#onyx_key)Onyx Key$(/l)$()$(br)$(l)$(l:keys#ruby_key)Ruby Key$(/l)$()$(br)$(l)$(l:keys#sapphire_key)Sapphire Key$(/l)$()$(br)$(l)$(l:keys#spider_key)Spider Key$(/l)$()$(br)$(l)$(l:keys#wither_key)Wither Key$(/l)$()"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Special Key List",
+      "text": "$(l)$(l:keys#pilferers_key)Pilferer's Lock Pick$(/l)$()$(br)$(l)$(l:keys#thiefs_key)Thief's Lock Pick$(/l)$()$(br)$(l)$(l:keys#lightning_key)Lightning Key$(/l)$()$(br)$(l)$(l:keys#metallurgists_key)Metallurgists Key$(/l)$()$(br)$(l)$(l:keys#jewelled_key)Jewelled Key$(/l)$()$(br)$(l)$(l:keys#skeleton_key)Skeleton Key$(/l)$()$(br)$(l)$(l:keys#one_key)One Key$(/l)$()$(br)"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Wood Key",
+      "item": {
+        "item": "treasure2:wood_key"
+      },
+      "text": "$(l)Rarity:$() $(1)COMMON$()$(br)$(l)Category:$() $(6)ELEMENTAL$()$(br)$(l)Breakable:$() $(4)Yes$()$(br)$(l)Craftable:$() $(4)No$()$(br)$(l)Use On:$() $(2)Wood Lock$()",
+      "anchor": "wood_key"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Stone Key",
+      "item": {
+        "item": "treasure2:stone_key"
+      },
+      "text": "$(l)Rarity:$() $(1)COMMON$()$(br)$(l)Category:$() $(6)ELEMENTAL$()$(br)$(l)Breakable:$() $(4)Yes$()$(br)$(l)Craftable:$() $(4)No$()$(br)$(l)Use On:$() $(2)Stone Lock$()",
+      "anchor": "stone_key"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Leaf Key",
+      "item": {
+        "item": "treasure2:leaf_key"
+      },
+      "text": "$(l)Rarity:$() $(1)UNCOMMON$()$(br)$(l)Category:$() $(6)ELEMENTAL$()$(br)$(l)Breakable:$() $(4)Yes$()$(br)$(l)Craftable:$() $(4)No$()$(br)$(l)Use On:$() $(2)Leaf Lock$()",
+      "anchor": "leaf_key"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Ember Key",
+      "item": {
+        "item": "treasure2:ember_key"
+      },
+      "text": "$(l)Rarity:$() $(1)SCARCE$()$(br)$(l)Category:$() $(6)ELEMENTAL$()$(br)$(l)Breakable:$() $(4)Yes$()$(br)$(l)Craftable:$() $(4)No$()$(br)$(l)Use On:$() $(2)Wood Lock, Leaf Lock, Ember Lock$().$(br)Will destroy Wood and Leaf Locks.",
+      "anchor": "ember_key"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Iron Key",
+      "item": {
+        "item": "treasure2:iron_key"
+      },
+      "text": "$(l)Rarity:$() $(1)UNCOMMON$()$(br)$(l)Category:$() $(6)METAL$()$(br)$(l)Breakable:$() $(4)Yes$()$(br)$(l)Craftable:$() $(4)No$()$(br)$(l)Use On:$() $(2)Iron Lock$()",
+      "anchor": "iron_key"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Gold Key",
+      "item": {
+        "item": "treasure2:gold_key"
+      },
+      "text": "$(l)Rarity:$() $(1)SCARCE$()$(br)$(l)Category:$() $(6)METAL$()$(br)$(l)Breakable:$() $(4)Yes$()$(br)$(l)Craftable:$() $(4)No$()$(br)$(l)Use On:$() $(2)Gold Lock$()",
+      "anchor": "gold_key"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Diamond Key",
+      "item": {
+        "item": "treasure2:diamond_key"
+      },
+      "text": "$(l)Rarity:$() $(1)RARE$()$(br)$(l)Category:$() $(6)GEMS$()$(br)$(l)Breakable:$() $(2)No$()$(br)$(l)Craftable:$() $(4)No$()$(br)$(l)Use On:$() $(2)Diamond Lock$()",
+      "anchor": "diamond_key"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Emerald Key",
+      "item": {
+        "item": "treasure2:emerald_key"
+      },
+      "text": "$(l)Rarity:$() $(1)RARE$()$(br)$(l)Category:$() $(6)GEMS$()$(br)$(l)Breakable:$() $(2)No$()$(br)$(l)Craftable:$() $(4)No$()$(br)$(l)Use On:$() $(2)Emerald Lock$()",
+      "anchor": "emerald_key"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Topaz Key",
+      "item": {
+        "item": "treasure2:topaz_key"
+      },
+      "text": "$(l)Rarity:$() $(1)SCARCE$()$(br)$(l)Category:$() $(6)GEMS$()$(br)$(l)Breakable:$() $(2)No$()$(br)$(l)Craftable:$() $(2)Yes$()$(br)$(l)Use On:$() $(2)Topaz Lock$()",
+      "anchor": "topaz_key"
+    },
+    {
+      "type": "patchouli:crafting",
+      "title": "Topaz Key Recipe",
+      "recipe": "treasure2:topaz_key",
+      "text": ""
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Onyx Key",
+      "item": {
+        "item": "treasure2:onyx_key"
+      },
+      "text": "$(l)Rarity:$() $(1)SCARCE$()$(br)$(l)Category:$() $(6)GEMS$()$(br)$(l)Breakable:$() $(2)No$()$(br)$(l)Craftable:$() $(2)Yes$()$(br)$(l)Use On:$() $(2)Onyx Lock$()",
+      "anchor": "onyx_key"
+    },
+    {
+      "type": "patchouli:crafting",
+      "title": "Onyx Key Recipe",
+      "recipe": "treasure2:onyx_key",
+      "text": ""
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Ruby Key",
+      "item": {
+        "item": "treasure2:ruby_key"
+      },
+      "text": "$(l)Rarity:$() $(1)EPIC$()$(br)$(l)Category:$() $(6)GEMS$()$(br)$(l)Breakable:$() $(2)No$()$(br)$(l)Craftable:$() $(2)Yes$()$(br)$(l)Use On:$() $(2)Ruby Lock$()",
+      "anchor": "ruby_key"
+    },
+    {
+      "type": "patchouli:crafting",
+      "title": "Ruby Key Recipe",
+      "recipe": "treasure2:ruby_key",
+      "text": ""
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Sapphire Key",
+      "item": {
+        "item": "treasure2:sapphire_key"
+      },
+      "text": "$(l)Rarity:$() $(1)EPIC$()$(br)$(l)Category:$() $(6)GEMS$()$(br)$(l)Breakable:$() $(2)No$()$(br)$(l)Craftable:$() $(2)Yes$()$(br)$(l)Use On:$() $(2)Sapphire Lock$()",
+      "anchor": "sapphire_key"
+    },
+    {
+      "type": "patchouli:crafting",
+      "title": "Sapphire Key Recipe",
+      "recipe": "treasure2:sapphire_key",
+      "text": ""
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Spider Key",
+      "item": {
+        "item": "treasure2:spider_key"
+      },
+      "text": "$(l)Rarity:$() $(1)SCARCE$()$(br)$(l)Category:$() $(6)MOB$()$(br)$(l)Breakable:$() $(4)Yes$()$(br)$(l)Craftable:$() $(2)Yes$()$(br)$(l)Use On:$() $(2)Spider Lock$()",
+      "anchor": "spider_key"
+    },
+    {
+      "type": "patchouli:crafting",
+      "title": "Spider Key Recipe",
+      "recipe": "treasure2:spider_key",
+      "text": ""
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Wither Key",
+      "item": {
+        "item": "treasure2:wither_key"
+      },
+      "text": "$(l)Rarity:$() $(1)SCARCE$()$(br)$(l)Category:$() $(6)WITHER$()$(br)$(l)Breakable:$() $(2)No$()$(br)$(l)Craftable:$() $(2)Yes$()$(br)$(l)Use On:$() $(2)Wither Lock$()",
+      "anchor": "wither_key"
+    },
+    {
+      "type": "patchouli:crafting",
+      "title": "Wither Key Recipe",
+      "recipe": "treasure2:wither_key",
+      "text": "You can find the ingredients for a wither key by harvesting the wither trees' branches and roots."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Pilferer's Lock Pick",
+      "item": {
+        "item": "treasure2:pilferers_lock_pick"
+      },
+      "text": "$(l)Rarity:$() $(1)COMMON$()$(br)$(l)Category:$() $(6)ELEMENTAL$()$(br)$(l)Breakable:$() $(4)Yes$()$(br)$(l)Craftable:$() $(2)Yes$()$(br2)Pilferer's Lock Picks are the cheapest to craft, but have the lowest success rate. Meant for early game, low-level locks.",
+      "anchor": "pilferers_lock_pick"
+    },
+    {
+      "type": "patchouli:crafting",
+      "title": "Pilferer's Lock Pick Recipe",
+      "recipe": "treasure2:pilferers_lock_pick",
+      "text": "Can use on both COMMON and UNCOMMON locks. Has a 48%/24% success rate."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Thief's Lock Pick",
+      "item": {
+        "item": "treasure2:thiefs_lock_pick"
+      },
+      "text": "$(l)Rarity:$() $(1)UNCOMMON$()$(br)$(l)Category:$() $(6)ELEMENTAL$()$(br)$(l)Breakable:$() $(4)Yes$()$(br)$(l)Craftable:$() $(2)Yes$()$(br2)Thief's Lock Picks have a better success rate then Pilferer's Lock Picks, but are more expensive. Meant for early game, low-level locks.",
+      "anchor": "thief_lock_pick"
+    },
+    {
+      "type": "patchouli:crafting",
+      "title": "Thief's Lock Pick Recipe",
+      "recipe": "treasure2:thiefs_lock_pick",
+      "text": "Can use on COMMON, UNCOMMON and SCARCE locks. Has a 60%/45%/30% success rate."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Lightning Key",
+      "item": {
+        "item": "treasure2:lightning_key"
+      },
+      "text": "$(l)Rarity:$() $(1)SCARCE$()$(br)$(l)Category:$() $(6)ELEMENTAL$()$(br)$(l)Breakable:$() $(2)No$()$(br)$(l)Craftable:$() $(4)No$()$(br)$(l)Use On:$() $(2)ELEMENTAL$() locks.",
+      "anchor": "lightning_key"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Metallurgist's Key",
+      "item": {
+        "item": "treasure2:metallurgists_key"
+      },
+      "text": "$(l)Rarity:$() $(1)RARE$()$(br)$(l)Category:$() $(6)METAL$()$(br)$(l)Breakable:$() $(2)No$()$(br)$(l)Craftable:$() $(4)No$()$(br)$(l)Use On:$() $(2)METAL$() locks.",
+      "anchor": "metallurgists_key"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Skeleton Key",
+      "item": {
+        "item": "treasure2:skeleton_key"
+      },
+      "text": "$(l)Rarity:$() $(1)RARE$()$(br)$(l)Category:$() $(6)ELEMENTAL$()$(br)$(l)Breakable:$() $(2)No$()$(br)$(l)Craftable:$() $(4)No$()$(br)$(l)Use On:$() $(2)COMMON, UNCOMMON, SCARCE, RARE$() locks. (Exception: Wither Lock)",
+      "anchor": "skeleton_key"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Jewelled Key",
+      "item": {
+        "item": "treasure2:jewelled_key"
+      },
+      "text": "$(l)Rarity:$() $(1)EPIC$()$(br)$(l)Category:$() $(6)ELEMENTAL$()$(br)$(l)Breakable:$() $(2)No$()$(br)$(l)Craftable:$() $(4)No$()$(br)$(l)Use On:$() $(2)GEMS$() locks.",
+      "anchor": "jewelled_key"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "One Key",
+      "item": {
+        "item": "treasure2:one_key"
+      },
+      "text": "$(l)Rarity:$() $(1)MYTHICAL$()$(br)$(l)Category:$() $(6)MAGICAL$()$(br)$(l)Breakable:$() $(4)No$()$(br)$(l)Craftable:$() $(4)No$()$(br)$(l)Use On:$() $(l)ALL$() locks.",
+      "anchor": "one_key"
+    }
+  ]
+}

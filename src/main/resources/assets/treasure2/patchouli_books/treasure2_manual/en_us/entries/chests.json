@@ -1,0 +1,185 @@
+{
+  "name": "Chests",
+  "icon": "treasure2:ironbound_chest",
+  "category": "treasure2:manual",
+  "sortnum": 0,
+  "pages": [
+    "Intro to discovering chests... above ground, below ground, underwater...",
+    {
+      "type": "patchouli:text",
+      "title": "Chest List",
+      "text": "$(l)$(l:chests#wood_chest)Wood Chest$(/l)$()$(br)$(l)$(l:chests#crate_chest)Crate Chest$(/l)$()$(br)$(l)$(l:chests#crate_chest_moldy)Moldy Crate Chest$(/l)$()$(br)"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Wood Chest",
+      "item": {
+        "item": "treasure2:wood_chest"
+      },
+      "text": "$(l)Rarity:$() $(1)COMMON$()$(br)$(l)# Locks:$() 3$(br)$(l)Inventory:$() 27$(br)",
+      "anchor": "wood_chest"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Crate Chest",
+      "item": {
+        "item": "treasure2:crate_chest"
+      },
+      "text": "$(l)Rarity:$() $(1)COMMON$()$(br)$(l)# Locks:$() 1$(br)$(l)Inventory:$() 27$(br)",
+      "anchor": "crate_chest"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Moldy Crate Chest",
+      "item": {
+        "item": "treasure2:crate_chest_moldy"
+      },
+      "text": "$(l)Rarity:$() $(1)COMMON$()$(br)$(l)# Locks:$() 1$(br)$(l)Inventory:$() 27$(br)",
+      "anchor": "crate_chest_moldy"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Ironbound Chest",
+      "item": {
+        "item": "treasure2:ironbound_chest"
+      },
+      "text": "$(l)Rarity:$() $(1)UNCOMMON$()$(br)$(l)# Locks:$() 3$(br)$(l)Inventory:$() 27$(br)",
+      "anchor": "ironbound_chest"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Pirate Chest",
+      "item": {
+        "item": "treasure2:pirate_chest"
+      },
+      "text": "$(l)Rarity:$() $(1)SCARCE$()$(br)$(l)# Locks:$() 3$(br)$(l)Inventory:$() 27$(br)",
+      "anchor": "pirate_chest"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Safe",
+      "item": {
+        "item": "treasure2:safe"
+      },
+      "text": "$(l)Rarity:$() $(1)RARE$()$(br)$(l)# Locks:$() 2$(br)$(l)Inventory:$() 27$(br)",
+      "anchor": "safe"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Iron Strongbox",
+      "item": {
+        "item": "treasure2:iron_strongbox"
+      },
+      "text": "$(l)Rarity:$() $(1)SCARCE$()$(br)$(l)# Locks:$() 3$(br)$(l)Inventory:$() 15$(br)",
+      "anchor": "iron_strongbox"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Gold Strongbox",
+      "item": {
+        "item": "treasure2:gold_strongbox"
+      },
+      "text": "$(l)Rarity:$() $(1)RARE$()$(br)$(l)# Locks:$() 3$(br)$(l)Inventory:$() 15$(br)",
+      "anchor": "gold_strongbox"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Dread Pirate Chest",
+      "item": {
+        "item": "treasure2:dread_pirate_chest"
+      },
+      "text": "$(l)Rarity:$() $(1)EPIC$()$(br)$(l)# Locks:$() 3$(br)$(l)Inventory:$() 27$(br)",
+      "anchor": "dread_pirate_chest"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Compressor Chest",
+      "item": {
+        "item": "treasure2:compressor_chest"
+      },
+      "text": "$(l)Rarity:$() $(1)EPIC$()$(br)$(l)# Locks:$() 4$(br)$(l)Inventory:$() 52$(br)",
+      "anchor": "compressor_chest"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Skull Chest",
+      "item": {
+        "item": "treasure2:skull_chest"
+      },
+      "text": "$(l)Rarity:$() $(1)Special$()$(br)$(l)# Locks:$() 1$(br)$(l)Inventory:$() 9$(br)",
+      "anchor": "skull_chest"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Gold Skull",
+      "item": {
+        "item": "treasure2:gold_skull_chest"
+      },
+      "text": "$(l)Rarity:$() $(1)Special$()$(br)$(l)# Locks:$() 1$(br)$(l)Inventory:$() 9$(br)",
+      "anchor": "gold_skull_chest"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Crystal Skull",
+      "item": {
+        "item": "treasure2:crystal_skull_chest"
+      },
+      "text": "$(l)Rarity:$() $(1)Special$()$(br)$(l)# Locks:$() 1$(br)$(l)Inventory:$() 9$(br)",
+      "anchor": "crystal_skull_chest"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Cauldron Chest",
+      "item": {
+        "item": "treasure2:cauldron_chest"
+      },
+      "text": "$(l)Rarity:$() $(1)Special$()$(br)$(l)# Locks:$() 2$(br)$(l)Inventory:$() 27$(br)",
+      "anchor": "cauldron_chest"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Spider Chest",
+      "item": {
+        "item": "treasure2:spider_chest"
+      },
+      "text": "$(l)Rarity:$() $(1)RARE$()$(br)$(l)# Locks:$() 1$(br)$(l)Inventory:$() 27$(br)",
+      "anchor": "spider_chest"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Viking Chest",
+      "item": {
+        "item": "treasure2:viking_chest"
+      },
+      "text": "$(l)Rarity:$() $(1)UNCOMMON$()$(br)$(l)# Locks:$() 1$(br)$(l)Inventory:$() 27$(br)",
+      "anchor": "viking_chest"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Cardboard Box",
+      "item": {
+        "item": "treasure2:cardboard_box"
+      },
+      "text": "$(l)Rarity:$() $(1)COMMON$()$(br)$(l)# Locks:$() 2$(br)$(l)Inventory:$() 27$(br)",
+      "anchor": "cardboard_box"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Milk Crate",
+      "item": {
+        "item": "treasure2:milk_crate"
+      },
+      "text": "$(l)Rarity:$() $(1)COMMON$()$(br)$(l)# Locks:$() 1$(br)$(l)Inventory:$() 27$(br)",
+      "anchor": "milk_crate"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "Wither Chest",
+      "item": {
+        "item": "treasure2:wither_chest"
+      },
+      "text": "$(l)Rarity:$() $(1)Special$()$(br)$(l)# Locks:$() 2$(br)$(l)Inventory:$() 42$(br)",
+      "anchor": "wither_chest"
+    }
+  ]
+}

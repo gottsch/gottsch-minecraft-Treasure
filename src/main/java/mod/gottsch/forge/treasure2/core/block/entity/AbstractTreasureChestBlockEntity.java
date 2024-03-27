@@ -166,8 +166,6 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 		Treasure.LOGGER.debug("is chest sealed -> {}", this.isSealed());
 		if (this.isSealed()) {
 			this.setSealed(false);
-//			Treasure.LOGGER.debug("chest gen type -> {}", this.getGenerationContext().getChestGeneratorType()); 
-//			IChestGeneratorType chestGeneratorType = this.getGenerationContext().getChestGeneratorType();
 			IRarity rarity = this.getGenerationContext().getLootRarity();
 			Optional<IChestGenerator> chestGenerator = ChestGeneratorRegistry.get(rarity);
 			if (chestGenerator.isPresent()) {

@@ -1,5 +1,5 @@
 {
-  "name": "About",
-  "description": "$(l)Author$(): gottsch$(br2)A mod that adds a classical set of mobs to your Minecraft world.",
+  "name": "About Treasure2",
+  "description": "$(l)Author$(): gottsch$(br2)",
   "icon": "minecraft:writable_book"
 }

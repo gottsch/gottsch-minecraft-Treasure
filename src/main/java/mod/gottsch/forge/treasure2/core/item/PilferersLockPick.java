@@ -39,6 +39,10 @@ import net.minecraft.world.level.Level;
  *
  */
 public class PilferersLockPick extends KeyItem {
+	/*
+	 * The probability of a successful unlocking uncommon locks
+	 */
+	private double uncommonSuccessProbability;
 
 	/**
 	 * 
@@ -101,7 +105,7 @@ public class PilferersLockPick extends KeyItem {
 				}
 			}
 			else if (lockItem.getRarity() == Rarity.UNCOMMON) {
-				if (RandomHelper.checkProbability(new Random(), this.getSuccessProbability()/2)) {
+				if (RandomHelper.checkProbability(new Random(), this.getUncommonSuccessProbability())) {
 					Treasure.LOGGER.debug("Unlock attempt met probability");
 					return true;
 				}				
@@ -109,5 +113,19 @@ public class PilferersLockPick extends KeyItem {
 			
 		}
 		return false;
+	}
+
+	public PilferersLockPick setSuccessProbability(double commonProbability, double uncommonProbability) {
+		setSuccessProbability(commonProbability);
+		setUncommonSuccessProbability(uncommonProbability);
+		return this;
+	}
+
+	public double getUncommonSuccessProbability() {
+		return uncommonSuccessProbability;
+	}
+
+	public void setUncommonSuccessProbability(double uncommonSuccessProbability) {
+		this.uncommonSuccessProbability = uncommonSuccessProbability;
 	}
 }

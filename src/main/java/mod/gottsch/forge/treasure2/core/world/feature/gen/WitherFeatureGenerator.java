@@ -146,7 +146,7 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 			Treasure.LOGGER.debug("unable to spawn underground @ {}", spawnCoords);
 			return Optional.empty();
 		}
-		Treasure.LOGGER.debug("below ground -> {}", spawnCoords.toShortString());
+		Treasure.LOGGER.debug("below ground -> {}", undergroundCoords.get().toShortString());
 		
 		
 		// setup a AABB around the spawn coords

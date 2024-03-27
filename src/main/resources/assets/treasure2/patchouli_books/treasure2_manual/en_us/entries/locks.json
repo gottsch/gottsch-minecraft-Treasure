@@ -1,18 +1,20 @@
 {
-  "name": "Locks and Keys",
+  "name": "Locks",
   "icon": "treasure2:iron_lock",
   "category": "treasure2:manual",
+  "sortnum": 1,
   "pages": [
     {
       "type": "patchouli:text",
+
       "title": "Locks",
-      "text": "Locks are used to lock treasure chests. All locks have a corresponding $(l:locks_and_keys#keys)Key$() that is used to unlock it. However, certain locks can be unlocked by special keys and lock picks. You can view the lock's attributes by hovering over the item in your inventory. You can re-use locks to protect your own loot that is stored in treasure chests.",
+      "text": "Locks are used to lock treasure chests. All locks have a corresponding $(l:locks#keys)Key$() that is used to unlock it. However, certain locks can be unlocked by special keys and lock picks. You can view the lock's attributes by hovering over the item in your inventory. You can re-use locks to protect your own loot that is stored in treasure chests.",
       "anchor": "locks"
     },
     {
       "type": "patchouli:text",
       "title": "Lock List",
-      "text": "$(l)$(l:locks_and_keys#wood_lock)Wood Lock$(/l)$()$(br)$(l)$(l:locks_and_keys#stone_lock)Stone Lock$(/l)$()$(br)"
+      "text": "$(l)$(l:locks#wood_lock)Wood Lock$(/l)$()$(br)$(l)$(l:locks#stone_lock)Stone Lock$(/l)$()$(br)$(l)$(l:locks#leaf_lock)Leaf Lock$(/l)$()$(br)$(l)$(l:locks#ember_lock)Ember Lock$(/l)$()$(br)$(l)$(l:locks#Iron_lock)Iron Lock$(/l)$()$(br)$(l)$(l:locks#gold_lock)Gold Lock$(/l)$()$(br)$(l)$(l:locks#diamond_lock)Diamond Lock$(/l)$()$(br)$(l)$(l:locks#emerald_lock)Emerald Lock$(/l)$()$(br)$(l)$(l:locks#topaz_lock)Topaz Lock$(/l)$()$(br)$(l)$(l:locks#onyx_lock)Onyx Lock$(/l)$()$(br)$(l)$(l:locks#ruby_lock)Ruby Lock$(/l)$()$(br)$(l)$(l:locks#sapphire_lock)Sapphire Lock$(/l)$()$(br)$(l)$(l:locks#spider_lock)Spider Lock$(/l)$()$(br)$(l)$(l:locks#wither_lock)Wither Lock$(/l)$()"
     },
     {
       "type": "patchouli:spotlight",
@@ -139,24 +141,6 @@
       },
       "text": "$(l)Rarity:$() $(1)SCARCE$()$(br)$(l)Category:$() $(6)WITHER$()$(br)$(l)Craftable:$() $(4)No$()$(br)$(l)Accepts Keys:$() $(2)Wither Key, Skeleton Key, One Key$()",
       "anchor": "wither_lock"
-    },
-    {
-      "type": "patchouli:text",
-      "title": "Keys",
-      "text": "Keys are used to unlock Locks. Most keys have a corresponding $(l:locks_and_keys#locks)Lock$() that it is able to unlock. However, there are some special keys that have additional unlocking abilities. Ex. unlocking all METAL locks. To use a key, you must sneak + use it. You can view the key's attributes by hovering over the item in your inventory.",
-      "anchor": "keys"
-    },
-    "$(#ddd)$(l)Note:$() Keys are non-stackable. However, keys are mergeable. By placing 2 keys in an anvil you can merge them, which will combine their max. uses in the resultant key, up to a max of 1000 uses.$()",
-    "[add a key list here]",
-    "[add all the keys here]",
-    {
-      "type": "patchouli:spotlight",
-      "title": "Key Ring",
-      "item": {
-        "item": "treasure2:key_ring"
-      },
-      "text": "A key ring is a special container that only holds keys. You can save valuable inventory space by placing your keys in a key ring. You can use a key ring to unlock chests just as you would use a key. A key ring will check all keys it contains to determine if the key is able to unlock a lock, and then attempt to unlock it.",
-      "anchor": "key_ring"
     }
   ]
 }

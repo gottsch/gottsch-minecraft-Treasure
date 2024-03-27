@@ -1,6 +1,6 @@
 {
-  "name": "Treasure2 Manual",
-  "landing_text": "Welcome to Treasure2",
+  "name": "Treasure2",
+  "landing_text": "Treasure2 adds to the thrill of discovery in Minecraft. This mod adds various new and rare chests of treasure to be discovered. The chests are secured by an assortment of locks and can only be unlocked by finding the corresponding keys.",
   "version": 1,
 
   "creative_tab": "treasure2:treasure_tab",

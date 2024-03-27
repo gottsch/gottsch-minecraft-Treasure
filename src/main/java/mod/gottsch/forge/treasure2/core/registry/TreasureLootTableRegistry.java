@@ -144,7 +144,7 @@ public final class TreasureLootTableRegistry {
 		/*
 		 *  register initial resource (mod jar) supplied loot tables
 		 */
-		Treasure.LOGGER.debug("reading loot tables...");
+		Treasure.LOGGER.debug("reading loot tables from {}...", modID);
 		Path jarPath = ModList.get().getModFileById(modID).getFile().getFilePath();
 
 		registerFromJar(jarPath);

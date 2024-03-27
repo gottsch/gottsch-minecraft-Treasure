@@ -22,6 +22,7 @@ package mod.gottsch.forge.treasure2.core.item;
 import java.util.List;
 
 import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
+import mod.gottsch.forge.treasure2.core.chest.ChestInventorySize;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -57,7 +58,7 @@ public class TreasureChestBlockItem extends BlockItem {
 		// chest info		
 		tooltip.add(Component.translatable(LangUtil.tooltip("chest.rarity"), ChatFormatting.BLUE + tb.getRarity().toString()));
 		tooltip.add(Component.translatable(LangUtil.tooltip("chest.max_locks"), ChatFormatting.BLUE + String.valueOf(tb.getLockLayout().getMaxLocks())));
-		int size = tb.getBlockEntityInstance() != null ? tb.getBlockEntityInstance().getInventorySize() : 0;
+		int size = tb.getBlockEntityInstance() != null ? tb.getBlockEntityInstance().getInventorySize() : ChestInventorySize.getSizeOf(tb);
 		tooltip.add(Component.translatable(LangUtil.tooltip("chest.container_size"), ChatFormatting.DARK_GREEN + String.valueOf(size)));
 	}	
 }

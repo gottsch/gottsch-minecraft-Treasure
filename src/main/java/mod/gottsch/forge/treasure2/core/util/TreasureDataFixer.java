@@ -19,6 +19,8 @@ package mod.gottsch.forge.treasure2.core.util;
 
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.config.Config;
+import mod.gottsch.forge.treasure2.core.item.PilferersLockPick;
+import mod.gottsch.forge.treasure2.core.item.ThiefsLockPick;
 import mod.gottsch.forge.treasure2.core.item.TreasureItems;
 
 /**
@@ -32,6 +34,17 @@ public class TreasureDataFixer {
 	 * 
 	 */
 	public static void fix() {
+		/*
+		 * update lockpick probability settings now that the config is loaded
+		 */
+		((PilferersLockPick)TreasureItems.PILFERERS_LOCK_PICK.get()).setSuccessProbability(
+				Config.SERVER.keysAndLocks.pilferersLockPickCommonSuccessProbability.get(),
+				Config.SERVER.keysAndLocks.pilferersLockPickUncommonSuccessProbability.get());
+		((ThiefsLockPick)TreasureItems.THIEFS_LOCK_PICK.get()).setSuccessProbability(
+				Config.SERVER.keysAndLocks.thiefsLockPickCommonSuccessProbability.get(),
+				Config.SERVER.keysAndLocks.thiefsLockPickUncommonSuccessProbability.get(),
+				Config.SERVER.keysAndLocks.thiefsLockPickScarceSuccessProbability.get());
+
 		/*
 		 *  update registered block/item properties using reflection now that
 		 *  the config is loaded.

@@ -26,6 +26,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -95,6 +96,11 @@ public class WitherChestBlock extends StandardChestBlock {
 			Block.updateOrDestroy(level.getBlockState(upPos), Blocks.AIR.defaultBlockState(), level, upPos, 3);
 		}		
 		return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
+	}
+
+	@Override
+	public void destroy(LevelAccessor p_49860_, BlockPos p_49861_, BlockState p_49862_) {
+		super.destroy(p_49860_, p_49861_, p_49862_);
 	}
 
 	/**

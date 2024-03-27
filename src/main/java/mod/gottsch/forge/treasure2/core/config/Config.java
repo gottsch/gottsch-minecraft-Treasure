@@ -212,7 +212,14 @@ public class Config extends AbstractConfig {
 			public BooleanValue enableKeyBreaks;
 			public BooleanValue enableLockDrops;
 			public ConfigValue<Integer> pilferersLockPickMaxUses;
+			public ForgeConfigSpec.DoubleValue pilferersLockPickCommonSuccessProbability;
+			public ForgeConfigSpec.DoubleValue pilferersLockPickUncommonSuccessProbability;
+
 			public ConfigValue<Integer> thiefsLockPickMaxUses;
+			public ForgeConfigSpec.DoubleValue thiefsLockPickCommonSuccessProbability;
+			public ForgeConfigSpec.DoubleValue thiefsLockPickUncommonSuccessProbability;
+			public ForgeConfigSpec.DoubleValue thiefsLockPickScarceSuccessProbability;
+
 			public ConfigValue<Integer> woodKeyMaxUses;
 			public ConfigValue<Integer> stoneKeyMaxUses;
 			public ConfigValue<Integer> emberKeyMaxUses;
@@ -248,9 +255,29 @@ public class Config extends AbstractConfig {
 						.comment(" The maximum uses for a given pilferers lock pick.")
 						.defineInRange("pilferersLockPickMaxUses", 10, 1, 32000);
 
+				pilferersLockPickCommonSuccessProbability = builder
+						.comment(" The success probability of a pilferers lock pick on a COMMON lock.")
+						.defineInRange("pilferersLockPickCommonSuccessProbability", 48D, 1D, 100D);
+
+				pilferersLockPickUncommonSuccessProbability = builder
+						.comment(" The success probability of a pilferers lock pick on an UNCOMMON lock.")
+						.defineInRange("pilferersLockPickUncommonSuccessProbability", 32D, 1D, 100D);
+
 				thiefsLockPickMaxUses = builder
 						.comment(" The maximum uses for a given thiefs lock pick.")
 						.defineInRange("thiefsLockPickMaxUses", 10, 1, 32000);
+
+				thiefsLockPickCommonSuccessProbability = builder
+						.comment(" The success probability of a thiefs lock pick on a COMMON lock.")
+						.defineInRange("thiefsLockPickCommonSuccessProbability", 60D, 1D, 100D);
+
+				thiefsLockPickUncommonSuccessProbability = builder
+						.comment(" The success probability of a thiefs lock pick on an UNCOMMON lock.")
+						.defineInRange("thiefsLockPickUncommonSuccessProbability", 45D, 1D, 100D);
+
+				thiefsLockPickScarceSuccessProbability = builder
+						.comment(" The success probability of a thiefs lock pick on an SCARCE lock.")
+						.defineInRange("thiefsLockPickScarceSuccessProbability", 30D, 1D, 100D);
 
 				woodKeyMaxUses = builder
 						.comment(" The maximum uses for a given wooden key.")

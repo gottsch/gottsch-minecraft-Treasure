@@ -48,7 +48,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.RegistryObject;
 
 /**
- * 
+ *
  * @author Mark Gottschling on Nov 9, 2022
  *
  */
@@ -69,19 +69,19 @@ public class TreasureItems {
 
 	// keys
 	public static RegistryObject<KeyItem> WOOD_KEY = Registration.ITEMS.register("wood_key", () -> new KeyItem(new Item.Properties()
-			)
+	)
 			.setCategory(KeyLockCategory.ELEMENTAL)
 			.setCraftable(false));
 
 	public static RegistryObject<KeyItem> STONE_KEY = Registration.ITEMS.register("stone_key", () -> new KeyItem(new Item.Properties()
 //			.durability(Config.SERVER.keysAndLocks.stoneKeyMaxUses.get())
-			)
+	)
 			.setCategory(KeyLockCategory.ELEMENTAL)
 			.setCraftable(false));
 
 	public static RegistryObject<KeyItem> LEAF_KEY = Registration.ITEMS.register("leaf_key", () -> new KeyItem(new Item.Properties()
 //			.durability(Config.SERVER.keysAndLocks.leafKeyMaxUses.get())
-			)
+	)
 			.setCategory(KeyLockCategory.ELEMENTAL)
 			.setCraftable(false));
 
@@ -89,10 +89,10 @@ public class TreasureItems {
 			.setCategory(KeyLockCategory.ELEMENTAL)
 			.setCraftable(false)
 			.addFitsLock(lock -> {
-				return 
+				return
 						(lock == TreasureItems.EMBER_LOCK.get() ||
-						lock == TreasureItems.WOOD_LOCK.get() ||
-						lock == TreasureItems.LEAF_LOCK.get());
+								lock == TreasureItems.WOOD_LOCK.get() ||
+								lock == TreasureItems.LEAF_LOCK.get());
 			})
 			.addBreaksLock(lock -> {
 				return (lock == TreasureItems.WOOD_LOCK.get() ||
@@ -118,7 +118,7 @@ public class TreasureItems {
 			.setCategory(KeyLockCategory.METALS)
 			.setBreakable(false)
 			.setCraftable(false));
-	
+
 	public static RegistryObject<KeyItem> DIAMOND_KEY = Registration.ITEMS.register("diamond_key", () -> new KeyItem(new Item.Properties())
 			.setCategory(KeyLockCategory.GEMS)
 			.setBreakable(false)
@@ -133,12 +133,12 @@ public class TreasureItems {
 			.setCategory(KeyLockCategory.GEMS)
 			.setBreakable(false)
 			.setCraftable(true));
-	
+
 	public static RegistryObject<KeyItem> ONYX_KEY = Registration.ITEMS.register("onyx_key", () -> new KeyItem(new Item.Properties())
 			.setCategory(KeyLockCategory.GEMS)
 			.setBreakable(false)
 			.setCraftable(true));
-	
+
 	public static RegistryObject<KeyItem> RUBY_KEY = Registration.ITEMS.register("ruby_key", () -> new KeyItem(new Item.Properties())
 			.setCategory(KeyLockCategory.GEMS)
 			.setBreakable(false)
@@ -149,11 +149,11 @@ public class TreasureItems {
 			.setBreakable(false)
 			.setCraftable(true));
 
-	public static RegistryObject<KeyItem> JEWELLED_KEY = Registration.ITEMS.register("jewelled_key", 
+	public static RegistryObject<KeyItem> JEWELLED_KEY = Registration.ITEMS.register("jewelled_key",
 			() -> new JewelledKey(new Item.Properties())
-			.setCategory(KeyLockCategory.GEMS)
-			.setBreakable(false)
-			.setCraftable(false));
+					.setCategory(KeyLockCategory.GEMS)
+					.setBreakable(false)
+					.setCraftable(false));
 
 
 	public static RegistryObject<KeyItem> SPIDER_KEY = Registration.ITEMS.register("spider_key", () -> new KeyItem(new Item.Properties())
@@ -167,32 +167,32 @@ public class TreasureItems {
 			.setCraftable(true));
 
 
-	public static RegistryObject<KeyItem> SKELETON_KEY = Registration.ITEMS.register("skeleton_key", 
+	public static RegistryObject<KeyItem> SKELETON_KEY = Registration.ITEMS.register("skeleton_key",
 			() -> new SkeletonKey(new Item.Properties())
-			.setCategory(KeyLockCategory.ELEMENTAL)
-			.setBreakable(false)
-			.setCraftable(false));
+					.setCategory(KeyLockCategory.ELEMENTAL)
+					.setBreakable(false)
+					.setCraftable(false));
 
-	public static RegistryObject<KeyItem> PILFERERS_LOCK_PICK = Registration.ITEMS.register("pilferers_lock_pick", 
+	public static RegistryObject<KeyItem> PILFERERS_LOCK_PICK = Registration.ITEMS.register("pilferers_lock_pick",
 			() -> new PilferersLockPick(new Item.Properties())
-			.setCategory(KeyLockCategory.ELEMENTAL)
-			.setBreakable(true)
-			.setCraftable(true)
-			.setSuccessProbability(32)
-			);
+					.setCategory(KeyLockCategory.ELEMENTAL)
+					.setBreakable(true)
+					.setCraftable(true)
+					// NOTE see TreasureDataFixer to set the success probabilities.
+	);
 
-	public static RegistryObject<KeyItem> THIEFS_LOCK_PICK = Registration.ITEMS.register("thiefs_lock_pick", 
+	public static RegistryObject<KeyItem> THIEFS_LOCK_PICK = Registration.ITEMS.register("thiefs_lock_pick",
 			() -> new ThiefsLockPick(new Item.Properties())
-			.setCategory(KeyLockCategory.ELEMENTAL)
-			.setBreakable(true)
-			.setCraftable(true)
-			.setSuccessProbability(48)
-			);
+					.setCategory(KeyLockCategory.ELEMENTAL)
+					.setBreakable(true)
+					.setCraftable(true)
+					// NOTE see TreasureDataFixer to set the success probabilities.
+	);
 
 	// opens all locks and is infinite users
 	public static RegistryObject<KeyItem> ONE_KEY = Registration.ITEMS.register("one_key", () -> new KeyItem(new Item.Properties()
-			.durability(1000)			
-			) {
+			.durability(1000)
+	) {
 		@Override
 		public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 			IDurabilityHandler handler = new DurabilityHandler();
@@ -213,9 +213,9 @@ public class TreasureItems {
 		@Override
 		public  void appendHoverSpecials(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 			tooltip.add(
-					Component.translatable(LangUtil.tooltip("key_lock.specials"), 
+					Component.translatable(LangUtil.tooltip("key_lock.specials"),
 							ChatFormatting.GOLD + Component.translatable(LangUtil.tooltip("key_lock.one_key.specials")).getString())
-					);
+			);
 		}
 		@Override
 		public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
@@ -231,21 +231,21 @@ public class TreasureItems {
 			if (!EnchantmentHelper.hasVanishingCurse(stack)) {
 				stack.enchant(Enchantments.VANISHING_CURSE, 1);
 			}
-		}		
+		}
 	}
-	.setCategory(KeyLockCategory.MAGIC)
-	.setBreakable(false)
-	.setCraftable(false)
-	// opens any lock
-	.addFitsLock(lock -> {
-		return true;
-	}));
+			.setCategory(KeyLockCategory.MAGIC)
+			.setBreakable(false)
+			.setCraftable(false)
+			// opens any lock
+			.addFitsLock(lock -> {
+				return true;
+			}));
 
 	// FUTURE
 	// opens all epic/rare/scarce/uncommon/common but not infinite use
 	public static RegistryObject<KeyItem> DRAGON_KEY;
 	// opens all locks but is one time use only
-	public static RegistryObject<KeyItem> MASTER_KEY;	
+	public static RegistryObject<KeyItem> MASTER_KEY;
 
 	// locks
 	public static final Supplier<Item.Properties> LOCK_ITEM_PROPERTIES = () -> new Item.Properties();
@@ -275,16 +275,16 @@ public class TreasureItems {
 			.setCategory(KeyLockCategory.GEMS));
 	public static RegistryObject<LockItem> EMERALD_LOCK = Registration.ITEMS.register("emerald_lock", () -> new LockItem(LOCK_ITEM_PROPERTIES.get(), new KeyItem[] {EMERALD_KEY.get(), JEWELLED_KEY.get()})
 			.setCategory(KeyLockCategory.GEMS));
-	
+
 	public static RegistryObject<LockItem> TOPAZ_LOCK = Registration.ITEMS.register("topaz_lock", () -> new LockItem(LOCK_ITEM_PROPERTIES.get(), new KeyItem[] {TOPAZ_KEY.get(), JEWELLED_KEY.get()})
 			.setCategory(KeyLockCategory.GEMS));
 	public static RegistryObject<LockItem> ONYX_LOCK = Registration.ITEMS.register("onyx_lock", () -> new LockItem(LOCK_ITEM_PROPERTIES.get(), new KeyItem[] {ONYX_KEY.get(), JEWELLED_KEY.get()})
-			.setCategory(KeyLockCategory.GEMS));	
-	
+			.setCategory(KeyLockCategory.GEMS));
+
 	public static RegistryObject<LockItem> RUBY_LOCK = Registration.ITEMS.register("ruby_lock", () -> new LockItem(LOCK_ITEM_PROPERTIES.get(), new KeyItem[] {RUBY_KEY.get(), JEWELLED_KEY.get()})
 			.setCategory(KeyLockCategory.GEMS));
 	public static RegistryObject<LockItem> SAPPHIRE_LOCK = Registration.ITEMS.register("sapphire_lock", () -> new LockItem(LOCK_ITEM_PROPERTIES.get(), new KeyItem[] {SAPPHIRE_KEY.get(), JEWELLED_KEY.get()})
-			.setCategory(KeyLockCategory.GEMS));	
+			.setCategory(KeyLockCategory.GEMS));
 
 	public static RegistryObject<LockItem> SPIDER_LOCK = Registration.ITEMS.register("spider_lock", () -> new LockItem(LOCK_ITEM_PROPERTIES.get(), new KeyItem[] {SPIDER_KEY.get()})
 			.setCategory(KeyLockCategory.MOB));
@@ -320,7 +320,7 @@ public class TreasureItems {
 	public static RegistryObject<Item> WITHER_BROKEN_LOG_ITEM = fromBlock(TreasureBlocks.WITHER_BROKEN_LOG, TREASURE_PROPS_SUPPLIER);
 	public static RegistryObject<Item> WITHER_SOUL_LOG_ITEM = fromBlock(TreasureBlocks.WITHER_SOUL_LOG, TREASURE_PROPS_SUPPLIER);
 	public static RegistryObject<Item> WISHING_PLANKS_ITEM = fromBlock(TreasureBlocks.WITHER_PLANKS, TREASURE_PROPS_SUPPLIER);
-	
+
 	public static final RegistryObject<Item> SPANISH_MOSS_ITEM = fromBlock(TreasureBlocks.SPANISH_MOSS, TREASURE_PROPS_SUPPLIER);
 
 	public static final RegistryObject<Item> TOPAZ_ORE_ITEM = fromBlock(TreasureBlocks.TOPAZ_ORE, TREASURE_PROPS_SUPPLIER);
@@ -341,7 +341,7 @@ public class TreasureItems {
 	public static final RegistryObject<Item> SKELETON_ITEM = Registration.ITEMS.register("skeleton", () -> new SkeletonItem(TreasureBlocks.SKELETON.get(), TREASURE_PROPS_SUPPLIER.get()));
 
 	// vanity items
-	public static final RegistryObject<Item> EYE_PATCH = Registration.ITEMS.register("eye_patch", 
+	public static final RegistryObject<Item> EYE_PATCH = Registration.ITEMS.register("eye_patch",
 			() ->  new DyeableArmorItem(TreasureArmorMaterial.PATCH, ArmorItem.Type.HELMET, TREASURE_PROPS_SUPPLIER.get()));
 
 	// eggs
@@ -382,42 +382,42 @@ public class TreasureItems {
 
 
 	// HAMMER/MACE = new Sword(Tier, 8.0F, -4.0 // most damage, slowest, + 2x durability damage to target
-	
+
 	/*
 	 *  swords
 	 */
 	// short swords (copper, iron, steel)
-	public static final RegistryObject<Item> COPPER_SHORT_SWORD = Registration.ITEMS.register("copper_short_sword", 
+	public static final RegistryObject<Item> COPPER_SHORT_SWORD = Registration.ITEMS.register("copper_short_sword",
 			() -> new Sword(COPPER, 2.5f, -2.0F, TREASURE_ITEM_PROPERTIES));
 
-	public static final RegistryObject<Item> CHIPPED_COPPER_SHORT_SWORD = Registration.ITEMS.register("chipped_copper_short_sword", 
+	public static final RegistryObject<Item> CHIPPED_COPPER_SHORT_SWORD = Registration.ITEMS.register("chipped_copper_short_sword",
 			() -> new Sword(COPPER, 2.4f, -2.0F, TREASURE_ITEM_PROPERTIES));
 
-	public static final RegistryObject<Item> IRON_SHORT_SWORD = Registration.ITEMS.register("iron_short_sword", 
+	public static final RegistryObject<Item> IRON_SHORT_SWORD = Registration.ITEMS.register("iron_short_sword",
 			() -> new Sword(Tiers.IRON, 2.5f, -2.0F, TREASURE_ITEM_PROPERTIES));
 
-	public static final RegistryObject<Item> CHIPPED_IRON_SHORT_SWORD = Registration.ITEMS.register("chipped_iron_short_sword", 
+	public static final RegistryObject<Item> CHIPPED_IRON_SHORT_SWORD = Registration.ITEMS.register("chipped_iron_short_sword",
 			() -> new Sword(Tiers.IRON, 2.4f, -2.0F, TREASURE_ITEM_PROPERTIES));
 
-	public static final RegistryObject<Item> STEEL_SHORT_SWORD = Registration.ITEMS.register("steel_short_sword", 
+	public static final RegistryObject<Item> STEEL_SHORT_SWORD = Registration.ITEMS.register("steel_short_sword",
 			() -> new Sword(STEEL, 2.5f, -2.0F, TREASURE_ITEM_PROPERTIES));
 
-	public static final RegistryObject<Item> CHIPPED_STEEL_SHORT_SWORD = Registration.ITEMS.register("chipped_steel_short_sword", 
+	public static final RegistryObject<Item> CHIPPED_STEEL_SHORT_SWORD = Registration.ITEMS.register("chipped_steel_short_sword",
 			() -> new Sword(STEEL, 2.4f, -2.0F, TREASURE_ITEM_PROPERTIES));
 
 	// rapier
-	public static final RegistryObject<Item> COPPER_RAPIER = Registration.ITEMS.register("copper_rapier", 
+	public static final RegistryObject<Item> COPPER_RAPIER = Registration.ITEMS.register("copper_rapier",
 			() -> new Sword(COPPER, 2.6f, -2.0F, TREASURE_PROPS_SUPPLIER.get()));
-	
+
 	// longswords (steel, skull, shadow, +)
-	public static final RegistryObject<Item> STEEL_SWORD = Registration.ITEMS.register("steel_sword", 
+	public static final RegistryObject<Item> STEEL_SWORD = Registration.ITEMS.register("steel_sword",
 			() -> new SwordItem(STEEL, 3, -2.4F, TREASURE_ITEM_PROPERTIES));
 
-	public static final RegistryObject<Item> SKULL_SWORD = Registration.ITEMS.register("skull_sword", 
+	public static final RegistryObject<Item> SKULL_SWORD = Registration.ITEMS.register("skull_sword",
 			() -> new SwordItem(SKULL, 3, -2.4F, TREASURE_ITEM_PROPERTIES));
 
 	// large sword
-	public static final RegistryObject<Item> SWORD_POWER = Registration.ITEMS.register("sword_of_power", 
+	public static final RegistryObject<Item> SWORD_POWER = Registration.ITEMS.register("sword_of_power",
 			() -> new Sword(MYTHICAL, 3, -2.4F, TREASURE_ITEM_PROPERTIES) {
 				@Override
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
@@ -436,8 +436,8 @@ public class TreasureItems {
 					return false;
 				}
 			});
-	
-	public static final RegistryObject<Item> BLACK_SWORD = Registration.ITEMS.register("black_sword", 
+
+	public static final RegistryObject<Item> BLACK_SWORD = Registration.ITEMS.register("black_sword",
 			() -> new Sword(MYTHICAL, 3, -2.4F, TREASURE_ITEM_PROPERTIES) {
 				@Override
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
@@ -457,14 +457,14 @@ public class TreasureItems {
 				}
 			});
 
-	public static final RegistryObject<Item> OATHBRINGER = Registration.ITEMS.register("oathbringer", 
+	public static final RegistryObject<Item> OATHBRINGER = Registration.ITEMS.register("oathbringer",
 			() -> new Sword(MYTHICAL, 3, -2.0F, 50F, 7F, TREASURE_ITEM_PROPERTIES) {
 				@Override
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 					tooltip.add(Component.literal(LangUtil.NEWLINE));
 					// lore may be multiple lines, so separate on ~ and add to tooltip
 					Component lore = Component.translatable(LangUtil.tooltip("weapons.oathbringer.lore"));
-					for (String s : lore.getString().split("~")) {	
+					for (String s : lore.getString().split("~")) {
 						tooltip.add(Component.literal(LangUtil.INDENT4)
 								.append(Component.translatable(s)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC));
 					}
@@ -480,7 +480,7 @@ public class TreasureItems {
 				}
 			});
 
-	public static final RegistryObject<Item> SWORD_OMENS = Registration.ITEMS.register("sword_of_omens", 
+	public static final RegistryObject<Item> SWORD_OMENS = Registration.ITEMS.register("sword_of_omens",
 			() -> new Sword(EPIC, 3, -2.4F, 35F, 5F, TREASURE_ITEM_PROPERTIES) {
 				@Override
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
@@ -500,14 +500,14 @@ public class TreasureItems {
 				}
 			});
 
-	public static final RegistryObject<Item> CALLANDOR = Registration.ITEMS.register("callandor", 
+	public static final RegistryObject<Item> CALLANDOR = Registration.ITEMS.register("callandor",
 			() -> new Sword(MYTHICAL, 3, -2.0F, 75F, 9F, TREASURE_ITEM_PROPERTIES) {
 				@Override
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 					tooltip.add(Component.literal(LangUtil.NEWLINE));
 					// lore may be multiple lines, so separate on ~ and add to tooltip
 					Component lore = Component.translatable(LangUtil.tooltip("weapons.callandor.lore"));
-					for (String s : lore.getString().split("~")) {	
+					for (String s : lore.getString().split("~")) {
 						tooltip.add(Component.literal(LangUtil.INDENT4)
 								.append(Component.translatable(s)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC));
 					}
@@ -522,23 +522,23 @@ public class TreasureItems {
 					return false;
 				}
 			});
-	
+
 	// broad/bastard swords (steel, black)
-	public static final RegistryObject<Item> IRON_BROADSWORD = Registration.ITEMS.register("iron_broadsword", 
+	public static final RegistryObject<Item> IRON_BROADSWORD = Registration.ITEMS.register("iron_broadsword",
 			() -> new Sword(Tiers.IRON, 3.5f, -2.8F, TREASURE_ITEM_PROPERTIES));
-	
-	public static final RegistryObject<Item> STEEL_BROADSWORD = Registration.ITEMS.register("steel_broadsword", 
+
+	public static final RegistryObject<Item> STEEL_BROADSWORD = Registration.ITEMS.register("steel_broadsword",
 			() -> new Sword(STEEL, 3.5f, -2.8F, TREASURE_ITEM_PROPERTIES));
-	
+
 	// scythes
-	public static final RegistryObject<Item> ORCUS = Registration.ITEMS.register("orcus", 
+	public static final RegistryObject<Item> ORCUS = Registration.ITEMS.register("orcus",
 			() -> new Sword(LEGENDARY, 3, -2.4F, 40F, 5F, TREASURE_ITEM_PROPERTIES) {
 				@Override
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 					tooltip.add(Component.literal(LangUtil.NEWLINE));
 					// lore may be multiple lines, so separate on ~ and add to tooltip
 					Component lore = Component.translatable(LangUtil.tooltip("weapons.orcus.lore"));
-					for (String s : lore.getString().split("~")) {	
+					for (String s : lore.getString().split("~")) {
 						tooltip.add(Component.literal(LangUtil.INDENT4)
 								.append(Component.translatable(s)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC));
 					}
@@ -555,14 +555,14 @@ public class TreasureItems {
 			});
 
 	// katanas (steel, shadow + )
-	public static final RegistryObject<Item> SNAKE_EYES_KATANA = Registration.ITEMS.register("snake_eyes_katana", 
+	public static final RegistryObject<Item> SNAKE_EYES_KATANA = Registration.ITEMS.register("snake_eyes_katana",
 			() -> new Sword(RARE, 3, -1.5F, 25f, 5f, TREASURE_ITEM_PROPERTIES) {
 				@Override
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 					tooltip.add(Component.literal(LangUtil.NEWLINE));
 					// lore may be multiple lines, so separate on ~ and add to tooltip
 					Component lore = Component.translatable(LangUtil.tooltip("weapons.snake_eyes_katana.lore"));
-					for (String s : lore.getString().split("~")) {	
+					for (String s : lore.getString().split("~")) {
 						tooltip.add(Component.literal(LangUtil.INDENT4)
 								.append(Component.translatable(s)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC));
 					}
@@ -578,14 +578,14 @@ public class TreasureItems {
 				}
 			});
 
-	public static final RegistryObject<Item> STORM_SHADOWS_KATANA = Registration.ITEMS.register("storm_shadows_katana", 
+	public static final RegistryObject<Item> STORM_SHADOWS_KATANA = Registration.ITEMS.register("storm_shadows_katana",
 			() -> new Sword(RARE, 3, -1.5f, 25f, 5f, TREASURE_ITEM_PROPERTIES) {
 				@Override
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 					tooltip.add(Component.literal(LangUtil.NEWLINE));
 					// lore may be multiple lines, so separate on ~ and add to tooltip
 					Component lore = Component.translatable(LangUtil.tooltip("weapons.storm_shadows_katana.lore"));
-					for (String s : lore.getString().split("~")) {	
+					for (String s : lore.getString().split("~")) {
 						tooltip.add(Component.literal(LangUtil.INDENT4)
 								.append(Component.translatable(s)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC));
 					}
@@ -602,35 +602,35 @@ public class TreasureItems {
 			});
 
 	// machetes (steel, shadow)
-	public static final RegistryObject<Item> STEEL_MACHETE = Registration.ITEMS.register("steel_machete", 
+	public static final RegistryObject<Item> STEEL_MACHETE = Registration.ITEMS.register("steel_machete",
 			() -> new Sword(STEEL, 2.7F, -2.6F, TREASURE_ITEM_PROPERTIES));
-	public static final RegistryObject<Item> SHADOW_MACHETE = Registration.ITEMS.register("shadow_machete", 
+	public static final RegistryObject<Item> SHADOW_MACHETE = Registration.ITEMS.register("shadow_machete",
 			() -> new Sword(SHADOW, 2.7F, -2.6F, TREASURE_ITEM_PROPERTIES));
 
 	// flachions (steel, shadow)
-	public static final RegistryObject<Item> IRON_FALCHION = Registration.ITEMS.register("iron_falchion", 
+	public static final RegistryObject<Item> IRON_FALCHION = Registration.ITEMS.register("iron_falchion",
 			() -> new Sword(Tiers.IRON, 2.8F, -2.4F, TREASURE_ITEM_PROPERTIES));
-	public static final RegistryObject<Item> STEEL_FALCHION = Registration.ITEMS.register("steel_falchion", 
+	public static final RegistryObject<Item> STEEL_FALCHION = Registration.ITEMS.register("steel_falchion",
 			() -> new Sword(STEEL, 2.8F, -2.4F, TREASURE_ITEM_PROPERTIES));
-	public static final RegistryObject<Item> SHADOW_FALCHION = Registration.ITEMS.register("shadow_falchion", 
+	public static final RegistryObject<Item> SHADOW_FALCHION = Registration.ITEMS.register("shadow_falchion",
 			() -> new Sword(SHADOW, 2.8F, -2.4F, TREASURE_ITEM_PROPERTIES));
-	
+
 	// hammers / maces / mauls
-	public static final RegistryObject<Item> IRON_MACE = Registration.ITEMS.register("iron_mace", 
+	public static final RegistryObject<Item> IRON_MACE = Registration.ITEMS.register("iron_mace",
 			() -> new Sword(Tiers.IRON, TreasureWeapons.HAMMER_BASE_DAMAGE, TreasureWeapons.HAMMER_BASE_SPEED, TREASURE_ITEM_PROPERTIES));
-	public static final RegistryObject<Item> STEEL_MACE = Registration.ITEMS.register("steel_mace", 
+	public static final RegistryObject<Item> STEEL_MACE = Registration.ITEMS.register("steel_mace",
 			() -> new Sword(STEEL, TreasureWeapons.HAMMER_BASE_DAMAGE, TreasureWeapons.HAMMER_BASE_SPEED, TREASURE_ITEM_PROPERTIES));
-	
-	public static final RegistryObject<Item> MJOLNIR = Registration.ITEMS.register("mjolnir", 
-			() -> new Sword(MYTHICAL, 
-					TreasureWeapons.HAMMER_BASE_DAMAGE, TreasureWeapons.HAMMER_BASE_SPEED + 0.7f, 
+
+	public static final RegistryObject<Item> MJOLNIR = Registration.ITEMS.register("mjolnir",
+			() -> new Sword(MYTHICAL,
+					TreasureWeapons.HAMMER_BASE_DAMAGE, TreasureWeapons.HAMMER_BASE_SPEED + 0.7f,
 					75F, 9F, TREASURE_ITEM_PROPERTIES) {
 				@Override
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 					tooltip.add(Component.literal(LangUtil.NEWLINE));
 					// lore may be multiple lines, so separate on ~ and add to tooltip
 					Component lore = Component.translatable(LangUtil.tooltip("weapons.mjolnir.lore"));
-					for (String s : lore.getString().split("~")) {	
+					for (String s : lore.getString().split("~")) {
 						tooltip.add(Component.literal(LangUtil.INDENT4)
 								.append(Component.translatable(s)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC));
 					}
@@ -652,26 +652,26 @@ public class TreasureItems {
 	//	IRON_AXE = new AxeItem(Tiers.IRON, 6.0F, -3.1F  // USE AS DEFAULT STATS FOR AXES
 	//	DIAMOND_AXE = new AxeItem(Tiers.DIAMOND, 5.0F, -3.0F
 	//	NETHERITE_AXE = new AxeItem(Tiers.NETHERITE, 5.0F, -3.0F
-	public static final RegistryObject<Item> COPPER_BROAD_AXE = Registration.ITEMS.register("copper_broad_axe", 
+	public static final RegistryObject<Item> COPPER_BROAD_AXE = Registration.ITEMS.register("copper_broad_axe",
 			() -> new Axe(COPPER, TreasureWeapons.AXE_BASE_DAMAGE - 1.0F, TreasureWeapons.AXE_BASE_SPEED + 0.2f, TREASURE_ITEM_PROPERTIES));
-	public static final RegistryObject<Item> IRON_BROAD_AXE = Registration.ITEMS.register("iron_broad_axe", 
+	public static final RegistryObject<Item> IRON_BROAD_AXE = Registration.ITEMS.register("iron_broad_axe",
 			() -> new Axe(Tiers.IRON, TreasureWeapons.AXE_BASE_DAMAGE - 1.0F, TreasureWeapons.AXE_BASE_SPEED + 0.2f, TREASURE_ITEM_PROPERTIES));
-	public static final RegistryObject<Item> STEEL_BROAD_AXE = Registration.ITEMS.register("steel_broad_axe", 
+	public static final RegistryObject<Item> STEEL_BROAD_AXE = Registration.ITEMS.register("steel_broad_axe",
 			() -> new Axe(STEEL, TreasureWeapons.AXE_BASE_DAMAGE - 1.0F, TreasureWeapons.AXE_BASE_SPEED + 0.2f, TREASURE_ITEM_PROPERTIES));
-	
-	public static final RegistryObject<Item> IRON_DWARVEN_AXE = Registration.ITEMS.register("iron_dwarven_axe", 
+
+	public static final RegistryObject<Item> IRON_DWARVEN_AXE = Registration.ITEMS.register("iron_dwarven_axe",
 			() -> new Axe(Tiers.IRON, TreasureWeapons.AXE_BASE_DAMAGE + 0.5F, TreasureWeapons.AXE_BASE_SPEED + 0.1f, TREASURE_ITEM_PROPERTIES));
-	
-	
-	public static final RegistryObject<Item> AXE_DURIN = Registration.ITEMS.register("axe_of_durin", 
-			() -> new Axe(LEGENDARY, TreasureWeapons.AXE_BASE_DAMAGE, TreasureWeapons.AXE_BASE_SPEED + 0.5f, 
+
+
+	public static final RegistryObject<Item> AXE_DURIN = Registration.ITEMS.register("axe_of_durin",
+			() -> new Axe(LEGENDARY, TreasureWeapons.AXE_BASE_DAMAGE, TreasureWeapons.AXE_BASE_SPEED + 0.5f,
 					65F, 7F, TREASURE_ITEM_PROPERTIES) {
 				@Override
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 					tooltip.add(Component.literal(LangUtil.NEWLINE));
 					// lore may be multiple lines, so separate on ~ and add to tooltip
 					Component lore = Component.translatable(LangUtil.tooltip("weapons.axe_of_durin.lore"));
-					for (String s : lore.getString().split("~")) {	
+					for (String s : lore.getString().split("~")) {
 						tooltip.add(Component.literal(LangUtil.INDENT4)
 								.append(Component.translatable(s)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC));
 					}
@@ -686,16 +686,16 @@ public class TreasureItems {
 					return false;
 				}
 			});
-	
-	public static final RegistryObject<Item> HEADSMANS_AXE = Registration.ITEMS.register("headsmans_axe", 
-			() -> new Axe(EPIC, TreasureWeapons.AXE_BASE_DAMAGE, TreasureWeapons.AXE_BASE_SPEED + 0.3f, 
+
+	public static final RegistryObject<Item> HEADSMANS_AXE = Registration.ITEMS.register("headsmans_axe",
+			() -> new Axe(EPIC, TreasureWeapons.AXE_BASE_DAMAGE, TreasureWeapons.AXE_BASE_SPEED + 0.3f,
 					55F, 6F, TREASURE_ITEM_PROPERTIES) {
 				@Override
 				public  void appendHoverExtras(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 					tooltip.add(Component.literal(LangUtil.NEWLINE));
 					// lore may be multiple lines, so separate on ~ and add to tooltip
 					Component lore = Component.translatable(LangUtil.tooltip("weapons.headsmans_axe.lore"));
-					for (String s : lore.getString().split("~")) {	
+					for (String s : lore.getString().split("~")) {
 						tooltip.add(Component.literal(LangUtil.INDENT4)
 								.append(Component.translatable(s)).withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(ChatFormatting.ITALIC));
 					}
@@ -732,7 +732,7 @@ public class TreasureItems {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public static void register(IEventBus bus) {
 		// cycle through all block and create items
