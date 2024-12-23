@@ -17,12 +17,12 @@
  */
 package mod.gottsch.forge.treasure2.core.world.feature.gen;
 
-import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import com.google.common.collect.Maps;
 import mod.gottsch.forge.gottschcore.block.BlockContext;
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.gottschcore.random.RandomHelper;
@@ -31,12 +31,7 @@ import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.block.ITreasureBlock;
-import mod.gottsch.forge.treasure2.core.block.SpanishMossBlock;
-import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
-import mod.gottsch.forge.treasure2.core.block.WitherBranchBlock;
-import mod.gottsch.forge.treasure2.core.block.WitherRootBlock;
-import mod.gottsch.forge.treasure2.core.block.WitherSoulLog;
+import mod.gottsch.forge.treasure2.core.block.*;
 import mod.gottsch.forge.treasure2.core.config.ChestFeaturesConfiguration.ChestRarity;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.enums.PitType;
@@ -56,6 +51,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.AABB;
+import org.apache.commons.compress.utils.Lists;
 
 /**
  * 
@@ -69,11 +65,12 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 	private static final int DEGREES = 360;
 	private static final double MIN_RADIUS = 5.0;
 	private static final double MAX_RADIUS = 10.0;
-	private static final int MIN_MAIN_TREE_SIZE = 9;
+	private static final int MIN_MAIN_TREE_SIZE = 11;
 	private static final int MIN_TREE_SIZE = 7;
 	private static final int WITHER_ROOT_PROBABILITY = 50;
 	private static final int WITHER_BRANCH_PROBABILITY = 30;
 	private static final int SPANISH_MOSS_PROBABILITY = 80;
+	private static final int TWIG_PROBABILITY = 40;
 	private static final int MAX_ROCKS = 5;
 	private static final int MIN_ROCKS = 0;
 	private static final int MIN_SCRUB = 5;
@@ -96,49 +93,84 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 	private static final int MAX_GEN_RADIUS = 20;
 	
 	@SuppressWarnings("unchecked")
-	static List<Direction>[] trunkMatrix = new ArrayList[4];
+//	static List<Direction>[] trunkMatrix = new ArrayList[4];
 	static List<Direction> supportTrunkMatrix = new ArrayList<>();
-	static List<Direction> topMatrix = new ArrayList<>();
+//	static List<Direction> topMatrix = new ArrayList<>();
 
 	private int waitChunksCount = 0;
-	
+
+	private static final int NW = 0;
+	private static final int N = 1;
+	private static final int NE = 2;
+	private static final int W = 3;
+	private static final int CORE = 4;
+	private static final int E = 5;
+	private static final int SW = 6;
+	private static final int S = 7;
+	private static final int SE = 8;
+
+	private Map<Integer, List<Direction>> buildTrunkMap() {
+		Map<Integer, List<Direction>> map = Maps.newHashMap();
+
+		map.put(NW, List.of(Direction.NORTH, Direction.WEST));
+		map.put(N, List.of(Direction.NORTH));
+		map.put(NE, List.of(Direction.NORTH, Direction.EAST));
+
+		map.put(W, List.of(Direction.WEST));
+		map.put(CORE, new ArrayList<>());
+		map.put(E, List.of(Direction.EAST));
+
+		map.put(SW, List.of(Direction.SOUTH, Direction.WEST));
+		map.put(S, List.of(Direction.SOUTH));
+		map.put(SE, List.of(Direction.SOUTH, Direction.EAST));
+
+		return map;
+	}
+
+	private List<Direction> buildTrunkTopMap() {
+		List<Direction> list = Lists.newArrayList();
+		list.add(0, Direction.EAST);
+		list.add(1, Direction.SOUTH);
+		list.add(2, Direction.SOUTH);
+		list.add(3, Direction.EAST);
+		list.add(4, Direction.NORTH);
+		list.add(5, Direction.WEST);
+		list.add(6, Direction.NORTH);
+		list.add(7, Direction.NORTH);
+		list.add(8, Direction.WEST);
+		return list;
+	}
+
+	private List<Direction> buildSupportTrunkMap() {
+		List<Direction> list = Lists.newArrayList();
+		list.add(Direction.NORTH);
+		list.add(Direction.EAST);
+		list.add(Direction.SOUTH);
+		list.add(Direction.WEST);
+		return list;
+	}
+
+		// TODO move all this into init methods - don't need this as static in-memory for the once in a while that a tree is generated
 	static {
-		trunkMatrix[0] = new ArrayList<>();
-		trunkMatrix[1] = new ArrayList<>();
-		trunkMatrix[2] = new ArrayList<>();
-		trunkMatrix[3] = new ArrayList<>();
-
-		trunkMatrix[0].add(Direction.NORTH);
-		trunkMatrix[0].add(Direction.WEST);
-		trunkMatrix[1].add(Direction.NORTH);
-		trunkMatrix[1].add(Direction.EAST);
-		trunkMatrix[2].add(Direction.SOUTH);
-		trunkMatrix[2].add(Direction.WEST);
-		trunkMatrix[3].add(Direction.SOUTH);
-		trunkMatrix[3].add(Direction.EAST);
-
 		supportTrunkMatrix.add(Direction.NORTH);
 		supportTrunkMatrix.add(Direction.EAST);
 		supportTrunkMatrix.add(Direction.SOUTH);
 		supportTrunkMatrix.add(Direction.WEST);
-
-		topMatrix.add(Direction.EAST);
-		topMatrix.add(Direction.SOUTH);
-		topMatrix.add(null);
-		topMatrix.add(null);
 	}
 	
 	@Override
 	public Optional<GeneratorResult<ChestGeneratorData>> generate(IFeatureGenContext context, ICoords spawnCoords,
 			IRarity rarity, ChestRarity config) {
 
+		// NOTE spawnCoords will be 1 block in the ground due to the deferred placement. the wither tree should be on top of the ground
+		spawnCoords = spawnCoords.add(0, 1, 0);
+
 		Treasure.LOGGER.debug("surface coords -> {}", spawnCoords.toShortString());
 		if (!WorldInfo.isHeightValid(spawnCoords)) {
 			Treasure.LOGGER.debug("surface coords are invalid -> {}", spawnCoords.toShortString());
 			return Optional.empty();
 		}
-		
-		// TODO determine underground coords
+
 		// determine spawn coords below ground
 		Optional<ICoords> undergroundCoords = getUndergroundSpawnPos(context.level(), context.random(), spawnCoords, config.getMinDepth(), config.getMaxDepth());
 
@@ -201,6 +233,8 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 
 		buildRocks(context, witherGroveBounds);
 		buildScrub(context, witherGroveBounds);
+//		buildStrangleVines(context, witherGroveBounds)
+//		buildBlight(context, witherGroveBounds)
 
 		// add chest
 		ICoords chestCoords = pitResult.get().getData().getCoords();
@@ -269,10 +303,12 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 							continue;
 						}
 						if (RandomHelper.checkProbability(context.random(), DIRT_REPLACEMENT_PROBABILITY)) {
-							if (Math.abs(xOffset) < 4 && Math.abs(zOffset) < 4 && !(Math.abs(xOffset) == 3 && Math.abs(zOffset) == 3)) { // TODO magic numbers?!
-								context.level().setBlock(buildCoords.add(0, -1, 0).toPos(), Blocks.PODZOL.defaultBlockState(), 3);
-							} else {
-								context.level().setBlock(buildCoords.add(0, -1, 0).toPos(), Blocks.DIRT.defaultBlockState(), 3);
+							switch (context.random().nextInt(10)) {
+								case 0 -> context.level().setBlock(buildCoords.add(0, -1, 0).toPos(), Blocks.MYCELIUM.defaultBlockState(), 3);
+								case 1 -> context.level().setBlock(buildCoords.add(0, -1, 0).toPos(), Blocks.PODZOL.defaultBlockState(), 3);
+								case 2, 3 -> context.level().setBlock(buildCoords.add(0, -1, 0).toPos(), Blocks.MUD.defaultBlockState(), 3);
+								case 4, 5 -> context.level().setBlock(buildCoords.add(0, -1, 0).toPos(), Blocks.COARSE_DIRT.defaultBlockState(), 3);
+								default -> context.level().setBlock(buildCoords.add(0, -1, 0).toPos(), Blocks.DIRT.defaultBlockState(), 3);
 							}
 						}
 					}
@@ -300,7 +336,22 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 //		Instant finish = Instant.now();
 //		Treasure.LOGGER.debug("buildClearing() time -> {}ms", Duration.between(start, finish).toMillis());
 	}
-	
+
+	private ICoords[] buildTrunkCoords(ICoords coords) {
+		ICoords[] trunkCoords = new Coords[9];
+		trunkCoords[NW] = coords;
+		trunkCoords[N] = coords.east(1);
+		trunkCoords[NE] = coords.east(2);
+		trunkCoords[W] = coords.south(1);
+		trunkCoords[CORE] = coords.add(1, 0, 1);
+		trunkCoords[E] = coords.add(2, 0, 1);
+		trunkCoords[SW] = coords.south(2);
+		trunkCoords[S] = coords.add(1, 0, 2);
+		trunkCoords[SE] = coords.add(2, 0, 2);
+
+		return trunkCoords;
+	}
+
 	/**
 	 * 
 	 * @param context
@@ -308,80 +359,84 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 	 * @param originalSpawnCoords
 	 */
 	public void buildMainTree(IWorldGenContext context, ICoords coords, ICoords originalSpawnCoords) {
-		Instant start = Instant.now();
+//		Instant start = Instant.now();
 
-		// setup an array of coords
-		ICoords[] trunkCoords = new Coords[4];
-		trunkCoords[0] = coords;
-		trunkCoords[1] = coords.add(1, 0, 0);
-		trunkCoords[2] = coords.add(0, 0, 1);
-		trunkCoords[3] = coords.add(1, 0, 1);
+		Map<Integer, List<Direction>> trunkMatrix = buildTrunkMap();
+		List<Direction> trunkTopMatrix = buildTrunkTopMap();
+		ICoords[] trunkCoords = buildTrunkCoords(coords);
 
 		// determine the size of the main trunk
-		int maxSize = RandomHelper.randomInt(context.random(), MIN_MAIN_TREE_SIZE, Config.SERVER.witherTree.maxTrunkSize.get());
+		int maxSize = RandomHelper.randomInt(context.random(),
+				Math.min(MIN_MAIN_TREE_SIZE, Config.SERVER.witherTree.maxTrunkSize.get()),
+				Config.SERVER.witherTree.maxTrunkSize.get());
+
+		int size = RandomHelper.randomInt(context.random(), Math.min(MIN_MAIN_TREE_SIZE, maxSize), maxSize);
+		int tallestSize = 0;
 
 		// build a 2x2 trunk
 		boolean hasLifeBeenAdded = false;
 		for (int trunkIndex = 0; trunkIndex < trunkCoords.length; trunkIndex++) {
+			// select the log
+			BlockState trunkBlockState;
+			trunkBlockState = (trunkIndex == CORE) ? trunkBlockState = TreasureBlocks.STRIPPED_WITHERWOOD_LOG.get().defaultBlockState()
+					: TreasureBlocks.WITHERWOOD_LOG.get().defaultBlockState();
 
-			for (int y = 0; y < maxSize; y++) {
-				if (trunkIndex == 2 && y == 2) { // TODO <-- select the right index and the face facing in the right direction
+			for (int y = 0; y < size; y++) {
+//				if (trunkIndex == 2 && y == 2) {
 
 					// check if trunk index is outside generation radius
-					if (!isGenerationWithinMaxRadius(trunkCoords[trunkIndex], originalSpawnCoords)) {
-						continue;
-					}
+//					if (!isGenerationWithinMaxRadius(trunkCoords[trunkIndex], originalSpawnCoords)) {
+//						continue;
+//					}
 
-					if (!hasLifeBeenAdded) {
-						context.level().setBlock(trunkCoords[trunkIndex].add(0, y, 0).toPos(),
-								TreasureBlocks.WITHERWOOD_SOUL_LOG.get().defaultBlockState()
-								.setValue(WitherSoulLog.APPEARANCE, WitherSoulLog.Appearance.FACE)
-								.setValue(WitherSoulLog.FACING, Direction.SOUTH), 3);
-						hasLifeBeenAdded = true;
-						continue;
-					}
-				}
+//					if (!hasLifeBeenAdded) {
+//						context.level().setBlock(trunkCoords[trunkIndex].add(0, y, 0).toPos(),
+//								TreasureBlocks.WITHERWOOD_SOUL_LOG.get().defaultBlockState()
+//								.setValue(WitherSoulLog.APPEARANCE, WitherSoulLog.Appearance.FACE)
+//								.setValue(WitherSoulLog.FACING, Direction.SOUTH), 3);
+//						hasLifeBeenAdded = true;
+//						continue;
+//					}
+//				}
 
 				// add the trunk
-				context.level().setBlock(trunkCoords[trunkIndex].add(0, y, 0).toPos(),
-						TreasureBlocks.WITHERWOOD_LOG.get().defaultBlockState(), 3);
+				context.level().setBlock(trunkCoords[trunkIndex].add(0, y, 0).toPos(),	trunkBlockState, 3);
 
 				// add the decorations (branches, roots, top)
-				if (y == 0) {
-					addRoot(context, trunkCoords[trunkIndex], originalSpawnCoords, trunkMatrix[trunkIndex]);
-				} else if (y == maxSize - 1) {
-					addTop(context, trunkCoords[trunkIndex], originalSpawnCoords, y + 1, topMatrix.get(trunkIndex));
-				} else if (y >= 3) {
-					addBranch(context, trunkCoords[trunkIndex], originalSpawnCoords, y, maxSize, trunkMatrix[trunkIndex]);
+				if (trunkIndex != CORE) {
+					if (y == 0) {
+						addRoot(context, trunkCoords[trunkIndex], originalSpawnCoords, trunkMatrix.get(trunkIndex));
+					} else if (y == size - 1 && trunkIndex % 2 == 0) {
+						addTop(context, trunkCoords[trunkIndex], originalSpawnCoords, y + 1, trunkTopMatrix.get(trunkIndex));
+					} else if (y >= 3) {
+						addBranch(context, trunkCoords[trunkIndex], originalSpawnCoords, y, size, trunkMatrix.get(trunkIndex));
+					}
 				}
 			}
 
-			// set the new max size
-			if (maxSize > 3) {
-				maxSize -= RandomHelper.randomInt(context.random(), 1, 3);
-				maxSize = Math.max(3, maxSize);
+			// TODO replace mid-low center position with heart
+
+			// store the tallest size.
+			tallestSize = Math.max(size, tallestSize);
+
+			// set the new size
+			if (trunkIndex == 4) {
+				size = RandomHelper.randomInt(context.random(), Math.min(MIN_MAIN_TREE_SIZE, tallestSize - 1), tallestSize - 1);
+			} else {
+				size = RandomHelper.randomInt(context.random(), Math.min(MIN_MAIN_TREE_SIZE, maxSize), maxSize);
 			}
 		}
-		Instant finish = Instant.now();
-		Treasure.LOGGER.debug("buildMainTree time -> {}ms", Duration.between(start, finish).toMillis());
+//		Instant finish = Instant.now();
+//		Treasure.LOGGER.debug("buildMainTree time -> {}ms", Duration.between(start, finish).toMillis());
 	}
 	
 	public void buildTree(IWorldGenContext context, ICoords coords, ICoords originalSpawnCoords) {
-		Instant start = Instant.now();
-		// build a small wither tree ie one trunk
+//		Instant start = Instant.now();
 
 		// determine the size of the main trunk
-		int maxSize = RandomHelper.randomInt(context.random(), MIN_TREE_SIZE, Config.SERVER.witherTree.maxTrunkSize.get());
+		int  = RandomHelper.randomInt(context.random(), MIN_TREE_SIZE, Config.SERVER.witherTree.maxTrunkSize.get());
 
-		boolean hasLifeBeenAdded = false;
 		for (int y = 0; y < maxSize; y++) {
-			if (y == 0) {
-				if (!hasLifeBeenAdded) {
-					context.level().setBlock(coords.add(0, y, 0).toPos(), TreasureBlocks.WITHERWOOD_SOUL_LOG.get().defaultBlockState(), 3);
-					hasLifeBeenAdded = true;
-					continue;
-				}
-			}
 
 			// add the trunk
 			context.level().setBlock(coords.add(0, y, 0).toPos(), TreasureBlocks.WITHERWOOD_LOG.get().defaultBlockState(), 3);
@@ -395,8 +450,8 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 				addBranch(context, coords, originalSpawnCoords, y, maxSize, supportTrunkMatrix);
 			}
 		}
-		Instant finish = Instant.now();
-		Treasure.LOGGER.debug("buildTree time -> {}ms", Duration.between(start, finish).toMillis());
+//		Instant finish = Instant.now();
+//		Treasure.LOGGER.debug("buildTree time -> {}ms", Duration.between(start, finish).toMillis());
 	}
 	
 	private void addRoot(IWorldGenContext context, ICoords coords, ICoords originalSpawnCoords, List<Direction> directions) {
@@ -413,15 +468,10 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 				BlockContext replaceBlockContext = new BlockContext(context.level(), newCoords);
 				if (groundBlockContext.isSolid()
 						&& (replaceBlockContext.isAir() || replaceBlockContext.isReplaceable())) {
-					// rotate the branch in the right direction
 					BlockState state = TreasureBlocks.WITHERWOOD_ROOT.get().defaultBlockState()
 							.setValue(WitherRootBlock.FACING, direction)
 							.setValue(WitherRootBlock.ACTIVATED, true);
-
-					// add the branch to the world
-					//					world.setBlockState(c.toPos(), state, 3);
 					WorldInfo.setBlock(context.level(), newCoords, state);
-					//					 Treasure.logger.debug("Wither Tree building root @ " +  coords.toShortString());					
 				}
 			}
 		}
@@ -429,8 +479,8 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 	
 	private void addBranch(IWorldGenContext context, ICoords trunkCoords, ICoords originalSpawnCoords, int y, int maxSize,
 			List<Direction> directions) {
-		Instant start = Instant.now();
-		int branchSize = 0;// (y <= (maxSize/3)) ? 3 : (y <= (maxSize * 2/3)) ? 2 : 1;
+//		Instant start = Instant.now();
+		int branchSize = 0;
 		if (y < maxSize / 3 || y > maxSize / 4)
 			branchSize = 2;
 		else
@@ -438,21 +488,26 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 
 		// for each direction
 		for (Direction direction : directions) {
+			ICoords c = trunkCoords.add(0, y, 0);  // 7/2/2021 changed: added .add(0, y, 0)
 			// randomize if a branch is generated
 			if (RandomHelper.checkProbability(context.random(), WITHER_BRANCH_PROBABILITY)) {
-				// for the num of branch segments
-				ICoords c = trunkCoords.add(0, y, 0);  // 7/2/2021 changed: added .add(0, y, 0)
+
 				// check if trunk index is outside generation radius
 				if (!isGenerationWithinMaxRadius(c, originalSpawnCoords)) {
 					continue;
 				}
+				// for the num of branch segments
 				for (int segment = 0; segment < branchSize; segment++) {
 					c = c.add(direction, 1);
 					BlockContext replaceBlockContext = new BlockContext(context.level(), c);
 
-					// if there is a branch directly below, don't build
-					if (context.level().getBlockState(c.down(1).toPos()).getBlock() instanceof WitherBranchBlock)
+					// if there is a branch directly below, don't add another branch but potentially add a twig
+					if (context.level().getBlockState(c.down(1).toPos()).getBlock() instanceof WitherBranchBlock) {
+						if (segment == 0 && RandomHelper.checkProbability(context.random(), TWIG_PROBABILITY)) {
+							addTwig(context, c, direction);
+						}
 						break;
+					}
 
 					// if able to place branch here
 					if (replaceBlockContext.isAir() || replaceBlockContext.isReplaceable()) {
@@ -475,17 +530,22 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 						break;
 					}
 				}
+			} else if (RandomHelper.checkProbability(context.random(), TWIG_PROBABILITY)) {
+				addTwig(context, c.add(direction, 1), direction);
 			}
 		}
-		Instant finish = Instant.now();
+//		Instant finish = Instant.now();
 //		Treasure.LOGGER.debug("addBranch() time -> {}ms", Duration.between(start, finish).toMillis());
 	}
-	
+
+	private void addTwig(IWorldGenContext context, ICoords coords, Direction direction) {
+		WorldInfo.setBlock(context.level(), coords, TreasureBlocks.WITHERWOOD_TWIG.get().defaultBlockState()
+				.setValue(WitherTwigBlock.FACING, direction));
+	}
+
 	private void addTop(IWorldGenContext context, ICoords coords, ICoords originalSpawnCoords, int y, Direction direction) {
 		if (direction != null) {
 			BlockState state = TreasureBlocks.WITHERWOOD_BROKEN_LOG.get().defaultBlockState().setValue(WitherRootBlock.FACING, direction);
-			// add the top log to the world
-			//			world.setBlockState(coords.add(0, y, 0).toPos(), state, 3);
 			ICoords topCoords = coords.add(0, y, 0);
 			if (isGenerationWithinMaxRadius(topCoords, originalSpawnCoords)) {
 				WorldInfo.setBlock(context.level(), coords.add(0, y, 0), state);
@@ -494,8 +554,8 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 	}
 	
 	private void buildScrub(IWorldGenContext context, AABB witherGroveBounds) {
-		Instant start = Instant.now();
-		Treasure.LOGGER.debug("adding scrub ...");
+//		Instant start = Instant.now();
+//		Treasure.LOGGER.debug("adding scrub ...");
 		int width = Math.abs((int) (witherGroveBounds.maxX - witherGroveBounds.minX));
 		int depth = Math.abs((int) (witherGroveBounds.maxZ - witherGroveBounds.minZ));
 		ICoords centerCoords = new Coords((int)(witherGroveBounds.minX + width * 0.5D), (int)witherGroveBounds.minY, (int)(witherGroveBounds.minZ + depth * 0.5D));
@@ -528,19 +588,18 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 				}
 			}
 		}
-		Instant finish = Instant.now();
-		Treasure.LOGGER.debug("buildScrub time -> {}ms", Duration.between(start, finish).toMillis());
+//		Instant finish = Instant.now();
+//		Treasure.LOGGER.debug("buildScrub time -> {}ms", Duration.between(start, finish).toMillis());
 	}
 
 	/**
 	 * 
-	 * @param world
-	 * @param random
+	 * @param context
 	 * @param witherGroveSize
 	 */
 	private void buildRocks(IWorldGenContext context, AABB witherGroveSize) {
-		Instant start = Instant.now();
-		Treasure.LOGGER.debug("adding rocks ...");
+//		Instant start = Instant.now();
+//		Treasure.LOGGER.debug("adding rocks ...");
 		int width = Math.abs((int) (witherGroveSize.maxX - witherGroveSize.minX));
 		int depth = Math.abs((int) (witherGroveSize.maxZ - witherGroveSize.minZ));
 		ICoords centerCoords = new Coords((int)(witherGroveSize.minX + width * 0.5D), (int)witherGroveSize.minY, (int)(witherGroveSize.minZ + depth * 0.5D));
@@ -577,9 +636,10 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 				}
 			}
 		}
-		Instant finish = Instant.now();
-		Treasure.LOGGER.debug("buildRocks time -> {}ms", Duration.between(start, finish).toMillis());
+//		Instant finish = Instant.now();
+//		Treasure.LOGGER.debug("buildRocks time -> {}ms", Duration.between(start, finish).toMillis());
 	}
+
 	/**
 	 * 
 	 * @param coords

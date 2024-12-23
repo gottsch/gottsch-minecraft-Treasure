@@ -22,8 +22,6 @@ public class WitherBrokenLogBlock extends FacingBlock implements ITreasureBlock 
 	
 	/**
 	 * 
-	 * @param modID
-	 * @param name
 	 */
 	public WitherBrokenLogBlock(Block.Properties properties) {
 		super(properties.strength(3.0F).sound(SoundType.WOOD));
@@ -31,10 +29,10 @@ public class WitherBrokenLogBlock extends FacingBlock implements ITreasureBlock 
 		// TODO make better shape
 		setShapes(
 				new VoxelShape[] {
-					Block.box(1, 0, 1, 15, 15, 15), 	// N
-					Block.box(1, 0, 1, 15, 15, 15),  	// E
-					Block.box(1, 0, 1, 15, 15, 15),  	// S
-					Block.box(1, 0, 1, 15, 15, 15) 	// W)
+					Block.box(1, 0, 3, 15, 13, 15), 	// N
+					Block.box(1, 0, 1, 15, 13, 15),  	// E
+					Block.box(1, 0, 1, 16, 13, 13),  	// S
+					Block.box(1, 0, 1, 15, 13, 15) 	// W)
 				}
 			);
 	}
