@@ -94,7 +94,7 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 	
 	@SuppressWarnings("unchecked")
 //	static List<Direction>[] trunkMatrix = new ArrayList[4];
-	static List<Direction> supportTrunkMatrix = new ArrayList<>();
+//	static List<Direction> supportTrunkMatrix = new ArrayList<>();
 //	static List<Direction> topMatrix = new ArrayList<>();
 
 	private int waitChunksCount = 0;
@@ -150,14 +150,6 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 		return list;
 	}
 
-		// TODO move all this into init methods - don't need this as static in-memory for the once in a while that a tree is generated
-	static {
-		supportTrunkMatrix.add(Direction.NORTH);
-		supportTrunkMatrix.add(Direction.EAST);
-		supportTrunkMatrix.add(Direction.SOUTH);
-		supportTrunkMatrix.add(Direction.WEST);
-	}
-	
 	@Override
 	public Optional<GeneratorResult<ChestGeneratorData>> generate(IFeatureGenContext context, ICoords spawnCoords,
 			IRarity rarity, ChestRarity config) {
@@ -432,9 +424,10 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 	
 	public void buildTree(IWorldGenContext context, ICoords coords, ICoords originalSpawnCoords) {
 //		Instant start = Instant.now();
+		List<Direction> supportTrunkMatrix = buildSupportTrunkMap();
 
 		// determine the size of the main trunk
-		int  = RandomHelper.randomInt(context.random(), MIN_TREE_SIZE, Config.SERVER.witherTree.maxTrunkSize.get());
+		int  maxSize = RandomHelper.randomInt(context.random(), MIN_TREE_SIZE, Config.SERVER.witherTree.maxTrunkSize.get());
 
 		for (int y = 0; y < maxSize; y++) {
 
