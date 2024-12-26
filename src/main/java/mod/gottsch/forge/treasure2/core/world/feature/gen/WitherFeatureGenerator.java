@@ -54,7 +54,7 @@ import net.minecraft.world.phys.AABB;
 import org.apache.commons.compress.utils.Lists;
 
 /**
- * 
+ * TODO this probably needs to move to generator.wither package
  * @author Mark Gottschling May 12, 2023
  *
  */
@@ -75,6 +75,8 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 	private static final int MIN_ROCKS = 0;
 	private static final int MIN_SCRUB = 5;
 	private static final int MAX_SCRUB = 20;
+	private static final int MIN_STRANGLE_VINES = 2;
+	private static final int MAX_STRANGLE_VINES = 10;
 	
 	protected static int UNDERGROUND_OFFSET = 3;
 	
@@ -184,9 +186,9 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 		if (pitResult.isEmpty()) {
 			return Optional.empty();
 		}
-		
+		// TODO move inside buildMainTree
 		// clear the area
-		buildClearing(context, spawnCoords, spawnCoords);
+//		buildClearing(context, spawnCoords, spawnCoords);
 		// build the main wither tree
 		buildMainTree(context, spawnCoords, spawnCoords);
 		// update size of grove
@@ -227,6 +229,7 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 		buildScrub(context, witherGroveBounds);
 //		buildStrangleVines(context, witherGroveBounds)
 //		buildBlight(context, witherGroveBounds)
+		// TODO add one-time spawners using mobSets
 
 		// add chest
 		ICoords chestCoords = pitResult.get().getData().getCoords();
@@ -353,6 +356,9 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 	public void buildMainTree(IWorldGenContext context, ICoords coords, ICoords originalSpawnCoords) {
 //		Instant start = Instant.now();
 
+		// clear the area
+		buildClearing(context, coords, coords);
+
 		Map<Integer, List<Direction>> trunkMatrix = buildTrunkMap();
 		List<Direction> trunkTopMatrix = buildTrunkTopMap();
 		ICoords[] trunkCoords = buildTrunkCoords(coords);
@@ -418,6 +424,11 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 				size = RandomHelper.randomInt(context.random(), Math.min(MIN_MAIN_TREE_SIZE, maxSize), maxSize);
 			}
 		}
+
+		// generate strangle vine around the tree
+		for (int i = MIN_STRANGLE_VINES; i < MAX_STRANGLE_VINES; i++) {
+
+		}
 //		Instant finish = Instant.now();
 //		Treasure.LOGGER.debug("buildMainTree time -> {}ms", Duration.between(start, finish).toMillis());
 	}
@@ -446,7 +457,7 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 //		Instant finish = Instant.now();
 //		Treasure.LOGGER.debug("buildTree time -> {}ms", Duration.between(start, finish).toMillis());
 	}
-	
+
 	private void addRoot(IWorldGenContext context, ICoords coords, ICoords originalSpawnCoords, List<Direction> directions) {
 		// for each direction
 		for (Direction direction : directions) {
