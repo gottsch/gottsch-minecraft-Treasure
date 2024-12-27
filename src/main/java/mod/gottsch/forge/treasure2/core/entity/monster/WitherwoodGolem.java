@@ -68,12 +68,6 @@ public class WitherwoodGolem extends Monster {
         this.xpReward = 10;
     }
 
-    public WitherwoodGolem(EntityType<? extends Monster> entityType, Level level, BlockPos homePos) {
-        this(entityType, level);
-        setHomePos(homePos);
-        restrictTo(homePos, 24);
-    }
-
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.0D, true));

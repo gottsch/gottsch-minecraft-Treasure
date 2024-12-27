@@ -253,6 +253,7 @@ public class CommonSetup {
 		TreasureApi.registerWishableTag(Rarity.LEGENDARY, TreasureTags.Items.LEGENDARY_WISHABLE);
 		TreasureApi.registerWishableTag(Rarity.MYTHICAL, TreasureTags.Items.MYTHICAL_WISHABLE);
 
+		// POC convert config file generator rarities white/blacklists into Tags
 		// biome white/blacklist tags by rarity
 		TreasureApi.registerBiomeWhitelistTag(SpecialRarity.WITHER, TreasureTags.Biomes.WITHER_BIOME_WHITELIST);
 		TreasureApi.registerBiomeBlacklistTag(SpecialRarity.WITHER, TreasureTags.Biomes.WITHER_BIOME_BLACKLIST);

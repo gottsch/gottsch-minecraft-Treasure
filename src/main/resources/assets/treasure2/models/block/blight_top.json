@@ -1,0 +1,32 @@
+{
+	"credit": "Made with Blockbench",
+	"ambientocclusion": false,
+	"textures": {
+		"1": "E:/Development/Synced/Development/minecraft/graphics/treasure2/1.20.1/blocks/blight"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 15.8],
+			"to": [16, 16, 15.8],
+			"shade": false,
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 15]},
+			"faces": {
+				"north": {"uv": [16, 0, 0, 16], "texture": "#1", "tintindex": 0},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#missing", "tintindex": 0}
+			}
+		},
+		{
+			"name": "top",
+			"from": [0, 0.2, 0],
+			"to": [16, 0.2, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 0], "texture": "#missing"},
+				"east": {"uv": [0, 0, 16, 0], "texture": "#missing"},
+				"south": {"uv": [0, 0, 16, 0], "texture": "#missing"},
+				"west": {"uv": [0, 0, 16, 0], "texture": "#missing"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#1"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#missing"}
+			}
+		}
+	]
+}
