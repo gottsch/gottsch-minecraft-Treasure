@@ -167,7 +167,8 @@ public interface IWitherTreeGenerator<RESULT extends IGeneratorResult<?>> {
                             switch (context.random().nextInt(10)) {
                                 case 0 -> context.level().setBlock(buildCoords.down(1).toPos(), Blocks.MYCELIUM.defaultBlockState(), 3);
                                 case 1 -> context.level().setBlock(buildCoords.down(1).toPos(), Blocks.PODZOL.defaultBlockState(), 3);
-                                case 2, 3 -> context.level().setBlock(buildCoords.down(1).toPos(), Blocks.MUD.defaultBlockState(), 3);
+                                case 2 -> context.level().setBlock(buildCoords.down(1).toPos(), Blocks.MUD.defaultBlockState(), 3);
+                                case 3 -> context.level().setBlock(buildCoords.down(1).toPos(), Blocks.PACKED_MUD.defaultBlockState(), 3);
                                 case 4, 5 -> context.level().setBlock(buildCoords.down(1).toPos(), Blocks.COARSE_DIRT.defaultBlockState(), 3);
                                 default -> context.level().setBlock(buildCoords.down(1).toPos(), Blocks.DIRT.defaultBlockState(), 3);
                             }
