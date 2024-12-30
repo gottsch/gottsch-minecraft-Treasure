@@ -46,6 +46,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
 
 /**
@@ -84,7 +85,12 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 		getGenerator().setOffsetY(0);
 		return getGenerator().generatePit(world, surfaceCoords, spawnCoords);
 	}
-	
+
+	@Override
+	public Optional<GeneratorResult<ChestGeneratorData>> generate(IWorldGenContext context, ICoords surfaceCoords, ICoords spawnCoords) {
+		return generate(context, surfaceCoords, spawnCoords, null);
+	}
+
 	/**
 	 * 
 	 * @param context
@@ -93,7 +99,7 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 	 * @return
 	 */
 	@Override
-	public Optional<GeneratorResult<ChestGeneratorData>> generate(IWorldGenContext context, ICoords surfaceCoords, ICoords spawnCoords) {
+	public Optional<GeneratorResult<ChestGeneratorData>> generate(IWorldGenContext context, ICoords surfaceCoords, ICoords spawnCoords, TemplateHolder holder) {
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
 
 		// is the chest placed in a cavern
@@ -127,12 +133,19 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 		if (verticalDist > getMinSurfaceToSpawnDistance()) {
 			Treasure.LOGGER.debug("generating structure room at -> {}", spawnCoords.toShortString());
 
-			// TODO should the TemplateHolder be returned here instead?
-			Optional<GottschTemplate> template = getRandomTemplate(context.random());
-			if (!template.isPresent()) {
-				Treasure.LOGGER.debug("could not find random template holder.");
-				return Optional.empty();
-			}			
+			// TODO should the TemplateHolder be returned here instead?	probably.
+			Optional<GottschTemplate> template;
+			if (holder == null) {
+				template = getRandomTemplate(context.random());
+				if (!template.isPresent()) {
+					Treasure.LOGGER.debug("could not find random template holder.");
+					return new SimpleShortPitGenerator().generate(context, surfaceCoords, spawnCoords);
+//					return Optional.empty();
+				}
+			} else {
+				StructureTemplate s;
+				template = Optional.of((GottschTemplate)holder.getTemplate());
+			}
 
 			// find the (vertical) offset block
 			int offset = 0;

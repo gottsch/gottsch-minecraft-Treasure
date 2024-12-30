@@ -21,6 +21,7 @@ import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.gottschcore.random.RandomHelper;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
+import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
@@ -33,14 +34,21 @@ import mod.gottsch.forge.treasure2.core.generator.GeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.chest.WitherChestGenerator;
 import mod.gottsch.forge.treasure2.core.generator.pit.IPitGenerator;
+import mod.gottsch.forge.treasure2.core.generator.pit.IStructurePitGenerator;
+import mod.gottsch.forge.treasure2.core.generator.template.ITemplateGenerator;
 import mod.gottsch.forge.treasure2.core.generator.witherTree.GreatWitherTreeGenerator;
 import mod.gottsch.forge.treasure2.core.generator.witherTree.WitherTreeGenerator;
 import mod.gottsch.forge.treasure2.core.registry.PitGeneratorRegistry;
+import mod.gottsch.forge.treasure2.core.registry.TreasureTemplateRegistry;
+import mod.gottsch.forge.treasure2.core.structure.*;
 import mod.gottsch.forge.treasure2.core.util.GeometryUtil;
+import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import mod.gottsch.forge.treasure2.core.world.feature.IFeatureGenContext;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.AABB;
 
 import java.util.List;
@@ -88,9 +96,16 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 		// add pit
 		Treasure.LOGGER.debug("generate pit");
 		IPitGenerator<GeneratorResult<ChestGeneratorData>> pitGenerator = selectPitGenerator(context.random());
-		// TODO should always use a structure pit generator configured for wither tree rooms.
 		Treasure.LOGGER.debug("using pit generator -> {}", pitGenerator.getClass().getSimpleName());
-		Optional<GeneratorResult<ChestGeneratorData>> pitResult = pitGenerator.generate(context, spawnCoords, undergroundCoords.get());
+
+		Optional<GeneratorResult<ChestGeneratorData>> pitResult;
+		if (pitGenerator instanceof IStructurePitGenerator) {
+			Optional<TemplateHolder> optionalHolder = selectTemplate(context, spawnCoords, StructureCategory.SUBTERRANEAN, StructureType.WITHER_TREE_ROOM);
+			pitResult = ((IStructurePitGenerator)pitGenerator).generate(context, spawnCoords, undergroundCoords.get(), optionalHolder.orElse(null));
+		} else {
+			pitResult = pitGenerator.generate(context, spawnCoords, undergroundCoords.get());
+		}
+//		Optional<GeneratorResult<ChestGeneratorData>> pitResult = pitGenerator.generate(context, spawnCoords, undergroundCoords.get(), holder);
 
 		if (pitResult.isEmpty()) {
 			return Optional.empty();
@@ -98,7 +113,6 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 
 		// build great wither tree
 		GreatWitherTreeGenerator greatWitherTreeGenerator = new GreatWitherTreeGenerator();
-		// TODO use maxArea to test again - making passing in spawnCoords moot
 		maxArea = maxArea.inflate(greatWitherTreeGenerator.getMaxGenRadius(), 5, greatWitherTreeGenerator.getMaxGenRadius());
 		Optional<GeneratorResult<GeneratorData>> greatTreeResult = greatWitherTreeGenerator.generate(context, spawnCoords, spawnCoords);
 		if (greatTreeResult.isEmpty()) {
@@ -178,5 +192,18 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 		coords = WorldInfo.getSubterraneanSurfaceCoords(level, coords);
 
 		return (coords == null || coords == Coords.EMPTY) ? Optional.empty() : Optional.of(coords);
+	}
+
+	// TODO should be common to all ITemplateGenerators
+	public Optional<TemplateHolder> selectTemplate(IWorldGenContext context, ICoords coords, IStructureCategory category, IStructureType type) {
+		Optional<TemplateHolder> holder = Optional.empty();
+
+		Holder<Biome> biome = context.level().getBiome(coords.toPos());
+
+		List<TemplateHolder> holders = TreasureTemplateRegistry.getTemplate(category, type, ModUtil.getName(biome));
+		if (!holders.isEmpty()) {
+			holder = Optional.ofNullable(holders.get(context.random().nextInt(holders.size())));
+		}
+		return holder;
 	}
 }

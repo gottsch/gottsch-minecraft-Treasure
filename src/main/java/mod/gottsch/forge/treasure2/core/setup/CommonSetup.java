@@ -192,6 +192,7 @@ public class CommonSetup {
 		TreasureApi.registerStructureType(StructureType.ROOM);
 		TreasureApi.registerStructureType(StructureType.RUIN);
 		TreasureApi.registerStructureType(StructureType.WELL);
+		TreasureApi.registerStructureType(StructureType.WITHER_TREE_ROOM);
 				
 		// register pit types
 		TreasureApi.registerPitType(PitType.STANDARD);
