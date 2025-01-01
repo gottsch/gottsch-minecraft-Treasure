@@ -1,0 +1,14 @@
+// 1.20.1	2024-08-29T17:22:52.9245267	Tags for minecraft:block mod id treasure2
+69b5fb010c5a327341c6dbc5e62c7b52273ea1c0 data/minecraft/tags/blocks/fences.json
+69b5fb010c5a327341c6dbc5e62c7b52273ea1c0 data/minecraft/tags/blocks/wooden_fences.json
+8c35af02cc5febc98547f6cdb1e178b4ef192d52 data/treasure2/tags/blocks/chests/rarity/core/common.json
+8e07903c1d6612b12b0f7a8dcbe7d016f97d23f7 data/treasure2/tags/blocks/chests/rarity/core/epic.json
+bf7fa9b5db946b2c51018b3a1bf54281176546ee data/treasure2/tags/blocks/chests/rarity/core/rare.json
+22be65bd166e9efe85912479339a33e7d93fd8e5 data/treasure2/tags/blocks/chests/rarity/core/scarce.json
+356ab9ca885b0268d3aa739a6a103452d3dcea59 data/treasure2/tags/blocks/chests/rarity/core/uncommon.json
+198a99bc820e539a53c64ceed42cc9a4ca36ae39 data/treasure2/tags/blocks/chests/rarity/special/cauldron.json
+5c8c119e91601ea39ba7b67c33de16a644d40f60 data/treasure2/tags/blocks/chests/rarity/special/crystal_skull.json
+8d44b187e03c47b8cef572afbfd253a522dd9599 data/treasure2/tags/blocks/chests/rarity/special/gold_skull.json
+58d0af9b785a5df001cc4fe50d0c7c68ffa8b81b data/treasure2/tags/blocks/chests/rarity/special/skull.json
+baed03df2e7f328a1be9f1036a31ba3e15a44bc1 data/treasure2/tags/blocks/chests/rarity/special/wither.json
+00c6e12855cc0f4aac2847c5e43430b514f54cfe data/treasure2/tags/blocks/wells/candidates.json
