@@ -100,7 +100,7 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 
 		Optional<GeneratorResult<ChestGeneratorData>> pitResult;
 		if (pitGenerator instanceof IStructurePitGenerator) {
-			Optional<TemplateHolder> optionalHolder = selectTemplate(context, spawnCoords, StructureCategory.SUBTERRANEAN, StructureType.WITHER_TREE_ROOM);
+			Optional<TemplateHolder> optionalHolder = selectTemplate(context, spawnCoords);
 			pitResult = ((IStructurePitGenerator)pitGenerator).generate(context, spawnCoords, undergroundCoords.get(), optionalHolder.orElse(null));
 		} else {
 			pitResult = pitGenerator.generate(context, spawnCoords, undergroundCoords.get());
@@ -166,7 +166,8 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 	 * @return
 	 */
 	public IPitGenerator<GeneratorResult<ChestGeneratorData>> selectPitGenerator(RandomSource random) {
-		PitType pitType = RandomHelper.checkProbability(random, Config.SERVER.pits.structureProbability.get()) ? PitType.STRUCTURE : PitType.STANDARD;
+//		PitType pitType = RandomHelper.checkProbability(random, Config.SERVER.pits.structureProbability.get()) ? PitType.STRUCTURE : PitType.STANDARD;
+		PitType pitType = PitType.STRUCTURE;
 		List<IPitGenerator<GeneratorResult<ChestGeneratorData>>> pitGenerators = PitGeneratorRegistry.get(pitType);
 		IPitGenerator<GeneratorResult<ChestGeneratorData>> pitGenerator = pitGenerators.get(random.nextInt(pitGenerators.size()));
 		Treasure.LOGGER.debug("using pitType -> {}, gen -> {}", pitType, pitGenerator.getClass().getSimpleName());
@@ -174,33 +175,32 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 		return pitGenerator;
 	}
 
-	/**
-	 * TODO Duplicate to PitChestFeature
+	/**	 *
 	 * @param level
 	 * @param random
 	 * @param startingCoords
 	 * @param minDepth
 	 * @param maxDepth
-	 * @return
+	 * @return underground spawn coords
 	 */
 	public static Optional<ICoords> getUndergroundSpawnPos(ServerLevelAccessor level, RandomSource random, ICoords startingCoords, int minDepth, int maxDepth) {
+		// calculate the depth
 		int depth = RandomHelper.randomInt(minDepth, maxDepth);
-		int ySpawn = Math.max(UNDERGROUND_OFFSET, startingCoords.getY() - depth);
-		Treasure.LOGGER.debug("ySpawn -> {}", ySpawn);
-		ICoords coords = new Coords(startingCoords.getX(), ySpawn, startingCoords.getZ());
+		// use the deepest depth between calculated and default
+		int y = Math.min(startingCoords.getY() - UNDERGROUND_OFFSET, startingCoords.getY() - depth);
+		Treasure.LOGGER.debug("underground spawn pos.y -> {}", y);
+		ICoords coords = new Coords(startingCoords.getX(), y, startingCoords.getZ());
 		// get floor pos (if in a cavern or tunnel etc)
 		coords = WorldInfo.getSubterraneanSurfaceCoords(level, coords);
-
-		return (coords == null || coords == Coords.EMPTY) ? Optional.empty() : Optional.of(coords);
+		return coords == Coords.EMPTY ? Optional.empty() : Optional.ofNullable(coords);
 	}
 
-	// TODO should be common to all ITemplateGenerators
-	public Optional<TemplateHolder> selectTemplate(IWorldGenContext context, ICoords coords, IStructureCategory category, IStructureType type) {
+	public Optional<TemplateHolder> selectTemplate(IWorldGenContext context, ICoords coords) {
 		Optional<TemplateHolder> holder = Optional.empty();
 
 		Holder<Biome> biome = context.level().getBiome(coords.toPos());
-
-		List<TemplateHolder> holders = TreasureTemplateRegistry.getTemplate(category, type, ModUtil.getName(biome));
+		List<TemplateHolder> holders = TreasureTemplateRegistry.getTemplate(StructureCategory.SUBTERRANEAN, StructureType.WITHER_TREE_ROOM, ModUtil.getName(biome));
+		holders.addAll(TreasureTemplateRegistry.getTemplate(StructureCategory.SUBTERRANEAN, StructureType.ROOM, ModUtil.getName(biome)));
 		if (!holders.isEmpty()) {
 			holder = Optional.ofNullable(holders.get(context.random().nextInt(holders.size())));
 		}
