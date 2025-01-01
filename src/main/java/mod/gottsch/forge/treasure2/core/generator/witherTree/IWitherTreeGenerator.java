@@ -134,7 +134,7 @@ public interface IWitherTreeGenerator<RESULT extends IGeneratorResult<?>> {
         return MAX_STRANGLE_VINES;
     }
 
-    default public void generateClearing(IWorldGenContext context, ICoords coords) {
+    default public void generateClearing(IWorldGenContext context, ICoords coords, AABB area) {
         ICoords buildCoords = null;
         Treasure.LOGGER.debug("build clearing at -> {}", coords.toShortString());
 
@@ -144,8 +144,8 @@ public interface IWitherTreeGenerator<RESULT extends IGeneratorResult<?>> {
                 if (Math.abs(xOffset) + Math.abs(zOffset) <= getClearingRadius()) {
                     buildCoords = coords.add(xOffset, 0, zOffset);
 
-                    // check if trunk index is outside generation radius
-                    if (!isGenerationWithinMaxRadius(buildCoords, coords)) {
+                    // check if buildCoords is outside generation radius
+                    if (!area.contains(buildCoords.toVec3())) {
                         Treasure.LOGGER.debug("outside max radius -> skip");
                         continue;
                     }
@@ -192,7 +192,7 @@ public interface IWitherTreeGenerator<RESULT extends IGeneratorResult<?>> {
         }
     }
 
-    default public void addRoot(IWorldGenContext context, ICoords coords, ICoords spawnCoords, List<Direction> directions) {
+    default public void addRoot(IWorldGenContext context, ICoords coords, AABB area, List<Direction> directions) {
         // for each direction
         for (Direction direction : directions) {
             if (RandomHelper.checkProbability(context.random(), getWitherRootProbability())) {
@@ -200,7 +200,7 @@ public interface IWitherTreeGenerator<RESULT extends IGeneratorResult<?>> {
                 ICoords newCoords = coords.add(direction, 1);
 
                 // check if trunk index is outside generation radius
-                if (!isGenerationWithinMaxRadius(newCoords, spawnCoords)) {
+                if (!area.contains(newCoords.toVec3())) {
                     continue;
                 }
 
@@ -217,17 +217,17 @@ public interface IWitherTreeGenerator<RESULT extends IGeneratorResult<?>> {
         }
     }
 
-    default public void addTop(IWorldGenContext context, ICoords coords, ICoords spawnCoords, int y, Direction direction) {
+    default public void addTop(IWorldGenContext context, ICoords coords, AABB area, int y, Direction direction) {
         if (direction != null) {
             BlockState state = TreasureBlocks.WITHERWOOD_BROKEN_LOG.get().defaultBlockState().setValue(WitherRootBlock.FACING, direction);
             ICoords topCoords = coords.up(y);
-            if (isGenerationWithinMaxRadius(topCoords, spawnCoords)) {
+            if (area.contains(topCoords.toVec3())) {
                 WorldInfo.setBlock(context.level(), topCoords, state);
             }
         }
     }
 
-    default public void addBranch(IWorldGenContext context, ICoords trunkCoords, ICoords spawnCoords, int y, int maxSize, List<Direction> directions) {
+    default public void addBranch(IWorldGenContext context, ICoords trunkCoords, AABB area, int y, int maxSize, List<Direction> directions) {
 
         int branchSize = 0;
         if (y < maxSize / 2 || y > maxSize / 4)
@@ -242,13 +242,14 @@ public interface IWitherTreeGenerator<RESULT extends IGeneratorResult<?>> {
             // randomize if a branch is generated
             if (RandomHelper.checkProbability(context.random(), getWitherBranchProbability())) {
 
-                // check if trunk index is outside generation radius
-                if (!isGenerationWithinMaxRadius(c, spawnCoords)) {
-                    continue;
-                }
                 // for the num of branch segments
                 for (int segment = 0; segment < branchSize; segment++) {
                     c = c.add(direction, 1);
+                    // check if trunk index is outside generation radius
+                    if (!area.contains(c.toVec3())) {
+                        break;
+                    }
+
                     BlockContext replaceBlockContext = new BlockContext(context.level(), c);
 
                     // if there is a branch directly below, don't add another branch but potentially add a twig
@@ -313,9 +314,8 @@ public interface IWitherTreeGenerator<RESULT extends IGeneratorResult<?>> {
         if (groundBlockContext.isReplaceable()
                 || (!replaceBlockContext.isAir() && !replaceBlockContext.isReplaceable())
                 || (groundBlockContext.getState().getBlock() instanceof ITreasureBlock)) {
-            return;
-        } else {
             Treasure.LOGGER.debug("unable to place strangle vines -> {}; area -> {}", coords.toShortString(), area);
+            return;
         }
 
         context.level().setBlock(coords.toPos(), TreasureBlocks.STRANGLE_VINES.get().defaultBlockState(), 3);
@@ -372,11 +372,13 @@ public interface IWitherTreeGenerator<RESULT extends IGeneratorResult<?>> {
 
             // check if coords is outside generation radius
             if (spawnerCoords == Coords.EMPTY || !area.contains(spawnerCoords.toVec3())) {
+                Treasure.LOGGER.debug("unable to place spawner at {} -> outside; area -> {}", spawnerCoords.toShortString(), area);
                 continue;
             }
 
             // check if current block is a tree or any treasure block
             if (context.level().getBlockState(spawnerCoords.toPos()).getBlock() instanceof ITreasureBlock) {
+                Treasure.LOGGER.debug("unable to place spawner at {} -> outside; area -> {}", spawnerCoords.toShortString(), area);
                 continue;
             }
 
@@ -390,6 +392,7 @@ public interface IWitherTreeGenerator<RESULT extends IGeneratorResult<?>> {
                     blockEntity.setMobSetName(mobSetName);
                     blockEntity.setMobSizeRange(new IntegerRange(mobSet.getCount().getMin(), mobSet.getCount().getMax()));
                     blockEntity.setProximity(getMobSpawnerProximity());
+                    Treasure.LOGGER.debug("placed spawner at {} -> outside; area -> {}", spawnerCoords.toShortString(), area);
                 }
              }
         }

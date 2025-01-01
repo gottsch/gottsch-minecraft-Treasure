@@ -66,7 +66,7 @@ public class WitherTreeGenerator  implements IWitherTreeGenerator<GeneratorResul
         // TODO determine if entire clearing is within bounds, if so, no need to perform checks
         // TODO or determine how large clearing is so when building trunk, roots, branches the test is easier?
         // clear the area
-        generateClearing(context, coords);
+        generateClearing(context, coords, maxArea);
 
         List<Direction> supportTrunkMatrix = buildSupportTrunkMap();
 
@@ -79,11 +79,11 @@ public class WitherTreeGenerator  implements IWitherTreeGenerator<GeneratorResul
 
             // add the branches/roots
             if (y == 0) {
-                addRoot(context, coords, spawnCoords, supportTrunkMatrix);
+                addRoot(context, coords, maxArea, supportTrunkMatrix);
             } else if (y == maxSize - 1) {
-                addTop(context, coords, spawnCoords, y + 1, supportTrunkMatrix.get(context.random().nextInt(supportTrunkMatrix.size())));
+                addTop(context, coords, maxArea, y + 1, supportTrunkMatrix.get(context.random().nextInt(supportTrunkMatrix.size())));
             } else if (y > 3) {
-                addBranch(context, coords, spawnCoords, y, maxSize, supportTrunkMatrix);
+                addBranch(context, coords, maxArea, y, maxSize, supportTrunkMatrix);
             }
         }
 

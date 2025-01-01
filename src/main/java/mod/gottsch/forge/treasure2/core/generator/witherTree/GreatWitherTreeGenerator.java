@@ -28,11 +28,19 @@ import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.core.block.ITreasureBlock;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.config.Config;
+import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
+import mod.gottsch.forge.treasure2.core.entity.monster.WitherwoodGolem;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
+import mod.gottsch.forge.treasure2.core.generator.GeneratorUtil;
 import mod.gottsch.forge.treasure2.core.util.GeometryUtil;
+import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -74,7 +82,7 @@ public class GreatWitherTreeGenerator implements IWitherTreeGenerator<GeneratorR
         maxArea = maxArea.inflate(getMaxGenRadius(), 5, getMaxGenRadius());
 
         // clear the area
-        generateClearing(context, coords);
+        generateClearing(context, coords, maxArea);
 
         Map<Integer, List<Direction>> trunkMatrix = buildTrunkMap();
         List<Direction> trunkTopMatrix = buildTrunkTopMap();
@@ -91,6 +99,11 @@ public class GreatWitherTreeGenerator implements IWitherTreeGenerator<GeneratorR
         int tallestSize = 0;
 
         for (int trunkIndex = 0; trunkIndex < trunkCoords.length; trunkIndex++) {
+            // check under the trunk
+            if (context.level().getBlockState(trunkCoords[trunkIndex].down(1).toPos()).canBeReplaced()) {
+                context.level().setBlock(trunkCoords[trunkIndex].down(1).toPos(), Blocks.DIRT.defaultBlockState(), 3);
+            }
+
             // select the log
             BlockState trunkBlockState;
             trunkBlockState = (trunkIndex == CORE)
@@ -104,11 +117,11 @@ public class GreatWitherTreeGenerator implements IWitherTreeGenerator<GeneratorR
                 // add the decorations (branches, roots, top)
                 if (trunkIndex != CORE) {
                     if (y == 0) {
-                        addRoot(context, trunkCoords[trunkIndex], coords, trunkMatrix.get(trunkIndex));
+                        addRoot(context, trunkCoords[trunkIndex], maxArea, trunkMatrix.get(trunkIndex));
                     } else if (y == size - 1 && trunkIndex % 2 == 0) {
-                        addTop(context, trunkCoords[trunkIndex], coords, y + 1, trunkTopMatrix.get(trunkIndex));
+                        addTop(context, trunkCoords[trunkIndex], maxArea, y + 1, trunkTopMatrix.get(trunkIndex));
                     } else if (y >= 3) {
-                        addBranch(context, trunkCoords[trunkIndex], coords, y, size, trunkMatrix.get(trunkIndex));
+                        addBranch(context, trunkCoords[trunkIndex], maxArea, y, size, trunkMatrix.get(trunkIndex));
                     }
                 }
             }
@@ -136,6 +149,10 @@ public class GreatWitherTreeGenerator implements IWitherTreeGenerator<GeneratorR
         }
 
         // TODO spawn wither tree golem
+        // TODO offset by 1 of spawn coords
+        WitherwoodGolem mob = (TreasureEntities.WITHERWOOD_GOLEM_ENTITY_TYPE.get()).create((Level) context.level());
+        mob.restrictTo(spawnCoords.toPos(), 24);
+        ModUtil.SpawnEntityHelper.spawn((ServerLevel) context.level(), context.random(), TreasureEntities.WITHERWOOD_GOLEM_ENTITY_TYPE.get(), mob, spawnCoords.south(2));
 
         // update result
         result.getData().setSpawnCoords(coords);
