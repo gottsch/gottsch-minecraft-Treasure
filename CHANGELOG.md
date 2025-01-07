@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [3.11.0] - 2025-01-04 (Wither Tree Update)
+## [3.11.0] - 2025-01-06 (Wither Tree Update)
 
 ### Changed
 - Renamed all Wither block variants to Witherwood.
@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated loot table for Wither Tree chest.
 - Wither Tree is now a 3x3 instead of 2x2, and removed the Wither Soul block.
 - All Wither Tree groves use pits with structures.
+- Wither Tree groves spawn Witherwood Golems and other mobs.
 - Poison fog (green) and Wither fog (black) inflicts poison and wither effects again.
 - Spanish moss has smalled hitbox.
 
@@ -21,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Strangle Vine block(s).
 - Witherwood Twig.
 - Recipes for all new witherwood blocks.
-- Added Wither Tree Golem.
+- Added Witherwood Golem.
 - Added 5 new Witherwood themed pit structures.
 
 ## [3.10.4] - 2024-12-20

@@ -25,6 +25,7 @@ import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
+import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.ITreasureBlock;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.config.Config;
@@ -148,11 +149,14 @@ public class GreatWitherTreeGenerator implements IWitherTreeGenerator<GeneratorR
             addStrangleVines(context, strangleVineCoords, maxArea);
         }
 
-        // TODO spawn wither tree golem
-        // TODO offset by 1 of spawn coords
+        Treasure.LOGGER.debug("attempting to spawn golem -> {}", spawnCoords.south(2));
         WitherwoodGolem mob = (TreasureEntities.WITHERWOOD_GOLEM_ENTITY_TYPE.get()).create((Level) context.level());
         mob.restrictTo(spawnCoords.toPos(), 24);
-        ModUtil.SpawnEntityHelper.spawn((ServerLevel) context.level(), context.random(), TreasureEntities.WITHERWOOD_GOLEM_ENTITY_TYPE.get(), mob, spawnCoords.south(2));
+        mob.setHomePos(spawnCoords.toPos());
+        WitherwoodGolem golem = (WitherwoodGolem) ModUtil.SpawnEntityHelper.spawn((ServerLevel) context.level(), context.random(), TreasureEntities.WITHERWOOD_GOLEM_ENTITY_TYPE.get(), mob, spawnCoords.south(2));
+        if (golem != null) {
+            Treasure.LOGGER.debug("golem spawn successful -> {}", golem.blockPosition().toShortString());
+        }
 
         // update result
         result.getData().setSpawnCoords(coords);
