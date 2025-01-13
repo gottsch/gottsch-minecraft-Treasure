@@ -52,7 +52,7 @@ public class LivingEventHandler {
 	 * @param event
 	 */
 	@SubscribeEvent
-	public void checkCharmsInteractionWithAttack(LivingHurtEvent event) {
+	public static void onLivingHurtEvent(LivingHurtEvent event) {
 		if (WorldInfo.isClientSide(event.getEntity().level())) {
 			return;
 		}
@@ -64,7 +64,7 @@ public class LivingEventHandler {
 				IWeapon weapon = (IWeapon) heldStack.getItem();
 				Treasure.LOGGER.debug("original damage -> {}", event.getAmount());
 				if (RandomHelper.checkProbability(new Random(), weapon.getCriticalChance() * 100)) {
-					event.setAmount(event.getAmount() + (weapon.getCriticalDamage() * event.getAmount()));
+					event.setAmount(event.getAmount() + weapon.getCriticalDamage());
 					Treasure.LOGGER.debug("new + critical damage -> {}", event.getAmount());
 				}
 			}

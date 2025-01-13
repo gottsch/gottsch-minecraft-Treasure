@@ -69,6 +69,7 @@ public abstract class DeferredGeneratorBlockEntity extends BlockEntity implement
     public abstract boolean isEnabled();
 
     public abstract IFeatureGenerator getFeatureGenerator();
+
     /**
      *
      */
@@ -193,6 +194,13 @@ public abstract class DeferredGeneratorBlockEntity extends BlockEntity implement
         }
     }
 
+    @Override
+    public boolean meetsProximityCriteria(ServerLevelAccessor world, ResourceLocation dimension, IFeatureType key,
+                                          ICoords spawnCoords, int minDistance) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
     public IRarity getRarity() {
         return rarity;
     }
@@ -201,10 +209,11 @@ public abstract class DeferredGeneratorBlockEntity extends BlockEntity implement
         this.rarity = rarity;
     }
 
-    @Override
-    public boolean meetsProximityCriteria(ServerLevelAccessor world, ResourceLocation dimension, IFeatureType key,
-                                          ICoords spawnCoords, int minDistance) {
-        // TODO Auto-generated method stub
-        return false;
+    public long getGeneratedTime() {
+        return generatedTime;
+    }
+
+    public void setGeneratedTime(long generatedTime) {
+        this.generatedTime = generatedTime;
     }
 }

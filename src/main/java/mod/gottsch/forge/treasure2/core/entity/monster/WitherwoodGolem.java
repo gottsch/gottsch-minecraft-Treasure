@@ -1,3 +1,20 @@
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2024 Mark Gottschling (gottsch)
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ */
 package mod.gottsch.forge.treasure2.core.entity.monster;
 
 import mod.gottsch.forge.treasure2.Treasure;
@@ -10,10 +27,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -26,6 +40,7 @@ import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -37,9 +52,8 @@ import javax.annotation.Nullable;
 
 public class WitherwoodGolem extends Monster {
     private static final EntityDataAccessor<BlockPos> HOME_POS = SynchedEntityData.defineId(WitherwoodGolem.class, EntityDataSerializers.BLOCK_POS);
-    private static final String HOME_POS_KEY = "HomePos";
+    private static final String HOME_POS_KEY = "home_pos";
 
-    private int attackAnimationTick;
 
     /**
      *
@@ -48,25 +62,36 @@ public class WitherwoodGolem extends Monster {
      */
     public WitherwoodGolem(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
-        this.restrictTo(BlockPos.ZERO, 24);
+        // NOTE do not set a restrictTo in constructor since restrictRadius is set to -1 at this point
+        // which indicates that the Mob isn't restricted.
+//        this.restrictTo(BlockPos.ZERO, 24);
+        this.xpReward = 10;
     }
 
+    @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.0D, true));
-        this.goalSelector.addGoal(2, new MoveTowardsTargetGoal(this, 0.9D, 32.0F));
         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 6.0F));
-        this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
-        this.goalSelector.addGoal(2,  new MoveTowardsRestrictionGoal(this, 1.1D));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+        // TODO might have to make a custom version of this that checks if the mob has a target.
+        this.goalSelector.addGoal(4,  new MoveTowardsRestrictionGoal(this, 1.2D));
 
-        this.targetSelector.addGoal(2, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Zombie.class, true));
 
         // TODO see DD Boulder for owner goals
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 75.0D).add(Attributes.MOVEMENT_SPEED, 0.25D).add(Attributes.KNOCKBACK_RESISTANCE, 1.0D).add(Attributes.ATTACK_DAMAGE, 10.0D);
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 75.0D).add(Attributes.MOVEMENT_SPEED, 0.25D).add(Attributes.KNOCKBACK_RESISTANCE, 1.0D).add(Attributes.ATTACK_DAMAGE, 10.0D);
+    }
+
+    @Override
+    public MobType getMobType() {
+        return MobType.UNDEFINED;
     }
 
     @Override
@@ -92,11 +117,9 @@ public class WitherwoodGolem extends Monster {
         super.readAdditionalSaveData(compound);
     }
 
-    public void aiStep() {
-        super.aiStep();
-        if (this.attackAnimationTick > 0) {
-            --this.attackAnimationTick;
-        }
+    @Override
+    public void checkDespawn() {
+        // does NOT despawn
     }
 
     public boolean canSpawnSprintParticle() {
@@ -108,7 +131,6 @@ public class WitherwoodGolem extends Monster {
     }
 
     public boolean doHurtTarget(Entity entity) {
-        this.attackAnimationTick = 10;
         this.level().broadcastEntityEvent(this, (byte)4);
         float attackDamage = this.getAttackDamage();
         float calculatedAttackDamage = (int)attackDamage > 0 ? attackDamage / 2.0F + (float)this.random.nextInt((int)attackDamage) : attackDamage;
@@ -133,15 +155,10 @@ public class WitherwoodGolem extends Monster {
 
     public void handleEntityEvent(byte eventFlag) {
         if (eventFlag == 4) {
-            this.attackAnimationTick = 10;
             this.playSound(SoundEvents.IRON_GOLEM_ATTACK, 1.0F, 1.0F);
         } else {
             super.handleEntityEvent(eventFlag);
         }
-    }
-
-    public int getAttackAnimationTick() {
-        return this.attackAnimationTick;
     }
 
     /**
@@ -185,8 +202,8 @@ public class WitherwoodGolem extends Monster {
     /*
      * vanilla abstract golem methods
      */
-    public void die(DamageSource p_28846_) {
-        super.die(p_28846_);
+    public void die(DamageSource damageSource) {
+        super.die(damageSource);
     }
 
     protected void playStepSound(BlockPos p_28864_, BlockState p_28865_) {

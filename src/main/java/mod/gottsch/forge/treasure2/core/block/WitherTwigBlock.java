@@ -36,6 +36,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -46,6 +48,11 @@ import java.util.Random;
  *
  */
 public class WitherTwigBlock extends FacingBlock implements ITreasureBlock {
+	private static final VoxelShape NORTH_SHAPE = Block.box(3, 1, 3, 13, 16, 16);
+	private static final VoxelShape SOUTH_SHAPE = Block.box(3, 1, 0, 13, 16, 13);
+	private static final VoxelShape EAST_SHAPE = Block.box(0, 1, 3, 13, 16, 13);
+	private static final VoxelShape WEST_SHAPE = Block.box(3, 1, 3, 16, 16, 13);
+
 
 	/**
 	 *
@@ -82,6 +89,21 @@ public class WitherTwigBlock extends FacingBlock implements ITreasureBlock {
 		}
 		catch(Exception e) {
 			Treasure.LOGGER.error("error with particle:", e);
+		}
+	}
+
+	@Override
+	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+		switch(state.getValue(FACING)) {
+			default:
+			case NORTH:
+				return NORTH_SHAPE;
+			case EAST:
+				return EAST_SHAPE;
+			case SOUTH:
+				return SOUTH_SHAPE;
+			case WEST:
+				return WEST_SHAPE;
 		}
 	}
 }

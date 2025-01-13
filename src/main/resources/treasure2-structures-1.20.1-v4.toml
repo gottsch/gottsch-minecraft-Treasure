@@ -432,4 +432,32 @@
 		biomeWhitelist = []
 		biomeBlackList = ["ocean", "deep_ocean"]
 
+	[[structureConfigs.structMetas]]
+		name = "treasure2:subterranean/wither_tree_room/basic_wither_tree_room"
+		biomeWhitelist = []
+		biomeBlacklist = []
+
+	[[structureConfigs.structMetas]]
+		name = "treasure2:subterranean/wither_tree_room/basic_wither_tree_room2"
+		biomeWhitelist = []
+		biomeBlacklist = []
+
+	[[structureConfigs.structMetas]]
+		name = "treasure2:subterranean/wither_tree_room/wither_tree_room1"
+		mobSets = ["treasure2:wither_tree_group", "treasure2:small_zombie_group"]
+		biomeWhitelist = []
+		biomeBlacklist = []
+
+	[[structureConfigs.structMetas]]
+		name = "treasure2:subterranean/wither_tree_room/wither_tree_room2"
+		mobSets = ["treasure2:wither_tree_group", "treasure2:medium_zombie_group"]
+		biomeWhitelist = []
+		biomeBlacklist = []
+
+	[[structureConfigs.structMetas]]
+		name = "treasure2:subterranean/wither_tree_room/wither_tree_room3"
+		mobSets = ["treasure2:small_zombie_group", "treasure2:medium_zombie_group"]
+		biomeWhitelist = []
+		biomeBlacklist = []
+
 

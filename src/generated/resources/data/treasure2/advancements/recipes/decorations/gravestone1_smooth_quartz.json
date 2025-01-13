@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "treasure2:gravestone1_smooth_quartz"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_tool": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "treasure2:treasure_tool"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_tool",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "treasure2:gravestone1_smooth_quartz"
+    ]
+  },
+  "sends_telemetry_event": false
+}

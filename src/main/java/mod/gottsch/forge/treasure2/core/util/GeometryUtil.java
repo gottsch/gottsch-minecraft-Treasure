@@ -22,6 +22,7 @@ package mod.gottsch.forge.treasure2.core.util;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.spatial.Rotate;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Rotation;
 
 /**
@@ -91,5 +92,28 @@ public class GeometryUtil {
             case NONE -> coords;
             default -> coords;
         };
+    }
+
+    /**
+     *  TODO this could move to GenUtil
+     * @param random
+     * @param min
+     * @param max
+     * @return
+     */
+    public static ICoords generateRandomCoordsByRadius(RandomSource random, int min, int max) {
+        if (random == null) {
+            random = RandomSource.create();
+        }
+
+        // generate a random radius between min and max
+        double radius = random.nextDouble() * (max - min) + min;
+        // generate a random angle in radians
+        double angle = random.nextDouble() * 2 * Math.PI;
+        // calculate x and z coordinates
+        double x = radius * Math.cos(angle);
+        double z = radius * Math.sin(angle);
+
+        return new Coords((int)x, 0, (int)z);
     }
 }

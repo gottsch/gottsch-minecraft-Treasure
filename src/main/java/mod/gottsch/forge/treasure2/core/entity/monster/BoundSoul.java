@@ -62,24 +62,6 @@ public class BoundSoul extends Monster {
 		this.restrictTo(BlockPos.ZERO, 12);
 	}
 
-	/**
-	 * 
-	 * @param worldIn
-	 */
-//	public BoundSoul(Level level) {
-//		this(TreasureEntities.BOUND_SOUL_ENTITY_TYPE.get(), level);
-//	}
-//	
-//	/**
-//	 * 
-//	 * @param world
-//	 * @param homePos
-//	 */
-//	public BoundSoul(Level level, BlockPos homePos) {
-//		this(TreasureEntities.BOUND_SOUL_ENTITY_TYPE.get(), level);
-//		this.setHomePos(homePos);
-//	}
-	
 	@Override
 	public void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);

@@ -30,7 +30,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  * @author Mark Gottschling on Aug 15, 2018
  *
  */
-public class WitherPlanksBlock extends Block {
+public class WitherPlanksBlock extends Block implements ITreasureBlock {
     VoxelShape shape = Block.box(0, 0, 0, 16, 16, 16);
 	/**
 	 * 

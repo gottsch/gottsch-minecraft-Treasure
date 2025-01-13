@@ -47,7 +47,7 @@ public class TreasureFeatureGenerators {
 	public static final IFeatureGenerator PIT_FEATURE_GENERATOR = new PitChestFeatureGenerator();
 
 	/*
-	 * a deferred feature generators that places a Tickable Block Entity, which calls the actual feature generator to generate at a specific player proximity.
+	 * a deferred feature generators (ie generator proxy) that places a Tickable Block Entity, which calls the actual feature generator to generate at a specific player proximity.
 	 */
 	public static final IFeatureGenerator DEFERRED_WITHER_FEATURE_GENERATOR =
 			new DeferredFeatureGenerator(new ResourceLocation(Treasure.MODID, "deferred_wither"), (DeferredGeneratorBlock) TreasureBlocks.DEFERRED_WITHER_TREE_GENERATOR.get());

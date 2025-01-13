@@ -5,7 +5,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.11.1]
+
+## [3.11.0] - 2025-01-06 (Wither Tree Update)
+
+### Changed
+- Renamed all Wither block variants to Witherwood.
+- Updated Witherwood textures.
+- Updated loot table for Wither Tree chest.
+- Wither Tree is now a 3x3 instead of 2x2, and removed the Wither Soul block.
+- All Wither Tree groves use pits with structures.
+- Wither Tree groves spawn Witherwood Golems and other mobs.
+- Poison fog (green) and Wither fog (black) inflicts poison and wither effects again.
+- Spanish moss has smalled hitbox.
+
+### Added
+- Witherwood blocks - planks, wood, stairs, slab, stripped log, stripped wood, door, trapdoor, fence, fence gate, button, pressure plate, sign, hanging sign.
+- Strangle Vine block(s).
+- Witherwood Twig.
+- Recipes for all new witherwood blocks.
+- Added Witherwood Golem.
+- Added 5 new Witherwood themed pit structures.
+
+## [3.10.4] - 2024-12-20
+
+### Changed
+- Enabled the LivingHurtEvent so critical damage can be inflicted!
+- Fix critical weapon damage -> changed from multiple to addition.
+
 ## [3.10.3] - 2024-08-29
+
+### Changed
 - Fix game-crashing "chestGenerator" is null bug.
 - Fix Skeletons (and other mobs) spawning without weapons around Wishing Wells.
 
