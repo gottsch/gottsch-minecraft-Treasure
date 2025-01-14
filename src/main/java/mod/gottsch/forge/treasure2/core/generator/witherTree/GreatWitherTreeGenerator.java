@@ -19,33 +19,27 @@
  */
 package mod.gottsch.forge.treasure2.core.generator.witherTree;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import mod.gottsch.forge.gottschcore.random.RandomHelper;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
-import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.block.ITreasureBlock;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
 import mod.gottsch.forge.treasure2.core.entity.monster.WitherwoodGolem;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
-import mod.gottsch.forge.treasure2.core.generator.GeneratorUtil;
 import mod.gottsch.forge.treasure2.core.util.GeometryUtil;
 import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import org.apache.commons.compress.utils.Lists;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,9 +72,15 @@ public class GreatWitherTreeGenerator implements IWitherTreeGenerator<GeneratorR
          */
         GeneratorResult<GeneratorData> result = new GeneratorResult<>(GeneratorData.class);
 
+        // determine the max size of any trunk piece
+        int minSize = getMinSize();
+        int maxSize = RandomHelper.randomInt(context.random(),
+                Math.min(minSize, Config.SERVER.witherTree.maxTrunkSize.get() + 2),
+                Math.max(minSize, Config.SERVER.witherTree.maxTrunkSize.get() + 2));
+
         // setup a max AABB centered around the spawn coords
         AABB maxArea = new AABB(spawnCoords.toPos());
-        maxArea = maxArea.inflate(getMaxGenRadius(), 5, getMaxGenRadius());
+        maxArea = maxArea.inflate(getMaxGenRadius(), maxSize + 2, getMaxGenRadius());
 
         // clear the area
         generateClearing(context, coords, maxArea);
@@ -88,12 +88,6 @@ public class GreatWitherTreeGenerator implements IWitherTreeGenerator<GeneratorR
         Map<Integer, List<Direction>> trunkMatrix = buildTrunkMap();
         List<Direction> trunkTopMatrix = buildTrunkTopMap();
         ICoords[] trunkCoords = buildTrunkCoords(coords);
-
-        // determine the max size of any trunk piece
-        int minSize = getMinSize();
-        int maxSize = RandomHelper.randomInt(context.random(),
-                Math.min(minSize, Config.SERVER.witherTree.maxTrunkSize.get() + 2),
-                Math.max(minSize, Config.SERVER.witherTree.maxTrunkSize.get() + 2));
 
         // randomize the size of the working trunk piece
         int size = RandomHelper.randomInt(context.random(), Math.min(minSize, maxSize), Math.max(minSize, maxSize));

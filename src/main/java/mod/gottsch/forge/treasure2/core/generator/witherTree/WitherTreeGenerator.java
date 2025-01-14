@@ -19,6 +19,7 @@
  */
 package mod.gottsch.forge.treasure2.core.generator.witherTree;
 
+import com.google.common.collect.Lists;
 import mod.gottsch.forge.gottschcore.block.BlockContext;
 import mod.gottsch.forge.gottschcore.random.RandomHelper;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
@@ -31,7 +32,6 @@ import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.util.GeometryUtil;
 import net.minecraft.core.Direction;
 import net.minecraft.world.phys.AABB;
-import org.apache.commons.compress.utils.Lists;
 
 import java.util.List;
 import java.util.Optional;
@@ -53,7 +53,7 @@ public class WitherTreeGenerator  implements IWitherTreeGenerator<GeneratorResul
         GeneratorResult<GeneratorData> result = new GeneratorResult<>(GeneratorData.class);
 
         AABB maxArea = new AABB(spawnCoords.toPos());
-        maxArea = maxArea.inflate(getMaxGenRadius(), 5, getMaxGenRadius());
+        maxArea = maxArea.inflate(getMaxGenRadius(), Config.SERVER.witherTree.maxTrunkSize.get() + 2, getMaxGenRadius());
 
         // validate coords
         BlockContext groundBlockContext = new BlockContext(context.level(), coords.down(1));
