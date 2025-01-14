@@ -140,6 +140,7 @@ public class TerraneanChestFeature extends ChestFeature {
 		}
 
 		///// TODO currently, this is only setup for Wither Trees //////
+		// POC convert config file generator rarities white/blacklists into Tags
 		if (rarity == SpecialRarity.WITHER) {
 			// get the biome white/blacklist rarity tag
 			Holder<Biome> biome = genLevel.getLevel().getBiome(spawnCoords.toPos());

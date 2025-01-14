@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "s": {
+      "item": "minecraft:cobblestone"
+    },
+    "t": {
+      "item": "treasure2:treasure_tool"
+    }
+  },
+  "pattern": [
+    "  t",
+    "   ",
+    " s "
+  ],
+  "result": {
+    "item": "treasure2:gravestone1_cobblestone"
+  },
+  "show_notification": true
+}

@@ -30,6 +30,7 @@ import mod.gottsch.forge.treasure2.core.config.ChestFeaturesConfiguration.ChestR
 import mod.gottsch.forge.treasure2.core.config.ChestFeaturesConfiguration.Generator;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
+import mod.gottsch.forge.treasure2.core.enums.SpecialRarity;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.registry.TreasureTemplateRegistry;
@@ -96,7 +97,7 @@ public class SpawnWitherTreeCommand {
 		try {
 			ServerLevel world = source.getLevel();
 			RandomSource random = world.getRandom();
-			IRarity rarity = Rarity.COMMON;
+			IRarity rarity = SpecialRarity.WITHER;
 			
 //			ResourceLocation dimension = WorldInfo.getDimension(world);
 			// get the generator config

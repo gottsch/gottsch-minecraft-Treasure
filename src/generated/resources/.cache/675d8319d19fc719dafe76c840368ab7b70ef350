@@ -1,0 +1,3 @@
+// 1.20.1	2024-08-29T17:22:52.9285269	Tags for minecraft:worldgen/biome mod id treasure2
+a68f5b07b7e84c0007ac418a916c0acbd4d90081 data/treasure2/tags/worldgen/biome/all_overworld.json
+afd9da16b8e57511d3b12c69ccd4555d71ebb29f data/treasure2/tags/worldgen/biome/config/generators/rarities/wither/blacklist.json

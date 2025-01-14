@@ -46,10 +46,7 @@ public class PoisonMistParticle extends AbstractCollidingMistParticle {
 	 * @param x
 	 * @param y
 	 * @param z
-	 * @param velocityX
-	 * @param velocityY
-	 * @param velocityZ
-	 * @param parentCoords
+	 * @param coords
 	 */
 	public PoisonMistParticle(ClientLevel world, double x, double y, double z, ICoords coords) {
 		super(world, x, y, z, coords);

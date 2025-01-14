@@ -19,8 +19,6 @@
  */
 package mod.gottsch.forge.treasure2.core.generator.well;
 
-import java.util.Optional;
-
 import mod.gottsch.forge.gottschcore.block.BlockContext;
 import mod.gottsch.forge.gottschcore.random.RandomHelper;
 import mod.gottsch.forge.gottschcore.size.DoubleRange;
@@ -33,28 +31,21 @@ import mod.gottsch.forge.gottschcore.world.gen.structure.GottschTemplate;
 import mod.gottsch.forge.gottschcore.world.gen.structure.PlacementSettings;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
-import mod.gottsch.forge.treasure2.core.block.entity.ITreasureChestBlockEntity;
-import mod.gottsch.forge.treasure2.core.block.entity.TreasureProximityMultiSpawnerBlockEntity;
 import mod.gottsch.forge.treasure2.core.config.Config;
-import mod.gottsch.forge.treasure2.core.config.MobSetConfiguration;
 import mod.gottsch.forge.treasure2.core.config.StructureConfiguration.StructMeta;
 import mod.gottsch.forge.treasure2.core.generator.*;
-import mod.gottsch.forge.treasure2.core.generator.template.TemplatePoiInspector;
 import mod.gottsch.forge.treasure2.core.generator.template.TemplateGenerator;
-import mod.gottsch.forge.treasure2.core.item.TreasureItems;
-import mod.gottsch.forge.treasure2.core.registry.MimicRegistry;
+import mod.gottsch.forge.treasure2.core.generator.template.TemplatePoiInspector;
 import mod.gottsch.forge.treasure2.core.structure.StructureCategory;
 import mod.gottsch.forge.treasure2.core.structure.StructureType;
 import mod.gottsch.forge.treasure2.core.structure.TemplateHolder;
-import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.loot.BuiltInLootTables;
-import org.apache.commons.lang3.StringUtils;
+
+import java.util.Optional;
 
 
 /**

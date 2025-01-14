@@ -33,6 +33,8 @@ import net.minecraft.world.phys.AABB;
  *
  */
 public abstract class AbstractCollidingMistParticle extends AbstractMistParticle implements ICollidingParticle {
+	private static final float PROXIMITY = 0.5f;
+
 	private ICoords sourceCoords;
 	
 	/**
@@ -50,37 +52,45 @@ public abstract class AbstractCollidingMistParticle extends AbstractMistParticle
 
 	@Override
 	public void tick() {
-		doPlayerCollisions(level);
+		if (level.getGameTime() % 5 == 0) {
+			doPlayerCollisions(level);
+		}
 		super.tick();
 	}
 	
 	/**
 	 * 
-	 * @param world
+	 * @param level
 	 */
 	@Override
-	public void doPlayerCollisions(Level world) {
+	public void doPlayerCollisions(Level level) {
 
-		if (getSourceCoords() == null) {
-			return;
-		}
+//		if (getSourceCoords() == null) {
+//			return;
+//		}
 
 		// get the emitter tile entity
-		BlockEntity emitterTileEntity = world.getBlockEntity(getSourceCoords().toPos());
-		if (emitterTileEntity == null || !(emitterTileEntity instanceof MistEmitterBlockEntity)) {
-			return;
-		}
+//		BlockEntity emitterTileEntity = world.getBlockEntity(getSourceCoords().toPos());
+//		if (emitterTileEntity == null || !(emitterTileEntity instanceof MistEmitterBlockEntity)) {
+//			return;
+//		}
 
 		// create an AxisAlignedBB for the particle
 		AABB aabb = new AABB(x - 0.125D, y, z - 0.125D, x + 0.125D, y + 0.25D,
 				z + 0.125D);
+;
+		// for each player
+		for(Player player : level.getEntitiesOfClass(Player.class, new AABB((double)((float)x - PROXIMITY), (double)((float)y - PROXIMITY), (double)((float)z - PROXIMITY),
+				(double)((float)x + PROXIMITY), (double)((float)y + PROXIMITY), (double)((float)z  + PROXIMITY)))) {
 
-		// for all the players in the mist emitter tile entity list
-		for (Player player : ((MistEmitterBlockEntity) emitterTileEntity).getPlayersWithinProximity()) {
-			if (player.getBoundingBox().intersects(aabb)) {
-				inflictEffectOnPlayer(player);
-			}
+			inflictEffectOnPlayer(player);
 		}
+//		// for all the players in the mist emitter tile entity list
+//		for (Player player : ((MistEmitterBlockEntity) emitterTileEntity).getPlayersWithinProximity()) {
+//			if (player.getBoundingBox().intersects(aabb)) {
+//				inflictEffectOnPlayer(player);
+//			}
+//		}
 	}
 
 	/**

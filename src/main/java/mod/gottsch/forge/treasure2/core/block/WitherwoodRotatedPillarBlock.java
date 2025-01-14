@@ -7,7 +7,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.ToolAction;
 import org.jetbrains.annotations.Nullable;
 
-public class WitherwoodRotatedPillarBlock extends RotatedPillarBlock {
+public class WitherwoodRotatedPillarBlock extends RotatedPillarBlock implements ITreasureBlock {
 
     public WitherwoodRotatedPillarBlock(Properties properties) {
         super(properties);

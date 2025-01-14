@@ -17,8 +17,13 @@
  */
 package mod.gottsch.forge.treasure2.core.generator.pit;
 
+import mod.gottsch.forge.gottschcore.spatial.ICoords;
+import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
+import mod.gottsch.forge.treasure2.core.structure.TemplateHolder;
+
+import java.util.Optional;
 
 /**
  * 
@@ -27,5 +32,7 @@ import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
  */
 public interface IStructurePitGenerator {
 
-	public IPitGenerator<GeneratorResult<ChestGeneratorData>> getGenerator();
+    Optional<GeneratorResult<ChestGeneratorData>> generate(IWorldGenContext context, ICoords surfaceCoords, ICoords spawnCoords, TemplateHolder holder);
+
+    public IPitGenerator<GeneratorResult<ChestGeneratorData>> getGenerator();
 }

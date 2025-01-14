@@ -148,7 +148,7 @@ public class Config extends AbstractConfig {
 					.define("enableCustomChestInventoryGui", true);
 
 			enableFog = builder
-					.comment(" Enable/disable white fog.")
+					.comment(" Enable/disable white fog. ex gravestones")
 					.define("enableFog", true);
 
 			builder.pop();
@@ -435,6 +435,8 @@ public class Config extends AbstractConfig {
 			public ConfigValue<Integer> maxTrunkSize;
 			public ConfigValue<Integer> minSupportingTrees;
 			public ConfigValue<Integer> maxSupportingTrees;
+			public BooleanValue enablePoisonFog;
+			public BooleanValue enableWitherFog;
 			public BiomesConfig biomes;
 
 			public WitherTree(final ForgeConfigSpec.Builder builder)	 {
@@ -449,7 +451,7 @@ public class Config extends AbstractConfig {
 						.comment(" The maximum height a wither tree can reach (in blocks).",
 								" This is the high end of a calculated range. ex. size is randomized between minTrunkSize and maxTrunkSize.",
 								" (The minimum is predefined.)")
-						.defineInRange("maxTrunkSize", 13, 7, 20);
+						.defineInRange("maxTrunkSize", 17, 11, 20);
 
 				minSupportingTrees = builder
 						.comment(" The minimum number of supporting wither trees that surround the main tree in the grove.")
@@ -458,6 +460,14 @@ public class Config extends AbstractConfig {
 				maxSupportingTrees = builder
 						.comment(" The maximum number of supporting wither trees that surround the main tree in the grove.")
 						.defineInRange("maxSupportingTrees", 15, 0, 30);
+
+				enablePoisonFog = builder
+						.comment(" Enable/disable poison fog around wither trees.")
+						.define("enablePoisonFog", true);
+
+				enableWitherFog = builder
+						.comment(" Enable/disable wither fog around wither trees.")
+						.define("enableWitherFog", true);
 
 				BiomesConfig.Data biomesData = new BiomesConfig.Data(new String[] {}, new String[] { "minecraft:ocean", "minecraft:deep_ocean", "minecraft:deep_frozen_ocean", "minecraft:cold_ocean",
 						"minecraft:deep_cold_ocean", "minecraft:lukewarm_ocean", "minecraft:warm_ocean" },

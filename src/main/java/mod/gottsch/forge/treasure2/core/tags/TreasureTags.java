@@ -119,7 +119,7 @@ public class TreasureTags {
 		public static final TagKey<Biome> ALL_OVERWORLD = mod(Treasure.MODID, "all_overworld");
 		public static final TagKey<Biome> BOP_OVERWORLD = mod(Treasure.MODID, "bop_overworld");
 
-		// POC convert config file generator raritie white/blacklists into Tags
+		// POC convert config file generator rarities white/blacklists into Tags
 		public static final TagKey<Biome> WITHER_BIOME_WHITELIST = mod(Treasure.MODID, "config/generators/rarities/wither/whitelist");
 		public static final TagKey<Biome> WITHER_BIOME_BLACKLIST = mod(Treasure.MODID, "config/generators/rarities/wither/blacklist");
 

@@ -1,3 +1,20 @@
+/*
+ * This file is part of  Treasure2.
+ * Copyright (c) 2024 Mark Gottschling (gottsch)
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ */
 package mod.gottsch.forge.treasure2.core.entity.monster;
 
 import mod.gottsch.forge.treasure2.Treasure;
@@ -35,7 +52,7 @@ import javax.annotation.Nullable;
 
 public class WitherwoodGolem extends Monster {
     private static final EntityDataAccessor<BlockPos> HOME_POS = SynchedEntityData.defineId(WitherwoodGolem.class, EntityDataSerializers.BLOCK_POS);
-    private static final String HOME_POS_KEY = "HomePos";
+    private static final String HOME_POS_KEY = "home_pos";
 
 
     /**
@@ -54,7 +71,6 @@ public class WitherwoodGolem extends Monster {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.0D, true));
-//        this.goalSelector.addGoal(2, new MoveTowardsTargetGoal(this, 0.9D, 32.0F));
         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
@@ -186,8 +202,8 @@ public class WitherwoodGolem extends Monster {
     /*
      * vanilla abstract golem methods
      */
-    public void die(DamageSource p_28846_) {
-        super.die(p_28846_);
+    public void die(DamageSource damageSource) {
+        super.die(damageSource);
     }
 
     protected void playStepSound(BlockPos p_28864_, BlockState p_28865_) {

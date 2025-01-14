@@ -20,6 +20,7 @@ package mod.gottsch.forge.treasure2.core.block;
 import java.util.Random;
 
 import mod.gottsch.forge.gottschcore.block.FacingBlock;
+import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.particle.CollidingParticleType;
@@ -86,11 +87,11 @@ public class WitherRootBlock extends FacingBlock implements ITreasureBlock, IMis
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource random) {
 
-		if (!Config.CLIENT.gui.enableFog.get()) {
+		if (!state.getValue(ACTIVATED)) {
 			return;
 		}
 
-		if (!state.getValue(ACTIVATED)) {
+		if (!Config.SERVER.witherTree.enableWitherFog.get()) {
 			return;
 		}
 
@@ -108,7 +109,7 @@ public class WitherRootBlock extends FacingBlock implements ITreasureBlock, IMis
 
 		// NOTE can override methods here as it is a factory that creates the particle
 		CollidingParticleType mistType = TreasureParticles.WITHER_MIST_PARTICLE.get();
-		
+
 		try {
 			((ClientLevel)world).addParticle(mistType, false, xPos, yPos, zPos, 0, 0, 0);
 		}
