@@ -1,0 +1,95 @@
+{
+  "name": "モブ",
+  "icon": "treasure2:mob",
+  "category": "treasure2:manual",
+  "pages": [
+    "Treasure2では、トレジャースポットに出没するミミックと呼ばれるモブが主に追加されている。油断一秒、怪我一生。",
+    {
+      "type": "patchouli:text",
+      "title": "ミミック族",
+      "text": "ミミック族とは、無生物に擬態するモンスターでシェイプシフターの一種とされている。その皮膚は丈夫かつ変幻自在で、さまざまな素材の外観や質感を真似ることができる。擬態して身を潜め、疑うことを知らない犠牲者が近づいてくるのを辛抱強く待っている。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": ["treasure2:textures/gui/entries/wood_chest_mimic_patchouli.png"],
+      "title": "チェストミミック",
+      "text": "",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": ["treasure2:textures/gui/entries/crate_chest_mimic_patchouli.png"],
+      "title": "木箱ミミック",
+      "text": "",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": ["treasure2:textures/gui/entries/moldy_crate_chest_mimic_patchouli.png"],
+      "title": "カビた木箱ミミック",
+      "text": "",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": ["treasure2:textures/gui/entries/cardboard_box_mimic_patchouli.png"],
+      "title": "段ボールミミック",
+      "text": "",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": ["treasure2:textures/gui/entries/viking_chest_mimic_patchouli.png"],
+      "title": "バイキングミミック",
+      "text": "",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": ["treasure2:textures/gui/entries/pirate_chest_mimic_patchouli.png"],
+      "title": "海賊チェストミミック",
+      "text": "",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": ["treasure2:textures/gui/entries/milk_crate_mimic_patchouli.png"],
+      "title": "ミルク入れミミック",
+      "text": "",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": ["treasure2:textures/gui/entries/cauldron_mimic_patchouli.png"],
+      "title": "大釜ミミック",
+      "text": "",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": ["treasure2:textures/gui/entries/vanilla_chest_mimic_patchouli.png"],
+      "title": "宝箱ミミック",
+      "text": "",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": ["treasure2:textures/gui/entries/barrel_mimic_patchouli.png"],
+      "title": "樽ミミック",
+      "text": "",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "title": "地縛霊たち",
+      "text": "財宝に心を奪われたあまり、誰にも渡すまいと自らを犠牲にして財宝のある場所に魂を縛り付けた悲しき者たちの成れの果て。財宝に近づくと姿を現し、盗人を退治しようと攻撃してくる。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": ["treasure2:textures/gui/entries/bound_soul_patchouli.png"],
+      "title": "地縛霊",
+      "text": "",
+      "border": true
+    }
+  ]
+}

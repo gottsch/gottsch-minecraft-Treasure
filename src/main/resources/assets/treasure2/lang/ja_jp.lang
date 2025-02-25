@@ -1,0 +1,266 @@
+#chests
+tile.treasure2:wood_chest.name=木のチェスト
+tile.treasure2:crate_chest.name=木箱
+tile.treasure2:crate_chest_moldy.name=カビた木箱
+tile.treasure2:ironbound_chest.name=鉄張りのチェスト
+tile.treasure2:iron_strongbox.name=鉄の保管庫
+tile.treasure2:gold_strongbox.name=金の保管庫
+tile.treasure2:pirate_chest.name=海賊のチェスト
+tile.treasure2:safe.name=金庫
+tile.treasure2:dread_pirate_chest.name=大海賊のチェスト
+tile.treasure2:compressor_chest.name=圧縮チェスト
+tile.treasure2:wither_chest.name=ウィザーチェスト
+tile.treasure2:skull_chest.name=ドクロのチェスト
+tile.treasure2:gold_skull_chest.name=金のドクロチェスト
+tile.treasure2:cauldron_chest.name=大釜チェスト
+tile.treasure2:spider_chest.name=クモのチェスト
+tile.treasure2:viking_chest.name=バイキングのチェスト
+
+tile.treasure2:wood_mimic.name=木のミミック
+tile.treasure2:pirate_mimic.name=海賊ミミック
+
+#wells
+tile.treasure2:wishing_well_block.name=願い井戸の石
+tile.treasure2:desert_wishing_well_block.name=砂漠の願い井戸の石
+
+#gravestones
+tile.treasure2:gravestone1_stone.name=墓石
+tile.treasure2:gravestone1_cobblestone.name=丸石の墓石
+tile.treasure2:gravestone1_mossy_cobblestone.name=苔むした丸石の墓石
+tile.treasure2:gravestone1_polished_granite.name=花崗岩の墓石
+tile.treasure2:gravestone1_polished_andesite.name=安山岩の墓石
+tile.treasure2:gravestone1_polished_diorite.name=閃緑岩の墓石
+tile.treasure2:gravestone1_obsidian.name=黒曜石の墓石
+
+tile.treasure2:gravestone2_stone.name=墓石
+tile.treasure2:gravestone2_cobblestone.name=丸石の墓石
+tile.treasure2:gravestone2_mossy_cobblestone.name=苔むした丸石の墓石
+tile.treasure2:gravestone2_polished_granite.name=花崗岩の墓石
+tile.treasure2:gravestone2_polished_andesite.name=安山岩の墓石
+tile.treasure2:gravestone2_polished_diorite.name=閃緑岩の墓石
+tile.treasure2:gravestone2_obsidian.name=黒曜石の墓石
+
+tile.treasure2:gravestone3_stone.name=墓石
+tile.treasure2:gravestone3_cobblestone.name=丸石の墓石
+tile.treasure2:gravestone3_mossy_cobblestone.name=苔むした丸石の墓石
+tile.treasure2:gravestone3_polished_granite.name=花崗岩の墓石
+tile.treasure2:gravestone3_polished_andesite.name=安山岩の墓石
+tile.treasure2:gravestone3_polished_diorite.name=閃緑岩の墓石
+tile.treasure2:gravestone3_obsidian.name=黒曜石の墓石
+
+tile.treasure2:skull_and_crossbones.name=ドクロと骨
+tile.treasure2:skeleton.name=ガイコツ
+
+#wither tree
+tile.treasure2:wither_log.name=ウィザーの原木
+tile.treasure2:wither_broken_log.name=壊れたウィザーの原木
+tile.treasure2:wither_log_soul.name=ウィザーソウルの原木
+tile.treasure2:wither_branch.name=ウィザーの枝
+tile.treasure2:wither_root.name=ウィザーの根
+tile.treasure2:wither_planks.name=ウィザーの幹
+
+#fogs
+tile.treasure2:fog.name=もや
+tile.treasure2:high_fog.name=上段のもや
+tile.treasure2:med_fog.name=中段のもや
+tile.treasure2:low_fog.name=下段のもや
+
+tile.treasure2:wither_fog.name=ウィザーのもや
+tile.treasure2:high_wither_fog.name=上段のウィザーのもや
+tile.treasure2:med_wither_fog.name=中段のウィザーのもや
+tile.treasure2:low_wither_fog.name=下段のウィザーのもや
+
+tile.treasure2:poison_fog.name=毒のもや
+tile.treasure2:high_poison_fog.name=上段の毒のもや
+tile.treasure2:med_poison_fog.name=中段の毒のもや
+tile.treasure2:low_poison_fog.name=下段の毒のもや
+
+#ores
+tile.treasure2:sapphire_ore.name=サファイア鉱石
+tile.treasure2:ruby_ore.name=ルビー鉱石
+
+#other
+tile.treasure2:spanish_moss.name=しだれコケ
+tile.treasure2:falling_grass.name=草ブック
+tile.treasure2:falling_sand.name=砂ブロック
+tile.treasure2:falling_red_sand.name=赤い砂ブロック
+
+#items
+item.treasure2:gold_coin.name=金貨
+item.treasure2:silver_coin.name=銀貨
+item.treasure2:charmed_silver_coin.name=魔法の銀貨
+item.treasure2:charmed_gold_coin.name=魔法の金貨
+item.treasure2:charmed_ruby.name=魔法のルビー
+item.treasure2:charmed_sapphire.name=魔法のサファイア
+
+item.treasure2:angel_blessed.name=天使のコイン
+item.treasure2:fools_coin.name=愚者のコイン
+item.treasure2:miners_friend.name=鉱夫の友
+item.treasure2:medics_token.name=薬師のトークン
+item.treasure2:salandaars_ward.name=サランダーの杖
+item.treasure2:dwarven_talisman.name=ドワーフのタリスマン
+item.treasure2:adephagias_bounty.name=暴食神の賜物
+item.treasure2:mirthas_torch.name=ミーサの松明
+item.treasure2:pouch.name=小銭入れ
+item.treasure2:lucky_pouch.name=幸運のポーチ
+item.treasure2:apprentices_pouch.name=見習いのポーチ
+item.treasure2:masters_pouch.name=達人のポーチ
+
+item.treasure2:key_ring.name=キーホルダー
+item.treasure2:wood_key.name=木のカギ
+item.treasure2:stone_key.name=石のカギ
+item.treasure2:iron_key.name=鉄のカギ
+item.treasure2:gold_key.name=金のカギ
+item.treasure2:diamond_key.name=ダイヤモンドのカギ
+item.treasure2:emerald_key.name=エメラルドのカギ
+item.treasure2:ruby_key.name=ルビーのカギ
+item.treasure2:sapphire_key.name=サファイアのカギ
+item.treasure2:jewelled_key.name=宝石飾りのカギ
+item.treasure2:metallurgists_key.name=金属博士のカギ
+item.treasure2:skeleton_key.name=ガイコツのカギ
+item.treasure2:spider_key.name=クモのカギ
+item.treasure2:wither_key.name=ウィザーのカギ
+item.treasure2:shucking_knife.name=貝割りナイフ
+
+item.treasure2:wood_lock.name=木の錠前
+item.treasure2:stone_lock.name=石の錠前
+item.treasure2:iron_lock.name=鉄の錠前
+item.treasure2:gold_lock.name=金の錠前
+item.treasure2:diamond_lock.name=ダイヤモンドの錠前
+item.treasure2:emerald_lock.name=エメラルドの錠前
+item.treasure2:ruby_lock.name=ルビーの錠前
+item.treasure2:sapphire_lock.name=サファイアの錠前
+item.treasure2:spider_lock.name=クモの錠前
+item.treasure2:wither_lock.name=ウィザーの錠前
+
+item.treasure2:wither_stick_item.name=ウィザーの枝
+item.treasure2:wither_root_item.name=ウィザーの根
+item.treasure2:pilferers_lock_pick.name=コソ泥のピッキング
+item.treasure2:thiefs_lock_pick.name=盗賊のピッキング
+
+item.treasure2:painting_blocks_bricks.name=Bricks by o2xygeno
+item.treasure2:painting_blocks_cobblestone.name=Cobblestone by o2xygeno
+item.treasure2:painting_blocks_dirt.name=Dirt by o2xygeno
+item.treasure2:painting_blocks_lava.name=Lava by o2xygeno
+item.treasure2:painting_blocks_sand.name=Sand by o2xygeno
+item.treasure2:painting_blocks_water.name=Water by o2xygeno
+item.treasure2:painting_blocks_wood.name=Wood by o2xygeno
+
+item.treasure2:eye_patch.name=眼帯
+item.treasure2:skull_sword.name=骸骨剣
+item.treasure2:spanish_moss.name=しだれコケ
+item.treasure2:sapphire.name=サファイア
+item.treasure2:ruby.name=ルビー
+item.treasure2:skeleton_item.name=ガイコツ
+item.treasure2:white_pearl.name=白真珠
+item.treasure2:black_pearl.name=黒真珠
+item.treasure2:oyster_meat.name=オイスターの身
+item.treasure2:oyster_stew.name=オイスターシチュー
+item.treasure2:clam_meat.name=ハマグリの身
+item.treasure2:clam_stew.name=クラムチャウダー
+item.treasure2:treasure_tool.name=トレジャーツール
+
+#entities
+#TODO rename standard to wood
+entity.wood_mimic.name=木のミミック
+entity.pirate_mimic.name=海賊ミミック
+entity.bound_soul.name=捕らわれた魂
+
+#groups
+itemGroup.treasure2:treasure_tab=Treasure2!
+
+# string resources
+tooltip.yes=Yes
+tooltip.no=No
+tooltip.label.rarity=レア度: %s
+tooltip.label.category=タイプ: %s
+tooltip.label.max_uses=使用上限: %s
+tooltip.label.breakable=壊れやすい: %s
+tooltip.label.craftable=作成できる: %s
+tooltip.label.damageable=損傷する: %s
+tooltip.label.specials=特殊品: %s
+tooltip.label.accepts_keys=有効なカギ: %s
+tooltip.label.coin=願い井戸に投げ込もう
+tooltip.label.key_ring=カギを収納できる
+tooltip.label.coin_pouch=コイン、宝石類、真珠やお守りを入れておける
+tooltip.label.treasure_tool=開錠ツールの作成に用いる
+tooltip.label.charmed=手に持つか小銭入れに入れて置くと効果を発揮
+tooltip.label.charms=お守り:
+
+tooltip.label.max_locks=施錠上限: %s
+tooltip.label.container_size=収納数: %s
+
+tooltip.metallurgists_key.specials=金属タイプの全ての錠前を解除できる
+tooltip.skeleton_key.specials=通常、上級、希少、逸品クラスを開錠できる(ウィザーは除く)
+tooltip.pilferers_lock_pick.specials=通常(%s%%)と上級(%s%%)クラスを開錠できる
+tooltip.thiefs_lock_pick.specials=通常(%s%%)、上級(%s%%)及び希少(%s%%)クラスを開錠できる
+tooltip.jewelled_key.specials=宝石タイプの全ての錠前を解除できる
+
+tooltip.charm.healing_rate=- 秒間に0.5ハートだけ回復
+tooltip.charm.lesser_healing=少量の回復[%s/%s]
+tooltip.charm.healing=回復[%s/%s]
+tooltip.charm.greater_healing=かなりの回復[%s/%s]
+tooltip.charm.grand_healing=大回復[%s/%s]
+tooltip.charm.salandaars_convalescence=サランダーの治癒のお守り[%s/%s]
+
+tooltip.charm.shield_rate=- ダメージの%s%%を吸収
+tooltip.charm.durable_shielding=丈夫なシールド[%s/%s]
+tooltip.charm.stout_shielding=頑丈なシールド[%s/%s]
+tooltip.charm.hardened_shielding=硬化シールド[%s/%s]
+tooltip.charm.powerful_shielding=強固なシールド[%s/%s]
+tooltip.charm.armadillo_shielding=アルマジロシールド[%s/%s]
+
+tooltip.charm.fullness_rate=- 満腹度を秒間0.5ゲージだけ回復
+tooltip.charm.fullness=腹八分[%s/%s]
+tooltip.charm.sated_fullness=満腹[%s/%s]
+tooltip.charm.overfed_fullness=食べすぎ[%s/%s]
+tooltip.charm.gorged_fullness=ドカ食い [%s/%s]
+tooltip.charm.bursting_fullness=暴飲暴食 [%s/%s]
+
+tooltip.charm.harvest_rate=- 収穫量が%s倍になる
+tooltip.charm.minor_harvesting=少量の収穫[%s/%s]
+tooltip.charm.harvesting=収穫[%s/%s]
+tooltip.charm.major_harvesting=大収穫[%s/%s]
+tooltip.charm.grand_harvesting=豊作[%s/%s]
+tooltip.charm.glorious_harvesting=大豊作[%s/%s]
+
+tooltip.charm.illumination_rate=- 5秒後ごとに発光する
+tooltip.charm.lesser_illumination=わずかな発光[%s/%s]
+tooltip.charm.illumination=発光[%s/%s]
+tooltip.charm.greater_illumination=眩しい発光[%s/%s]
+tooltip.charm.grand_illumination=大発光[%s/%s]
+tooltip.charm.glorious_illumination=超発光[%s/%s]
+
+# curses
+tooltip.charm.decay_rate=- 5秒ごとにハート1つ分ダメージを受ける
+tooltip.charm.lesser_decay=弱い崩壊[%s/%s]
+tooltip.charm.decay=崩壊[%s/%s]
+tooltip.charm.greater_decay=大崩壊[%s/%s]
+tooltip.charm.perishing_decay=死に至る崩壊[%s/%s]
+
+tooltip.painting.name=%s
+tooltip.painting.collection=コレクション: %s
+tooltip.painting.issue=イシュー: %s/%s
+tooltip.painting.artist=%s 作
+
+
+#gui
+display.wood_chest.name=木のチェスト
+display.crate_chest.name=木箱
+display.crate_chest_moldy.name=カビた木箱
+display.ironbound_chest.name=鉄張りのチェスト
+display.pirate_chest.name=海賊のチェスト
+display.iron_strongbox.name=鉄の保管庫
+display.gold_strongbox.name=金の保管庫
+display.safe.name=金庫
+display.dread_pirate_chest.name=大海賊のチェスト
+display.compressor_chest.name=圧縮チェスト
+display.wither_chest.name=ウィザーチェスト
+display.skull_chest.name=ドクロのチェスト
+display.gold_skull_chest.name=金のドクロチェスト
+display.cauldron_chest.name=大釜のチェスト
+#display.whale_bone_pirate_chest.name=鯨骨の海賊チェスト
+#display.clam_chest.name=二枚貝
+#display.oyster_chest.name=オイスター
+display.spider_chest.name=クモのチェスト
+display.viking_chest.name=バイキングのチェスト

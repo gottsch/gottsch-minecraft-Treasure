@@ -1,0 +1,33 @@
+{
+  "name": "願い井戸",
+  "icon": "minecraft:mossy_cobblestone",
+  "category": "treasure2:manual",
+  "pages": [
+    {
+      "type": "patchouli:image",
+      "images": ["treasure2:textures/gui/entries/wishing_well_patchouli.png"],
+      "title": "願い井戸",
+      "text": "人々が願い事をしながらコイン等を投げ入れる伝統的な構造物",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "願い井戸と噴水は、オーバーワールドのほぼどこにでも生成されるレアな建造物である。砂漠では花やサボテンに囲まれた状態で生成され（v3.10.0以降）、金貨を飾った額縁が置かれている（v3.10.0以降）。コインや宝石を水に投げ入れるとアイテムが手に入る。出現するアイテムはコインや宝石のレア度によって異なる。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": ["treasure2:textures/gui/entries/clover_patchouli.png"],
+      "title": "四葉のクローバー",
+      "text": "願い井戸の周りに、まれにクローバーが生成されることがある"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "クローバーは収穫できるが、植えなおすことはできない。丸石、苔むした丸石、石レンガ、苔むした石レンガで作られた建造物にクローバー・アイテムを使用すると、オリジナルの願い井戸を作ることができる。クローバーは半径4ブロック以内のブロックにのみ影響し、それのブロックは互いに隣接していなければならない(東西南北および上下方向)。"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "カギのかかったチェスト",
+      "text": "カギのかかった宝箱のカギが見つからない場合は、宝箱ごと「願いの井戸」に投げ入れることができる。そうすることで宝箱のロックはすべて外れるが、それ相応の代償を支払うことになることを警告しておく。"
+    }
+  ]
+}
