@@ -52,9 +52,10 @@ public class DataGenerators {
             generator.addProvider(true, TreasureLootTableProvider.create(output));
         }
         if (event.includeClient()) {
-        	 generator.addProvider(true, new TreasureBlockStateProvider(output, event.getExistingFileHelper()));
+            generator.addProvider(true, new TreasureBlockStateProvider(output, event.getExistingFileHelper()));
             generator.addProvider(true, new ItemModelsProvider(output, event.getExistingFileHelper()));
             generator.addProvider(true, new LanguageGen(output, "en_us"));
+            generator.addProvider(true, new JapaneseLanguageGen(output, "ja_jp"));
         }
     }
 }

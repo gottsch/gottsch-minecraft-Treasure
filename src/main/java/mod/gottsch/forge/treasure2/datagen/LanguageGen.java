@@ -401,6 +401,9 @@ public class LanguageGen extends LanguageProvider {
         add(LangUtil.chat("key.key_not_fit"), "Your key doesn't fit the lock!");
         add(LangUtil.chat("key.key_unable_unlock"), "Your key failed to unlock the lock!");
 
-
+        /*
+         * patchouli
+         */
+        add("book.treasure2.landing", "Treasure2 adds to the thrill of discovery in Minecraft. This mod adds various new and rare chests of treasure to be discovered. The chests are secured by an assortment of locks and can only be unlocked by finding the corresponding keys.");
     }
 }
