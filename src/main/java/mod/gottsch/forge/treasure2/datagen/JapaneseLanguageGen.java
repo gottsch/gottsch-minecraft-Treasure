@@ -45,20 +45,20 @@ public class JapaneseLanguageGen extends LanguageProvider {
 //        add(TreasureItems.WOOD_KEY.get(), "Wood Key");
 //        add(TreasureItems.STONE_KEY.get(), "Stone Key");
 //        add(TreasureItems.LEAF_KEY.get(), "Leaf Key");
-//        add(TreasureItems.EMBER_KEY.get(), "Ember Key");
+        add(TreasureItems.EMBER_KEY.get(), "残り火のカギ");
 //        add(TreasureItems.LIGHTNING_KEY.get(), "Lightning Key");
 //
-//        add(TreasureItems.IRON_KEY.get(), "Iron Key");
-//        add(TreasureItems.GOLD_KEY.get(), "Gold Key");
+        add(TreasureItems.IRON_KEY.get(), "鉄のカギ");
+        add(TreasureItems.GOLD_KEY.get(), "金のカギ");
 //        add(TreasureItems.METALLURGISTS_KEY.get(), "Metallurgists Key");
 //
-//        add(TreasureItems.DIAMOND_KEY.get(), "Diamond Key");
-//        add(TreasureItems.EMERALD_KEY.get(), "Emerald Key");
+        add(TreasureItems.DIAMOND_KEY.get(), "ダイヤモンドのカギ");
+        add(TreasureItems.EMERALD_KEY.get(), "エメラルドのカギ");
 //        add(TreasureItems.TOPAZ_KEY.get(), "Topaz Key");
 //        add(TreasureItems.ONYX_KEY.get(), "Onyx Key");
 //        add(TreasureItems.RUBY_KEY.get(), "Ruby Key");
 //        add(TreasureItems.SAPPHIRE_KEY.get(), "Sapphire Key");
-//        add(TreasureItems.JEWELLED_KEY.get(), "Jewelled Key");
+        add(TreasureItems.JEWELLED_KEY.get(), "宝石飾りのカギ");
 //
 //        add(TreasureItems.SPIDER_KEY.get(), "Spider Key");
 //        add(TreasureItems.WITHER_KEY.get(), "Wither Key");
@@ -71,12 +71,12 @@ public class JapaneseLanguageGen extends LanguageProvider {
 //        add(TreasureItems.WOOD_LOCK.get(), "Wood Lock");
 //        add(TreasureItems.STONE_LOCK.get(), "Stone Lock");
 //        add(TreasureItems.LEAF_LOCK.get(), "Leaf Lock");
-//        add(TreasureItems.EMBER_LOCK.get(), "Ember Lock");
-//        add(TreasureItems.IRON_LOCK.get(), "Iron Lock");
-//        add(TreasureItems.GOLD_LOCK.get(), "Gold Lock");
+        add(TreasureItems.EMBER_LOCK.get(), "残り火の錠前");
+        add(TreasureItems.IRON_LOCK.get(), "鉄の錠前");
+        add(TreasureItems.GOLD_LOCK.get(), "金の錠前");
 //
-//        add(TreasureItems.DIAMOND_LOCK.get(), "Diamond Lock");
-//        add(TreasureItems.EMERALD_LOCK.get(), "Emerald Lock");
+        add(TreasureItems.DIAMOND_LOCK.get(), "ダイヤモンドの錠前");
+        add(TreasureItems.EMERALD_LOCK.get(), "エメラルドの錠前");
 //        add(TreasureItems.TOPAZ_LOCK.get(), "Topaz Lock");
 //        add(TreasureItems.ONYX_LOCK.get(), "Onyx Lock");
 //        add(TreasureItems.RUBY_LOCK.get(), "Ruby Lock");
@@ -86,12 +86,12 @@ public class JapaneseLanguageGen extends LanguageProvider {
 //        add(TreasureItems.WITHER_LOCK.get(), "Wither Lock");
 //
 //        // key ring
-//        add(TreasureItems.KEY_RING.get(), "Key Ring");
+        add(TreasureItems.KEY_RING.get(), "キーホルダー");
 //
 //        // coins
-//        add(TreasureItems.COPPER_COIN.get(), "Copper Coin");
+        add(TreasureItems.COPPER_COIN.get(), "銅貨");
 //        add(TreasureItems.SILVER_COIN.get(), "Silver Coin");
-//        add(TreasureItems.GOLD_COIN.get(), "Gold Coin");
+        add(TreasureItems.GOLD_COIN.get(), "金貨");
 //
 //        add(TreasureItems.TOPAZ.get(), "Topaz");
 //        add(TreasureItems.ONYX.get(), "Onyx");
@@ -109,20 +109,20 @@ public class JapaneseLanguageGen extends LanguageProvider {
 //        add(TreasureBlocks.WISHING_WELL_STONE_BRICKS.get(), "Wishing Well Stone Bricks");
 //        add(TreasureBlocks.WISHING_WELL_MOSSY_STONE_BRICKS.get(), "Wishing Well Mossy Stone Bricks");
 //        add(TreasureBlocks.DESERT_WISHING_WELL.get(), "Desert Wishing Well Stone");
-//        add(TreasureItems.EYE_PATCH.get(), "Eye Patch");
-//        add(TreasureItems.CLOVER.get(), "Four Leaf Clover");
+        add(TreasureItems.EYE_PATCH.get(), "眼帯");
+        add(TreasureItems.CLOVER.get(), "四葉のクローバー");
 //
 //        // swords
-//        add(TreasureItems.COPPER_SHORT_SWORD.get(), "Copper Short Sword");
-//        add(TreasureItems.CHIPPED_COPPER_SHORT_SWORD.get(), "Chipped Copper Short Sword");
-//        add(TreasureItems.IRON_SHORT_SWORD.get(), "Iron Short Sword");
-//        add(TreasureItems.CHIPPED_IRON_SHORT_SWORD.get(), "Chipped Iron Short Sword");
+        add(TreasureItems.COPPER_SHORT_SWORD.get(), "銅の短剣");
+        add(TreasureItems.CHIPPED_COPPER_SHORT_SWORD.get(), "欠けた銅の短剣");
+        add(TreasureItems.IRON_SHORT_SWORD.get(), "鉄の短剣");
+        add(TreasureItems.CHIPPED_IRON_SHORT_SWORD.get(), "欠けた鉄の短剣");
 //        add(TreasureItems.STEEL_SHORT_SWORD.get(), "Steel Short Sword");
-//        add(TreasureItems.CHIPPED_STEEL_SHORT_SWORD.get(), "Chipped Steel Short Sword");
+        add(TreasureItems.CHIPPED_STEEL_SHORT_SWORD.get(), "欠けた鋼の短剣");
 //        add(TreasureItems.STEEL_SWORD.get(), "Steel Sword");
-//        add(TreasureItems.IRON_BROADSWORD.get(), "Iron Broadsword");
+        add(TreasureItems.IRON_BROADSWORD.get(), "鉄の大剣");
 //        add(TreasureItems.STEEL_BROADSWORD.get(), "Steel Broadsword");
-//        add(TreasureItems.COPPER_RAPIER.get(), "Copper Rapier");
+        add(TreasureItems.COPPER_RAPIER.get(), "銅のレイピア");
 //
 //        // specials
 //        add(TreasureItems.SKULL_SWORD.get(), "Skull Sword");
@@ -136,24 +136,24 @@ public class JapaneseLanguageGen extends LanguageProvider {
 //        add(TreasureItems.OATHBRINGER.get(), "Oathbringer");
 //        add(TreasureItems.MJOLNIR.get(), "Mjolnir");
         add(TreasureItems.AXE_DURIN.get(), "ドゥリンの戦斧");
-//        add(TreasureItems.HEADSMANS_AXE.get(), "The Headsman's Axe");
+        add(TreasureItems.HEADSMANS_AXE.get(), "首長の長斧");
 //
 //        add(TreasureItems.STEEL_MACHETE.get(), "Steel Machete");
 //        add(TreasureItems.SHADOW_MACHETE.get(), "Shadow Machete");
 //
-//        add(TreasureItems.IRON_FALCHION.get(), "Iron Falchion");
+        add(TreasureItems.IRON_FALCHION.get(), "鉄のファルシオン");
 //        add(TreasureItems.STEEL_FALCHION.get(), "Steel Falchion");
 //        add(TreasureItems.SHADOW_FALCHION.get(), "Shadow Falchion");
 //
 //        // maces/hammers
-//        add(TreasureItems.IRON_MACE.get(), "Iron Mace");
+        add(TreasureItems.IRON_MACE.get(), "鉄のメイス");
 //        add(TreasureItems.STEEL_MACE.get(), "Steel Mace");
 //
 //        // axes
-//        add(TreasureItems.COPPER_BROAD_AXE.get(), "Copper Broad Axe");
-//        add(TreasureItems.IRON_BROAD_AXE.get(), "Iron Broad Axe");
+        add(TreasureItems.COPPER_BROAD_AXE.get(), "銅の大斧");
+        add(TreasureItems.IRON_BROAD_AXE.get(), "鉄の大斧");
 //        add(TreasureItems.STEEL_BROAD_AXE.get(), "Steel Broad Axe");
-//        add(TreasureItems.IRON_DWARVEN_AXE.get(), "Iron Dwarven Axe");
+        add(TreasureItems.IRON_DWARVEN_AXE.get(), "鉄のドワーフ斧");
         
         // chests
         add(TreasureBlocks.WOOD_CHEST.get(), "木のチェスト");
