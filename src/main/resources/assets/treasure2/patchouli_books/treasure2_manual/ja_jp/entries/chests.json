@@ -1,0 +1,190 @@
+{
+  "name": "宝箱",
+  "icon": "treasure2:ironbound_chest",
+  "category": "treasure2:manual",
+  "sortnum": 0,
+  "pages": [
+    "宝箱はデフォルトではオーバーワールドに出現するが、どのディメンションにも出現するように設定できる。地表にある宝箱もあれば、地下や水中にある宝箱もある。宝箱がどこにあるかは、墓石やその他の構造物（例：塔や地下墓地など）が目印になっている。",
+    {
+      "type": "patchouli:text",
+      "title": "宝箱リスト",
+      "text": "$(l)$(l:chests#wood_chest)木のチェスト$(/l)$()$(br)$(l)$(l:chests#crate_chest)木箱$(/l)$()$(br)$(l)$(l:chests#crate_chest_moldy)カビた木箱$(/l)$()$(br)$(l)$(l:chests#ironbound_chest)鉄張りのチェスト$(/l)$()$(br)$(l)$(l:chests#pirate_chest)海賊のチェスト$(/l)$()$(br)$(l)$(l:chests#safe)金庫$(/l)$()$(br)$(l)$(l:chests#iron_strongbox)鉄の保管庫$(/l)$()$(br)$(l)$(l:chests#gold_strongbox)金の保管庫$(/l)$()$(br)$(l)$(l:chests#dread_pirate_chest)大海賊のチェスト$(/l)$()$(br)$(l)$(l:chests#compressor_chest)圧縮チェスト$(/l)$()$(br)$(l)$(l:chests#skull_chest)ドクロのチェスト$(/l)$()$(br)$(l)$(l:chests#gold_skull_chest)金ドクロのチェスト$(/l)$()$(br)$(l)$(l:chests#crystal_skull_chest)水晶ドクロのチェスト$(/l)$()$(br)$(l)$(l:chests#cauldron_chest)大釜のチェスト$(/l)$()"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "宝箱リスト",
+      "text": "$(l)$(l:chests#spider_chest)クモのチェスト$(/l)$()$(br)$(l)$(l:chests#viking_chest)バイキングのチェスト$(/l)$()$(br)$(l)$(l:chests#cardboard_box)段ボール箱$(/l)$()$(br)$(l)$(l:chests#milk_crate)ミルク木箱$(/l)$()$(br)$(l)$(l:chests#wither_chest)ウィザーチェスト$(/l)$()"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "木のチェスト",
+      "item": {
+        "item": "treasure2:wood_chest"
+      },
+      "text": "$(l)レア度:$() $(1)COMMON$()$(br)$(l)# ロック数:$() 3$(br)$(l)容量:$() 27$(br)",
+      "anchor": "wood_chest"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "木箱",
+      "item": {
+        "item": "treasure2:crate_chest"
+      },
+      "text": "$(l)レア度:$() $(1)COMMON$()$(br)$(l)# ロック数:$() 1$(br)$(l)容量:$() 27$(br)",
+      "anchor": "crate_chest"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "カビた木箱",
+      "item": {
+        "item": "treasure2:crate_chest_moldy"
+      },
+      "text": "$(l)レア度:$() $(1)COMMON$()$(br)$(l)# ロック数:$() 1$(br)$(l)容量:$() 27$(br)",
+      "anchor": "crate_chest_moldy"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "鉄張りのチェスト",
+      "item": {
+        "item": "treasure2:ironbound_chest"
+      },
+      "text": "$(l)レア度:$() $(1)UNCOMMON$()$(br)$(l)# ロック数:$() 3$(br)$(l)容量:$() 27$(br)",
+      "anchor": "ironbound_chest"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "海賊のチェスト",
+      "item": {
+        "item": "treasure2:pirate_chest"
+      },
+      "text": "$(l)レア度:$() $(1)SCARCE$()$(br)$(l)# ロック数:$() 3$(br)$(l)容量:$() 27$(br)",
+      "anchor": "pirate_chest"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "金庫",
+      "item": {
+        "item": "treasure2:safe"
+      },
+      "text": "$(l)レア度:$() $(1)RARE$()$(br)$(l)# ロック数:$() 2$(br)$(l)容量:$() 27$(br)",
+      "anchor": "safe"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "鉄の保管庫",
+      "item": {
+        "item": "treasure2:iron_strongbox"
+      },
+      "text": "$(l)レア度:$() $(1)SCARCE$()$(br)$(l)# ロック数:$() 3$(br)$(l)容量:$() 15$(br)",
+      "anchor": "iron_strongbox"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "金の保管庫",
+      "item": {
+        "item": "treasure2:gold_strongbox"
+      },
+      "text": "$(l)レア度:$() $(1)RARE$()$(br)$(l)# ロック数:$() 3$(br)$(l)容量:$() 15$(br)",
+      "anchor": "gold_strongbox"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "大海賊のチェスト",
+      "item": {
+        "item": "treasure2:dread_pirate_chest"
+      },
+      "text": "$(l)レア度:$() $(1)EPIC$()$(br)$(l)# ロック数:$() 3$(br)$(l)容量:$() 27$(br)",
+      "anchor": "dread_pirate_chest"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "圧縮チェスト",
+      "item": {
+        "item": "treasure2:compressor_chest"
+      },
+      "text": "$(l)レア度:$() $(1)EPIC$()$(br)$(l)# ロック数:$() 4$(br)$(l)容量:$() 52$(br)",
+      "anchor": "compressor_chest"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "ドクロのチェスト",
+      "item": {
+        "item": "treasure2:skull_chest"
+      },
+      "text": "$(l)レア度:$() $(1)特殊$()$(br)$(l)# ロック数:$() 1$(br)$(l)容量:$() 9$(br)",
+      "anchor": "skull_chest"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "金ドクロのチェスト",
+      "item": {
+        "item": "treasure2:gold_skull_chest"
+      },
+      "text": "$(l)レア度:$() $(1)特殊$()$(br)$(l)# ロック数:$() 1$(br)$(l)容量:$() 9$(br)",
+      "anchor": "gold_skull_chest"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "水晶ドクロのチェスト",
+      "item": {
+        "item": "treasure2:crystal_skull_chest"
+      },
+      "text": "$(l)レア度:$() $(1)特殊$()$(br)$(l)# ロック数:$() 1$(br)$(l)容量:$() 9$(br)",
+      "anchor": "crystal_skull_chest"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "大釜のチェスト",
+      "item": {
+        "item": "treasure2:cauldron_chest"
+      },
+      "text": "$(l)レア度:$() $(1)特殊$()$(br)$(l)# ロック数:$() 2$(br)$(l)容量:$() 27$(br)",
+      "anchor": "cauldron_chest"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "クモのチェスト",
+      "item": {
+        "item": "treasure2:spider_chest"
+      },
+      "text": "$(l)レア度:$() $(1)RARE$()$(br)$(l)# ロック数:$() 1$(br)$(l)容量:$() 27$(br)",
+      "anchor": "spider_chest"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "バイキングのチェスト",
+      "item": {
+        "item": "treasure2:viking_chest"
+      },
+      "text": "$(l)レア度:$() $(1)UNCOMMON$()$(br)$(l)# ロック数:$() 1$(br)$(l)容量:$() 27$(br)",
+      "anchor": "viking_chest"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "段ボール箱",
+      "item": {
+        "item": "treasure2:cardboard_box"
+      },
+      "text": "$(l)レア度:$() $(1)COMMON$()$(br)$(l)# ロック数:$() 2$(br)$(l)容量:$() 27$(br)",
+      "anchor": "cardboard_box"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "ミルク木箱",
+      "item": {
+        "item": "treasure2:milk_crate"
+      },
+      "text": "$(l)レア度:$() $(1)COMMON$()$(br)$(l)# ロック数:$() 1$(br)$(l)容量:$() 27$(br)",
+      "anchor": "milk_crate"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "ウィザーチェスト",
+      "item": {
+        "item": "treasure2:wither_chest"
+      },
+      "text": "$(l)レア度:$() $(1)特殊$()$(br)$(l)# ロック数:$() 2$(br)$(l)容量:$() 42$(br)",
+      "anchor": "wither_chest"
+    }
+  ]
+}

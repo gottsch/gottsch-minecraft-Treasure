@@ -51,7 +51,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * TODO move to GottschCore
+ *
  */
 public class TreasureProximityMultiSpawnerBlockEntity extends AbstractProximityBlockEntity {
     private static final String MOB_NAMES = "mobNames";

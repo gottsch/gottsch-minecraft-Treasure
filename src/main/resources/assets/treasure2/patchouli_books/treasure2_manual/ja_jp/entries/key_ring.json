@@ -1,0 +1,23 @@
+{
+  "name": "キーホルダー",
+  "icon": "treasure2:key_ring",
+  "category": "treasure2:manual",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "title": "キーホルダー",
+      "item": {
+        "item": "treasure2:key_ring"
+      },
+      "text": "キーホルダーはカギだけを収納できる特別な道具で、カギを付けておけば貴重なインベントリスペースを節約できる。キーホルダー使用時に付けているカギがチェックされ、ロックに合うものがあればカギを単体で使った時と同じように解除を試みる。",
+      "anchor": "key_ring"
+    },
+    {
+      "type": "patchouli:crafting",
+      "title": "キーホルダーのレシピ",
+      "recipe": "treasure2:key_ring",
+      "text": ""
+    }
+  ]
+}

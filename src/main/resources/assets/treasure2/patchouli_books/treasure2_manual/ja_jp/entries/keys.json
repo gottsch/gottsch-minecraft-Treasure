@@ -1,0 +1,262 @@
+{
+  "name": "カギ",
+  "icon": "treasure2:iron_key",
+  "category": "treasure2:manual",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "カギ",
+      "text": "カギはロックの解除に使われる。ほとんどのカギには、解除対象の対となる$(l:keys#locks)ロック$()がある. しかし、特殊なカギの中には、追加の解錠能力を持つものもある(例:全ての「金属」ロックを開ける)。また、キーはスニークしながら使用しなければならない。インベントリ内のアイテムにカーソルを合わせれば、カギの属性を見ることができる。",
+      "anchor": "keys"
+    },
+    "$(#777)$(l)注意:$() $(o)カギはスタック不可のアイテムである。ただし、カギ同士は合成可能。金床に2つのカギを置けば合体させることができるが、使用回数を1000より増やすことはできない。$()",
+    {
+      "type": "patchouli:text",
+      "title": "カギ一覧",
+      "text": "$(l)$(l:keys#wood_key)木のカギ$(/l)$()$(br)$(l)$(l:keys#stone_key)石のカギ$(/l)$()$(br)$(l)$(l:keys#leaf_key)樹葉のカギ$(/l)$()$(br)$(l)$(l:keys#ember_key)残り火のカギ$(/l)$()$(br)$(l)$(l:keys#Iron_key)鉄のカギ$(/l)$()$(br)$(l)$(l:keys#gold_key)金のカギ$(/l)$()$(br)$(l)$(l:keys#diamond_key)ダイヤモンドのカギ$(/l)$()$(br)$(l)$(l:keys#emerald_key)エメラルドのカギ$(/l)$()$(br)$(l)$(l:keys#topaz_key)トパーズのカギ$(/l)$()$(br)$(l)$(l:keys#onyx_key)オニキスのカギ$(/l)$()$(br)$(l)$(l:keys#ruby_key)ルビーのカギ$(/l)$()$(br)$(l)$(l:keys#sapphire_key)サファイヤのカギ$(/l)$()$(br)$(l)$(l:keys#spider_key)クモのカギ$(/l)$()$(br)$(l)$(l:keys#wither_key)ウィザーのカギ$(/l)$()"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "特殊なカギ一覧",
+      "text": "$(l)$(l:keys#pilferers_key)コソ泥のピッキング$(/l)$()$(br)$(l)$(l:keys#thiefs_key)盗賊のピッキング$(/l)$()$(br)$(l)$(l:keys#lightning_key)雷光のカギ$(/l)$()$(br)$(l)$(l:keys#metallurgists_key)金属博士のカギ$(/l)$()$(br)$(l)$(l:keys#jewelled_key)宝石飾りのカギ$(/l)$()$(br)$(l)$(l:keys#skeleton_key)ガイコツのカギ$(/l)$()$(br)$(l)$(l:keys#one_key)マスターキー$(/l)$()$(br)"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "木のカギ",
+      "item": {
+        "item": "treasure2:wood_key"
+      },
+      "text": "$(l)レア度:$() $(1)COMMON$()$(br)$(l)タイプ:$() $(6)ELEMENTAL$()$(br)$(l)破壊可否:$() $(4)Yes$()$(br)$(l)作成可否:$() $(4)No$()$(br)$(l)対象ロック:$() $(2)木のロック$()",
+      "anchor": "wood_key"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "石のカギ",
+      "item": {
+        "item": "treasure2:stone_key"
+      },
+      "text": "$(l)レア度:$() $(1)COMMON$()$(br)$(l)タイプ:$() $(6)ELEMENTAL$()$(br)$(l)破壊可否:$() $(4)Yes$()$(br)$(l)作成可否:$() $(4)No$()$(br)$(l)対象ロック:$() $(2)石のロック$()",
+      "anchor": "stone_key"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "樹葉のカギ",
+      "item": {
+        "item": "treasure2:leaf_key"
+      },
+      "text": "$(l)レア度:$() $(1)UNCOMMON$()$(br)$(l)タイプ:$() $(6)ELEMENTAL$()$(br)$(l)破壊可否:$() $(4)Yes$()$(br)$(l)作成可否:$() $(4)No$()$(br)$(l)対象ロック:$() $(2)樹葉のロック$()",
+      "anchor": "leaf_key"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "残り火のカギ",
+      "item": {
+        "item": "treasure2:ember_key"
+      },
+      "text": "$(l)レア度:$() $(1)SCARCE$()$(br)$(l)タイプ:$() $(6)ELEMENTAL$()$(br)$(l)破壊可否:$() $(4)Yes$()$(br)$(l)作成可否:$() $(4)No$()$(br)$(l)対象ロック:$() $(2)木／樹葉／残り火のロック$().$(br)木／樹葉のロックを破壊する",
+      "anchor": "ember_key"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "鉄のカギ",
+      "item": {
+        "item": "treasure2:iron_key"
+      },
+      "text": "$(l)レア度:$() $(1)UNCOMMON$()$(br)$(l)タイプ:$() $(6)METAL$()$(br)$(l)破壊可否:$() $(4)Yes$()$(br)$(l)作成可否:$() $(4)No$()$(br)$(l)対象ロック:$() $(2)鉄のロック$()",
+      "anchor": "iron_key"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "金のカギ",
+      "item": {
+        "item": "treasure2:gold_key"
+      },
+      "text": "$(l)レア度:$() $(1)SCARCE$()$(br)$(l)タイプ:$() $(6)METAL$()$(br)$(l)破壊可否:$() $(4)Yes$()$(br)$(l)作成可否:$() $(4)No$()$(br)$(l)対象ロック:$() $(2)金のロック$()",
+      "anchor": "gold_key"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "ダイヤモンドのカギ",
+      "item": {
+        "item": "treasure2:diamond_key"
+      },
+      "text": "$(l)レア度:$() $(1)RARE$()$(br)$(l)タイプ:$() $(6)GEMS$()$(br)$(l)破壊可否:$() $(2)No$()$(br)$(l)作成可否:$() $(4)No$()$(br)$(l)対象ロック:$() $(2)ダイヤモンドのロック$()",
+      "anchor": "diamond_key"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "エメラルドのカギ",
+      "item": {
+        "item": "treasure2:emerald_key"
+      },
+      "text": "$(l)レア度:$() $(1)RARE$()$(br)$(l)タイプ:$() $(6)GEMS$()$(br)$(l)破壊可否:$() $(2)No$()$(br)$(l)作成可否:$() $(4)No$()$(br)$(l)対象ロック:$() $(2)エメラルドのロック$()",
+      "anchor": "emerald_key"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "トパーズのカギ",
+      "item": {
+        "item": "treasure2:topaz_key"
+      },
+      "text": "$(l)レア度:$() $(1)SCARCE$()$(br)$(l)タイプ:$() $(6)GEMS$()$(br)$(l)破壊可否:$() $(2)No$()$(br)$(l)作成可否:$() $(2)Yes$()$(br)$(l)対象ロック:$() $(2)トパーズのロック$()",
+      "anchor": "topaz_key"
+    },
+    {
+      "type": "patchouli:crafting",
+      "title": "トパーズのカギのレシピ",
+      "recipe": "treasure2:topaz_key",
+      "text": ""
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "オニキスのカギ",
+      "item": {
+        "item": "treasure2:onyx_key"
+      },
+      "text": "$(l)レア度:$() $(1)SCARCE$()$(br)$(l)タイプ:$() $(6)GEMS$()$(br)$(l)破壊可否:$() $(2)No$()$(br)$(l)作成可否:$() $(2)Yes$()$(br)$(l)対象ロック:$() $(2)オニキスのロック$()",
+      "anchor": "onyx_key"
+    },
+    {
+      "type": "patchouli:crafting",
+      "title": "オニキスのカギのレシピ",
+      "recipe": "treasure2:onyx_key",
+      "text": ""
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "ルビーのカギ",
+      "item": {
+        "item": "treasure2:ruby_key"
+      },
+      "text": "$(l)レア度:$() $(1)EPIC$()$(br)$(l)タイプ:$() $(6)GEMS$()$(br)$(l)破壊可否:$() $(2)No$()$(br)$(l)作成可否:$() $(2)Yes$()$(br)$(l)対象ロック:$() $(2)ルビーのロック$()",
+      "anchor": "ruby_key"
+    },
+    {
+      "type": "patchouli:crafting",
+      "title": "ルビーのカギのレシピ",
+      "recipe": "treasure2:ruby_key",
+      "text": ""
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "サファイヤのカギ",
+      "item": {
+        "item": "treasure2:sapphire_key"
+      },
+      "text": "$(l)レア度:$() $(1)EPIC$()$(br)$(l)タイプ:$() $(6)GEMS$()$(br)$(l)破壊可否:$() $(2)No$()$(br)$(l)作成可否:$() $(2)Yes$()$(br)$(l)対象ロック:$() $(2)サファイヤのロック$()",
+      "anchor": "sapphire_key"
+    },
+    {
+      "type": "patchouli:crafting",
+      "title": "サファイヤのカギのレシピ",
+      "recipe": "treasure2:sapphire_key",
+      "text": ""
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "クモのカギ",
+      "item": {
+        "item": "treasure2:spider_key"
+      },
+      "text": "$(l)レア度:$() $(1)SCARCE$()$(br)$(l)タイプ:$() $(6)MOB$()$(br)$(l)破壊可否:$() $(4)Yes$()$(br)$(l)作成可否:$() $(2)Yes$()$(br)$(l)対象ロック:$() $(2)クモのロック$()",
+      "anchor": "spider_key"
+    },
+    {
+      "type": "patchouli:crafting",
+      "title": "クモのカギのレシピ",
+      "recipe": "treasure2:spider_key",
+      "text": ""
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "ウィザーのカギ",
+      "item": {
+        "item": "treasure2:wither_key"
+      },
+      "text": "$(l)レア度:$() $(1)SCARCE$()$(br)$(l)タイプ:$() $(6)WITHER$()$(br)$(l)破壊可否:$() $(2)No$()$(br)$(l)作成可否:$() $(2)Yes$()$(br)$(l)対象ロック:$() $(2)ウィザーのロック$()",
+      "anchor": "wither_key"
+    },
+    {
+      "type": "patchouli:crafting",
+      "title": "ウィザーのカギのレシピ",
+      "recipe": "treasure2:wither_key",
+      "text": "ウィザーのカギの材料は、ウィザーの木の枝や根を回収することで揃えることができる。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "コソ泥のピッキング",
+      "item": {
+        "item": "treasure2:pilferers_lock_pick"
+      },
+      "text": "$(l)レア度:$() $(1)COMMON$()$(br)$(l)タイプ:$() $(6)ELEMENTAL$()$(br)$(l)破壊可否:$() $(4)Yes$()$(br)$(l)作成可否:$() $(2)Yes$()$(br2)コソ泥のピッキングは最も低コストで作れるが、成功率は最も低い。ゲーム序盤の低レベルのロック解除に適している。",
+      "anchor": "pilferers_lock_pick"
+    },
+    {
+      "type": "patchouli:crafting",
+      "title": "コソ泥のピッキングのレシピ",
+      "recipe": "treasure2:pilferers_lock_pick",
+      "text": "普通レベルのロックを48%、上級レベルのロックを24%の確率で解除する"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "盗賊のピッキング",
+      "item": {
+        "item": "treasure2:thiefs_lock_pick"
+      },
+      "text": "$(l)レア度:$() $(1)UNCOMMON$()$(br)$(l)タイプ:$() $(6)ELEMENTAL$()$(br)$(l)破壊可否:$() $(4)Yes$()$(br)$(l)作成可否:$() $(2)Yes$()$(br2)盗賊のピッキングはコソ泥のピッキングよりも成功率が高いが、作成コストも高い。ゲーム序盤の低レベルのロックに適している。",
+      "anchor": "thief_lock_pick"
+    },
+    {
+      "type": "patchouli:crafting",
+      "title": "盗賊のピッキングのレシピ",
+      "recipe": "treasure2:thiefs_lock_pick",
+      "text": "普通レベルのロックを60%、上級レベルのロックを45%、逸品レべルのロックを30%の確率で解除する"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "雷光のカギ",
+      "item": {
+        "item": "treasure2:lightning_key"
+      },
+      "text": "$(l)レア度:$() $(1)SCARCE$()$(br)$(l)タイプ:$() $(6)ELEMENTAL$()$(br)$(l)破壊可否:$() $(2)No$()$(br)$(l)作成可否:$() $(4)No$()$(br)$(l)対象ロック:$() $(2)ELEMENTAL$()タイプ",
+      "anchor": "lightning_key"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "金属博士のカギ",
+      "item": {
+        "item": "treasure2:metallurgists_key"
+      },
+      "text": "$(l)レア度:$() $(1)RARE$()$(br)$(l)タイプ:$() $(6)METAL$()$(br)$(l)破壊可否:$() $(2)No$()$(br)$(l)作成可否:$() $(4)No$()$(br)$(l)対象ロック:$() $(2)METAL$()タイプ",
+      "anchor": "metallurgists_key"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "ガイコツのカギ",
+      "item": {
+        "item": "treasure2:skeleton_key"
+      },
+      "text": "$(l)レア度:$() $(1)RARE$()$(br)$(l)タイプ:$() $(6)ELEMENTAL$()$(br)$(l)破壊可否:$() $(2)No$()$(br)$(l)作成可否:$() $(4)No$()$(br)$(l)対象ロック:$() $(2)普通／上級／逸品／RARE$()レベルのロック(但しウィザーのロックは除く)",
+      "anchor": "skeleton_key"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "宝石飾りのカギ",
+      "item": {
+        "item": "treasure2:jewelled_key"
+      },
+      "text": "$(l)レア度:$() $(1)EPIC$()$(br)$(l)タイプ:$() $(6)ELEMENTAL$()$(br)$(l)破壊可否:$() $(2)No$()$(br)$(l)作成可否:$() $(4)No$()$(br)$(l)対象ロック:$() $(2)GEMS$()タイプ",
+      "anchor": "jewelled_key"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "マスターキー",
+      "item": {
+        "item": "treasure2:one_key"
+      },
+      "text": "$(l)レア度:$() $(1)神話$()$(br)$(l)タイプ:$() $(6)MAGIC$()$(br)$(l)破壊可否:$() $(4)No$()$(br)$(l)作成可否:$() $(4)No$()$(br)$(l)対象ロック:$() $(l)$(2)全て$()",
+      "anchor": "one_key"
+    }
+  ]
+}

@@ -115,8 +115,8 @@ dependencies {
 //    implementation fg.deobf("curse.maven:terrablender-563928:5378180")
     // implementation fg.deobf("curse.maven:diamethysts-606423:5354532")
 
-//    compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.20.1-84-FORGE:api")
-//    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.20.1-84-FORGE")
+    compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.20.1-84-FORGE:api")
+    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.20.1-84-FORGE")
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

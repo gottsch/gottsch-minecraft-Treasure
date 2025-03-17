@@ -1,0 +1,146 @@
+{
+  "name": "ロック",
+  "icon": "treasure2:iron_lock",
+  "category": "treasure2:manual",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+
+      "title": "ロック",
+      "text": "宝箱を封印するためのロック。全てのロックには、それぞれを解除する対となる$(l:locks#keys)カギ$()が存在する。しかし、特殊なカギやピッキング器具で解錠できるロックもある。 インベントリ内でカーソルを合わせると、ロックの属性を見ることができる。宝箱に保管した自分の戦利品を守るために、ロックを再使用することで施錠できる。",
+      "anchor": "locks"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "ロック一覧",
+      "text": "$(l)$(l:locks#wood_lock)木のロック$(/l)$()$(br)$(l)$(l:locks#stone_lock)石のロック$(/l)$()$(br)$(l)$(l:locks#leaf_lock)樹葉のロック$(/l)$()$(br)$(l)$(l:locks#ember_lock)残り火のロック$(/l)$()$(br)$(l)$(l:locks#Iron_lock)鉄のロック$(/l)$()$(br)$(l)$(l:locks#gold_lock)金のロック$(/l)$()$(br)$(l)$(l:locks#diamond_lock)ダイヤモンドのロック$(/l)$()$(br)$(l)$(l:locks#emerald_lock)エメラルドのロック$(/l)$()$(br)$(l)$(l:locks#topaz_lock)トパーズのロック$(/l)$()$(br)$(l)$(l:locks#onyx_lock)オニキスのロック$(/l)$()$(br)$(l)$(l:locks#ruby_lock)ルビーのロック$(/l)$()$(br)$(l)$(l:locks#sapphire_lock)サファイヤのロック$(/l)$()$(br)$(l)$(l:locks#spider_lock)クモのロック$(/l)$()$(br)$(l)$(l:locks#wither_lock)ウィザーのロック$(/l)$()"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "木のロック",
+      "item": {
+        "item": "treasure2:wood_lock"
+      },
+      "text": "$(l)レア度:$() $(1)普通$()$(br)$(l)タイプ:$() $(6)元素$()$(br)$(l)作成可否:$() $(4)No$()$(br)$(l)有効なカギ:$() $(2)木のカギ, 残り火のカギ, 雷光のカギ, ガイコツのカギ, マスターキー$()",
+      "anchor": "wood_lock"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "石のロック",
+      "item": {
+        "item": "treasure2:stone_lock"
+      },
+      "text": "$(l)レア度:$() $(1)普通$()$(br)$(l)タイプ:$() $(6)元素$()$(br)$(l)作成可否:$() $(4)No$()$(br)$(l)有効なカギ:$() $(2)石のカギ, 雷光のカギ, ガイコツのカギ, マスターキー$()",
+      "anchor": "stone_lock"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "樹葉のロック",
+      "item": {
+        "item": "treasure2:leaf_lock"
+      },
+      "text": "$(l)レア度:$() $(1)上級$()$(br)$(l)タイプ:$() $(6)元素$()$(br)$(l)作成可否:$() $(4)No$()$(br)$(l)有効なカギ:$() $(2)樹葉のカギ, 残り火のカギ, 雷光のカギ, ガイコツのカギ, マスターキー$()",
+      "anchor": "leaf_lock"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "残り火のロック",
+      "item": {
+        "item": "treasure2:ember_lock"
+      },
+      "text": "$(l)レア度:$() $(1)逸品$()$(br)$(l)タイプ:$() $(6)元素$()$(br)$(l)作成可否:$() $(4)No$()$(br)$(l)有効なカギ:$() $(2)残り火のカギ, 雷光のカギ, ガイコツのカギ, マスターキー$()",
+      "anchor": "ember_lock"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "鉄のロック",
+      "item": {
+        "item": "treasure2:iron_lock"
+      },
+      "text": "$(l)レア度:$() $(1)上級$()$(br)$(l)タイプ:$() $(6)金属$()$(br)$(l)作成可否:$() $(4)No$()$(br)$(l)有効なカギ:$() $(2)鉄のカギ, 金属博士のカギ, ガイコツのカギ, マスターキー$()",
+      "anchor": "iron_lock"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "金のロック",
+      "item": {
+        "item": "treasure2:gold_lock"
+      },
+      "text": "$(l)レア度:$() $(1)逸品$()$(br)$(l)タイプ:$() $(6)金属$()$(br)$(l)作成可否:$() $(4)No$()$(br)$(l)有効なカギ:$() $(2)金のカギ, 金属博士のカギ, ガイコツのカギ, マスターキー$()",
+      "anchor": "gold_lock"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "ダイヤモンドのロック",
+      "item": {
+        "item": "treasure2:diamond_lock"
+      },
+      "text": "$(l)レア度:$() $(1)レア$()$(br)$(l)タイプ:$() $(6)宝石$()$(br)$(l)作成可否:$() $(4)No$()$(br)$(l)有効なカギ:$() $(2)ダイヤモンドのカギ, 宝石飾りのカギ, ガイコツのカギ, マスターキー$()",
+      "anchor": "diamond_lock"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "エメラルドのロック",
+      "item": {
+        "item": "treasure2:emerald_lock"
+      },
+      "text": "$(l)レア度:$() $(1)レア$()$(br)$(l)タイプ:$() $(6)宝石$()$(br)$(l)作成可否:$() $(4)No$()$(br)$(l)有効なカギ:$() $(2)エメラルドのカギ, 宝石飾りのカギ, ガイコツのカギ, マスターキー$()",
+      "anchor": "emerald_lock"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "トパーズのロック",
+      "item": {
+        "item": "treasure2:topaz_lock"
+      },
+      "text": "$(l)レア度:$() $(1)逸品$()$(br)$(l)タイプ:$() $(6)宝石$()$(br)$(l)作成可否:$() $(4)No$()$(br)$(l)有効なカギ:$() $(2)トパーズのカギ, 宝石飾りのカギ, ガイコツのカギ, マスターキー$()",
+      "anchor": "topaz_lock"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "オニキスのロック",
+      "item": {
+        "item": "treasure2:onyx_lock"
+      },
+      "text": "$(l)レア度:$() $(1)逸品$()$(br)$(l)タイプ:$() $(6)宝石$()$(br)$(l)作成可否:$() $(4)No$()$(br)$(l)有効なカギ:$() $(2)オニキスのカギ, 宝石飾りのカギ, ガイコツのカギ, マスターキー$()",
+      "anchor": "onyx_lock"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "ルビーのロック",
+      "item": {
+        "item": "treasure2:ruby_lock"
+      },
+      "text": "$(l)レア度:$() $(1)至高$()$(br)$(l)タイプ:$() $(6)宝石$()$(br)$(l)作成可否:$() $(4)No$()$(br)$(l)有効なカギ:$() $(2)ルビーのカギ, 宝石飾りのカギ, マスターキー$()",
+      "anchor": "ruby_lock"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "サファイヤのロック",
+      "item": {
+        "item": "treasure2:sapphire_lock"
+      },
+      "text": "$(l)レア度:$() $(1)至高$()$(br)$(l)タイプ:$() $(6)宝石$()$(br)$(l)作成可否:$() $(4)No$()$(br)$(l)有効なカギ:$() $(2)サファイヤのカギ, 宝石飾りのカギ, マスターキー$()",
+      "anchor": "sapphire_lock"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "クモのロック",
+      "item": {
+        "item": "treasure2:spider_lock"
+      },
+      "text": "$(l)レア度:$() $(1)逸品$()$(br)$(l)タイプ:$() $(6)生物$()$(br)$(l)作成可否:$() $(4)No$()$(br)$(l)有効なカギ:$() $(2)クモのカギ, ガイコツのカギ, マスターキー$()",
+      "anchor": "spider_lock"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "title": "ウィザーのロック",
+      "item": {
+        "item": "treasure2:wither_lock"
+      },
+      "text": "$(l)レア度:$() $(1)逸品$()$(br)$(l)タイプ:$() $(6)ウィザー$()$(br)$(l)作成可否:$() $(4)No$()$(br)$(l)有効なカギ:$() $(2)ウィザーのカギ, ガイコツのカギ, マスターキー$()",
+      "anchor": "wither_lock"
+    }
+  ]
+}

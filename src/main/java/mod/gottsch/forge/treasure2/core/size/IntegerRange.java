@@ -5,9 +5,10 @@ import java.util.Objects;
 /**
  *
  * @author Mark Gottschling on Aug 16, 2024
+ * @deprecated use GottschCore 3.0.0+ version.
  *
  */
-// TODO move to GottschCore
+@Deprecated
 public class IntegerRange {
     private int min;
     private int max;
