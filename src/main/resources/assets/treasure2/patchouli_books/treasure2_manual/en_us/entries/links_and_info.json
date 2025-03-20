@@ -1,0 +1,20 @@
+{
+  "name": "Links and Info",
+  "icon": "minecraft:book",
+  "category": "treasure2:treasure2",
+  "pages": [
+      {
+        "type": "patchouli:link",
+        "url": "https://legacy.curseforge.com/minecraft/mc-mods/treasure2",
+        "link_text": "Visit",
+        "title": "",
+        "text": "Click the button to visit $(l)Treasure2's$() project page."
+      },
+    {
+      "type": "patchouli:text",
+      "text": "Check out these other mods by gottsch:$(br2)$(l)$(l:https://legacy.curseforge.com/minecraft/mc-mods/treasure2-twilight-forest-loot-pack)Treasure2: Twilight Forest$(/l)$()$(br)$(l)$(l:https://legacy.curseforge.com/minecraft/mc-mods/mage-flame)Mage Flame$(/l)$()$(br)$(l)$(l:https://www.curseforge.com/minecraft/mc-mods/dungeon-denizens)Dungeon Denizens$(/l)$()$(br)$(l)$(l:https://legacy.curseforge.com/minecraft/mc-mods/legacyvault)Legacy Vault$(/l)$()$(br)$(l)$(l:https://www.curseforge.com/minecraft/mc-mods/enemy-echelons)Enemy Echelons$(/l)$()$(br)$(l)$(l:https://legacy.curseforge.com/minecraft/mc-mods/dungeonblocks)DungeonBlocks$(/l)$()$(br)$(l)$(l:https://legacy.curseforge.com/minecraft/mc-mods/dungeons2)Dungeons2$(/l)$() (1.12.2)",
+      "title": "Mods by gottsch",
+      "anchor": "my_mods"
+    }
+  ]
+}
