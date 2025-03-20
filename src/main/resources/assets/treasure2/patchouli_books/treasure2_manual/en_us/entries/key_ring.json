@@ -1,0 +1,23 @@
+{
+  "name": "Key Ring",
+  "icon": "treasure2:key_ring",
+  "category": "treasure2:manual",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "title": "Key Ring",
+      "item": {
+        "item": "treasure2:key_ring"
+      },
+      "text": "A key ring is a special container that only holds keys. You can save valuable inventory space by placing your keys in a key ring. You can use a key ring to unlock chests just as you would use a key. A key ring will check all keys it contains to determine if the key is able to unlock a lock, and then attempt to unlock it.",
+      "anchor": "key_ring"
+    },
+    {
+      "type": "patchouli:crafting",
+      "title": "Key Ring Recipe",
+      "recipe": "treasure2:key_ring",
+      "text": ""
+    }
+  ]
+}
