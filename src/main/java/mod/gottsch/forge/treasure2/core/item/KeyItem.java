@@ -157,26 +157,31 @@ public class KeyItem extends Item implements IKeyEffects {
 	 */
 	@Override
 	public CompoundTag getShareTag(ItemStack stack) {
-		super.getShareTag(stack);
+		try {
+			super.getShareTag(stack);
 
-		CompoundTag capabilityTag = null;
-		IDurabilityHandler handler = stack.getCapability(DURABILITY).map(h -> h).orElse(null);
-		if (handler != null) {
-			capabilityTag = handler.save();
+			CompoundTag capabilityTag = null;
+			IDurabilityHandler handler = stack.getCapability(DURABILITY).map(h -> h).orElse(null);
+			if (handler != null) {
+				capabilityTag = handler.save();
+			}
+			CompoundTag stackTag = stack.getOrCreateTag();
+			// NOTE must ensure to add the capability tag to the original stack tag.
+			if (capabilityTag != null) {
+				stackTag.put(DURABILITY_TAG, capabilityTag);
+			}
+			return stackTag;
+		} catch (Exception e) {
+			Treasure.LOGGER.warn("KeyItem.getShareTag() failure", e);
+			return new CompoundTag();
 		}
-		CompoundTag stackTag = stack.getOrCreateTag();
-		// NOTE must ensure to add the capability tag to the original stack tag.
-		if (capabilityTag != null) {
-			stackTag.put(DURABILITY_TAG, capabilityTag);
-		}
-		return stackTag;
 	}
 
 	@Override
 	public void readShareTag(ItemStack stack, @Nullable CompoundTag tag) {
 		super.readShareTag(stack, tag);
 
-		if (tag.contains(DURABILITY_TAG)) {
+		if (tag != null && tag.contains(DURABILITY_TAG)) {
 			IDurabilityHandler handler = stack.getCapability(DURABILITY).map(h -> h).orElse(null);
 			if (handler != null) {
 				handler.load(tag.get(DURABILITY_TAG));
