@@ -33,7 +33,7 @@ import net.minecraft.world.level.Level;
 public class TreasureToolItem extends Item {
 
 	public TreasureToolItem(Item.Properties properties) {
-		super(properties);
+		super(properties.stacksTo(1));
 	}
 	
 	@Override
@@ -43,7 +43,7 @@ public class TreasureToolItem extends Item {
 	}	
 
 	/**
-	 * Required to prevent item consumpution in recipe
+	 * Required to prevent item consumption in recipe
 	 */
 	@Override
 	public boolean hasCraftingRemainingItem() {
@@ -51,15 +51,12 @@ public class TreasureToolItem extends Item {
 	}
 
 	/**
-	 * Required to prevent item consumpution in recipe
+	 * Required to prevent item consumption in recipe
 	 */
 	@Override
 	public boolean hasCraftingRemainingItem(ItemStack itemStack) {
-        if (!hasCraftingRemainingItem()) {
-            return false;
-        }
-        return true;
-	}
+        return hasCraftingRemainingItem();
+    }
 	
 	@Override
 	public ItemStack getCraftingRemainingItem(ItemStack itemStack) {
