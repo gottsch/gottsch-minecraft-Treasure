@@ -1,9 +1,11 @@
-// 1.20.1	2024-08-29T17:22:52.9255268	Item Models: treasure2
+// 1.20.1	2025-09-16T10:15:17.8095482	Item Models: treasure2
 fada6cbc62b47c9f082da8ada98d138476f62651 assets/treasure2/models/item/axe_of_durin.json
 3c42dcb564851f5f4f868b1c80507dc9920a973a assets/treasure2/models/item/barrel_chest.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/treasure2/models/item/barrel_mimic_egg.json
 6314169fcddf60f1f2e579dc597369bf85249f96 assets/treasure2/models/item/black_pearl.json
 71c41558be0db5b23043d97d0162114e664d5a38 assets/treasure2/models/item/black_sword.json
+5932cb08905e3e131741c5221789c60d9eb13db8 assets/treasure2/models/item/bone_chest.json
+1096ec62ae99c75aa9e9de1df56226caf52c820b assets/treasure2/models/item/bone_key.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/treasure2/models/item/bound_soul_egg.json
 6cdb297292fb9c6257884e20b0bb6c8bf552cdb6 assets/treasure2/models/item/callandor.json
 b3123eacc982c9c13d2791b142569f8343586705 assets/treasure2/models/item/cardboard_box.json
@@ -144,6 +146,7 @@ d651e859337daaa406c8b7356a4f4568c2009cae assets/treasure2/models/item/viking_che
 448d026a492c74812aede16381fbe5e81f4a3efa assets/treasure2/models/item/white_pearl.json
 2744a35c1597f7016ca101f82c2ecdac7508e937 assets/treasure2/models/item/wishing_well_block.json
 ec33305aa2be302757b00560739a379de41f2497 assets/treasure2/models/item/wishing_well_cobblestone_block.json
+8b9559c368b013e170315b29189eee888d65ef7e assets/treasure2/models/item/wishing_well_mossy_cobblestone_block.json
 f41910cce9da3b320214ac20ebd21657372337e9 assets/treasure2/models/item/wishing_well_mossy_stone_bricks_block.json
 267d565e73520baab3ef281fc3d7c083d5a41871 assets/treasure2/models/item/wishing_well_stone_bricks_block.json
 37c60b6c5e59672b3d7d22aff4a64679ac01b9e5 assets/treasure2/models/item/witherwood_button.json
@@ -162,4 +165,4 @@ d6bf8e5155cf0338d77499948a8855b2451db561 assets/treasure2/models/item/wither_loc
 5f8e8d51945bac1f675c91bd89d9406a9bb06c9d assets/treasure2/models/item/wood_chest.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/treasure2/models/item/wood_chest_mimic_egg.json
 1eb8237ee1214333fbed5f940ec54d36b89ea7f1 assets/treasure2/models/item/wood_key.json
-dd81a85e00029ace741132474dc1bfbbd1b20fc6 assets/treasure2/models/item/wood_lock.json
+f9e5176a3b0281c53c307941d51dbbe25aa7f2f4 assets/treasure2/models/item/wood_lock.json

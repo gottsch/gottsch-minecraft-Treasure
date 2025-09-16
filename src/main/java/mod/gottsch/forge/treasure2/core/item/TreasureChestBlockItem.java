@@ -151,6 +151,8 @@ public class TreasureChestBlockItem extends BlockItem {
 						level.setBlockAndUpdate(activePos, Blocks.MOSSY_COBBLESTONE.defaultBlockState());
 					} else if (activeBlock.equals(TreasureBlocks.WISHING_WELL_COBBLESTONE.get())) {
 						level.setBlock(activePos, Blocks.COBBLESTONE.defaultBlockState(), 3);
+					} else if (activeBlock.equals(TreasureBlocks.WISHING_WELL_MOSSY_COBBLESTONE.get())) {
+						level.setBlock(activePos, Blocks.MOSSY_COBBLESTONE.defaultBlockState(), 3);
 					} else if (activeBlock.equals(TreasureBlocks.WISHING_WELL_MOSSY_STONE_BRICKS.get())) {
 						level.setBlock(activePos, Blocks.MOSSY_STONE_BRICKS.defaultBlockState(), 3);
 					} else if (activeBlock.equals(TreasureBlocks.WISHING_WELL_STONE_BRICKS.get())) {

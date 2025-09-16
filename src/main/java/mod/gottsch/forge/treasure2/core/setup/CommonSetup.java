@@ -23,39 +23,11 @@ import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
 import mod.gottsch.forge.treasure2.core.entity.monster.*;
-import mod.gottsch.forge.treasure2.core.enums.LootTableType;
-import mod.gottsch.forge.treasure2.core.enums.MarkerType;
-import mod.gottsch.forge.treasure2.core.enums.PitType;
-import mod.gottsch.forge.treasure2.core.enums.Rarity;
-import mod.gottsch.forge.treasure2.core.enums.SpecialRarity;
-import mod.gottsch.forge.treasure2.core.enums.WishableExtraRarity;
-import mod.gottsch.forge.treasure2.core.generator.chest.CauldronChestGenerator;
-import mod.gottsch.forge.treasure2.core.generator.chest.CommonChestGenerator;
-import mod.gottsch.forge.treasure2.core.generator.chest.CrystalSkullChestGenerator;
-import mod.gottsch.forge.treasure2.core.generator.chest.EpicChestGenerator;
-import mod.gottsch.forge.treasure2.core.generator.chest.GoldSkullChestGenerator;
-import mod.gottsch.forge.treasure2.core.generator.chest.LegendaryChestGenerator;
-import mod.gottsch.forge.treasure2.core.generator.chest.MythicalChestGenerator;
-import mod.gottsch.forge.treasure2.core.generator.chest.RareChestGenerator;
-import mod.gottsch.forge.treasure2.core.generator.chest.ScarceChestGenerator;
-import mod.gottsch.forge.treasure2.core.generator.chest.SkullChestGenerator;
-import mod.gottsch.forge.treasure2.core.generator.chest.UncommonChestGenerator;
-import mod.gottsch.forge.treasure2.core.generator.chest.WitherChestGenerator;
+import mod.gottsch.forge.treasure2.core.enums.*;
+import mod.gottsch.forge.treasure2.core.generator.chest.*;
 import mod.gottsch.forge.treasure2.core.generator.marker.GravestoneMarkerGenerator;
 import mod.gottsch.forge.treasure2.core.generator.marker.StructureMarkerGenerator;
-import mod.gottsch.forge.treasure2.core.generator.pit.AirPitGenerator;
-import mod.gottsch.forge.treasure2.core.generator.pit.BigBottomMobTrapPitGenerator;
-import mod.gottsch.forge.treasure2.core.generator.pit.CollapsingTrapPitGenerator;
-import mod.gottsch.forge.treasure2.core.generator.pit.LavaSideTrapPitGenerator;
-import mod.gottsch.forge.treasure2.core.generator.pit.LavaTrapPitGenerator;
-import mod.gottsch.forge.treasure2.core.generator.pit.MobTrapPitGenerator;
-import mod.gottsch.forge.treasure2.core.generator.pit.SimplePitGenerator;
-import mod.gottsch.forge.treasure2.core.generator.pit.StructurePitGenerator;
-import mod.gottsch.forge.treasure2.core.generator.pit.TntTrapPitGenerator;
-import mod.gottsch.forge.treasure2.core.generator.pit.VolcanoPitGenerator;
-import mod.gottsch.forge.treasure2.core.generator.ruin.SubaquaticRuinGenerator;
-import mod.gottsch.forge.treasure2.core.generator.ruin.SurfaceRuinGenerator;
-import mod.gottsch.forge.treasure2.core.generator.well.WellGenerator;
+import mod.gottsch.forge.treasure2.core.generator.pit.*;
 import mod.gottsch.forge.treasure2.core.item.KeyLockCategory;
 import mod.gottsch.forge.treasure2.core.item.TreasureItems;
 import mod.gottsch.forge.treasure2.core.network.TreasureNetworking;
@@ -241,19 +213,6 @@ public class CommonSetup {
 		TreasureApi.registerRarityTags(SpecialRarity.WITHER, TreasureTags.Blocks.WITHER_CHESTS);
 		TreasureApi.registerRarityTags(SpecialRarity.CAULDRON, TreasureTags.Blocks.CAULDRON_CHESTS);
 
-		/*
-		 *  regsiter and map wishable tags to their rarity.
-		 *  these are the allowable rarity grouping of wishable items.
-		 *  modders can add/remove items to these tags.
-		 */
-		TreasureApi.registerWishableTag(Rarity.COMMON, TreasureTags.Items.COMMON_WISHABLE);
-		TreasureApi.registerWishableTag(Rarity.UNCOMMON, TreasureTags.Items.UNCOMMON_WISHABLE);
-		TreasureApi.registerWishableTag(Rarity.SCARCE, TreasureTags.Items.SCARCE_WISHABLE);
-		TreasureApi.registerWishableTag(Rarity.RARE, TreasureTags.Items.RARE_WISHABLE);
-		TreasureApi.registerWishableTag(Rarity.EPIC, TreasureTags.Items.EPIC_WISHABLE);
-		TreasureApi.registerWishableTag(Rarity.LEGENDARY, TreasureTags.Items.LEGENDARY_WISHABLE);
-		TreasureApi.registerWishableTag(Rarity.MYTHICAL, TreasureTags.Items.MYTHICAL_WISHABLE);
-
 		// POC convert config file generator rarities white/blacklists into Tags
 		// biome white/blacklist tags by rarity
 		TreasureApi.registerBiomeWhitelistTag(SpecialRarity.WITHER, TreasureTags.Biomes.WITHER_BIOME_WHITELIST);
@@ -287,6 +246,7 @@ public class CommonSetup {
 		TreasureApi.registerKey(TreasureItems.THIEFS_LOCK_PICK);
 
 		TreasureApi.registerKey(TreasureItems.ONE_KEY);
+		TreasureApi.registerKey(TreasureItems.BONE_KEY);
 		// register all the locks
 		TreasureApi.registerLock(TreasureItems.WOOD_LOCK);
 		TreasureApi.registerLock(TreasureItems.STONE_LOCK);
@@ -327,6 +287,7 @@ public class CommonSetup {
 		TreasureApi.registerChest(TreasureBlocks.BARREL_CHEST);
 		TreasureApi.registerChest(TreasureBlocks.VANILLA_CHEST);
 		TreasureApi.registerChest(TreasureBlocks.WITHER_CHEST);
+		TreasureApi.registerChest(TreasureBlocks.BONE_CHEST);
 
 		// register mimics
 		TreasureApi.registerMimic(TreasureBlocks.WOOD_CHEST.getId(), TreasureEntities.WOOD_CHEST_MIMIC_ENTITY_TYPE.getId());
@@ -350,7 +311,7 @@ public class CommonSetup {
 		TreasureApi.registerWishableHandler(Items.DIAMOND, TreasureWishableHandlers.DEFAULT_WISHABLE_HANDLER);
 		
 		// register loot tables
-		TreasureApi.registerLootTables(Treasure.MODID);
+//		TreasureApi.registerLootTables(Treasure.MODID);
 
 		/*
 		 *  in order for chest context to know what generator to use, we need a registry (map)
@@ -375,7 +336,9 @@ public class CommonSetup {
 		TreasureApi.registerChestGenerator(SpecialRarity.WITHER, new WitherChestGenerator());
 		TreasureApi.registerChestGenerator(SpecialRarity.CAULDRON, new CauldronChestGenerator());
 		TreasureApi.registerChestGenerator(SpecialRarity.CRYSTAL_SKULL, new CrystalSkullChestGenerator());
-		
+
+//		TreasureApi.registerChestSubprocessor(Rarity.COMMON, new CommonChestSubprocessor());
+
 		// TODO this type of registration creates multiple instances of every generator used. refactor.
 		// ie. create TreasurePitGenerators and register, then reference here.
 		// register pit generators
@@ -396,10 +359,7 @@ public class CommonSetup {
 		TreasureApi.registerPitGenerator(PitType.STRUCTURE, new StructurePitGenerator(new MobTrapPitGenerator()));
 		TreasureApi.registerPitGenerator(PitType.STRUCTURE, new StructurePitGenerator(new MobTrapPitGenerator()));
 		
-		TreasureApi.registerRuinGenerator(StructureCategory.TERRANEAN, new SurfaceRuinGenerator());
-		TreasureApi.registerRuinGenerator(StructureCategory.SUBAQUATIC, new SubaquaticRuinGenerator());
-		
-		TreasureApi.registerWellGenerator(StructureCategory.TERRANEAN, new WellGenerator());
+//		TreasureApi.registerWellGenerator(StructureCategory.TERRANEAN, new WellGenerator());
 		
 		// TODO may need to add a placement enum, unless MarkerType can handle all situations. ie on Water or in Sky.
 		TreasureApi.registerMarkerGenerator(MarkerType.STANDARD, new GravestoneMarkerGenerator());

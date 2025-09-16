@@ -1,0 +1,112 @@
+[[chestConfigs]]
+	# The probability that a chest will contain a treasure map to another chest.
+	treasureMapProbability=20.0
+
+	### 8/22/2025
+	### this whole class boils down to populating teh RarityLevelWeightCollection.
+	### if the biomes white/blacklist filters are not going to be used, this config is moot
+	### and something much simplier could be implemented.
+	### NOTE they can be used in CustomStructure when finding place to build.
+	### UPDATE 8/23/2025 - NO, they can't, the chest rarity isn't known until the
+	### StructureProcessor (ChestProcessor) is run, which is AFTER placement is determined.
+	### the only way that COULD be done, is have a custom TreasureStructure which extends ModJigsawStructure
+	### and determine the chest first, and then pass the chest info to the Processors.
+	### 8/25/2025 - create multiple structures with the proper set
+	[[chestConfigs.placementSettings]]
+		#key options for Treasure2 placementSettings are [terrestrial, aquatic, well, wither].
+		key="terranean"
+		# weighted rarities
+		[[chestConfigs.placementSettings.rarities]]
+			rarity="common"
+			weight=100
+			mimicProbability=20.0
+		[[chestConfigs.placementSettings.rarities]]
+			rarity="uncommon"
+			weight=70
+		[[chestConfigs.placementSettings.rarities]]
+			rarity="scarce"
+			weight=40
+		[[chestConfigs.placementSettings.rarities]]
+			rarity="rare"
+			weight=20
+			biomeWhitelist = []
+			biomeFilter = ["minecraft:plains", "minecraft:sunflower_plains"]
+			biomeTypeWhitelist = []
+			biomeTypeFilter = ["minecraft:plains"]
+		[[chestConfigs.placementSettings.rarities]]
+			rarity="epic"
+			weight=10
+			biomeFilter = ["minecraft:plains", "minecraft:sunflower_plains"]
+			biomeTypeFilter = ["minecraft:plains"]
+		[[chestConfigs.placementSettings.rarities]]
+			rarity="legendary"
+			weight=5
+			biomeFilter = ["minecraft:plains", "minecraft:sunflower_plains"]
+			biomeTypeFilter = ["minecraft:plains"]
+		[[chestConfigs.placementSettings.rarities]]
+			rarity="mythical"
+			weight=2
+			biomeFilter = ["minecraft:plains", "minecraft:sunflower_plains"]
+			biomeTypeFilter = ["minecraft:plains"]
+		[[chestConfigs.placementSettings.rarities]]
+			# 'skull' rarity is a special rarity for Skull related resources ex. Skull Chest, skull_loot_table, etc.
+			# it is configured the same as 'scarce' rarity except that is occurs less frequently.
+			rarity="skull"
+			weight=6
+			biomeFilter = ["minecraft:plains", "minecraft:sunflower_plains"]
+			biomeTypeFilter = ["minecraft:plains"]
+
+		[[chestConfigs.placementSettings.rarities]]
+			# 'skull' rarity is a special rarity for Skull related resources ex. Skull Chest, skull_loot_table, etc.
+			# it is configured the same as 'scarce' rarity except that is occurs less frequently.
+			rarity="gold_skull"
+			weight=5
+			biomeFilter = ["minecraft:plains", "minecraft:sunflower_plains"]
+			biomeTypeFilter = ["minecraft:plains"]
+
+		[[chestConfigs.placementSettings.rarities]]
+			# 'skull' rarity is a special rarity for Skull related resources ex. Skull Chest, skull_loot_table, etc.
+			# it is configured the same as 'scarce' rarity except that is occurs less frequently.
+			rarity="crystal_skull"
+			weight=4
+			biomeFilter = ["minecraft:plains", "minecraft:sunflower_plains"]
+			biomeTypeFilter = ["minecraft:plains"]
+
+		[[chestConfigs.placementSettings.rarities]]
+			rarity="cauldron"
+			weight=4
+			biomeFilter = ["minecraft:plains", "minecraft:sunflower_plains"]
+			biomeTypeFilter = ["minecraft:plains"]
+
+		[[chestConfigs.placementSettings.rarities]]
+			rarity="wither"
+			weight=6
+
+	[[chestConfigs.placementSettings]]
+		key="aquatic"
+		probability=90.0
+
+		[[chestConfigs.placementSettings.rarities]]
+			rarity="scarce"
+			weight=36
+		[[chestConfigs.placementSettings.rarities]]
+			rarity="rare"
+			weight=16
+		[[chestConfigs.placementSettings.rarities]]
+			rarity="epic"
+			weight=9
+		[[chestConfigs.placementSettings.rarities]]
+			rarity="legendary"
+			weight=5
+		[[chestConfigs.placementSettings.rarities]]
+			rarity="mythical"
+			weight=2
+		[[chestConfigs.placementSettings.rarities]]
+			rarity="skull"
+			weight=6
+		[[chestConfigs.placementSettings.rarities]]
+			rarity="gold_skull"
+			weight=5
+		[[chestConfigs.placementSettings.rarities]]
+			rarity="crystal_skull"
+			weight=4

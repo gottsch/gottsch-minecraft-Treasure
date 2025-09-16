@@ -104,6 +104,9 @@ public class ItemModelsProvider extends ItemModelProvider {
 		singleTexture(TreasureItems.SKELETON_KEY.getId().getPath(),
 				modLoc("item/horizontal_left_key"), "layer0", modLoc("item/key/skeleton_key"));
 
+		singleTexture(TreasureItems.BONE_KEY.getId().getPath(),
+				modLoc("item/horizontal_left_key"), "layer0", modLoc("item/key/bone_key"));
+
 		singleTexture(TreasureItems.PILFERERS_LOCK_PICK.getId().getPath(),
 				modLoc("item/horizontal_left_key"), "layer0", modLoc("item/key/pilferers_lock_pick"));
 		
@@ -140,8 +143,7 @@ public class ItemModelsProvider extends ItemModelProvider {
 		
 		singleTexture(TreasureItems.ONYX_LOCK.getId().getPath(),
 				mcLoc("item/generated"), "layer0", modLoc("item/lock/onyx_lock"));
-		
-		
+
 		singleTexture(TreasureItems.RUBY_LOCK.getId().getPath(),
 				mcLoc("item/generated"), "layer0", modLoc("item/lock/ruby_lock"));
 		
@@ -153,7 +155,11 @@ public class ItemModelsProvider extends ItemModelProvider {
 		
 		singleTexture(TreasureItems.WITHER_LOCK.getId().getPath(),
 				mcLoc("item/generated"), "layer0", modLoc("item/lock/wither_lock"));
-		
+
+		// NOTE even though not in Creative Tab, still require an item model as to not throw warnings
+		singleTexture(TreasureItems.WOOD_LOCK.getId().getPath(),
+				mcLoc("item/generated"), "layer0", modLoc("item/lock/bone_lock"));
+
 		// key ring
 		singleTexture(TreasureItems.KEY_RING.getId().getPath(),
 				mcLoc("item/generated"), "layer0", modLoc("item/key/key_ring"));
@@ -315,6 +321,7 @@ public class ItemModelsProvider extends ItemModelProvider {
 		
 		withExistingParent(TreasureItems.WISHING_WELL_ITEM.getId().getPath(), modLoc("block/wishing_well_block"));
 		withExistingParent(TreasureItems.WISHING_WELL_COBBLESTONE_ITEM.getId().getPath(), modLoc("block/wishing_well_cobblestone_block"));
+		withExistingParent(TreasureItems.WISHING_WELL_MOSSY_COBBLESTONE_ITEM.getId().getPath(), modLoc("block/wishing_well_mossy_cobblestone_block"));
 		withExistingParent(TreasureItems.WISHING_WELL_STONE_BRICKS_ITEM.getId().getPath(), modLoc("block/wishing_well_stone_bricks_block"));
 		withExistingParent(TreasureItems.WISHING_WELL_MOSSY_STONE_BRICKS_ITEM.getId().getPath(), modLoc("block/wishing_well_mossy_stone_bricks_block"));
 		withExistingParent(TreasureItems.DESERT_WISHING_WELL_ITEM.getId().getPath(), modLoc("block/desert_wishing_well_block"));

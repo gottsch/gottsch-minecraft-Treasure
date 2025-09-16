@@ -22,20 +22,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import com.mojang.serialization.Codec;
 import mod.gottsch.forge.gottschcore.enums.IEnum;
+import net.minecraft.util.StringRepresentable;
 
 /**
  * TODO this really only applies to Chest Features - rename and remove well.
  * @author Mark Gottschling May 12, 2023
  *
  */
-public enum FeatureType implements IFeatureType {
+public enum FeatureType implements IFeatureType, StringRepresentable {
 	UNKNOWN(-1, "unknown"),
 	TERRANEAN(0, "terranean"),
 	AQUATIC(1, "aquatic"), 
 	WELL(2, "well");
-	
+
+	public static final Codec<FeatureType> CODEC = StringRepresentable.fromEnum(FeatureType::values);
+
 	private static final Map<Integer, IEnum> codes = new HashMap<Integer, IEnum>();
 	private static final Map<String, IEnum> values = new HashMap<String, IEnum>();
 	private Integer code;
@@ -67,7 +72,12 @@ public enum FeatureType implements IFeatureType {
 			return FeatureType.UNKNOWN;
 		}
 	}
-	
+
+	@Override
+	public String getSerializedName() {
+		return this.value;
+	}
+
 	@Override
 	public String getName() {
 		return name();

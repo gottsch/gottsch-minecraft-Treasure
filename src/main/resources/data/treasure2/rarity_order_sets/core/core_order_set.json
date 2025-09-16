@@ -1,0 +1,33 @@
+{
+  "name": "treasure2:core_order_set",
+  "rarityOrders": [
+    {
+      "rarity": "treasure2:common",
+      "order": 10
+    },
+    {
+      "rarity": "treasure2:uncommon",
+      "order": 20
+    },
+    {
+      "rarity": "treasure2:scarce",
+      "order": 30
+    },
+    {
+      "rarity": "treasure2:rare",
+      "order": 40
+    },
+    {
+      "rarity": "treasure2:epic",
+      "order": 50
+    },
+    {
+      "rarity": "treasure2:legendary",
+      "order": 60
+    },
+    {
+      "rarity": "treasure2:mythical",
+      "order": 70
+    }
+  ]
+}

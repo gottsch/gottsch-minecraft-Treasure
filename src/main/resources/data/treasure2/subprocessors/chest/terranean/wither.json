@@ -1,0 +1,11 @@
+{
+  "type": "treasure2:standard",
+  "rarity": "treasure2:wither",
+  "mimic": 0.0,
+  "loot_table_rarities": [
+    {
+      "rarity": "treasure2:wither"
+    }
+  ],
+  "biomes_blacklist":["minecraft:plains", "minecraft:sunflower_plains", "#treasure2:common_blacklist"]
+}

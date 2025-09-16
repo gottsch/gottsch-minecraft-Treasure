@@ -52,6 +52,7 @@ import net.minecraft.world.level.block.Rotation;
  * @author Mark Gottschling on Jan 28, 2019
  *
  */
+@Deprecated
 public class StructureMarkerGenerator implements IMarkerGenerator<GeneratorResult<GeneratorData>> {
 
 	/**

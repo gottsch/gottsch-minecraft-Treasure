@@ -1,0 +1,5 @@
+{
+  "rarity": "treasure2:mythical",
+  "loot_table": "treasure2:chests/mythical",
+  "type": "treasure2:chests"
+}

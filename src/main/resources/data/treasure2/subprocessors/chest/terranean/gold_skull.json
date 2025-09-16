@@ -1,0 +1,17 @@
+{
+  "type": "treasure2:high_tier_rarity",
+  "rarity": "treasure2:gold_skull",
+  "mimic": 0.0,
+  "loot_table_rarities": [
+    {
+      "rarity": "treasure2:skull",
+      "weight": 5
+    },
+    {
+      "rarity": "treasure2:gold_skull",
+      "weight": 95
+    }
+  ],
+  "lock_rarities": ["treasure2:scarce", "treasure2:rare"],
+  "biomes_blacklist":["minecraft:plains", "minecraft:sunflower_plains", "#treasure2:common_blacklist"]
+}

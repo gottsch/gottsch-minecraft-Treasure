@@ -24,6 +24,12 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import mod.gottsch.forge.treasure2.core.generator.chest.ChestGenerationHelper;
+import mod.gottsch.forge.treasure2.core.rarity.IRarityEntry;
+import mod.gottsch.forge.treasure2.core.rarity.RarityAdapter;
+import mod.gottsch.forge.treasure2.core.rarity.TreasureRarities;
+import mod.gottsch.forge.treasure2.core.util.ModUtil;
+import net.minecraft.server.level.ServerLevel;
 import org.jetbrains.annotations.NotNull;
 
 import mod.gottsch.forge.gottschcore.enums.IRarity;
@@ -78,15 +84,16 @@ import net.minecraftforge.items.ItemStackHandler;
  */
 public abstract class AbstractTreasureChestBlockEntity extends BlockEntity implements ITreasureChestBlockEntity, IChestEffects, MenuProvider, Nameable {
 
-	private static final String LOCK_STATES_TAG = "lockStates";
-	private static final String FACING_TAG = "facing";
-	private static final String SEALED_TAG = "sealed";
-	private static final String LOOT_TABLE_TAG = "lootTable";
-	private static final String MIMIC_TAG = "mimic";
+	public static final String LOCK_STATES_TAG = "lockStates";
+	// TODO why BE property?
+	public static final String FACING_TAG = "facing";
+	public static final String SEALED_TAG = "sealed";
+	public static final String LOOT_TABLE_TAG = "lootTable";
+	public static final String MIMIC_TAG = "mimic";
 
-	private static final String GENERATION_CONTEXT_TAG = "generationContext";
-	private static final String LOOT_RARITY_TAG = "lootRarity";
-	private static final String FEATURE_TYPE_TAG = "featureType";
+	public static final String GENERATION_CONTEXT_TAG = "generationContext";
+	public static final String LOOT_RARITY_TAG = "lootRarity";
+	public static final String FEATURE_TYPE_TAG = "featureType";
 
 
 	/*
@@ -164,18 +171,22 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 	@Override
 	public AbstractContainerMenu createMenu(int windowId, Inventory playerInventory, Player playerEntity) {
 		Treasure.LOGGER.debug("is chest sealed -> {}", this.isSealed());
-		if (this.isSealed()) {
+		if (this.isSealed() && !getLevel().isClientSide) {
 			this.setSealed(false);
+			// TODO update generation context to use IRarityEntry
 			IRarity rarity = this.getGenerationContext().getLootRarity();
-			Optional<IChestGenerator> chestGenerator = ChestGeneratorRegistry.get(rarity);
-			if (chestGenerator.isPresent()) {
-				Treasure.LOGGER.debug("chest gen  -> {}", chestGenerator.get().getClass().getSimpleName());
+			// NOTE ADAPTER
+			IRarityEntry rarityEntry = RarityAdapter.get(rarity);
+//			Optional<IChestGenerator> chestGenerator = ChestGeneratorRegistry.get(rarity);
+//			if (chestGenerator.isPresent()) {
+//				Treasure.LOGGER.debug("chest gen  -> {}", chestGenerator.get().getClass().getSimpleName());
 				// fill the chest with loot
-				chestGenerator.get().fillChest(getLevel(), getLevel().getRandom(), this, this.getGenerationContext().getLootRarity(), playerEntity);
-			}
-			else {
-				Treasure.LOGGER.warn("treasure chest at -> {} does not reference a valid generator -> {}", this.worldPosition, chestGenerator.get().getClass().getSimpleName());
-			}
+//				chestGenerator.get().fillChest(getLevel(), getLevel().getRandom(), this, this.getGenerationContext().getLootRarity(), playerEntity);
+				ChestGenerationHelper.fillChest((ServerLevel) getLevel(), getLevel().getRandom(), this, rarityEntry, playerEntity);
+//			}
+//			else {
+//				Treasure.LOGGER.warn("treasure chest at -> {} does not reference a valid generator -> {}", this.worldPosition, chestGenerator.get().getClass().getSimpleName());
+//			}
 		}
 		return createChestContainerMenu(windowId, playerInventory, playerEntity);
 	}
@@ -396,6 +407,7 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 			// write facing
 			tag.putInt(FACING_TAG, getFacing().get3DDataValue());
 			tag.putBoolean(SEALED_TAG, isSealed());
+
 			if (getLootTable() != null) {
 				tag.putString(LOOT_TABLE_TAG, getLootTable().toString());
 			}
@@ -405,8 +417,12 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 			}
 			if (getGenerationContext() != null) {
 				CompoundTag contextTag = new CompoundTag();
-				contextTag.putString(LOOT_RARITY_TAG, getGenerationContext().getLootRarity().getName());
-				contextTag.putString(FEATURE_TYPE_TAG, getGenerationContext().getFeatureType().getName());
+				// TEMP save as new values
+				// NOTE ADAPTER
+				IRarityEntry rarityEntry = RarityAdapter.get(generationContext.getLootRarity());
+				String rarityName = TreasureRarities.getKey(rarityEntry).orElse(TreasureRarities.COMMON.getId()).toString();
+				contextTag.putString(LOOT_RARITY_TAG, rarityName); //getGenerationContext().getLootRarity().getName());
+				contextTag.putString(FEATURE_TYPE_TAG, getGenerationContext().getFeatureType().getValue().toLowerCase());
 				tag.put(GENERATION_CONTEXT_TAG, contextTag);
 			}
 		} catch (Exception e) {
@@ -499,10 +515,15 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 				CompoundTag contextTag = tag.getCompound(GENERATION_CONTEXT_TAG);
 				Optional<IRarity> rarity = Optional.empty();
 				if (contextTag.contains(LOOT_RARITY_TAG)) {
-					rarity = TreasureApi.getRarity(contextTag.getString(LOOT_RARITY_TAG));
+					// NOTE ADAPTER
+					ResourceLocation rarityName = ModUtil.asLocation(contextTag.getString(LOOT_RARITY_TAG));
+					Optional<IRarityEntry> rarityEntry = TreasureRarities.getRarityByName(rarityName);
+					rarity = Optional.ofNullable(RarityAdapter.get(rarityEntry.orElse(TreasureRarities.COMMON.get())));
+//					rarity = TreasureApi.getRarity(contextTag.getString(LOOT_RARITY_TAG));
 				}
 				Optional<IFeatureType> featureType = Optional.empty();
 				if (contextTag.contains(FEATURE_TYPE_TAG)) {
+					featureType = Optional.of(FeatureType.getByValue(contextTag.getString(FEATURE_TYPE_TAG).toLowerCase()));
 					featureType = TreasureApi.getFeatureType(contextTag.getString(FEATURE_TYPE_TAG));
 				}
 

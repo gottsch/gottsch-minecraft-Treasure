@@ -39,13 +39,15 @@ import net.minecraft.util.RandomSource;
  * @author Mark Gottschling on Dec 9, 2020
  *
  */
-public class CrystalSkullChestGenerator extends AbstractChestGenerator {
-	
+public class CrystalSkullChestGenerator implements IChestGenerator {
+	// TEMP
+	public String getName() { return "";}
+
 	/**
 	 * 
 	 */
 	public CrystalSkullChestGenerator() {
-		super();
+
 	}
 
 	

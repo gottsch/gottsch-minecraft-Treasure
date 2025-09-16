@@ -31,6 +31,7 @@ import net.minecraft.world.level.block.state.BlockState;
  * @author Mark Gottschling on July 28, 2024
  *
  */
+@Deprecated
 public class DeferredPitGeneratorBlockEntity extends DeferredGeneratorBlockEntity {
 
     public DeferredPitGeneratorBlockEntity(BlockPos pos, BlockState state) {

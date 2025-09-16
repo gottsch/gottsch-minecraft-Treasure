@@ -1,0 +1,39 @@
+{
+  "name": "treasure2:well/flower/flowers",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 3,
+      "element": {
+        "element_type": "minecraft:empty_pool_element"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:well/flower/3x3_flower",
+        "projection": "rigid",
+        "processors": "treasure2:flowers_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:well/flower/4x3_flower",
+        "projection": "rigid",
+        "processors": "treasure2:flowers_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:well/flower/5x3_flower",
+        "projection": "rigid",
+        "processors": "treasure2:flowers_processors"
+      }
+    }
+  ]
+}

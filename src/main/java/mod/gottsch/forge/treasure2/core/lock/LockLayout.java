@@ -17,6 +17,8 @@
  */
 package mod.gottsch.forge.treasure2.core.lock;
 
+import java.util.Arrays;
+
 /**
  * NOTE should this contain all sort of data of a chest or is this class simply about locks? If about just locks it should change it's name.
  * @author Mark Gottschling on Jan 9, 2018
@@ -75,5 +77,13 @@ public class LockLayout {
 	private LockLayout setSlots(LockSlot[] slots) {
 		this.slots = slots;
 		return this;
+	}
+
+	@Override
+	public String toString() {
+		return "LockLayout{" +
+				"maxLocks=" + maxLocks +
+				", slots=" + Arrays.toString(slots) +
+				'}';
 	}
 }

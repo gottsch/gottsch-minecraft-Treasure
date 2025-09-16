@@ -31,7 +31,7 @@ import net.minecraft.world.level.block.state.BlockState;
  *
  */
 public class SkeletonItem extends BlockItem {
-	public static final int MAX_STACK_SIZE = 1;
+//	public static final int MAX_STACK_SIZE = 64;
 
 	/**
 	 * 
@@ -39,7 +39,7 @@ public class SkeletonItem extends BlockItem {
 	 * @param properties
 	 */
 	public SkeletonItem(Block block, Item.Properties properties) {
-		super(block, properties.stacksTo(MAX_STACK_SIZE));
+		super(block, properties); //.stacksTo(MAX_STACK_SIZE));
 	}
 
 	@Override

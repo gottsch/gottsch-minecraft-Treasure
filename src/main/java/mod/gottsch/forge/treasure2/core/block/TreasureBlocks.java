@@ -123,6 +123,11 @@ public class TreasureBlocks {
 
 	public static final RegistryObject<Block> WITHER_CHEST_TOP = Registration.BLOCKS.register("wither_chest_top", () -> new WitherChestTopBlock(Properties.of().mapColor(MapColor.WOOD).strength(2.5F).noLootTable()));
 
+	// TODO need a BoneChestBlock
+	public static final RegistryObject<Block> BONE_CHEST = Registration.BLOCKS.register("bone_chest", () -> new BoneChestBlock(BoneChestBlockEntity.class,
+			LockLayouts.SINGLE_STANDARD, Properties.of().mapColor(MapColor.WOOD).strength(2.5F).lightLevel(light)));
+
+
 	// ore
 	public static final Supplier<Properties> ORE_PROPS = () -> Properties.of().mapColor(MapColor.STONE).strength(3.0F, 5.0F);
 	public static final Supplier<Properties> DEEPSLATE_ORE_PROPS = () -> Properties.of().mapColor(MapColor.STONE).strength(3.0F, 6.0F);
@@ -183,7 +188,8 @@ public class TreasureBlocks {
 	public static final RegistryObject<Block> SKULL_CROSSBONES = Registration.BLOCKS.register("skull_and_crossbones", () -> new GravestoneBlock(Block.Properties.of().mapColor(MapColor.STONE)
 			.strength(3.0F).sound(SoundType.STONE)).setBounds(TreasureShapeBuilder.buildSkullCrossbones()));
 
-	public static final RegistryObject<Block> SKELETON = Registration.BLOCKS.register("skeleton", () -> new SkeletonBlock(Block.Properties.of().mapColor(MapColor.STONE).strength(3.0F).sound(SoundType.STONE)));
+	public static final RegistryObject<Block> SKELETON = Registration.BLOCKS.register("skeleton", () -> new SkeletonBlock(Block.Properties.of().mapColor(MapColor.STONE)
+			.strength(3.0F).sound(SoundType.STONE)));
 
 	// proximity spawners
 	public static final RegistryObject<Block> PROXIMITY_SPAWNER = Registration.BLOCKS.register("proximity_spawner", () -> new ProximityBlock(Block.Properties.of().replaceable().noCollission().noLootTable().air()));
@@ -262,8 +268,13 @@ public class TreasureBlocks {
 	public static final RegistryObject<Block> SPANISH_MOSS = Registration.BLOCKS.register("spanish_moss", () -> new SpanishMossBlock(Properties.of().mapColor(MapColor.WOOD)));
 	public static final RegistryObject<Block> WISHING_WELL = Registration.BLOCKS.register("wishing_well_block", () -> new WishingWellBlock(
 			Properties.of().mapColor(MapColor.STONE).strength(2.0F).sound(SoundType.STONE)));
+
+	// TODO add wishing_well_cobblestone to replace wishing_well_block (but keep it for legacy)
 	public static final RegistryObject<Block> WISHING_WELL_COBBLESTONE = Registration.BLOCKS.register("wishing_well_cobblestone_block", () -> new WishingWellBlock(
 			Properties.of().mapColor(MapColor.STONE).strength(2.0F).sound(SoundType.STONE)));
+	public static final RegistryObject<Block> WISHING_WELL_MOSSY_COBBLESTONE = Registration.BLOCKS.register("wishing_well_mossy_cobblestone_block", () -> new WishingWellBlock(
+			Properties.of().mapColor(MapColor.STONE).strength(2.0F).sound(SoundType.STONE)));
+
 	public static final RegistryObject<Block> WISHING_WELL_STONE_BRICKS = Registration.BLOCKS.register("wishing_well_stone_bricks_block", () -> new WishingWellBlock(
 			Properties.of().mapColor(MapColor.STONE).strength(2.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> WISHING_WELL_MOSSY_STONE_BRICKS = Registration.BLOCKS.register("wishing_well_mossy_stone_bricks_block", () -> new WishingWellBlock(
@@ -273,6 +284,9 @@ public class TreasureBlocks {
 			Properties.of().mapColor(MapColor.STONE).strength(2.0F).sound(SoundType.STONE)));
 
 	public static final RegistryObject<Block> CLOVER = Registration.BLOCKS.register("clover_block", () -> new Block(Properties.copy(Blocks.TALL_GRASS)));
+
+	public static final RegistryObject<Block> STRUCTURE_MOB_SET = Registration.BLOCKS.register("structure_mob_set", () -> new StructureMobSetBlock(Block.Properties.of().noLootTable()));
+	public static final RegistryObject<Block> STRUCTURE_NEIGHBOR_DEPENDENT_STATE_MARKER = Registration.BLOCKS.register("structure_neighbor_dependent_state_marker", () -> new StructureNeighborDependentStateMarkerBlock(Block.Properties.of().replaceable().noCollission().noLootTable().air()));
 
 	// collections
 	public static final List<RegistryObject<Block>> CHESTS = new ArrayList<>(25);
@@ -301,6 +315,7 @@ public class TreasureBlocks {
 		CHESTS.add(WITHER_CHEST);
 		CHESTS.add(BARREL_CHEST);
 		CHESTS.add(VANILLA_CHEST);
+		CHESTS.add(BONE_CHEST);
 
 		GRAVESTONES.add(GRAVESTONE1_STONE);
 		GRAVESTONES.add(GRAVESTONE1_COBBLESTONE);

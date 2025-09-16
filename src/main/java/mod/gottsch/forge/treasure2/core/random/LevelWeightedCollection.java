@@ -34,6 +34,7 @@ import mod.gottsch.forge.gottschcore.random.WeightedCollection;
  * @author Mark Gottschling on Sep 22, 2022
  *
  */
+@Deprecated
 public class LevelWeightedCollection<T> {
 	/*
 	 * the mapping from T to weight pairs

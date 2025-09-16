@@ -22,7 +22,7 @@ import java.util.function.Supplier;
 
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.api.TreasureApi;
-import mod.gottsch.forge.treasure2.core.config.ChestFeaturesConfiguration;
+import mod.gottsch.forge.treasure2.core.config.ChestPlacementConfiguration;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.registry.support.GeneratedChestContext;
 import mod.gottsch.forge.treasure2.core.registry.support.GeneratedContext;
@@ -41,10 +41,12 @@ import net.minecraft.resources.ResourceLocation;
  * @author Mark Gottschling on Nov 30, 2022
  *
  */
+@Deprecated
 public class DimensionalGeneratedCache {	
 	private static final String DIMENSION_NAME = "dimension";
 	private static final String CHEST_CACHE_NAME = "chestCache";
 
+	// Map<Dimension, Map<FeatureType, Chest Cache>>
 	public static final Map<ResourceLocation, Map<IFeatureType, GeneratedCache<? extends GeneratedContext>>> CHEST_CACHE = new HashMap<>();
 
 	/**
@@ -64,7 +66,7 @@ public class DimensionalGeneratedCache {
 	 */
 	public static void initialize() {
 		// find the ChestConfiguration that contains the same dimension
-		ChestFeaturesConfiguration chestConfig = Config.chestConfig;//Config.chestConfigMap.get(ModUtil.asLocation(dimensionName));
+		ChestPlacementConfiguration chestConfig = Config.chestConfig;//Config.chestConfigMap.get(ModUtil.asLocation(dimensionName));
 		//			for (ChestConfiguration chestConfig : Config.chestConfigs) {
 		if (chestConfig != null) {
 
@@ -77,19 +79,18 @@ public class DimensionalGeneratedCache {
 				 * setup chest registry
 				 */
 
-				//				if (Config.SERVER.integration.dimensionsWhiteList.get().contains(dimension.toString())) {
 				// create a new map for generatorType->generatedChestRegistry
 				Map<IFeatureType, GeneratedCache<? extends GeneratedContext>> chestRegistryMap = new HashMap<>();
 				// add generator map to byDimension map
 				CHEST_CACHE.put(dimension, chestRegistryMap);
 
-				// for each generator
-				chestConfig.getGenerators().forEach(generator -> {
+				// for each placement setting
+				chestConfig.getPlacementSettings().forEach(placementSetting -> {
 					// match the generator to the enum
-					Optional<IFeatureType> type = TreasureApi.getFeatureType(generator.getKey().toUpperCase());
+					Optional<IFeatureType> type = TreasureApi.getFeatureType(placementSetting.getKey().toUpperCase());
 					if (type.isPresent()) {
 						// create a new generated chest registry with size set from config
-						chestRegistryMap.put(type.get(), new GeneratedCache<>(generator.getRegistrySize()));
+						chestRegistryMap.put(type.get(), new GeneratedCache<>(placementSetting.getRegistrySize()));
 					}
 				});
 				//				}

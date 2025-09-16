@@ -22,7 +22,7 @@ import java.util.Optional;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.DeferredGeneratorBlock;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
-import mod.gottsch.forge.treasure2.core.config.ChestFeaturesConfiguration.Generator;
+import mod.gottsch.forge.treasure2.core.config.ChestPlacementConfiguration.PlacementSetting;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.registry.FeatureGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.util.ModUtil;
@@ -84,24 +84,24 @@ public class TreasureFeatureGenerators {
 	 * 
 	 */
 	public static void initialize() {
-		if (Config.chestConfig != null) {
-			if (!Config.chestConfig.getGenerators().isEmpty()) {
-				// clear the default values
-				((WeightedChestFeatureGeneratorSelector)STANDARD_CHEST_FEATURE_GENERATOR_SELECTOR).clear();
-				// add generators from config
-				Generator generator = Config.chestConfig.getGenerator(FeatureType.TERRANEAN.getValue());
-				if (generator != null) {
-					if (generator.getFeatureGenerators() != null && ! generator.getFeatureGenerators().isEmpty()) {
-						generator.getFeatureGenerators().forEach(fg -> {
-							// get the feature generator from the register
-							Optional<IFeatureGenerator> featureGenerator = FeatureGeneratorRegistry.get(ModUtil.asLocation(fg.getName()));
-							if (featureGenerator.isPresent()) {
-								((WeightedChestFeatureGeneratorSelector)STANDARD_CHEST_FEATURE_GENERATOR_SELECTOR).add(fg.getWeight(), featureGenerator.get());
-							}
-						});
-					}
-				}
-			}
-		}
+//		if (Config.chestConfig != null) {
+//			if (!Config.chestConfig.getPlacementSettings().isEmpty()) {
+//				// clear the default values
+//				((WeightedChestFeatureGeneratorSelector)STANDARD_CHEST_FEATURE_GENERATOR_SELECTOR).clear();
+//				// add generators from config
+//				PlacementSetting placementSetting = Config.chestConfig.getPlacementSetting(FeatureType.TERRANEAN.getValue());
+//				if (placementSetting != null) {
+//					if (placementSetting.getFeatureGenerators() != null && ! placementSetting.getFeatureGenerators().isEmpty()) {
+//						placementSetting.getFeatureGenerators().forEach(fg -> {
+//							// get the feature generator from the register
+//							Optional<IFeatureGenerator> featureGenerator = FeatureGeneratorRegistry.get(ModUtil.asLocation(fg.getName()));
+//							if (featureGenerator.isPresent()) {
+//								((WeightedChestFeatureGeneratorSelector)STANDARD_CHEST_FEATURE_GENERATOR_SELECTOR).add(fg.getWeight(), featureGenerator.get());
+//							}
+//						});
+//					}
+//				}
+//			}
+//		}
 	}
 }

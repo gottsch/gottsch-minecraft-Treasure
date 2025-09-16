@@ -45,8 +45,9 @@ import net.minecraft.world.level.block.state.BlockState;
  * @author Mark Gottschling on Dec 4, 2019
  *
  */
-public class WitherChestGenerator extends AbstractChestGenerator {
-	
+public class WitherChestGenerator implements IChestGenerator {
+	// TEMP
+	public String getName() { return "";}
 	/**
 	 * 
 	 */
@@ -101,11 +102,9 @@ public class WitherChestGenerator extends AbstractChestGenerator {
 	public void addMarkers(IWorldGenContext context, ICoords coords, boolean isSurfaceChest) {
 		return;
 	}
-	
+
 	/**
-	 * 
-	 * @param world
-	 * @param random
+	 *
 	 * @param chest
 	 * @param chestCoords
 	 * @return
@@ -120,7 +119,7 @@ public class WitherChestGenerator extends AbstractChestGenerator {
 			// add top placeholder
 			context.level().setBlock(chestCoords.up(1).toPos(), TreasureBlocks.WITHER_CHEST_TOP.get().defaultBlockState(), 3);
 		}
-		// get the backing tile entity of the chest 
+		// get the backing tile entity of the chest
 		BlockEntity te = (BlockEntity) context.level().getBlockEntity(chestCoords.toPos());
 
 		// if tile entity failed to create, remove the chest

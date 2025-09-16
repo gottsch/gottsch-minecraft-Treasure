@@ -17,10 +17,6 @@
  */
 package mod.gottsch.forge.treasure2.api;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 import mod.gottsch.forge.gottschcore.enums.IEnum;
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.treasure2.Treasure;
@@ -34,16 +30,16 @@ import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGenerator;
 import mod.gottsch.forge.treasure2.core.generator.marker.IMarkerGenerator;
 import mod.gottsch.forge.treasure2.core.generator.pit.IPitGenerator;
-import mod.gottsch.forge.treasure2.core.generator.ruin.IRuinGenerator;
-import mod.gottsch.forge.treasure2.core.generator.well.IWellGenerator;
 import mod.gottsch.forge.treasure2.core.item.IKeyLockCategory;
 import mod.gottsch.forge.treasure2.core.item.KeyItem;
 import mod.gottsch.forge.treasure2.core.item.LockItem;
 import mod.gottsch.forge.treasure2.core.registry.*;
 import mod.gottsch.forge.treasure2.core.structure.IStructureCategory;
 import mod.gottsch.forge.treasure2.core.structure.IStructureType;
+import mod.gottsch.forge.treasure2.core.structure.templatesystem.chest.IChestSubprocessor;
 import mod.gottsch.forge.treasure2.core.tags.TreasureTags;
 import mod.gottsch.forge.treasure2.core.wishable.IWishableHandler;
+import mod.gottsch.forge.treasure2.core.wishable.TreasureWishables;
 import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 import mod.gottsch.forge.treasure2.core.world.feature.IFeatureType;
 import mod.gottsch.forge.treasure2.core.world.feature.gen.IFeatureGenerator;
@@ -54,6 +50,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.RegistryObject;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * 
@@ -278,10 +278,11 @@ public class TreasureApi {
 		}
 		TagRegistry.registerChests(rarity, chestTag);
 	}
-	
-	public static void registerWishableTag(IRarity rarity, TagKey<Item> tag) {
-		TagRegistry.registerWishable(rarity, tag);
-	}
+
+//	@Deprecated
+//	public static void registerWishableTag(IRarity rarity, TagKey<Item> tag) {
+//		TagRegistry.registerWishable(rarity, tag);
+//	}
 
 	// TODO are these white/blacklist registrations necessary - not registering the biomes inside of them.... simply using the tags in conditions
 	public static void registerBiomeWhitelistTag(IRarity rarity, TagKey<Biome> tag) {
@@ -321,9 +322,10 @@ public class TreasureApi {
 	}
 	
 	public static void registerWishableHandler(Item item, IWishableHandler handler) {
-		WishableRegistry.registerHandler(item, handler);
+		TreasureWishables.registerHandler(item, handler);
 	}
-	
+
+	@Deprecated
 	public static void registerLootTables(String modID) {
 		TreasureLootTableRegistry.register(modID);
 	}
@@ -345,6 +347,7 @@ public class TreasureApi {
 	 * @param rarity
 	 * @param featureType
 	 */
+	@Deprecated
 	public static void registerChestFeatureGenerator(IRarity rarity, IFeatureType featureType) {
 		RarityLevelWeightedChestGeneratorRegistry.registerGenerator(rarity, featureType);		
 	}
@@ -355,23 +358,21 @@ public class TreasureApi {
 	public static void registerChestGenerator(IRarity rarity, IChestGenerator generator) {
 		ChestGeneratorRegistry.registerGeneator(rarity, generator);
 	}
-	
+
+	public static void registerChestSubprocessor(IRarity rarity, IChestSubprocessor subprocessor) {
+		ChestSubprocessorRegistry.register(rarity, subprocessor);
+	}
+
+	@Deprecated
 	public static void registerPitGenerator(IPitType type, IPitGenerator<GeneratorResult<ChestGeneratorData>> generator) {
 		PitGeneratorRegistry.register(type, generator);
 	}
-	
+
+	@Deprecated
 	public static void registerMarkerGenerator(MarkerType type, IMarkerGenerator<GeneratorResult<GeneratorData>> generator) {
 		MarkerGeneratorRegistry.register(type, generator);
 	}
-	
-	public static void registerRuinGenerator(IStructureCategory category, IRuinGenerator<GeneratorResult<ChestGeneratorData>> generator) {
-		RuinGeneratorRegistry.register(category, generator);
-	}
-	
-	public static void registerWellGenerator(IStructureCategory category, IWellGenerator<GeneratorResult<? extends GeneratorData>> generator) {
-		WellGeneratorRegistry.register(category, generator);
-	}
-	
+
 	/*
 	 * Maps the chest generator object by rarity and type.
 	 */

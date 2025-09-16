@@ -20,10 +20,13 @@ package mod.gottsch.forge.treasure2.datagen;
 import java.util.concurrent.CompletableFuture;
 
 import mod.gottsch.forge.treasure2.Treasure;
+import mod.gottsch.forge.treasure2.core.setup.Registration;
 import mod.gottsch.forge.treasure2.datagen.loot.TreasureBlockLootTables;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -57,5 +60,18 @@ public class DataGenerators {
             generator.addProvider(true, new LanguageGen(output, "en_us"));
             generator.addProvider(true, new JapaneseLanguageGen(output, "ja_jp"));
         }
+
+        // This is where you add your custom TagsProvider.
+        // It's crucial to pass the correct parameters from the event and link the dependencies.
+        generator.addProvider(
+                event.includeServer(),
+                new TreasureRarityTagsProvider(
+                        output,
+                        event.getLookupProvider(),
+//                            event.getLookupProvider().thenApply(p -> TagKey.create(Registration.RARITIES_REGISTRY_KEY, new ResourceLocation(Treasure.MODID, "example_tag"))),
+                        event.getExistingFileHelper()
+                )
+
+        );
     }
 }

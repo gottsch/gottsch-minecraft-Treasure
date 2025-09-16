@@ -19,42 +19,14 @@
  */
 package mod.gottsch.forge.treasure2.core.block.entity;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
-import mod.gottsch.forge.treasure2.core.world.feature.gen.IWitherFeatureGenerator;
-import mod.gottsch.forge.treasure2.core.world.feature.gen.WitherFeatureGenerator2;
-import net.minecraft.nbt.IntArrayTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.chunk.ChunkStatus;
-import org.jetbrains.annotations.NotNull;
-
-import mod.gottsch.forge.gottschcore.enums.IRarity;
-import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
-import mod.gottsch.forge.gottschcore.world.WorldInfo;
-import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.config.ChestFeaturesConfiguration;
-import mod.gottsch.forge.treasure2.core.config.Config;
-import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
-import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
-import mod.gottsch.forge.treasure2.core.persistence.TreasureSavedData;
-import mod.gottsch.forge.treasure2.core.registry.DimensionalGeneratedCache;
-import mod.gottsch.forge.treasure2.core.registry.GeneratedCache;
-import mod.gottsch.forge.treasure2.core.registry.support.GeneratedChestContext;
-import mod.gottsch.forge.treasure2.core.world.feature.FeatureGenContext;
 import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 import mod.gottsch.forge.treasure2.core.world.feature.IFeatureType;
 import mod.gottsch.forge.treasure2.core.world.feature.gen.IFeatureGenerator;
 import mod.gottsch.forge.treasure2.core.world.feature.gen.TreasureFeatureGenerators;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
@@ -62,6 +34,7 @@ import net.minecraft.world.level.block.state.BlockState;
  * @author Mark Gottschling on Oct 12, 2023
  *
  */
+@Deprecated
 public class DeferredWitherTreeGeneratorBlockEntity extends DeferredGeneratorBlockEntity {
 
 //    private static final int X_CHUNKS = 3;

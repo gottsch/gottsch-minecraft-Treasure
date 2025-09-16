@@ -1,0 +1,42 @@
+{
+  "name": "treasure2:dungeon/entrances",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:dungeon/entrance/graveyard_1",
+        "projection": "rigid",
+        "processors": "treasure2:graveyard_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:dungeon/entrance/crypt_2",
+        "projection": "rigid",
+        "processors": "treasure2:ruins_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:dungeon/entrance/crypt_5",
+        "projection": "rigid",
+        "processors": "treasure2:ruins_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:dungeon/entrance/mine_1",
+        "projection": "rigid",
+        "processors": "treasure2:ruins_processors"
+      }
+    }
+  ]
+}

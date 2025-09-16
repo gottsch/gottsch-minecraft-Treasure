@@ -327,7 +327,7 @@ public class KeyItem extends Item implements IKeyEffects {
 			}
 
 			try {
-				ItemStack heldItemStack = context.getPlayer().getItemInHand(context.getHand());	
+				ItemStack heldItemStack = context.getPlayer().getItemInHand(context.getHand());
 				boolean breakKey = true;
 				boolean fitsLock = false;
 				LockState lockState = null;
@@ -339,20 +339,7 @@ public class KeyItem extends Item implements IKeyEffects {
 				}
 
 				if (fitsLock) {
-					if (unlock(lockState.getLock())) {
-						// unlock the lock
-						doUnlock(context, chestBlockEntity, lockState);
-
-						if (!state.getValue(AbstractTreasureChestBlock.DISCOVERED)) {
-							chestBlockEntity = ((AbstractTreasureChestBlock) block).discovered((AbstractTreasureChestBlockEntity) chestBlockEntity, state, context.getLevel(), chestPos, context.getPlayer());
-						}
-						
-						// update the client
-						chestBlockEntity.sendUpdates();
-
-						// don't break the key
-						breakKey = false;
-					}
+					breakKey = useKeyOnLock(context, block, state, chestPos, chestBlockEntity, lockState);
 				}
 
 				IDurabilityHandler cap = heldItemStack.getCapability(DURABILITY).orElseThrow(IllegalStateException::new);
@@ -409,6 +396,35 @@ public class KeyItem extends Item implements IKeyEffects {
 		}		
 
 		return super.useOn(context);
+	}
+
+	/**
+	 *
+	 * @param context the original context.
+	 * @param block the calculated block. takes into account use of proxy blocks.
+	 * @param state the calculated state. takes into account use of proxy blocks.
+	 * @param chestPos the calculated chestPos. takes into account use of proxy blocks.
+	 * @param blockEntity the calculated block entity. takes into account use of proxy blocks.
+	 * @param lockState the lock state.
+	 * @return a boolean value to indicate whether the key should be broken
+	 */
+	protected boolean useKeyOnLock(UseOnContext context, Block block, BlockState state, BlockPos chestPos, ITreasureChestBlockEntity blockEntity, LockState lockState) {
+		if (unlock(lockState.getLock())) {
+			// unlock the lock
+			doUnlock(context, blockEntity, lockState);
+
+			if (!state.getValue(AbstractTreasureChestBlock.DISCOVERED)) {
+				blockEntity = ((AbstractTreasureChestBlock) block).discovered((AbstractTreasureChestBlockEntity) blockEntity, state, context.getLevel(), chestPos, context.getPlayer());
+			}
+
+			// update the client
+			blockEntity.sendUpdates();
+
+			// don't break the key
+			return false;
+		}
+		// default break the key
+		return true;
 	}
 
 	/**

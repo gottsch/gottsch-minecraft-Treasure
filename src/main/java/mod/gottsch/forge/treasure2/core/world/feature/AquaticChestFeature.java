@@ -26,9 +26,9 @@ import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.config.ChestFeaturesConfiguration;
-import mod.gottsch.forge.treasure2.core.config.ChestFeaturesConfiguration.ChestRarity;
-import mod.gottsch.forge.treasure2.core.config.ChestFeaturesConfiguration.Generator;
+import mod.gottsch.forge.treasure2.core.config.ChestPlacementConfiguration;
+import mod.gottsch.forge.treasure2.core.config.ChestPlacementConfiguration.ChestRarity;
+import mod.gottsch.forge.treasure2.core.config.ChestPlacementConfiguration.PlacementSetting;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
@@ -81,18 +81,18 @@ public class AquaticChestFeature extends ChestFeature {
 		// get the chest registry
 		GeneratedCache<GeneratedChestContext> chestCache = DimensionalGeneratedCache.getChestGeneratedCache(dimension, FEATURE_TYPE);
 		if (chestCache == null) {
-			Treasure.LOGGER.debug("GeneratedRegistry is null for dimension & AQUATIC. This shouldn't be. Should be initialized.");
+//			Treasure.LOGGER.debug("GeneratedRegistry is null for dimension & AQUATIC. This shouldn't be. Should be initialized.");
 			return false;
 		}
 		
 		// get the generator config
-		ChestFeaturesConfiguration config = Config.chestConfig; //Config.chestConfigMap.get(dimension);
+		ChestPlacementConfiguration config = Config.chestConfig; //Config.chestConfigMap.get(dimension);
 		if (config == null) {
 			Treasure.LOGGER.debug("ChestConfiguration is null. This shouldn't be.");
 			return false;
 		}
 		
-		Generator generatorConfig = config.getGenerator(FEATURE_TYPE.getName());
+		PlacementSetting generatorConfig = config.getPlacementSetting(FEATURE_TYPE.getName());
 		if (generatorConfig == null) {
 			Treasure.LOGGER.warn("unable to locate a config for feature type -> {}.", FEATURE_TYPE.getName());
 			return false;
@@ -117,14 +117,14 @@ public class AquaticChestFeature extends ChestFeature {
 			return false;
 		}
 		
-		if (!meetsBiomeCriteria(genLevel.getLevel(), spawnCoords, rarityConfig.get().getBiomeWhitelist(), rarityConfig.get().getBiomeBlacklist())) {
-			return false;
-		}
-
-		// check against all registered chests
-		if (!meetsProximityCriteria(genLevel, dimension, FEATURE_TYPE, spawnCoords, generatorConfig.getMinBlockDistance())) {
-			return false;
-		}
+//		if (!meetsBiomeCriteria(genLevel.getLevel(), spawnCoords, rarityConfig.get().getBiomeWhitelist(), rarityConfig.get().getBiomeFilter())) {
+//			return false;
+//		}
+//
+//		// check against all registered chests
+//		if (!meetsProximityCriteria(genLevel, dimension, FEATURE_TYPE, spawnCoords, generatorConfig.getMinBlockDistance())) {
+//			return false;
+//		}
 		
 		// check if meets the probability criteria. this is used as a randomizer so that chests aren't predictably placed.
 		if (!meetsProbabilityCriteria(context.random(), generatorConfig)) {

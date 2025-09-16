@@ -1,0 +1,60 @@
+{
+  "name": "treasure2:surface/general",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 20,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:surface/chest_graves",
+        "projection": "rigid",
+        "processors": "treasure2:surface_processors"
+      }
+    },
+    {
+      "weight": 10,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:surface/small_ruins",
+        "projection": "rigid",
+        "processors": "treasure2:surface_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:surface/statue/statue_1",
+        "projection": "rigid",
+        "processors": "treasure2:surface_statue_processors"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:surface/statue/statue_2",
+        "projection": "rigid",
+        "processors": "treasure2:surface_statue_processors"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:surface/statue/statue_3",
+        "projection": "rigid",
+        "processors": "treasure2:surface_statue_processors"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:surface/statue/statue_4",
+        "projection": "rigid",
+        "processors": "treasure2:surface_statue_processors"
+      }
+    }
+  ]
+}

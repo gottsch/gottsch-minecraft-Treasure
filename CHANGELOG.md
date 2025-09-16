@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.0.0] - 2025-08-12
+
+### Changed
+- All structure, pit, marker, well, wither grove, etc. generation uses Jigsaw Structures.
+- Changed License to OSL-3.0.
+- Expanded Mob Sets and Mob Set based Blocks.
+- Removed Deferred generation system.
+- Removed treasure2-structures-xxx.toml config file - no longer necessary.
+- Well structure mob blocks (iron block) takes NBT data ex mob_set
+- Fixed some Config from processing on LoadingConfig.Unload event.
+- 
+### Added
+- Shields
+- Xarc Stone
+
 ## [3.12.1] - 2025-04-23
 
 ### Changed

@@ -27,6 +27,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
  * @author Mark Gottschling on Aug 1, 2019
  *
  */
+@Deprecated
 public class TemplateHolder {
 	private StructureTemplate template;
 	private ResourceLocation location;

@@ -99,9 +99,11 @@ import net.minecraftforge.registries.RegistryObject;
 
 
 /**
+ *
  * @author Mark Gottschling on Dec 4, 2019
  *
  */
+@Deprecated
 public interface IChestGenerator extends IChestGeneratorEffects {
 	public static final String TREASURE_POOL = "treasure";
 
@@ -115,6 +117,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 	 * @param state
 	 * @return
 	 */
+	@Deprecated
 	default public GeneratorResult<ChestGeneratorData> generate(IFeatureGenContext context, ICoords coords,
 			final IRarity rarity, BlockState state) {
 
@@ -169,7 +172,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 		addSeal(chestEntity);
 
 		// TODO remove and update from Feature when all is complete.
-		// update the backing block entity's generation contxt
+		// update the backing block entity's generation context
 		// NOTE only updates generation context with Rarity and ChestGeneratorType. The featureType at this point is unknown.
 		addGenerationContext(context, chestEntity, rarity);
 
@@ -189,6 +192,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 		return result.success();
 	}
 
+	@Deprecated
 	@Override
 	default void addGenEffects(ServerLevelAccessor level, BlockState state, BlockPos pos,
 			IRarity rarity) {
@@ -221,6 +225,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 	 * @param blockEntity
 	 * @param rarity
 	 */
+	@Deprecated
 	default public void addMimic(IFeatureGenContext context, AbstractTreasureChestBlock chest, ITreasureChestBlockEntity blockEntity,
 			IRarity rarity) {
 		// check against config if mimic should be used
@@ -239,6 +244,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 	 * @param rarity
 	 * @return
 	 */
+	@Deprecated
 	default public Optional<LootTableShell> selectLootTable(RandomSource randomSource, final IRarity rarity) {
 		LootTableShell lootTableShell = null;
 
@@ -268,6 +274,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 	 * @param rarity
 	 * @return
 	 */
+	@Deprecated
 	default public Optional<LootTableShell> selectLootTable(Supplier<Random> factory, IRarity rarity) {
 		LootTableShell lootTableShell = null;
 
@@ -297,6 +304,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 	 * @param rarity
 	 * @return
 	 */
+	@Deprecated
 	default public List<LootTableShell> buildLootTableList(ILootTableType key, IRarity rarity) {
 		return TreasureLootTableRegistry.getLootTableByRarity(key, rarity);
 	}
@@ -306,6 +314,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 	 * @param rarity
 	 * @return
 	 */
+	@Deprecated
 	default public AbstractTreasureChestBlock selectChest(final RandomSource random, final IRarity rarity) {
 		Treasure.LOGGER.debug("attempting to get chest list for rarity -> {}", rarity);
 		List<RegistryObject<Block>> chestList = (List<RegistryObject<Block>>) ChestRegistry.getChest(rarity);
@@ -626,6 +635,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 	 * @param blockEntity
 	 * @param rarity
 	 */
+	@Deprecated
 	default public void addGenerationContext(IFeatureGenContext context, ITreasureChestBlockEntity blockEntity, IRarity rarity) {
 		GenerationContext generationContext = 
 				((AbstractTreasureChestBlockEntity)blockEntity).new GenerationContext(rarity, context.getFeatureType());
@@ -637,6 +647,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 	 * @param blockEntity
 	 * @param location
 	 */
+	@Deprecated
 	default public void addLootTable(ITreasureChestBlockEntity blockEntity, ResourceLocation location) {
 		blockEntity.setLootTable(location);
 	}
@@ -645,6 +656,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 	 * 
 	 * @param blockEntity
 	 */
+	@Deprecated
 	default public void addSeal(ITreasureChestBlockEntity blockEntity) {
 		blockEntity.setSealed(true);
 	}
@@ -654,6 +666,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 	 * 
 	 * @param chest
 	 */
+	@Deprecated
 	default public void addLocks(RandomSource randomSource, AbstractTreasureChestBlock chest, 
 			ITreasureChestBlockEntity blockEntity, IRarity rarity) {
 
@@ -672,6 +685,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 	 * @param blockEntity
 	 * @param locks
 	 */
+	@Deprecated
 	default public void addLocks(RandomSource random, AbstractTreasureChestBlock chest, 
 			ITreasureChestBlockEntity blockEntity, List<LockItem> locks) {
 		Treasure.LOGGER.debug("locks to select from -> {}", locks);
@@ -695,6 +709,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 	 * @param lockLayout
 	 * @return
 	 */
+	@Deprecated
 	default public int randomizedNumberOfLocksByChestType(RandomSource random, LockLayout lockLayout) {
 		// determine the number of locks to add
 		int numLocks = RandomHelper.randomInt(random, 0, lockLayout.getMaxLocks());
@@ -774,6 +789,7 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 		return blockEntity;
 	}
 
+	@Deprecated
 	default public BlockEntity placeInWorld(IWorldGenContext context, ICoords chestCoords,
 			AbstractTreasureChestBlock chest, BlockState state, boolean discovered) {
 
@@ -802,4 +818,6 @@ public interface IChestGenerator extends IChestGeneratorEffects {
 		}
 		return blockEntity;
 	}
+
+	String getName();
 }

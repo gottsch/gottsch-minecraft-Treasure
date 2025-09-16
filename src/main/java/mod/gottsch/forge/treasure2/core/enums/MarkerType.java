@@ -30,6 +30,7 @@ import mod.gottsch.forge.gottschcore.enums.IEnum;
  * @author Mark Gottschling May 22, 2023
  *
  */
+@Deprecated
 public enum MarkerType implements IMarkerType {
 	STANDARD(0, "standard"),
 	STRUCTURE(1, "structure"),

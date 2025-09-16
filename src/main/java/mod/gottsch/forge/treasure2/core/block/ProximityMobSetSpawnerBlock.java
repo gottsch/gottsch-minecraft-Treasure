@@ -48,7 +48,7 @@ public class ProximityMobSetSpawnerBlock extends AbstractProximityBlock implemen
 	
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		Treasure.LOGGER.debug("created proximity spawner be");
+		Treasure.LOGGER.debug("created proximity mobSet spawner entity");
 		ProximityMobSetSpawnerBlockEntity blockEntity = null;
 		try {
 			blockEntity = new ProximityMobSetSpawnerBlockEntity(pos, state);

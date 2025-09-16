@@ -27,14 +27,15 @@ import net.minecraft.util.RandomSource;
  * @author Mark Gottschling on Dec 4, 2019
  *
  */
-public class EpicChestGenerator extends AbstractChestGenerator {
-	
+public class EpicChestGenerator implements IChestGenerator {
+
+	// TEMP
+	public String getName() { return "";}
+
 	/**
 	 * 
 	 */
-	public EpicChestGenerator() {
-		super();
-	}
+	public EpicChestGenerator() {	}
 
 	
 	/**

@@ -48,6 +48,7 @@ public class TreasureItemTagsProvider extends ItemTagsProvider {
 		tag(TreasureTags.Items.UNCOMMON_KEY).add(TreasureItems.LEAF_KEY.get());
 		tag(TreasureTags.Items.SCARCE_KEY).add(TreasureItems.EMBER_KEY.get());
 		tag(TreasureTags.Items.SCARCE_KEY).add(TreasureItems.LIGHTNING_KEY.get());
+		tag(TreasureTags.Items.SCARCE_KEY).add(TreasureItems.BONE_KEY.get());
 		tag(TreasureTags.Items.UNCOMMON_KEY).add(TreasureItems.IRON_KEY.get());
 		tag(TreasureTags.Items.SCARCE_KEY).add(TreasureItems.GOLD_KEY.get());
 		tag(TreasureTags.Items.RARE_KEY).add(TreasureItems.METALLURGISTS_KEY.get());

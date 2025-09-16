@@ -1,0 +1,30 @@
+{
+  "name": "treasure2:graveyard/level_1/graveyards",
+  "fallback": "treasure2:graveyard/terminators",
+  "elements": [
+    {
+      "weight": 2,
+      "element": {
+        "element_type": "minecraft:empty_pool_element"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:graveyard/level_1/3x3_graveyard",
+        "projection": "rigid",
+        "processors": "treasure2:graveyard_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:graveyard/level_1/5x5_graveyard",
+        "projection": "rigid",
+        "processors": "treasure2:graveyard_processors"
+      }
+    }
+  ]
+}

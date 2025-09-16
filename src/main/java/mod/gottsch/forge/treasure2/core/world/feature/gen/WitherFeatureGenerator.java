@@ -25,7 +25,7 @@ import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
-import mod.gottsch.forge.treasure2.core.config.ChestFeaturesConfiguration.ChestRarity;
+import mod.gottsch.forge.treasure2.core.config.ChestPlacementConfiguration.ChestRarity;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.enums.PitType;
 import mod.gottsch.forge.treasure2.core.enums.SpecialRarity;
@@ -35,7 +35,6 @@ import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.chest.WitherChestGenerator;
 import mod.gottsch.forge.treasure2.core.generator.pit.IPitGenerator;
 import mod.gottsch.forge.treasure2.core.generator.pit.IStructurePitGenerator;
-import mod.gottsch.forge.treasure2.core.generator.template.ITemplateGenerator;
 import mod.gottsch.forge.treasure2.core.generator.witherTree.GreatWitherTreeGenerator;
 import mod.gottsch.forge.treasure2.core.generator.witherTree.WitherTreeGenerator;
 import mod.gottsch.forge.treasure2.core.registry.PitGeneratorRegistry;
@@ -82,7 +81,7 @@ public class WitherFeatureGenerator implements IFeatureGenerator {
 		}
 
 		// determine spawn coords below ground
-		Optional<ICoords> undergroundCoords = getUndergroundSpawnPos(context.level(), context.random(), spawnCoords, config.getMinDepth(), config.getMaxDepth());
+		Optional<ICoords> undergroundCoords = null; //getUndergroundSpawnPos(context.level(), context.random(), spawnCoords, config.getMinDepth(), config.getMaxDepth());
 
 		if (undergroundCoords.isEmpty()) {
 			Treasure.LOGGER.debug("unable to spawn underground @ {}", spawnCoords);

@@ -21,13 +21,9 @@ import java.util.Optional;
 
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
-import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
-import mod.gottsch.forge.gottschcore.world.WorldGenContext;
-import mod.gottsch.forge.treasure2.core.config.ChestFeaturesConfiguration.ChestRarity;
+import mod.gottsch.forge.treasure2.core.config.ChestPlacementConfiguration.ChestRarity;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
-import mod.gottsch.forge.treasure2.core.generator.IGeneratorResult;
-import mod.gottsch.forge.treasure2.core.generator.ruin.IRuinGenerator;
 import mod.gottsch.forge.treasure2.core.world.feature.IFeatureGenContext;
 import net.minecraft.resources.ResourceLocation;
 

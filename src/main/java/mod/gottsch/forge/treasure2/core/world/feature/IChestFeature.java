@@ -25,7 +25,7 @@ import mod.gottsch.forge.gottschcore.random.RandomHelper;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.config.ChestFeaturesConfiguration;
+import mod.gottsch.forge.treasure2.core.config.ChestPlacementConfiguration;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.persistence.TreasureSavedData;
@@ -45,6 +45,7 @@ import net.minecraft.world.level.WorldGenLevel;
  * @author Mark Gottschling on Sep 21, 2022
  *
  */
+@Deprecated
 public interface IChestFeature extends ITreasureFeature {
 //	public boolean meetsProximityCriteria(ServerLevelAccessor world, ResourceLocation dimension, IFeatureType key, ICoords spawnCoords, int minDistance);
 
@@ -53,12 +54,12 @@ public interface IChestFeature extends ITreasureFeature {
 	 * @param random
 	 * @return
 	 */
-	default public boolean meetsProbabilityCriteria(RandomSource random, ChestFeaturesConfiguration.Generator generatorConfig) {
-		if (generatorConfig.getProbability() == null) {
-			Treasure.LOGGER.warn("chest generator config -> '{}' is missing 'probability' value", generatorConfig.getKey());
+	default public boolean meetsProbabilityCriteria(RandomSource random, ChestPlacementConfiguration.PlacementSetting chestPlacementSetting) {
+		if (chestPlacementSetting.getProbability() == null) {
+			Treasure.LOGGER.warn("chest generator config -> '{}' is missing 'probability' value", chestPlacementSetting.getKey());
 			return false;
 		}
-		if (!RandomHelper.checkProbability(random, generatorConfig.getProbability())) {
+		if (!RandomHelper.checkProbability(random, chestPlacementSetting.getProbability())) {
 			Treasure.LOGGER.debug("chest gen does not meet generate probability.");
 			return false;
 		}

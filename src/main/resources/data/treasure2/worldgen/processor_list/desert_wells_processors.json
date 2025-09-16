@@ -1,0 +1,13 @@
+{
+  "processors": [
+    {
+      "processor_type": "treasure2:proximity_mob_set_spawner_processor"
+    },
+    {
+      "processor_type": "treasure2:chest_processor",
+      "feature_type": "well",
+      "dimension": "minecraft:overworld",
+      "alt_loot_table": "treasure2:wishing_well_free_wishables"
+    }
+  ]
+}

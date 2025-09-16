@@ -103,6 +103,7 @@ public class ClientSetup {
             ItemBlockRenderTypes.setRenderLayer(TreasureBlocks.SPANISH_MOSS.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(TreasureBlocks.SKELETON.get(), RenderType.cutout());
 			ItemBlockRenderTypes.setRenderLayer(TreasureBlocks.CLOVER.get(), RenderType.cutout());
+			ItemBlockRenderTypes.setRenderLayer(TreasureBlocks.STRUCTURE_MOB_SET.get(), RenderType.cutout());
 		});
     }
 
@@ -135,7 +136,8 @@ public class ClientSetup {
 		event.registerBlockEntityRenderer(TreasureBlockEntities.BARREL_CHEST_BLOCK_ENTITY_TYPE.get(), BarrelChestRenderer::new);
 		event.registerBlockEntityRenderer(TreasureBlockEntities.VANILLA_CHEST_BLOCK_ENTITY_TYPE.get(), VanillaChestRenderer::new);
 		event.registerBlockEntityRenderer(TreasureBlockEntities.WITHER_CHEST_BLOCK_ENTITY_TYPE.get(), WitherChestRenderer::new);
-		
+		event.registerBlockEntityRenderer(TreasureBlockEntities.BONE_CHEST.get(), BoneChestRenderer::new);
+
 		event.registerEntityRenderer(TreasureEntities.BOUND_SOUL_ENTITY_TYPE.get(), BoundSoulRenderer::new);
 		event.registerEntityRenderer(TreasureEntities.WITHERWOOD_GOLEM_ENTITY_TYPE.get(), WitherwoodGolemRenderer::new);
 
@@ -177,6 +179,7 @@ public class ClientSetup {
 		event.registerLayerDefinition(WitherChestModel.LAYER_LOCATION, WitherChestModel::createBodyLayer);
 		event.registerLayerDefinition(BarrelChestModel.LAYER_LOCATION, BarrelChestModel::createBodyLayer);
 		event.registerLayerDefinition(VanillaChestModel.LAYER_LOCATION, VanillaChestModel::createBodyLayer);
+		event.registerLayerDefinition(BoneChestModel.LAYER_LOCATION, BoneChestModel::createBodyLayer);
 
 		event.registerLayerDefinition(BoundSoulModel.LAYER_LOCATION, BoundSoulModel::createBodyLayer);
 		event.registerLayerDefinition(WitherwoodGolemModel.LAYER_LOCATION, WitherwoodGolemModel::createBodyLayer);

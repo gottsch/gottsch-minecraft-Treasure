@@ -22,9 +22,8 @@ import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.DeferredGeneratorBlock;
-import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.block.entity.DeferredGeneratorBlockEntity;
-import mod.gottsch.forge.treasure2.core.config.ChestFeaturesConfiguration;
+import mod.gottsch.forge.treasure2.core.config.ChestPlacementConfiguration;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.world.feature.IFeatureGenContext;
@@ -54,7 +53,7 @@ public class DeferredFeatureGenerator implements IFeatureGenerator {
     }
 
     @Override
-    public Optional<GeneratorResult<ChestGeneratorData>> generate(IFeatureGenContext context, ICoords spawnCoords, IRarity rarity, ChestFeaturesConfiguration.ChestRarity chestRarity) {
+    public Optional<GeneratorResult<ChestGeneratorData>> generate(IFeatureGenContext context, ICoords spawnCoords, IRarity rarity, ChestPlacementConfiguration.ChestRarity chestRarity) {
         Treasure.LOGGER.debug("surface coords -> {}", spawnCoords.toShortString());
         if (!WorldInfo.isHeightValid(spawnCoords)) {
             Treasure.LOGGER.debug("surface coords are invalid -> {}", spawnCoords.toShortString());

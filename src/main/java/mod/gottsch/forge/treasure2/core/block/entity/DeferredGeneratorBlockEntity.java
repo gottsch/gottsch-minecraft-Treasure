@@ -25,7 +25,7 @@ import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.api.TreasureApi;
-import mod.gottsch.forge.treasure2.core.config.ChestFeaturesConfiguration;
+import mod.gottsch.forge.treasure2.core.config.ChestPlacementConfiguration;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
@@ -38,7 +38,6 @@ import mod.gottsch.forge.treasure2.core.world.feature.FeatureGenContext;
 import mod.gottsch.forge.treasure2.core.world.feature.IChestFeature;
 import mod.gottsch.forge.treasure2.core.world.feature.IFeatureType;
 import mod.gottsch.forge.treasure2.core.world.feature.gen.IFeatureGenerator;
-import mod.gottsch.forge.treasure2.core.world.feature.gen.TreasureFeatureGenerators;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -58,6 +57,7 @@ import java.util.Optional;
  * @author Mark Gottschling on July 28, 2024
  *
  */
+@Deprecated
 public abstract class DeferredGeneratorBlockEntity extends BlockEntity implements IChestFeature {
     private long generatedTime;
     private IRarity rarity;
@@ -98,14 +98,14 @@ public abstract class DeferredGeneratorBlockEntity extends BlockEntity implement
                 }
 
                 // get the generator config
-                ChestFeaturesConfiguration config = Config.chestConfig;
+                ChestPlacementConfiguration config = Config.chestConfig;
                 if (config == null) {
                     Treasure.LOGGER.debug("ChestConfiguration is null. This shouldn't be.");
                     failAndPlaceholdChest((ServerLevel)getLevel(), chestCache, rarity, spawnCoords, FEATURE_TYPE);
                     return;
                 }
 
-                ChestFeaturesConfiguration.Generator generatorConfig = config.getGenerator(FEATURE_TYPE.getName());
+                ChestPlacementConfiguration.PlacementSetting generatorConfig = config.getPlacementSetting(FEATURE_TYPE.getName());
                 if (generatorConfig == null) {
                     Treasure.LOGGER.warn("unable to locate a config for feature type -> {}.", FEATURE_TYPE.getName());
                     failAndPlaceholdChest((ServerLevel)getLevel(), chestCache, rarity, spawnCoords, FEATURE_TYPE);
@@ -116,7 +116,7 @@ public abstract class DeferredGeneratorBlockEntity extends BlockEntity implement
                 IFeatureGenerator featureGenerator = getFeatureGenerator();
                 Treasure.LOGGER.debug("feature generator -> {}", featureGenerator.getClass().getSimpleName());
 
-                Optional<ChestFeaturesConfiguration.ChestRarity> rarityConfig = generatorConfig.getRarity(rarity);
+                Optional<ChestPlacementConfiguration.ChestRarity> rarityConfig = generatorConfig.getRarity(rarity);
                 if (!rarityConfig.isPresent()) {
                     Treasure.LOGGER.warn("unable to locate rarity config for rarity - >{}", rarity);
                     failAndPlaceholdChest((ServerLevel)getLevel(), chestCache, rarity, spawnCoords, FEATURE_TYPE);

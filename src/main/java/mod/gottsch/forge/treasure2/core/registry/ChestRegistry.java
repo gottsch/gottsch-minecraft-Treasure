@@ -39,6 +39,7 @@ import net.minecraftforge.registries.RegistryObject;
  * @author Mark Gottschling on Nov 15, 2022
  *
  */
+@Deprecated
 public class ChestRegistry {
 	/*
 	 * a Table registry for rarity/key lookups for keys

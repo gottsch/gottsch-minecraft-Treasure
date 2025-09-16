@@ -246,6 +246,12 @@ public class TreasureItems {
 				return true;
 			}));
 
+	public static RegistryObject<KeyItem> BONE_KEY = Registration.ITEMS.register("bone_key",
+			() -> new BoneKey(new Item.Properties(), 10)
+					.setCategory(KeyLockCategory.ELEMENTAL)
+					.setBreakable(true)
+					.setCraftable(false));
+
 	// FUTURE
 	// opens all epic/rare/scarce/uncommon/common but not infinite use
 	public static RegistryObject<KeyItem> DRAGON_KEY;
@@ -293,6 +299,9 @@ public class TreasureItems {
 
 	public static RegistryObject<LockItem> SPIDER_LOCK = Registration.ITEMS.register("spider_lock", () -> new LockItem(LOCK_ITEM_PROPERTIES.get(), new KeyItem[] {SPIDER_KEY.get()})
 			.setCategory(KeyLockCategory.MOB));
+
+	public static RegistryObject<Item> BONE_LOCK = Registration.ITEMS.register("bone_lock", () -> new BoneLock(LOCK_ITEM_PROPERTIES.get(), new KeyItem[] {BONE_KEY.get()})
+			.setCategory(KeyLockCategory.ELEMENTAL));
 
 	public static RegistryObject<LockItem> WITHER_LOCK = Registration.ITEMS.register("wither_lock", () -> new LockItem(LOCK_ITEM_PROPERTIES.get(), new KeyItem[] {WITHER_KEY.get()}) {
 		@Override
@@ -373,6 +382,8 @@ public class TreasureItems {
 
 	public static final RegistryObject<Item> WISHING_WELL_ITEM = fromBlock(TreasureBlocks.WISHING_WELL, TREASURE_PROPS_SUPPLIER);
 	public static final RegistryObject<Item> WISHING_WELL_COBBLESTONE_ITEM = fromBlock(TreasureBlocks.WISHING_WELL_COBBLESTONE, TREASURE_PROPS_SUPPLIER);
+	public static final RegistryObject<Item> WISHING_WELL_MOSSY_COBBLESTONE_ITEM = fromBlock(TreasureBlocks.WISHING_WELL_MOSSY_COBBLESTONE, TREASURE_PROPS_SUPPLIER);
+
 	public static final RegistryObject<Item> WISHING_WELL_STONE_BRICKS_ITEM = fromBlock(TreasureBlocks.WISHING_WELL_STONE_BRICKS, TREASURE_PROPS_SUPPLIER);
 	public static final RegistryObject<Item> WISHING_WELL_MOSSY_STONE_BRICKS_ITEM = fromBlock(TreasureBlocks.WISHING_WELL_MOSSY_STONE_BRICKS, TREASURE_PROPS_SUPPLIER);
 	public static final RegistryObject<Item> DESERT_WISHING_WELL_ITEM = fromBlock(TreasureBlocks.DESERT_WISHING_WELL, TREASURE_PROPS_SUPPLIER);
@@ -756,6 +767,9 @@ public class TreasureItems {
 				}
 			});
 
+	// other
+	public static final RegistryObject<Item> STRUCTURE_MOB_SET = Registration.ITEMS.register("structure_mob_set", () -> new BlockItem(TreasureBlocks.STRUCTURE_MOB_SET.get(), new Item.Properties()));
+
 	static {
 		// register all the chests
 		TreasureBlocks.CHESTS.forEach(g -> {
@@ -783,6 +797,10 @@ public class TreasureItems {
 		TAB_IGNORE.add(WITHER_PLANKS);
 		TAB_IGNORE.add(WITHER_BRANCH);
 		TAB_IGNORE.add(WITHER_ROOT);
+		// ignore LEGACY Wishing Well Block (it is renamed)
+		TAB_IGNORE.add(WISHING_WELL_ITEM);
+		TAB_IGNORE.add(STRUCTURE_MOB_SET);
+		TAB_IGNORE.add(BONE_LOCK);
 
 	}
 

@@ -17,8 +17,14 @@
  */
 package mod.gottsch.forge.treasure2.core.setup;
 
+import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.treasure2.Treasure;
+import mod.gottsch.forge.treasure2.core.enums.Rarity;
+import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
@@ -27,12 +33,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
-/**
- * 
- * @author Mark Gottschling on Aug 13, 2022
- *
- */
 public class Registration {
 	/*
 	 * deferred registries
@@ -48,10 +50,9 @@ public class Registration {
     // item properties convenience property
 	public static final Item.Properties ITEM_PROPERTIES = new Item.Properties();
 
-
-	
 	// TODO just call this method, unless one of the TreasureX.register() methods actually does more
 	// processing than just being a proxy
+
 	public static void init() {
 //		IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 //		BLOCKS.register(eventBus);

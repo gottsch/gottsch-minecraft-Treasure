@@ -67,6 +67,8 @@ public class LanguageGen extends LanguageProvider {
         add(TreasureItems.PILFERERS_LOCK_PICK.get(), "Pilferer's Lock Pick");
         add(TreasureItems.THIEFS_LOCK_PICK.get(), "Thief's Lock Pick");
         add(TreasureItems.ONE_KEY.get(), "The One Key");
+        add(TreasureItems.BONE_KEY.get(), "Bone Key");
+
         // locks
         add(TreasureItems.WOOD_LOCK.get(), "Wood Lock");
         add(TreasureItems.STONE_LOCK.get(), "Stone Lock");
@@ -84,7 +86,8 @@ public class LanguageGen extends LanguageProvider {
         
         add(TreasureItems.SPIDER_LOCK.get(), "Spider Lock");
         add(TreasureItems.WITHER_LOCK.get(), "Wither Lock");
-        
+        add(TreasureItems.BONE_LOCK.get(), "Bone Lock");
+
         // key ring
         add(TreasureItems.KEY_RING.get(), "Key Ring");     
         
@@ -104,13 +107,15 @@ public class LanguageGen extends LanguageProvider {
         add(TreasureItems.TREASURE_TOOL.get(), "Treasure Tool");
         add(TreasureItems.POUCH.get(), "Pouch");
         add(TreasureBlocks.SPANISH_MOSS.get(), "Spanish Moss");
-        add(TreasureBlocks.WISHING_WELL.get(), "Wishing Well Stone");
+        add(TreasureBlocks.WISHING_WELL.get(), "Wishing Well Mossy Cobblestone");
         add(TreasureBlocks.WISHING_WELL_COBBLESTONE.get(), "Wishing Well Cobblestone");
+        add(TreasureBlocks.WISHING_WELL_MOSSY_COBBLESTONE.get(), "Wishing Well Mossy Cobblestone");
         add(TreasureBlocks.WISHING_WELL_STONE_BRICKS.get(), "Wishing Well Stone Bricks");
         add(TreasureBlocks.WISHING_WELL_MOSSY_STONE_BRICKS.get(), "Wishing Well Mossy Stone Bricks");
         add(TreasureBlocks.DESERT_WISHING_WELL.get(), "Desert Wishing Well Stone");
         add(TreasureItems.EYE_PATCH.get(), "Eye Patch");
         add(TreasureItems.CLOVER.get(), "Four Leaf Clover");
+        add(TreasureItems.STRUCTURE_MOB_SET.get(), "Structure Mob Set");
         
         // swords
         add(TreasureItems.COPPER_SHORT_SWORD.get(), "Copper Short Sword");
@@ -178,6 +183,7 @@ public class LanguageGen extends LanguageProvider {
         add(TreasureBlocks.VANILLA_CHEST.get(), "Treasure Chest");
         add(TreasureBlocks.WITHER_CHEST.get(), "Wither Chest");
         add(TreasureBlocks.WITHER_CHEST_TOP.get(), "Wither Chest");
+        add(TreasureBlocks.BONE_CHEST.get(), "Bone Chest");
 
         // legacy wither
         add(TreasureBlocks.WITHER_BRANCH.get(), "Witherwood Branch");
@@ -385,6 +391,7 @@ public class LanguageGen extends LanguageProvider {
         add(LangUtil.screen("barrel_chest.name"), "Treasure Barrel");
         add(LangUtil.screen("vanilla_chest.name"), "Treasure Chest");
         add(LangUtil.screen("wither_chest.name"), "Wither Chest");
+        add(LangUtil.screen("bone_chest.name"), "Bone Chest");
 
         add(LangUtil.screen("treasure_map.uncommon"), "Uncommon Treasure Map");
         add(LangUtil.screen("treasure_map.scarce"), "Scarce Treasure Map");

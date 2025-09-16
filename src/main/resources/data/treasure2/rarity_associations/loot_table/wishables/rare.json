@@ -1,0 +1,5 @@
+{
+  "rarity": "treasure2:rare",
+  "loot_table": "treasure2:wishables/rare",
+  "type": "treasure2:wishables"
+}

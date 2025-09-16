@@ -55,6 +55,7 @@ public class TreasureBlockTagsProvider extends BlockTagsProvider {
 		tag(TreasureTags.Blocks.UNCOMMON_CHESTS).add(TreasureBlocks.BARREL_CHEST.get());
     	tag(TreasureTags.Blocks.SCARCE_CHESTS).add(TreasureBlocks.PIRATE_CHEST.get());
     	tag(TreasureTags.Blocks.SCARCE_CHESTS).add(TreasureBlocks.IRON_STRONGBOX.get());
+		tag(TreasureTags.Blocks.SCARCE_CHESTS).add(TreasureBlocks.BONE_CHEST.get());
     	tag(TreasureTags.Blocks.RARE_CHESTS).add(TreasureBlocks.GOLD_STRONGBOX.get());
     	tag(TreasureTags.Blocks.RARE_CHESTS).add(TreasureBlocks.SAFE.get());
     	tag(TreasureTags.Blocks.RARE_CHESTS).add(TreasureBlocks.SPIDER_CHEST.get());
@@ -73,9 +74,16 @@ public class TreasureBlockTagsProvider extends BlockTagsProvider {
 		tag(TreasureTags.Blocks.WISHING_WELL_CANDIDATES).add(Blocks.STONE_BRICKS);
 		tag(TreasureTags.Blocks.WISHING_WELL_CANDIDATES).add(Blocks.MOSSY_STONE_BRICKS);
 
+		// gravestone base
+		tag(TreasureTags.Blocks.GRAVESTONE_BASE)
+				.add(Blocks.GRASS_BLOCK,
+						Blocks.DIRT, Blocks.COARSE_DIRT, Blocks.ROOTED_DIRT,
+						Blocks.SAND, Blocks.RED_SAND,
+						Blocks.PODZOL, Blocks.MYCELIUM,
+						Blocks.STONE, Blocks.RED_TERRACOTTA, Blocks.YELLOW_TERRACOTTA);
+
 		tag(BlockTags.FENCES).add(TreasureBlocks.WITHERWOOD_FENCE.get());
 		tag(BlockTags.WOODEN_FENCES).add(TreasureBlocks.WITHERWOOD_FENCE.get());
-		;
 	}
 
 }

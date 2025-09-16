@@ -1,0 +1,15 @@
+{
+  "name": "treasure2:well/forest/wishing_wells",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:well/unique/forest_well_1_top",
+        "projection": "rigid",
+        "processors": "treasure2:wells_processors"
+      }
+    }
+  ]
+}

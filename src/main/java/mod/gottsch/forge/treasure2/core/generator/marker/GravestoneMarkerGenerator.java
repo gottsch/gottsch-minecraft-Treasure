@@ -44,6 +44,7 @@ import net.minecraftforge.registries.RegistryObject;
  * @author Mark Gottschling on Jan 27, 2019
  *
  */
+@Deprecated
 public class GravestoneMarkerGenerator implements IMarkerGenerator<GeneratorResult<GeneratorData>> {
 	private static final int SMALL_GRID = 4;
 	private static final int MEDIUM_GRID = 5;

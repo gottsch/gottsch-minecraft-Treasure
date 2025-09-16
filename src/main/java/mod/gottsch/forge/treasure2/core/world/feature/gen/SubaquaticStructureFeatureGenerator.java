@@ -25,13 +25,11 @@ import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.config.ChestFeaturesConfiguration.ChestRarity;
+import mod.gottsch.forge.treasure2.core.config.ChestPlacementConfiguration.ChestRarity;
 import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
 import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
 import mod.gottsch.forge.treasure2.core.generator.chest.IChestGenerator;
-import mod.gottsch.forge.treasure2.core.generator.ruin.IRuinGenerator;
 import mod.gottsch.forge.treasure2.core.registry.RarityLevelWeightedChestGeneratorRegistry;
-import mod.gottsch.forge.treasure2.core.registry.RuinGeneratorRegistry;
 import mod.gottsch.forge.treasure2.core.structure.StructureCategory;
 import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 import mod.gottsch.forge.treasure2.core.world.feature.IFeatureGenContext;
@@ -71,32 +69,33 @@ public class SubaquaticStructureFeatureGenerator implements IFeatureGenerator {
 		ICoords markerCoords = floorCoords;
 		
 		// select a ruins generator
-		IRuinGenerator<GeneratorResult<ChestGeneratorData>> ruinGenerator = selectGenerator(context, coords, rarity);
-		
-		// select a template
-		// generate structure
-		Optional<GeneratorResult<ChestGeneratorData>> ruinResult = ruinGenerator.generate(context, coords, null);
-		if (!ruinResult.isPresent()) {
-			return Optional.empty();
-		}
-		Treasure.LOGGER.debug("ruin surface result -> {}", ruinResult.toString());
-
-		IChestGenerator chestGenerator = RarityLevelWeightedChestGeneratorRegistry.getNextGenerator(rarity, FeatureType.TERRANEAN);
-		GeneratorResult<ChestGeneratorData> chestResult = chestGenerator.generate(context, ruinResult.get().getData().getCoords(), rarity, null);
-		if (!chestResult.isSuccess()) {
-			return Optional.empty();
-		}
-
-		GeneratorResult<ChestGeneratorData> generationResult = new GeneratorResult<>(ChestGeneratorData.class);
-//		generationResult.getData().setPlacement(RegionPlacement.SURFACE);
-		generationResult.getData().setCoords(chestResult.getData().getCoords());
-		generationResult.getData().setSpawnCoords(coords);
-		generationResult.getData().setRegistryName(chestResult.getData().getRegistryName());
-		generationResult.getData().setRarity(rarity);
-		generationResult.getData().setStructure(true);
-		
-		Treasure.LOGGER.info("CHEATER! {} chest at coords: {}", rarity, coords.toShortString());
-		return Optional.ofNullable(generationResult);
+//		IRuinGenerator<GeneratorResult<ChestGeneratorData>> ruinGenerator = selectGenerator(context, coords, rarity);
+//
+//		// select a template
+//		// generate structure
+//		Optional<GeneratorResult<ChestGeneratorData>> ruinResult = ruinGenerator.generate(context, coords, null);
+//		if (!ruinResult.isPresent()) {
+//			return Optional.empty();
+//		}
+//		Treasure.LOGGER.debug("ruin surface result -> {}", ruinResult.toString());
+//
+//		IChestGenerator chestGenerator = RarityLevelWeightedChestGeneratorRegistry.getNextGenerator(rarity, FeatureType.TERRANEAN);
+//		GeneratorResult<ChestGeneratorData> chestResult = chestGenerator.generate(context, ruinResult.get().getData().getCoords(), rarity, null);
+//		if (!chestResult.isSuccess()) {
+//			return Optional.empty();
+//		}
+//
+//		GeneratorResult<ChestGeneratorData> generationResult = new GeneratorResult<>(ChestGeneratorData.class);
+////		generationResult.getData().setPlacement(RegionPlacement.SURFACE);
+//		generationResult.getData().setCoords(chestResult.getData().getCoords());
+//		generationResult.getData().setSpawnCoords(coords);
+//		generationResult.getData().setRegistryName(chestResult.getData().getRegistryName());
+//		generationResult.getData().setRarity(rarity);
+//		generationResult.getData().setStructure(true);
+//
+//		Treasure.LOGGER.info("CHEATER! {} chest at coords: {}", rarity, coords.toShortString());
+//		return Optional.ofNullable(generationResult);
+		return Optional.empty();
 	}
 
 	/**
@@ -106,10 +105,10 @@ public class SubaquaticStructureFeatureGenerator implements IFeatureGenerator {
 	 * @param rarity
 	 * @return
 	 */
-	public IRuinGenerator<GeneratorResult<ChestGeneratorData>> selectGenerator(IWorldGenContext context, ICoords coords, IRarity rarity) {
-		List<IRuinGenerator<GeneratorResult<ChestGeneratorData>>> generators = RuinGeneratorRegistry.get(StructureCategory.SUBAQUATIC);
-		IRuinGenerator<GeneratorResult<ChestGeneratorData>> generator = generators.get(context.random().nextInt(generators.size()));
-		return generator;
-	}
+//	public IRuinGenerator<GeneratorResult<ChestGeneratorData>> selectGenerator(IWorldGenContext context, ICoords coords, IRarity rarity) {
+//		List<IRuinGenerator<GeneratorResult<ChestGeneratorData>>> generators = RuinGeneratorRegistry.get(StructureCategory.SUBAQUATIC);
+//		IRuinGenerator<GeneratorResult<ChestGeneratorData>> generator = generators.get(context.random().nextInt(generators.size()));
+//		return generator;
+//	}
 
 }

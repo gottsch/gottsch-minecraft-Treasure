@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import mod.gottsch.forge.treasure2.core.rarity.IRarityEntry;
 import org.apache.commons.lang3.mutable.MutableObject;
 
 import com.google.common.collect.ArrayListMultimap;
@@ -39,6 +40,7 @@ import net.minecraftforge.registries.RegistryObject;
  * @author Mark Gottschling on Nov 11, 2022
  *
  */
+@Deprecated
 public class KeyLockRegistry {
 
 	/*
@@ -109,19 +111,23 @@ public class KeyLockRegistry {
 			LOCK_RARITY_BY_NAME.put(lock.getId(), new MutableObject<>(rarity));
 		}
 	}
-		
+
+	@Deprecated
 	public static List<RegistryObject<KeyItem>> getKeys() {
 		return new ArrayList<>(KEYS_BY_NAME.values());
 	}
-	
+
+	@Deprecated
 	public static List<RegistryObject<KeyItem>> getKeys(IRarity rarity) {
 		return new ArrayList<>(KEYS_BY_RARITY.get(rarity));
 	}
-	
+
+	@Deprecated
 	public static List<RegistryObject<LockItem>> getLocks() {
 		return new ArrayList<>(LOCKS_BY_NAME.values());
 	}
-	
+
+	@Deprecated
 	public static List<RegistryObject<LockItem>> getLocks(IRarity rarity) {
 		return new ArrayList<>(LOCKS_BY_RARITY.get(rarity));
 	}

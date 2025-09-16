@@ -40,8 +40,9 @@ import net.minecraft.util.RandomSource;
  * @author Mark Gottschling on Dec 4, 2019
  *
  */
-public class ScarceChestGenerator extends AbstractChestGenerator {
-	
+public class ScarceChestGenerator implements IChestGenerator {
+	// TEMP
+	public String getName() { return "";}
 	/**
 	 * 
 	 */
@@ -51,7 +52,6 @@ public class ScarceChestGenerator extends AbstractChestGenerator {
 	
 	/**
 	 * 
-	 * @param random
 	 * @param chestRarity
 	 * @return
 	 */

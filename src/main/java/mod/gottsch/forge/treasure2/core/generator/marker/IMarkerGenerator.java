@@ -35,6 +35,7 @@ import net.minecraft.world.level.biome.Biome;
  * @author Mark Gottschling on Jan 27, 2019
  *
  */
+@Deprecated
 public interface IMarkerGenerator<RESULT extends IGeneratorResult<?>> {
 
 	/**

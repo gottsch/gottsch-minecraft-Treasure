@@ -53,10 +53,15 @@ import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.fml.ModList;
 
 /**
+ * TODO can we use Mixins or Accessors to be able to get the LootPool name, which would
+ * 	remove the need for this entire registry.
+ * TODO why walking the JARS, file system? couldn't we just walk the buildin registry for loot tables
+ * 	and examine the registry/resourceLocation
  * Use this registry to register all your mod's custom loot table for Treasure2.
  * @author Mark Gottschling on Dec 4, 2020
  *
  */
+@Deprecated
 public final class TreasureLootTableRegistry {
 	public static final Logger LOGGER = LogManager.getLogger(Treasure.LOGGER.getName());
 
@@ -184,6 +189,8 @@ public final class TreasureLootTableRegistry {
 	 */
 	public static void registerLootTable(ILootTableType key, Path path, Optional<LootTableShell> shell) {
 		if (shell.isPresent()) {
+			// TODO update to use IRarityEntry / TreasureRarities
+			//		currently it is converting the path to a rarity
 			// determine rarity TODO maybe should go the other way. path.getName(4)
 			Optional<IRarity> rarity = TreasureApi.getRarity(path.getName(path.getNameCount()-2).toString().toUpperCase());
 			if (rarity.isPresent()) {
@@ -337,8 +344,7 @@ public final class TreasureLootTableRegistry {
 	// these should be check first when accessing and default to the jar versions.
 
 	/**
-	 * Only load once - not per  registered mod.
-	 * @param modID
+	 * Only load once - not per registered mod.
 	 */
 	public static void loadDataPacks(String modID_xxx) {
 		String worldSaveFolderPathName = getWorldSaveFolder().toString();

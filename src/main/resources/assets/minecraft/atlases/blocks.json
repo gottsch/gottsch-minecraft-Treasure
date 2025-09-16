@@ -62,5 +62,8 @@
   }, {
     "type" : "single",
     "resource" : "treasure2:entity/chest/vanilla_chest"
+  }, {
+    "type" : "single",
+    "resource" : "treasure2:entity/chest/bone_chest"
   }]
 }

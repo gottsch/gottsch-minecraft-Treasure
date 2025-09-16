@@ -19,7 +19,6 @@ package mod.gottsch.forge.treasure2.core.config;
 
 import java.util.*;
 
-import mod.gottsch.forge.treasure2.core.enums.MarkerType;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.electronwill.nightconfig.core.CommentedConfig;
@@ -421,7 +420,7 @@ public class Config extends AbstractConfig {
 
 				spawnerProbability = builder
 						.comment(" The probability that a gravestone will spawn a mob.", " Currently gravestones can spawn Bound Souls.")
-						.defineInRange("spawnerProbability", 25, 1, 100);
+						.defineInRange("spawnerProbability", 15, 1, 100);
 
 				builder.pop();
 			}
@@ -645,7 +644,7 @@ public class Config extends AbstractConfig {
 	/*
 	 * exposed chest configurations
 	 */
-	public static ChestFeaturesConfiguration chestConfig;
+	public static ChestPlacementConfiguration chestConfig;
 //	public static Map<ResourceLocation, ChestConfiguration> chestConfigMap;
 
 	static {
@@ -778,7 +777,7 @@ public class Config extends AbstractConfig {
 	 *
 	 */
 	private static class ChestConfigsHolder {
-		public List<ChestFeaturesConfiguration> chestConfigs;
+		public List<ChestPlacementConfiguration> chestConfigs;
 	}
 
 	private static class StructureConfigurationHolder {

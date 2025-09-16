@@ -31,6 +31,7 @@ import mod.gottsch.forge.gottschcore.enums.IRarity;
  * @author Mark Gottschling May 9, 2023
  *
  */
+@Deprecated
 public enum SpecialRarity implements IRarity {
 	SKULL(101, "skull"),
 	GOLD_SKULL(102, "gold_skull"),

@@ -26,6 +26,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -33,6 +34,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -49,7 +52,9 @@ public class SkeletonBlock extends GravestoneBlock {
 	 */
 	public SkeletonBlock(Block.Properties properties) {
 		super(properties);
-		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(PART, SkeletonBlock.EnumPartType.BOTTOM));
+		this.registerDefaultState(this.stateDefinition.any()
+				.setValue(WATERLOGGED, Boolean.valueOf(false))
+				.setValue(PART, SkeletonBlock.EnumPartType.BOTTOM));
 
 		VoxelShape shape = Block.box(1, 0, 0, 15, 6, 16);
 		setBounds(
@@ -66,11 +71,12 @@ public class SkeletonBlock extends GravestoneBlock {
 	 */
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
-		builder.add(PART, FACING);
+		super.createBlockStateDefinition(builder);
+		builder.add(PART);
 	}
 
 	/**
-	 * Called by ItemBlocks after a block is set in the world, to allow post-place logic
+	 * called by ItemBlocks after a block is set in the world, to allow post-place logic
 	 * ie. after the bottom/feet has been placed
 	 */
 	@Override
@@ -78,7 +84,12 @@ public class SkeletonBlock extends GravestoneBlock {
 		super.setPlacedBy(level, pos, state, placer, stack);
 		if (WorldInfo.isServerSide(level)) {
 			BlockPos blockPos = pos.relative(state.getValue(FACING).getOpposite());
-			level.setBlock(blockPos, state.setValue(PART, SkeletonBlock.EnumPartType.TOP), 3);
+
+			// Check for water at the second position
+			FluidState otherFluidState = level.getFluidState(blockPos);
+			boolean isWaterAtOther = otherFluidState.getType() == Fluids.WATER;
+
+			level.setBlock(blockPos, state.setValue(PART, SkeletonBlock.EnumPartType.TOP).setValue(WATERLOGGED, isWaterAtOther), 3);
 			level.blockUpdated(pos, Blocks.AIR);
 			state.updateNeighbourShapes(level, pos, 3);
 		}

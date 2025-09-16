@@ -404,7 +404,8 @@ public class TreasureTemplateRegistry {
 			TreasureApi.registerTemplates(Treasure.MODID);
 			Treasure.LOGGER.debug("template registry world load event...");
 			loadDataPacks(getMarkerScanList(), getReplacementMap());
-			registerAccesslists(Config.structureConfiguration.getStructMetas());
+//			8/25/2025
+//			registerAccesslists(Config.structureConfiguration.getStructMetas());
 		}
 	}
 

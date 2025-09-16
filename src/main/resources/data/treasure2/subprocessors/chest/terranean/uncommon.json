@@ -1,0 +1,21 @@
+{
+  "type": "treasure2:standard",
+  "rarity": "treasure2:uncommon",
+  "mimic": 0.1,
+  "loot_table_rarities": [
+    {
+      "rarity": "treasure2:common",
+      "weight": 10
+    },
+    {
+      "rarity": "treasure2:uncommon",
+      "weight": 80
+    },
+    {
+      "rarity": "treasure2:scarce",
+      "weight": 10
+    }
+  ],
+  "lock_rarities": ["treasure2:common", "treasure2:uncommon"],
+  "biomes_blacklist":["minecraft:plains", "minecraft:sunflower_plains", "#treasure2:common_blacklist"]
+}

@@ -34,6 +34,7 @@ import net.minecraft.nbt.Tag;
  * @author Mark Gottschling Feb 10, 2023
  *
  */
+@Deprecated
 public class RarityLevelWeightedCollection extends LevelWeightedCollection<IRarity> {
 
 	public RarityLevelWeightedCollection() {

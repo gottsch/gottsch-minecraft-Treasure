@@ -57,12 +57,11 @@ public class GravestoneProximitySpawnerBlockEntity extends ProximitySpawnerBlock
 	 */
 	public GravestoneProximitySpawnerBlockEntity(BlockPos pos, BlockState state) {
 		super(TreasureBlockEntities.GRAVESTONE_PROXIMITY_SPAWNER_ENTITY_TYPE.get(), pos, state);
-		setProximity(20D);
+		setProximity(10D);
 		setMobName(new ResourceLocation(Treasure.MODID, "bound_soul"));
 		setMobNum(new DoubleRange(1, 1));
-		setProximity(3D);
-		setHasEntity(true); // TEMP true
-		Treasure.LOGGER.debug("Created Gravestone tile entity");
+		setHasEntity(true);
+//		Treasure.LOGGER.debug("Created Gravestone tile entity");
 	}
 
 	/**

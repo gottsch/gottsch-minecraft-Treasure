@@ -99,7 +99,7 @@ public class CloverItem extends Item {
 				// NOTE if adding any more types of bricks, use a Map
 				Block activeBlock = context.getLevel().getBlockState(activePos).getBlock();
 				if (activeBlock.equals(Blocks.MOSSY_COBBLESTONE)) {
-					context.getLevel().setBlockAndUpdate(activePos, TreasureBlocks.WISHING_WELL.get().defaultBlockState());
+					context.getLevel().setBlockAndUpdate(activePos, TreasureBlocks.WISHING_WELL_MOSSY_COBBLESTONE.get().defaultBlockState());
 				} else if (activeBlock.equals(Blocks.COBBLESTONE)) {
 					context.getLevel().setBlock(activePos, TreasureBlocks.WISHING_WELL_COBBLESTONE.get().defaultBlockState(), 3);
 				} else if (activeBlock.equals(Blocks.MOSSY_STONE_BRICKS)) {
@@ -107,7 +107,7 @@ public class CloverItem extends Item {
 				} else if (activeBlock.equals(Blocks.STONE_BRICKS)) {
 					context.getLevel().setBlockAndUpdate(activePos, TreasureBlocks.WISHING_WELL_STONE_BRICKS.get().defaultBlockState());
 				} else {
-					context.getLevel().setBlockAndUpdate(activePos, TreasureBlocks.WISHING_WELL.get().defaultBlockState());
+					context.getLevel().setBlockAndUpdate(activePos, TreasureBlocks.WISHING_WELL_MOSSY_COBBLESTONE.get().defaultBlockState());
 				}
 
 				RandomSource random = context.getLevel().getRandom();

@@ -30,6 +30,7 @@ import mod.gottsch.forge.gottschcore.enums.IEnum;
  * @author Mark Gottschling on Jul 15, 2019
  *
  */
+@Deprecated
 public enum PitType implements IPitType {
 	STANDARD(0, "standard"),
 	STRUCTURE(1, "structure"),

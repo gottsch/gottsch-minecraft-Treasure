@@ -24,6 +24,7 @@ import mod.gottsch.forge.gottschcore.enums.IEnum;
  * @author Mark Gottschling on May 15, 2023
  *
  */
+@Deprecated
 public interface ISubaquaticType extends IEnum {
 
 }

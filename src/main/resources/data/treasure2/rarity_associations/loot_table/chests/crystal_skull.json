@@ -1,0 +1,5 @@
+{
+  "rarity": "treasure2:crystal_skull",
+  "loot_table": "treasure2:chests/crystal_skull",
+  "type": "treasure2:chests"
+}

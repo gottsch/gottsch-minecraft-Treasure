@@ -26,6 +26,7 @@ public class TreasureLootGenerators {
 	
 	public static final ILootGenerator GLOBAL_MODIFIER = new GlobalLootModifierLootGenerator();
 //	public static final ILootGenerator WISHABLE = new WishableLootGenerator();
-	
+
+	// TODO this doesn't belong here?? move to TreasureLootTables or something
 	public static final String TREASURE_POOL = "treasure";
 }

@@ -1,3 +1,18 @@
+/*
+ * This file is part of Treasure2.
+ * Copyright (c) 2025 Mark Gottschling (gottsch)
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the Open Software Licence 3.0.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * Open Software Licence 3.0 for more details.
+ *
+ * You should have received a copy of the Open Software Licence
+ * along with Treasure2. If not, see <https://www.tldrlegal.com/license/open-software-licence-3-0>.
+ */
 package mod.gottsch.forge.treasure2;
 
 import com.electronwill.nightconfig.core.CommentedConfig;
@@ -10,11 +25,16 @@ import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
 import mod.gottsch.forge.treasure2.core.inventory.TreasureContainers;
 import mod.gottsch.forge.treasure2.core.item.TreasureCreativeModeTabs;
 import mod.gottsch.forge.treasure2.core.item.TreasureItems;
+import mod.gottsch.forge.treasure2.core.loot.TreasureLootTableTypes;
 import mod.gottsch.forge.treasure2.core.loot.modifier.TreasureLootModifiers;
 import mod.gottsch.forge.treasure2.core.particle.TreasureParticles;
+import mod.gottsch.forge.treasure2.core.rarity.TreasureRarities;
 import mod.gottsch.forge.treasure2.core.setup.ClientSetup;
 import mod.gottsch.forge.treasure2.core.setup.CommonSetup;
 import mod.gottsch.forge.treasure2.core.sound.TreasureSounds;
+import mod.gottsch.forge.treasure2.core.structure.TreasureStructures;
+import mod.gottsch.forge.treasure2.core.structure.templatesystem.ModProcessors;
+import mod.gottsch.forge.treasure2.core.structure.templatesystem.chest.TreasureChestSubprocessors;
 import mod.gottsch.forge.treasure2.core.world.feature.TreasureConfiguredFeatures;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -49,9 +69,9 @@ public class Treasure {
 	// constants
 	public static final String MODID = "treasure2";
 
-	private static final String CHESTS_CONFIG_VERSION = "1.20.1-v3";
-	private static final String STRUCTURES_CONFIG_VERSION = "1.20.1-v4";
-	private static final String MOBS_CONFIG_VERSION = "1.20.1-v2";
+//	private static final String CHESTS_CONFIG_VERSION = "1.20.1-v4";
+//	private static final String STRUCTURES_CONFIG_VERSION = "1.20.1-v4";
+	private static final String MOBS_CONFIG_VERSION = "1.20.1-v3";
 	
 	public static Treasure instance;
 
@@ -62,12 +82,12 @@ public class Treasure {
 		Treasure.instance = this;
 		Config.register();
 		// create the default configs
-		createServerConfig(Config.CHESTS_CONFIG_SPEC, "chests", CHESTS_CONFIG_VERSION);
-		createServerConfig(Config.STRUCTURE_CONFIG_SPEC, "structures", STRUCTURES_CONFIG_VERSION);
+//		createServerConfig(Config.CHESTS_CONFIG_SPEC, "chests", CHESTS_CONFIG_VERSION);
+//		createServerConfig(Config.STRUCTURE_CONFIG_SPEC, "structures", STRUCTURES_CONFIG_VERSION);
 		createServerConfig(Config.MOBS_CONFIG_SPEC, "mobs", MOBS_CONFIG_VERSION);
 
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-		
+		TreasureRarities.register(modEventBus);
 		// register the deferred registries
 		TreasureBlocks.register(modEventBus);
 		TreasureItems.register(modEventBus);
@@ -79,7 +99,12 @@ public class Treasure {
 		TreasureSounds.register(modEventBus);
 		TreasureLootModifiers.register(modEventBus);
 		TreasureCreativeModeTabs.TABS.register(modEventBus);
-		
+		TreasureStructures.register(modEventBus);
+		ModProcessors.register(modEventBus);
+		TreasureChestSubprocessors.register(modEventBus);
+		TreasureLootTableTypes.register(modEventBus);
+
+
 		// register the setup method for mod loading
 		
 		// register 'ModSetup::init' to be called at mod setup time (server and client)
@@ -109,19 +134,7 @@ public class Treasure {
 			}
 		}
 	}
-	
-	/**
-	 * 
-	 * @param event
-	 */
-//    private void interModComms(InterModEnqueueEvent event) {
-//        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.CHARM.getMessageBuilder().build());
-//        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.NECKLACE.getMessageBuilder().build());
-//        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.RING.getMessageBuilder().build());
-//        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.BRACELET.getMessageBuilder().build());
-//        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.BELT.getMessageBuilder().build());
-//    }
-    
+
 	/**
 	 * On a config event.
 	 * @param event

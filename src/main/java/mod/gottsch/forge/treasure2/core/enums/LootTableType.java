@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import mod.gottsch.forge.gottschcore.enums.IEnum;
 
+@Deprecated
 public enum LootTableType implements ILootTableType {
 	CHESTS(0, "chests"),
 	WISHABLES(1, "wishables"),

@@ -26,7 +26,7 @@ import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.*;
-import mod.gottsch.forge.treasure2.core.config.ChestFeaturesConfiguration.ChestRarity;
+import mod.gottsch.forge.treasure2.core.config.ChestPlacementConfiguration.ChestRarity;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.enums.PitType;
 import mod.gottsch.forge.treasure2.core.enums.SpecialRarity;
@@ -204,7 +204,7 @@ public class WitherFeatureGenerator2 implements IWitherFeatureGenerator {
 		
 		// TODO determine underground coords
 		// determine spawn coords below ground
-		Optional<ICoords> undergroundCoords = getUndergroundSpawnPos(context.level(), context.random(), spawnCoords, config.getMinDepth(), config.getMaxDepth());
+		Optional<ICoords> undergroundCoords = null; //getUndergroundSpawnPos(context.level(), context.random(), spawnCoords, config.getMinDepth(), config.getMaxDepth());
 
 		if (undergroundCoords.isEmpty()) {
 			Treasure.LOGGER.debug("unable to spawn underground @ {}", spawnCoords);
@@ -485,7 +485,7 @@ public class WitherFeatureGenerator2 implements IWitherFeatureGenerator {
 					// add the branch to the world
 					//					world.setBlockState(c.toPos(), state, 3);
 					WorldInfo.setBlock(context.level(), newCoords, state);
-					//					 Treasure.logger.debug("Wither Tree building root @ " +  coords.toShortString());					
+					//					 Treasure.logger.debug("Wither Tree building root @ " +  coords.toShortString());
 				}
 			}
 		}

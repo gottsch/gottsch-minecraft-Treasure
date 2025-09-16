@@ -22,11 +22,11 @@ package mod.gottsch.forge.treasure2.core.block.entity;
 import mod.gottsch.forge.gottschcore.block.entity.AbstractProximityBlockEntity;
 import mod.gottsch.forge.gottschcore.random.RandomHelper;
 import mod.gottsch.forge.gottschcore.random.WeightedCollection;
+import mod.gottsch.forge.gottschcore.size.IntegerRange;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.registry.MobSetRegistry;
-import mod.gottsch.forge.treasure2.core.size.IntegerRange;
 import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -36,7 +36,6 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -45,19 +44,23 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.DungeonHooks;
 import net.minecraftforge.event.ForgeEventFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
 
 public class ProximityMobSetSpawnerBlockEntity extends AbstractProximityBlockEntity {
-    private static final String MOBSET_NAME = "mobSetName";
-    private static final String MIN_MOBS = "minMobs";
-    private static final String MAX_MOBS = "maxMobs";
+    public static final String MOBSET_NAME = "mobSetName";
+    public static final String MOBSET_NAMES = "mobSetNames";
+    public static final String MIN_MOBS = "minMobs";
+    public static final String MAX_MOBS = "maxMobs";
 
     private static final ResourceLocation DEFAULT_MOB = ModUtil.asLocation("minecraft:zombie");
 
     private ResourceLocation mobSetName;
+    private List<ResourceLocation> mobSetNames;
     private IntegerRange mobSizeRange;
 
     /**
@@ -77,30 +80,48 @@ public class ProximityMobSetSpawnerBlockEntity extends AbstractProximityBlockEnt
         super.load(tag);
 
         try {
-            if (tag.contains(MOBSET_NAME)) {
-                setMobSetName(ModUtil.asLocation(tag.getString(MOBSET_NAME)));
+            Optional.ofNullable(tag.getString(MOBSET_NAME))
+                    .filter(str -> !str.isEmpty())
+                    .map(ModUtil::asLocation)
+                    .ifPresent(this::setMobSetName);
+
+            if (tag.contains(MOBSET_NAMES, Tag.TAG_LIST)) {
+                ListTag listTag = tag.getList(MOBSET_NAMES, Tag.TAG_STRING);
+                listTag.stream()
+                        .map(Tag::getAsString)
+                        .filter(str -> !str.isEmpty())
+                        .map(ModUtil::asLocation)
+                        .forEach(this.getMobSetNames()::add);
             }
 
-            int min = 1;
-            int max = 1;
-            if (tag.contains(MIN_MOBS)) {
-                min = tag.getInt(MIN_MOBS);
-            }
-            if (tag.contains(MAX_MOBS)) {
-                max = tag.getInt(MAX_MOBS);
-            }
+            int min = tag.contains(MIN_MOBS) ? tag.getInt(MIN_MOBS) : 1;
+            int max = tag.contains(MAX_MOBS) ? tag.getInt(MAX_MOBS) : 1;
             this.mobSizeRange = new IntegerRange(min, max);
 
         } catch (Exception e) {
-            Treasure.LOGGER.error("error reading TreasureProximityMultiSpawnerBlockEntity properties from tag:", e);
+            Treasure.LOGGER.error("error reading ProximityMobSetSpawnerBlockEntity properties from tag:", e);
         }
     }
 
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
-        tag.putString(MOBSET_NAME, getMobSetName().toString());
-        tag.putInt(MIN_MOBS, this.getMobSizeRange().getMin());
-        tag.putInt(MAX_MOBS, this.getMobSizeRange().getMax());
+        try {
+            if (getMobSetName() != null) {
+                tag.putString(MOBSET_NAME, getMobSetName().toString());
+            }
+            if (getMobSetNames() != null && !getMobSetNames().isEmpty()) {
+                ListTag list = new ListTag();
+                getMobSetNames().forEach(name -> {
+                    list.add(StringTag.valueOf(name.toString()));
+                });
+                tag.put(MOBSET_NAMES, list);
+            }
+            tag.putInt(MIN_MOBS, this.getMobSizeRange().getMin());
+            tag.putInt(MAX_MOBS, this.getMobSizeRange().getMax());
+    } catch(Exception e) {
+        Treasure.LOGGER.error(e);
+        throw e;
+    }
     }
 
     private void defaultMobSpawnerSettings() {
@@ -184,6 +205,14 @@ public class ProximityMobSetSpawnerBlockEntity extends AbstractProximityBlockEnt
 
     public void setMobSetName(ResourceLocation mobSetName) {
         this.mobSetName = mobSetName;
+    }
+
+    public List<ResourceLocation> getMobSetNames() {
+        return mobSetNames != null ? mobSetNames : (mobSetNames = new ArrayList<>());
+    }
+
+    public void setMobSetNames(List<ResourceLocation> mobSetNames) {
+        this.mobSetNames = mobSetNames;
     }
 
     public IntegerRange getMobSizeRange() {

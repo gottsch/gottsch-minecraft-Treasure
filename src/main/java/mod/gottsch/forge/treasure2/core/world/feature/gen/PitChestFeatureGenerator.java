@@ -27,7 +27,7 @@ import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.IWorldGenContext;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.config.ChestFeaturesConfiguration.ChestRarity;
+import mod.gottsch.forge.treasure2.core.config.ChestPlacementConfiguration.ChestRarity;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.enums.IMarkerType;
 import mod.gottsch.forge.treasure2.core.enums.MarkerType;
@@ -135,22 +135,20 @@ public class PitChestFeatureGenerator implements IFeatureGenerator {
 	 * 
 	 * @param context
 	 * @param rarity
-	 * @param spawnCoords
-	 * @param rarityConfig
 	 * @return
 	 */
 	private Optional<GeneratorResult<ChestGeneratorData>> generatePit(IWorldGenContext context, IRarity rarity,
 			ICoords markerCoords, ChestRarity config) {
 
 		// determine spawn coords below ground
-		Optional<ICoords> spawnCoords = getUndergroundSpawnPos(context.level(), context.random(), markerCoords, config.getMinDepth(), config.getMaxDepth());
+		Optional<ICoords> spawnCoords = null; //getUndergroundSpawnPos(context.level(), context.random(), markerCoords, config.getMinDepth(), config.getMaxDepth());
 
 		if (spawnCoords.isEmpty()) {
 			Treasure.LOGGER.debug("unable to spawn underground @ {}", markerCoords);
 			return Optional.empty();
 		}
 		Treasure.LOGGER.debug("below ground -> {}", spawnCoords.get().toShortString());
-		
+
 		// select a pit generator
 		IPitGenerator<GeneratorResult<ChestGeneratorData>> pitGenerator = selectPitGenerator(context.random());
 		Treasure.LOGGER.debug("Using pit generator -> {}", pitGenerator.getClass().getSimpleName());

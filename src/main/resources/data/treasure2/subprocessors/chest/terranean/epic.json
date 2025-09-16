@@ -1,0 +1,12 @@
+{
+  "type": "treasure2:high_tier_rarity",
+  "rarity": "treasure2:epic",
+  "mimic": 0.3,
+  "loot_table_rarities": [
+    {
+      "rarity": "treasure2:epic"
+    }
+  ],
+  "lock_rarities": ["treasure2:rare", "treasure2:epic"],
+  "biomes_blacklist":["minecraft:plains", "minecraft:sunflower_plains", "#treasure2:common_blacklist"]
+}

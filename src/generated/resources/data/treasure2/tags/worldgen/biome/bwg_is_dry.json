@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "#treasure2:bwg_desert",
+      "required": false
+    },
+    {
+      "id": "biomeswevegone:sierra_badlands",
+      "required": false
+    }
+  ]
+}

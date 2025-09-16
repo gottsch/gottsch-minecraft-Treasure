@@ -36,6 +36,16 @@ import net.minecraft.world.level.block.Rotation;
  */
 public class GeometryUtil {
 
+    public static Rotate fromRotation(Rotation rotation) {
+
+        return switch (rotation) {
+            case CLOCKWISE_90 -> Rotate.ROTATE_90;
+            case CLOCKWISE_180 -> Rotate.ROTATE_180;
+            case COUNTERCLOCKWISE_90 -> Rotate.ROTATE_270;
+            case NONE -> Rotate.NO_ROTATE;
+        };
+    }
+
     /**
      * NOTE this method is standard math cartesian plane, where
      * N/Up = +y, E/right = +x, S/down = -y, and W/left = -x

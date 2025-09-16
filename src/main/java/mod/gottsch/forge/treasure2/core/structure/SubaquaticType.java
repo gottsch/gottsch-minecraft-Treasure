@@ -30,6 +30,7 @@ import mod.gottsch.forge.gottschcore.enums.IEnum;
  * @author Mark Gottschling on May 15, 2023
  *
  */
+@Deprecated
 public enum SubaquaticType implements ISubaquaticType {
 	NONE(-1, "none"),
 	SHALLOW(0, "shallow");

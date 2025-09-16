@@ -60,39 +60,41 @@ public class WorldEventHandler {
 			 *  when all blocks, items, etc are registered and tags are read in.
 			 */
 
-			ResourceLocation dimension = WorldInfo.getDimension((Level) event.getLevel());			
+			ResourceLocation dimension = WorldInfo.getDimension((Level) event.getLevel());
 			Treasure.LOGGER.info("In world load event for dimension {}", dimension.toString());
 			
 			/*
 			 *  cache the world save folder and pass into each registry.
 			 */
-			Optional<Path> worldSavePath = ModUtil.getWorldSaveFolder((ServerLevel)event.getLevel());
-			if (worldSavePath.isPresent()) {
-				if ((!isLoaded && Config.SERVER.integration.dimensionsWhiteList.get().contains(dimension.toString())) ||
-						!worldSavePath.get().equals(WorldEventHandler.worldSavePath)) {
+//			Optional<Path> worldSavePath = ModUtil.getWorldSaveFolder((ServerLevel)event.getLevel());
+//			if (worldSavePath.isPresent()) {
+				if ((!isLoaded && Config.SERVER.integration.dimensionsWhiteList.get().contains(dimension.toString()))
+//						||
+//						!worldSavePath.get().equals(WorldEventHandler.worldSavePath)
+				) {
 
 					Treasure.LOGGER.debug("reading in chests config...");
-					DimensionalGeneratedCache.initialize();
-					RarityLevelWeightedChestGeneratorRegistry.initialize();
+//					DimensionalGeneratedCache.initialize();
+//					RarityLevelWeightedChestGeneratorRegistry.initialize();
 
 					// initialize mob sets
 					MobSetRegistry.initialize();
 
 					// initialize feature caches
-					FeatureCaches.initialize();
+//					FeatureCaches.initialize();
 					
 					// fix data		
 					TreasureDataFixer.fix();
 					
 					// cache the folder
-					WorldEventHandler.worldSavePath = worldSavePath.get();
+//					WorldEventHandler.worldSavePath = worldSavePath.get();
 					
 					// register mod's loot tables
-					TreasureLootTableRegistry.onWorldLoad(event, WorldEventHandler.worldSavePath);
-					TreasureTemplateRegistry.onWorldLoad(event, WorldEventHandler.worldSavePath);				
+//					TreasureLootTableRegistry.onWorldLoad(event, WorldEventHandler.worldSavePath);
+//					TreasureTemplateRegistry.onWorldLoad(event, WorldEventHandler.worldSavePath);
 					TreasureSavedData.get((Level)event.getLevel());
 					isLoaded = true;
-				}
+//				}
 
 			} else {
 				Treasure.LOGGER.warn("unable to locate the world save folder.");

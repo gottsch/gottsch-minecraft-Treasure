@@ -90,11 +90,12 @@ public class TagRegistry {
 	public static void registerChests(IRarity rarity, TagKey<Block> chestTag) {
 		registerTags(rarity, Triple.of(null, null, chestTag));
 	}
-	
-	public static void registerWishable(IRarity rarity, TagKey<Item> wishableTag) {
-//		registerRarity(rarity);
-		registerWishableTag(rarity, wishableTag);
-	}
+
+//	@Deprecated
+//	public static void registerWishable(IRarity rarity, TagKey<Item> wishableTag) {
+////		registerRarity(rarity);
+//		registerWishableTag(rarity, wishableTag);
+//	}
 
 	public static void registerBiomeWhitelist(IRarity rarity, TagKey<Biome> tag) {
 		registerBiomeWhitelistTag(rarity, tag);
@@ -181,17 +182,19 @@ public class TagRegistry {
 	}
 
 	// TODO this should return optional
-	public static TagKey<Item> getWishableTag(IRarity rarity) {
-		if (WISHABLE_TAGS_REGISTRY.containsKey(rarity)) {
-			return WISHABLE_TAGS_REGISTRY.get(rarity);
-		}
-		return null;
-	}
-	
-	public static List<IRarity> getWishableKeys() {
-		Set<IRarity> keys = WISHABLE_TAGS_REGISTRY.keySet();
-		return new ArrayList<>(keys);
-	}
+//	@Deprecated
+//	public static TagKey<Item> getWishableTag(IRarity rarity) {
+//		if (WISHABLE_TAGS_REGISTRY.containsKey(rarity)) {
+//			return WISHABLE_TAGS_REGISTRY.get(rarity);
+//		}
+//		return null;
+//	}
+//
+//	@Deprecated
+//	public static List<IRarity> getWishableKeys() {
+//		Set<IRarity> keys = WISHABLE_TAGS_REGISTRY.keySet();
+//		return new ArrayList<>(keys);
+//	}
 
 	public static Optional<TagKey<Biome>> getBiomeWhitelistTag(IRarity rarity) {
 		if(BIOME_WHITELIST_TAGS_REGISTRY.containsKey(rarity)) {

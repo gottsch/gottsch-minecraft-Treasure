@@ -20,7 +20,7 @@ package mod.gottsch.forge.treasure2.core.config;
 import mod.gottsch.forge.gottschcore.size.DoubleRange;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
-import mod.gottsch.forge.treasure2.core.size.IntegerRange;
+import mod.gottsch.forge.gottschcore.size.IntegerRange;
 
 import java.util.ArrayList;
 import java.util.List;

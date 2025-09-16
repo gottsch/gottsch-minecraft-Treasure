@@ -17,12 +17,10 @@
  */
 package mod.gottsch.forge.treasure2.core.generator;
 
-import java.util.List;
-import java.util.Optional;
-
 import mod.gottsch.forge.gottschcore.block.BlockContext;
 import mod.gottsch.forge.gottschcore.random.RandomHelper;
 import mod.gottsch.forge.gottschcore.size.DoubleRange;
+import mod.gottsch.forge.gottschcore.size.IntegerRange;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.Heading;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
@@ -42,7 +40,6 @@ import mod.gottsch.forge.treasure2.core.config.StructureConfiguration;
 import mod.gottsch.forge.treasure2.core.generator.template.TemplatePoiInspector;
 import mod.gottsch.forge.treasure2.core.registry.MimicRegistry;
 import mod.gottsch.forge.treasure2.core.registry.TreasureTemplateRegistry;
-import mod.gottsch.forge.treasure2.core.size.IntegerRange;
 import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -56,10 +53,14 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraftforge.common.DungeonHooks;
-import net.minecraftforge.registries.ForgeRegistries;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Random;
 
 
 /**
@@ -73,7 +74,7 @@ public class GeneratorUtil {
 		/**
 		 * convenience method
 		 * 
-		 * @param offset
+		 * @param marker
 		 * @return
 		 */
 		public static Block getMarkerBlock(StructureMarkers marker) {
@@ -83,7 +84,6 @@ public class GeneratorUtil {
 	/**
 	 * 
 	 * @param world
-	 * @param random
 	 * @param coords
 	 * @param block
 	 * @return
@@ -160,7 +160,7 @@ public class GeneratorUtil {
 	 * 
 	 * @param level
 	 * @param chest
-	 * @param pos
+	 * @param coords
 	 * @return
 	 */
 	public static boolean placeChest(ServerLevelAccessor level, Block chest, ICoords coords, Direction direction, boolean discovered) {
@@ -345,6 +345,8 @@ public class GeneratorUtil {
 	 * @return
 	 */
 	public static Optional<MobSetConfiguration.MobSet> selectMobSet(IWorldGenContext context, TemplatePoiInspector inspector, StructureConfiguration.StructMeta meta) {
+
+		// TODO use Optional
 		MobSetConfiguration.MobSet mobSet = null;
 		if(StringUtils.isNotBlank(meta.getMobSet()) || !meta.getMobSets().isEmpty()) {
 
@@ -367,11 +369,52 @@ public class GeneratorUtil {
 	}
 
 	/**
-	 * TODO need to pass in the loot table
-	 * @param context
-	 * @param placement
-	 * @param inspector
+	 * NEW 8/14/2025
+	 * @param random
+	 * @param meta
+	 * @return
 	 */
+	public static Optional<MobSetConfiguration.MobSet> selectMobSet(Random random, StructureConfiguration.StructMeta meta) {
+		MobSetConfiguration.MobSet mobSet = null;
+		if(StringUtils.isNotBlank(meta.getMobSet()) || !meta.getMobSets().isEmpty()) {
+			// first try and select a mobSet from the mobSets
+			ResourceLocation mobSetName = null;
+			if (!meta.getMobSets().isEmpty()) {
+				mobSetName = ModUtil.asLocation(meta.getMobSets().get(random.nextInt(meta.getMobSets().size())));
+			} else {
+				mobSetName = ModUtil.asLocation(meta.getMobSet());
+			}
+
+			Treasure.LOGGER.debug("meta has a mob set -> {}", mobSetName);
+
+			if (Config.mobSetMap.containsKey(mobSetName)) {
+				mobSet = Config.mobSetMap.get(mobSetName);
+				return Optional.ofNullable(mobSet);
+			}
+		}
+		return Optional.empty();
+	}
+
+	public static Optional<MobSetConfiguration.MobSet> selectMobSet(Random random, List<String> mobSets) {
+
+		// check if the list is not null and not empty, then get a random element.
+		return Optional.ofNullable(mobSets)
+				.filter(mobList -> !mobList.isEmpty())
+				.map(mobList -> ModUtil.asLocation(mobList.get(random.nextInt(mobList.size()))))
+				.map(mobSetName -> {
+					Treasure.LOGGER.debug("selected mob set -> {}", mobSetName);
+					return Config.mobSetMap.get(mobSetName);
+				})
+				.filter(Objects::nonNull);
+		}
+
+
+		/**
+         * TODO need to pass in the loot table
+         * @param context
+         * @param placement
+         * @param inspector
+         */
 	public static void buildVanillaChests(IWorldGenContext context, PlacementSettings placement, TemplatePoiInspector inspector, ResourceLocation lootTable) {
 		for (BlockInfoContext c : inspector.getChests()) {
 			Treasure.LOGGER.debug("placing vanilla chest at -> {}", c.getCoords().toShortString());

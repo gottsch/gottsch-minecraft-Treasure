@@ -1,10 +1,10 @@
-// 1.20.1	2024-01-17T23:21:03.9823674	Tags for minecraft:item mod id treasure2
+// 1.20.1	2025-09-16T10:15:17.8065471	Tags for minecraft:item mod id treasure2
 7ba25f6b415b48824b3f8c80916cf6c117a26139 data/treasure2/tags/items/key/common.json
 b36ff40c1386bb4f9a4836d7dfafd3c54aa4acf8 data/treasure2/tags/items/key/epic.json
 f313c76ff1ae6bad2d3bdb7fbf505fffc998f1a2 data/treasure2/tags/items/key/keys.json
 a242efd6fc365b861972beaf5d752fe0d3938529 data/treasure2/tags/items/key/mythical.json
 f94000a2e7e655f604a51685f711e802123f37ff data/treasure2/tags/items/key/rare.json
-86c5bef350e771acf2dce9576c6a488999ae69c8 data/treasure2/tags/items/key/scarce.json
+829bd611426fe967bd0fc24a057e330b1cc8fa8b data/treasure2/tags/items/key/scarce.json
 3f035521504e87d208ae06186e5821f2cc1ad225 data/treasure2/tags/items/key/uncommon.json
 4d3e631b779cad6e46f97f1f9d98f2fe23032d00 data/treasure2/tags/items/lock/common.json
 135b1d361fdd3852961a60b713ac8dc8aa2e832b data/treasure2/tags/items/lock/epic.json

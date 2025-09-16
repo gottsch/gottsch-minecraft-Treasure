@@ -33,6 +33,7 @@ import net.minecraft.resources.ResourceLocation;
  * @author Mark Gottschling on Dec 2, 2022
  *
  */
+@Deprecated
 public class GeneratedChestContext extends GeneratedContext {
 	private static final String LEGACY_NAME = "registryName";
 	

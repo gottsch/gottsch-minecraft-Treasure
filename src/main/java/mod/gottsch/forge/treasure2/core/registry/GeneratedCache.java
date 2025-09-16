@@ -42,11 +42,13 @@ import mod.gottsch.forge.treasure2.core.registry.support.GeneratedContext;
  * @author Mark Gottschling on Jan 22, 2018
  *
  */
+@Deprecated
 public class GeneratedCache<T extends GeneratedContext> {
 	
 	/*
 	 * a Interval BST registry to determine the proximity of chests.
 	 */
+	@Deprecated
 	private final CoordsIntervalTree<T> distanceRegistry;
 	/*
 	 * a Linked List registry to maintain descending age of insertion of chests

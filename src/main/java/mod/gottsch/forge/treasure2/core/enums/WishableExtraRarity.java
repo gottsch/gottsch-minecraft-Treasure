@@ -31,6 +31,7 @@ import mod.gottsch.forge.gottschcore.enums.IRarity;
  * @author Mark Gottschling May 9, 2023
  *
  */
+@Deprecated
 public enum WishableExtraRarity implements IRarity {
 	WHITE_PEARL(201, "white_pearl"),
 	BLACK_PEARL(202, "black_pearl");

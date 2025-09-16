@@ -2,12 +2,9 @@ package mod.gottsch.forge.treasure2.core.registry;
 
 import mod.gottsch.forge.gottschcore.random.WeightedCollection;
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.config.ChestFeaturesConfiguration;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.config.MobSetConfiguration;
-import mod.gottsch.forge.treasure2.core.random.RarityLevelWeightedCollection;
 import mod.gottsch.forge.treasure2.core.util.ModUtil;
-import mod.gottsch.forge.treasure2.core.world.feature.IFeatureType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.fml.ModList;
@@ -36,10 +33,10 @@ public class MobSetRegistry {
         Optional<MobSetConfiguration> mobSetConfig = Optional.ofNullable(Config.mobSetConfiguration);
         Treasure.LOGGER.info("mobSetConfig optional ...");
         mobSetConfig.ifPresent(config -> {
-            Treasure.LOGGER.info("mobSetConfig is present");
+//            Treasure.LOGGER.info("mobSetConfig is present");
             // for each mob set
             config.getMobSets().forEach(mobSet -> {
-                Treasure.LOGGER.debug("processing mobSet -> {}", mobSet.getName());
+//                Treasure.LOGGER.debug("processing mobSet -> {}", mobSet.getName());
                 // get the weighted collection
                 WeightedCollection<Integer, ResourceLocation> collection;
                 ResourceLocation name = ModUtil.asLocation(mobSet.getName());
@@ -56,7 +53,7 @@ public class MobSetRegistry {
                     if (ModList.get().isLoaded(mobName.getNamespace())) {
                         Optional<EntityType<?>> entityType = EntityType.byString(weightedMob.getName());
                         if (entityType.isPresent()) {
-                            Treasure.LOGGER.debug("adding weighted mob -> {}", mobName);
+//                            Treasure.LOGGER.debug("adding weighted mob -> {}", mobName);
                             collection.add(weightedMob.getWeight(), mobName);
                         }
                     }

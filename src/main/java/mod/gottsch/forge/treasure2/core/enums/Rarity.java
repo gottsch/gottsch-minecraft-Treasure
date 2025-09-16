@@ -23,14 +23,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.mojang.serialization.Codec;
 import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.gottschcore.enums.IEnum;
+import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
+import net.minecraft.util.StringRepresentable;
 
 /**
  * @author Mark Gottschling onJan 11, 2018
  *
  */
-public enum Rarity implements IRarity {
+@Deprecated
+public enum Rarity implements IRarity, StringRepresentable {
 	// NOTE NONE was only added to return as a value if no rarity was set
 	// yet, ex. when the mod is first loading and rarities aren't loaded yet, but
 	// methods like Item.appendHoverText will fail if the Item.getRarity() returns null.
@@ -43,7 +47,9 @@ public enum Rarity implements IRarity {
 	EPIC(4, "epic"),
 	LEGENDARY(5, "legendary"),
 	MYTHICAL(6, "mythical");
-	
+
+	public static final Codec<Rarity> CODEC = StringRepresentable.fromEnum(Rarity::values);
+
 	private static final Map<Integer, IEnum> codes = new HashMap<Integer, IEnum>();
 	private static final Map<String, IEnum> values = new HashMap<String, IEnum>();
 	private Integer code;
@@ -66,7 +72,12 @@ public enum Rarity implements IRarity {
 		this.code = code;
 		this.value = value;
 	}
-	
+
+	@Override
+	public String getSerializedName() {
+		return this.value;
+	}
+
 	@Override
 	public String getName() {
 		return name();
