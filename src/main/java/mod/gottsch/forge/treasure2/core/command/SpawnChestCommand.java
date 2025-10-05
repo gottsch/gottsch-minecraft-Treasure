@@ -1,45 +1,43 @@
 /*
- * This file is part of  Treasure2.
- * Copyright (c) 2020 Mark Gottschling (gottsch)
+ * This file is part of Treasure2.
+ * Copyright (c) 2025 Mark Gottschling (gottsch)
  *
  * Treasure2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * it under the terms of the Open Software Licence 3.0.
  *
  * Treasure2 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * Open Software Licence 3.0 for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * You should have received a copy of the Open Software Licence
+ * along with Treasure2. If not, see <https://www.tldrlegal.com/license/open-software-licence-3-0>.
  */
 package mod.gottsch.forge.treasure2.core.command;
 
-import java.util.Optional;
-import java.util.Random;
-
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
-
-import mod.gottsch.forge.gottschcore.enums.IRarity;
-import mod.gottsch.forge.gottschcore.loot.LootTableShell;
-import mod.gottsch.forge.gottschcore.spatial.Coords;
+import mod.gottsch.forge.gottschcore.random.RandomHelper;
 import mod.gottsch.forge.gottschcore.spatial.Heading;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.api.TreasureApi;
 import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
+import mod.gottsch.forge.treasure2.core.block.ITreasureChestBlock;
+import mod.gottsch.forge.treasure2.core.block.StandardChestBlock;
+import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
-import mod.gottsch.forge.treasure2.core.enums.Rarity;
-import mod.gottsch.forge.treasure2.core.enums.WishableExtraRarity;
-import mod.gottsch.forge.treasure2.core.generator.chest.IChestGenerator;
-import mod.gottsch.forge.treasure2.core.registry.ChestRegistry;
+import mod.gottsch.forge.treasure2.core.rarity.IRarity;
+import mod.gottsch.forge.treasure2.core.rarity.Rarity;
+import mod.gottsch.forge.treasure2.core.rarity.TreasureRarities;
+import mod.gottsch.forge.treasure2.core.registry.ChestSubprocessorDataRegistry;
 import mod.gottsch.forge.treasure2.core.registry.MimicRegistry;
-import mod.gottsch.forge.treasure2.core.registry.RarityLevelWeightedChestGeneratorRegistry;
+import mod.gottsch.forge.treasure2.core.structure.templatesystem.chest.IChestSubprocessor;
+import mod.gottsch.forge.treasure2.core.structure.templatesystem.chest.TreasureChestSubprocessors;
+import mod.gottsch.forge.treasure2.core.structure.templatesystem.data.ChestSubprocessorData;
 import mod.gottsch.forge.treasure2.core.util.ModUtil;
-import mod.gottsch.forge.treasure2.core.world.feature.FeatureGenContext;
 import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -47,11 +45,20 @@ import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.arguments.ResourceLocationArgument;
 import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Mark Gottschling on Aug 28, 2020
@@ -59,237 +66,236 @@ import net.minecraftforge.registries.RegistryObject;
  */
 public class SpawnChestCommand {
 
+	private static final String T2 = "t2";
+	private static final String CHEST = "chest";
 	private static final String NAME = "name";
+	private static final String LOCKED = "locked";
+	private static final String SEALED = "sealed";
+	private static final String MIMIC = "mimic";
+
+	private static final String POS = "pos";
+	private static final String RARITY = "rarity";
+	private static final String DIRECTION = "direction";
 
 	private static final SuggestionProvider<CommandSourceStack> SUGGEST_RARITY = (source, builder) -> {
 		return SharedSuggestionProvider.suggest(TreasureApi.getRarities()
 				.stream()
-				.filter(r -> !(r instanceof WishableExtraRarity))
-				.map(r -> r.getName()), builder);
+				.map(r -> r.getName().toUpperCase()), builder);
 	};
 
 	private static final SuggestionProvider<CommandSourceStack> SUGGEST_CHEST = (source, builder) -> {
-		return SharedSuggestionProvider.suggest(ChestRegistry.getNames().stream().map(c -> c.toString()), builder);
+		List<RegistryObject<Block>> chests = List.of(
+				TreasureBlocks.WOOD_CHEST,
+				TreasureBlocks.CRATE_CHEST,
+				TreasureBlocks.MOLDY_CRATE_CHEST,
+				TreasureBlocks.IRONBOUND_CHEST,
+				TreasureBlocks.PIRATE_CHEST,
+				TreasureBlocks.SAFE,
+				TreasureBlocks.IRON_STRONGBOX,
+				TreasureBlocks.GOLD_STRONGBOX,
+				TreasureBlocks.DREAD_PIRATE_CHEST,
+				TreasureBlocks.COMPRESSOR_CHEST,
+				TreasureBlocks.SKULL_CHEST,
+				TreasureBlocks.GOLD_SKULL_CHEST,
+				TreasureBlocks.CRYSTAL_SKULL_CHEST,
+				TreasureBlocks.CAULDRON_CHEST,
+				TreasureBlocks.SPIDER_CHEST,
+				TreasureBlocks.VIKING_CHEST,
+				TreasureBlocks.CARDBOARD_BOX,
+				TreasureBlocks.MILK_CRATE,
+				TreasureBlocks.BARREL_CHEST,
+				TreasureBlocks.VANILLA_CHEST,
+				TreasureBlocks.WITHER_CHEST,
+				TreasureBlocks.BONE_CHEST
+				);
+		
+		return SharedSuggestionProvider.suggest(chests.stream().map(c -> c.getId().toString()), builder);
 	};
 
-	private static final SuggestionProvider<CommandSourceStack> SUGGEST_DIRECTION = (source, builder) -> {    	
+	private static final SuggestionProvider<CommandSourceStack> SUGGEST_DIRECTION = (source, builder) -> {
 		return SharedSuggestionProvider.suggest(Heading.getNames().stream().filter(x -> !x.equalsIgnoreCase("UP") && !x.equalsIgnoreCase("DOWN")), builder);
 	};
 
-	private static final SuggestionProvider<CommandSourceStack> SUGGEST_MIMIC = (source, builder) -> {    	
+	private static final SuggestionProvider<CommandSourceStack> SUGGEST_MIMIC = (source, builder) -> {
 		return SharedSuggestionProvider.suggest(MimicRegistry.getMimics().stream().map(x -> x.toString()), builder);
 	};
 
 	/**
-	 * 
-	 * @param dispatcher
+	 * registers the command with the command dispatcher.
+	 * @param dispatcher The command dispatcher.
 	 */
 	public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-		dispatcher
-		.register(Commands.literal("t2-chest")
-				.requires(source -> {
-					return source.hasPermission(2);
-				})
-				.then(Commands.argument("pos", BlockPosArgument.blockPos())
-						.executes(source -> {
-							return spawn(source.getSource(), BlockPosArgument.getLoadedBlockPos(source, "pos"), "", Rarity.COMMON.name());
-						})
-						.then(Commands.argument(NAME, ResourceLocationArgument.id())
-								.suggests(SUGGEST_CHEST)
-								.executes(source -> {
-									return spawn(source.getSource(), BlockPosArgument.getLoadedBlockPos(source, "pos"),
-											ResourceLocationArgument.getId(source, NAME).toString(), Rarity.COMMON.name());
-								})
-								.then(Commands.argument("rarity", StringArgumentType.string())
-										.suggests(SUGGEST_RARITY)
-										.executes(source -> {
-											return spawn(source.getSource(), BlockPosArgument.getLoadedBlockPos(source, "pos"),
-													ResourceLocationArgument.getId(source, NAME).toString(), StringArgumentType.getString(source, "rarity"));
-										})
-										.then(Commands.argument("direction", StringArgumentType.string())
-												.suggests(SUGGEST_DIRECTION).executes(source -> {
-													return spawn(source.getSource(), BlockPosArgument.getLoadedBlockPos(source, "pos"), 
-															ResourceLocationArgument.getId(source, NAME).toString(), StringArgumentType.getString(source, "rarity"), StringArgumentType.getString(source, "direction"), false, false);							
-												})
-												.then(Commands.literal("locked")
-														.executes(source -> {
-															return spawn(source.getSource(), BlockPosArgument.getLoadedBlockPos(source, "pos"),
-																	ResourceLocationArgument.getId(source, NAME).toString(), StringArgumentType.getString(source, "rarity"), StringArgumentType.getString(source, "direction"), true, false);
-														})
-														.then(Commands.literal("sealed")
-																.executes(source -> {
-																	return spawn(source.getSource(), BlockPosArgument.getLoadedBlockPos(source, "pos"),
-																			ResourceLocationArgument.getId(source, NAME).toString(), StringArgumentType.getString(source, "rarity"), StringArgumentType.getString(source, "direction"), true, true);
-																})									
-																)
-														.then(Commands.literal("mimic")
-																.executes(source -> {
-																	return spawn(source.getSource(), BlockPosArgument.getLoadedBlockPos(source, "pos"), 
-																			ResourceLocationArgument.getId(source, NAME).toString(), StringArgumentType.getString(source, "rarity"), StringArgumentType.getString(source, "direction"), 
-																			true, false, true);							
-																})
-																)
-														//														.then(Commands.argument("mimic", ResourceLocationArgument.id())
-														//																.suggests(SUGGEST_MIMIC)
-														//																.executes(source -> {
-														//																	return spawn(source.getSource(), BlockPosArgument.getLoadedBlockPos(source, "pos"), 
-														//																			ResourceLocationArgument.getId(source, NAME).toString(), StringArgumentType.getString(source, "rarity"), StringArgumentType.getString(source, "direction"), 
-														//																			true, false, ResourceLocationArgument.getId(source, "mimic"));							
-														//																})
-														//															)
-														)
-												.then(Commands.literal("sealed")
-														.executes(source -> {
-															return spawn(source.getSource(), BlockPosArgument.getLoadedBlockPos(source, "pos"),
-																	ResourceLocationArgument.getId(source, NAME).toString(), StringArgumentType.getString(source, "rarity"), StringArgumentType.getString(source, "direction"), false, true);
-														})
-														.then(Commands.literal("locked")
-																.executes(source -> {
-																	return spawn(source.getSource(), BlockPosArgument.getLoadedBlockPos(source, "pos"),
-																			ResourceLocationArgument.getId(source, NAME).toString(), StringArgumentType.getString(source, "rarity"), StringArgumentType.getString(source, "direction"), true, true);
-																})
-																)
-														.then(Commands.literal("mimic")
-																.executes(source -> {
-																	return spawn(source.getSource(), BlockPosArgument.getLoadedBlockPos(source, "pos"), 
-																			ResourceLocationArgument.getId(source, NAME).toString(), StringArgumentType.getString(source, "rarity"), StringArgumentType.getString(source, "direction"), 
-																			false, true, true);							
-																})
-																)
-														//														.then(Commands.argument("mimic", ResourceLocationArgument.id())
-														//																.suggests(SUGGEST_MIMIC)
-														//																.executes(source -> {
-														//																	return spawn(source.getSource(), BlockPosArgument.getLoadedBlockPos(source, "pos"), 
-														//																			ResourceLocationArgument.getId(source, NAME).toString(), StringArgumentType.getString(source, "rarity"), StringArgumentType.getString(source, "direction"), 
-														//																			false, true, ResourceLocationArgument.getId(source, "mimic"));							
-														//																})
-														//																)	
-														)
-//												.then(Commands.argument("mimic", ResourceLocationArgument.id())
-//														.suggests(SUGGEST_MIMIC)
-												.then(Commands.literal("mimic")
-														.executes(source -> {
-															return spawn(source.getSource(), BlockPosArgument.getLoadedBlockPos(source, "pos"), 
-																	ResourceLocationArgument.getId(source, NAME).toString(), StringArgumentType.getString(source, "rarity"), StringArgumentType.getString(source, "direction"), 
-																	false, false, true);							
-														})
-														.then(Commands.literal("locked")
-																.executes(source -> {
-																	return spawn(source.getSource(), BlockPosArgument.getLoadedBlockPos(source, "pos"),
-																			ResourceLocationArgument.getId(source, NAME).toString(), StringArgumentType.getString(source, "rarity"), StringArgumentType.getString(source, "direction"), 
-																			true, false, true);
-																})
-																)
-														.then(Commands.literal("sealed")
-																.executes(source -> {
-																	return spawn(source.getSource(), BlockPosArgument.getLoadedBlockPos(source, "pos"),
-																			ResourceLocationArgument.getId(source, NAME).toString(), StringArgumentType.getString(source, "rarity"), StringArgumentType.getString(source, "direction"), 
-																			false, true, true);
-																})									
-																)
-														)
+		LiteralArgumentBuilder<CommandSourceStack> baseCommand = Commands.literal(T2)
+				.requires(source -> source.hasPermission(2))
+				// CHEST command
+				.then(Commands.literal(CHEST)
+						.then(Commands.argument(POS, BlockPosArgument.blockPos())
+								.executes(context -> spawn(context, false, false, false))
+								.then(Commands.argument(NAME, ResourceLocationArgument.id())
+										.suggests(SUGGEST_CHEST)
+										.executes(context -> spawn(context, false, false, false))
+										.then(Commands.argument("rarity", StringArgumentType.string())
+												.suggests(SUGGEST_RARITY)
+												.executes(context -> spawn(context, false, false, false))
+												.then(Commands.argument("direction", StringArgumentType.string())
+														.suggests(SUGGEST_DIRECTION)
+														// Start the final, correct argument tree.
+														.executes(context -> spawn(context, false, false, false))
+														.then(recursiveBooleanArgumentBuilder(
+																Commands.literal(LOCKED),
+																List.of(SEALED, MIMIC),
+																true, false, false))
+														.then(recursiveBooleanArgumentBuilder(
+																Commands.literal(SEALED),
+																List.of(LOCKED, MIMIC),
+																false, true, false))
+														.then(recursiveBooleanArgumentBuilder(
+																Commands.literal(MIMIC),
+																List.of(LOCKED, SEALED),
+																false, false, true))
 												)
 										)
 								)
 						)
 				);
-	}
 
-	private static int spawn(CommandSourceStack source, BlockPos pos, String chestName, String rarityName) {
-		return spawn(source, pos, chestName, rarityName, Heading.SOUTH.name(), false, false);
+		dispatcher.register(baseCommand);
 	}
 
 	/**
-	 * 
-	 * @param source
-	 * @param pos
-	 * @param name
-	 * @return
+	 * recursively builds the command tree for all boolean combinations.
+	 * @param literalBuilder the starting literal builder for this branch.
+	 * @param remainingOptions a list of the remaining literal arguments to add.
+	 * @param locked whether the chest should be locked in this branch.
+	 * @param sealed whether the chest should be sealed in this branch.
+	 * @param mimic whether the chest should be a mimic in this branch.
+	 * @return a completed LiteralArgumentBuilder.
 	 */
-	private static int spawn(CommandSourceStack source, BlockPos pos, String chestName, String rarityName, String directionName, 
-			boolean locked, boolean sealed) {
-		return spawn(source, pos, chestName, rarityName, directionName, locked, sealed, false);
+	private static LiteralArgumentBuilder<CommandSourceStack> recursiveBooleanArgumentBuilder(
+			LiteralArgumentBuilder<CommandSourceStack> literalBuilder,
+			List<String> remainingOptions, boolean locked, boolean sealed, boolean mimic) {
+
+		literalBuilder.executes(context -> spawn(context, locked, sealed, mimic));
+
+		for (String option : remainingOptions) {
+			LiteralArgumentBuilder<CommandSourceStack> newBranch = Commands.literal(option);
+			newBranch.executes(context -> spawn(context,
+					LOCKED.equals(option) || locked,
+					SEALED.equals(option) || sealed,
+					MIMIC.equals(option) || mimic));
+
+			// Recursively build the next level of options for this new branch.
+			List<String> nextOptions = new ArrayList<>(remainingOptions);
+			nextOptions.remove(option);
+			recursiveBooleanArgumentBuilder(newBranch, nextOptions,
+					LOCKED.equals(option) || locked,
+					SEALED.equals(option) || sealed,
+					MIMIC.equals(option) || mimic);
+
+			literalBuilder.then(newBranch);
+		}
+
+		return literalBuilder;
 	}
 
-	private static int spawn(CommandSourceStack source, BlockPos pos, String chestName, String rarityName, String directionName, 
-			boolean locked, boolean sealed, boolean mimic) {
-
-		// TODO I goofed something up with the mimics code depending on the options order
-		Treasure.LOGGER.debug("executing spawn chest, pos -> {}, name -> {}, rarity -> {}", pos, chestName, rarityName);
+	private static int spawn(CommandContext<CommandSourceStack> context, boolean locked, boolean sealed, boolean mimic) {
 		try {
-			ServerLevel world = source.getLevel();
-			RandomSource random = world.getRandom();
-			Optional<IRarity> rarity = TreasureApi.getRarity(rarityName);
-			if (rarity.isEmpty()) {
-				return 1;
-			}
-			Heading heading = directionName.isEmpty() ? Heading.SOUTH : Heading.valueOf(directionName);
-			ResourceLocation chestLocation = ModUtil.asLocation(chestName);
-			Optional<RegistryObject<Block>> optionalChest = ChestRegistry.getChest(chestLocation);
-			AbstractTreasureChestBlock chest;
+			BlockPos pos = BlockPosArgument.getLoadedBlockPos(context, POS);
+			String chestName = "";
+			String rarityName = TreasureRarities.UNKNOWN.get().getName();
+			String directionName = Heading.SOUTH.name();
 
-			// TODO provide Genertor by name in command (no weighted option)
-			// TODO provide GeneratorType option in command
-			IChestGenerator generator = RarityLevelWeightedChestGeneratorRegistry.getNextGenerator(rarity.get(), FeatureType.TERRANEAN);
-			if (optionalChest.isEmpty()) {
-				chest = generator.selectChest(random, rarity.get());
-			} else {
-				chest = (AbstractTreasureChestBlock) optionalChest.get().get();
-			}
+			try { chestName = ResourceLocationArgument.getId(context, NAME).toString(); } catch (IllegalArgumentException ignored) {}
+			try { rarityName = StringArgumentType.getString(context, "rarity"); } catch (IllegalArgumentException ignored) {}
+			try { directionName = StringArgumentType.getString(context, "direction"); } catch (IllegalArgumentException ignored) {}
 
-			// select a  chest if it hasn't been provided
+			Treasure.LOGGER.debug("executing spawn chest, pos -> {}, name -> {}, rarity -> {}, locked -> {}, sealed -> {}, mimic -> {}", pos, chestName, rarityName, locked, sealed, mimic);
 
-			Treasure.LOGGER.debug("generator -> {}", generator);
+			ServerLevel level = context.getSource().getLevel();
+			RandomSource random = level.getRandom();
 
-			// select loot table
-			Optional<LootTableShell> lootTableShell = generator.selectLootTable(random, rarity.get());
-			Treasure.LOGGER.debug("loot table shell -> {}", lootTableShell);
+			Heading heading = Heading.valueOf(directionName.isEmpty() ? Heading.SOUTH.name() : directionName);
+			FeatureType featureType = FeatureType.TERRANEAN;
+			IRarity rarity = TreasureRarities.getRarityByName(ModUtil.asLocation(rarityName.trim().toLowerCase()))
+					.orElseGet(TreasureRarities.COMMON::get);
 
-			ResourceLocation lootTableResourceLocation = null;
-			if (lootTableShell.isPresent()) {
-				lootTableResourceLocation = lootTableShell.get().getResourceLocation();
-			}
-			if (lootTableResourceLocation == null) {
-				Treasure.LOGGER.debug("Unable to select a LootTable for rarity -> {}", rarity.getClass());
-				return 0;
-			}
+			// 1. get the subprocessor data with a fallback.
+			ChestSubprocessorData subprocessorData = ChestSubprocessorDataRegistry.getAssociation(featureType, rarity)
+					.orElseGet(() -> {
+						Treasure.LOGGER.warn("unable to locate chest subprocessor data for feature type -> {} and rarity -> {}. Reverting to default.", featureType, rarity.getName());
+						return TreasureChestSubprocessors.STANDARD.get().getData();
+					});
 
-			AbstractTreasureChestBlock chestBlock = chest;
-			if (chestBlock != null) {
-				world.setBlockAndUpdate(pos, chestBlock
-						.defaultBlockState()
-						.setValue(AbstractTreasureChestBlock.FACING, heading.getDirection())
-						.setValue(AbstractTreasureChestBlock.DISCOVERED, false)	// TODO add command argument	
-						);
-			}
+			// 2. get the subprocessor based on the data, with a fallback.
+			IChestSubprocessor processor = TreasureChestSubprocessors.getChestSubprocessor(subprocessorData.getType())
+					.orElseGet(() -> {
+						Treasure.LOGGER.warn("unable to locate chest subprocessor for processor type -> {}. Reverting to default.", subprocessorData.getType());
+						return TreasureChestSubprocessors.STANDARD.get();
+					});
 
-			AbstractTreasureChestBlockEntity blockEntity = (AbstractTreasureChestBlockEntity) world.getBlockEntity(pos);
+			// 3. set the data on the (potentially default) processor.
+			processor.setFeatureType(featureType);
+			processor.setData(subprocessorData);
 
-			if (blockEntity != null) {
-				if (mimic) {
-					Optional<ResourceLocation> mimicLocation = MimicRegistry.getMimic(chestLocation);
-					if (mimicLocation.isPresent()) {
-						blockEntity.setMimic(mimicLocation.get());
-					}
-				}
+			// 4. get the chest block.
+			AbstractTreasureChestBlock chest = Optional.ofNullable((AbstractTreasureChestBlock) ForgeRegistries.BLOCKS.getValue(ModUtil.asLocation(chestName)))
+					.orElseGet(() -> {
+						Treasure.LOGGER.warn("unable to locate a treasure chest with the given name. Selecting a random chest from the subprocessor.");
+						return processor.selectChest(random, rarity);
+					});
 
-				if (locked || sealed) {
-					generator.addLootTable(blockEntity, lootTableResourceLocation);
-					generator.addSeal(blockEntity);
-				}
-				generator.addGenerationContext(new FeatureGenContext(world, world.getChunkSource().getGenerator(), random, FeatureType.TERRANEAN), blockEntity, rarity.get());
-				blockEntity.getGenerationContext().setFeatureType(FeatureType.TERRANEAN);
+			CompoundTag tag = buildNbtTag(random, chest, processor, heading, rarity, locked, sealed, mimic);
+			BlockState chestState = buildBlockState(level, pos, chest, heading);
 
-				if (locked) {
-					generator.addLocks(random, chestBlock, (AbstractTreasureChestBlockEntity) blockEntity, rarity.get());
-					(chestBlock).rotateLockStates(world, new Coords(pos), Heading.NORTH.getRotation(heading));
-					(blockEntity).sendUpdates();
-				}
-			}
+			level.setBlock(pos, chestState, 3);
+
+			updateBlockEntity(level, pos, tag, heading);
+
+			return 1;
+		} catch (Exception e) {
+			Treasure.LOGGER.error("An error occurred: ", e);
+			return 0;
 		}
-		catch(Exception e) {
-			Treasure.LOGGER.error("an error occurred: ", e);
+	}
+
+
+	private static CompoundTag buildNbtTag(RandomSource random, AbstractTreasureChestBlock chest, IChestSubprocessor processor, Heading heading, IRarity rarity, boolean locked, boolean sealed, boolean mimic) {
+		CompoundTag tag = new CompoundTag();
+
+		if (locked || sealed) {
+			processor.addLootTable(random, tag, rarity);
 		}
-		return 1;
+		processor.addSeal(tag, sealed);
+		if (locked) {
+			// manually add locks - min locks = 1 since required by player
+			int numLocks = RandomHelper.randomInt(1, chest.getLockLayout().getMaxLocks());
+			processor.addLocks(tag, random, chest.getLockLayout(), processor.selectLocks(chest.getLockLayout(), rarity), numLocks, Heading.NORTH.getRotation(heading));
+		}
+		if (mimic) {
+			MimicRegistry.getMimic(ModUtil.getName(chest))
+					.ifPresent(mimicName -> tag.putString(AbstractTreasureChestBlockEntity.MIMIC_TAG, mimicName.toString()));
+		}
+
+		processor.addGenerationContext(tag, processor.getFeatureType(), (Rarity) rarity);
+		return tag;
+	}
+
+	private static BlockState buildBlockState(ServerLevel level, BlockPos pos, AbstractTreasureChestBlock chest, Heading heading) {
+		FluidState fluidState = level.getBlockState(pos).getFluidState();
+		Direction direction = heading.getDirection();
+		return chest.defaultBlockState()
+				.setValue(StandardChestBlock.FACING, direction)
+				.setValue(ITreasureChestBlock.DISCOVERED, false)
+				.setValue(AbstractTreasureChestBlock.WATERLOGGED, fluidState.getType() == Fluids.WATER);
+	}
+
+	private static void updateBlockEntity(ServerLevel level, BlockPos pos, CompoundTag tag, Heading heading) {
+		Direction direction = heading.getDirection();
+		tag.putInt(AbstractTreasureChestBlockEntity.FACING_TAG, direction.get3DDataValue());
+
+		if (level.getBlockEntity(pos) instanceof AbstractTreasureChestBlockEntity chestEntity) {
+			chestEntity.load(tag);
+			chestEntity.sendUpdates();
+		}
 	}
 }

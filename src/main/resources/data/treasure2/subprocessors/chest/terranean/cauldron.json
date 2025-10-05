@@ -1,0 +1,11 @@
+{
+  "type": "treasure2:high_tier_rarity",
+  "rarity": "treasure2:cauldron",
+  "mimic": 0.3,
+  "loot_table_rarities": [
+    {
+      "rarity": "treasure2:cauldron"
+    }
+  ],
+  "lock_rarities": ["treasure2:rare", "treasure2:epic"]
+}

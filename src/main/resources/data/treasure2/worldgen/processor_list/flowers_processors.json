@@ -1,0 +1,7 @@
+{
+  "processors": [
+    {
+      "processor_type": "treasure2:well_flower_processor"
+    }
+  ]
+}

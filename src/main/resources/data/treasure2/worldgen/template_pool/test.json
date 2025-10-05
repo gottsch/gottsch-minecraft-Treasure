@@ -1,0 +1,15 @@
+{
+  "name": "treasure2:ruins/test_ruins",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:dungeon/entrance/crypt_4",
+        "projection": "rigid",
+        "processors": "treasure2:ruins_processors"
+      }
+    }
+  ]
+}

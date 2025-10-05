@@ -1,30 +1,19 @@
 /*
- * This file is part of  Treasure2.
- * Copyright (c) 2018 Mark Gottschling (gottsch)
- * 
- * All rights reserved.
+ * This file is part of Treasure2.
+ * Copyright (c) 2025 Mark Gottschling (gottsch)
  *
  * Treasure2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * it under the terms of the Open Software Licence 3.0.
  *
  * Treasure2 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * Open Software Licence 3.0 for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * You should have received a copy of the Open Software Licence
+ * along with Treasure2. If not, see <https://www.tldrlegal.com/license/open-software-licence-3-0>.
  */
 package mod.gottsch.forge.treasure2.core.item;
-
-import static mod.gottsch.forge.treasure2.core.capability.TreasureCapabilities.DURABILITY;
-
-import java.util.List;
-import java.util.Optional;
-
-import javax.annotation.Nullable;
 
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
@@ -66,6 +55,12 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.network.NetworkHooks;
+
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.Optional;
+
+import static mod.gottsch.forge.treasure2.core.capability.TreasureCapabilities.DURABILITY;
 
 /**
  * @author Mark Gottschling on Mar 9, 2018
@@ -145,14 +140,14 @@ public class KeyRingItem extends Item implements MenuProvider {
 						boolean isKeyBroken = false;
 
 						// check if this key is one that opens a lock (only first lock that key fits is unlocked).
-						lockState = key.fitsFirstLock(chestBlockEntity.getLockStates());
+						lockState = key.fitsFirstLock(context.getLevel(), chestBlockEntity.getLockStates());
 						if (lockState != null) {
 							fitsLock = true;
 						}
 						Treasure.LOGGER.debug("key fits lock -> {}", lockState);
 
 						if (fitsLock) {
-							if (key.unlock(lockState.getLock())) {
+							if (key.unlock(context.getLevel(), lockState.getLock())) {
 								// unlock the lock
 								doUnlock(context, (AbstractTreasureChestBlockEntity)chestBlockEntity, key, lockState);
 

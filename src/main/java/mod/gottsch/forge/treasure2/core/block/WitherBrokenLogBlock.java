@@ -1,3 +1,18 @@
+/*
+ * This file is part of Treasure2.
+ * Copyright (c) 2025 Mark Gottschling (gottsch)
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the Open Software Licence 3.0.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * Open Software Licence 3.0 for more details.
+ *
+ * You should have received a copy of the Open Software Licence
+ * along with Treasure2. If not, see <https://www.tldrlegal.com/license/open-software-licence-3-0>.
+ */
 package mod.gottsch.forge.treasure2.core.block;
 
 import mod.gottsch.forge.gottschcore.block.FacingBlock;
@@ -27,13 +42,9 @@ public class WitherBrokenLogBlock extends FacingBlock implements ITreasureBlock 
 		super(properties.strength(3.0F).sound(SoundType.WOOD));
 
 		// TODO make better shape - unless exact match, use almost full block
-		VoxelShape box = Block.box(0, 0.01, 0, 16, 16, 16);
+		VoxelShape box = Block.box(0.01, 0.01, 0.01, 15.99, 15.99, 15.99);
 		setShapes(
 				new VoxelShape[] {
-//					Block.box(1, 0, 3, 15, 13, 15), 	// N
-//					Block.box(1, 0, 1, 15, 13, 15),  	// E
-//					Block.box(1, 0, 1, 16, 13, 13),  	// S
-//					Block.box(1, 0, 1, 15, 13, 15) 	// W)
 						box, box, box, box
 				}
 			);

@@ -1,0 +1,19 @@
+{
+  "comment": "legacy naming. many structures still use this name.",
+  "id":"treasure2:medium_skeleton_set",
+  "category":"skeletons",
+  "count": {
+    "min": 2,
+    "max": 5
+  },
+  "mobs": [
+    {
+      "id": "minecraft:skeleton",
+      "weight": 90
+    },
+    {
+      "id": "minecraft:stray",
+      "weight": 10
+    }
+  ]
+}

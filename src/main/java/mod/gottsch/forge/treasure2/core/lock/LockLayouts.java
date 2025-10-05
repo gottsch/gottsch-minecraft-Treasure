@@ -1,19 +1,17 @@
 /*
- * This file is part of  Treasure2.
- * Copyright (c) 2018 Mark Gottschling (gottsch)
+ * This file is part of Treasure2.
+ * Copyright (c) 2025 Mark Gottschling (gottsch)
  *
  * Treasure2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * it under the terms of the Open Software Licence 3.0.
  *
  * Treasure2 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * Open Software Licence 3.0 for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * You should have received a copy of the Open Software Licence
+ * along with Treasure2. If not, see <https://www.tldrlegal.com/license/open-software-licence-3-0>.
  */
 package mod.gottsch.forge.treasure2.core.lock;
 
@@ -39,6 +37,7 @@ public class LockLayouts {
 	public static final LockLayout VIKING;
 	public static final LockLayout MILK_CRATE;
 	public static final LockLayout SINGLE_FULL;
+	public static final LockLayout CELESTIAL;
 		
 	static {
 		NONE = new LockLayout(0);
@@ -114,6 +113,12 @@ public class LockLayouts {
 
 		SINGLE_FULL = new LockLayout(1).addSlots(
 				new LockSlot(0, Heading.NORTH, 0.5F, 0.5F, 0.0F, 0F)
+		);
+
+		CELESTIAL = new LockLayout(3).addSlots(
+				new LockSlot(0, Heading.NORTH, 0.5F, 0.25F, 0F, 0F),
+				new LockSlot(1, Heading.EAST, 1F, 0.25F, 0.5F, 90F),
+				new LockSlot(2, Heading.WEST, 0F, 0.25F, 0.5F, -90F)
 		);
 	}
 }

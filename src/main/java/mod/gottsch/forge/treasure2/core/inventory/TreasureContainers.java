@@ -1,19 +1,17 @@
 /*
- * This file is part of  Treasure2.
- * Copyright (c) 2022 Mark Gottschling (gottsch)
+ * This file is part of Treasure2.
+ * Copyright (c) 2025 Mark Gottschling (gottsch)
  *
  * Treasure2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * it under the terms of the Open Software Licence 3.0.
  *
  * Treasure2 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * Open Software Licence 3.0 for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * You should have received a copy of the Open Software Licence
+ * along with Treasure2. If not, see <https://www.tldrlegal.com/license/open-software-licence-3-0>.
  */
 package mod.gottsch.forge.treasure2.core.inventory;
 
@@ -41,7 +39,8 @@ public class TreasureContainers {
 	public static final RegistryObject<MenuType<CompressorChestContainerMenu>> COMPRESSOR_CHEST_CONTAINER;
 	public static final RegistryObject<MenuType<VikingChestContainerMenu>> VIKING_CHEST_CONTAINER;
 	public static final RegistryObject<MenuType<WitherChestContainerMenu>> WITHER_CHEST_CONTAINER;
-		
+	public static final RegistryObject<MenuType<CelestialChestContainerMenu>> CELESTIAL_CHEST_CONTAINER;
+
 	public static final RegistryObject<MenuType<KeyRingContainerMenu>> KEY_RING_CONTAINER;
 	public static final RegistryObject<MenuType<PouchContainerMenu>> POUCH_CONTAINER;
 		
@@ -57,9 +56,11 @@ public class TreasureContainers {
 		VIKING_CHEST_CONTAINER = Registration.CONTAINERS.register("viking_chest_container",
 	            () -> IForgeMenuType.create((windowId, inventory, data) -> new VikingChestContainerMenu(windowId, data.readBlockPos(), inventory, inventory.player)));			
 		WITHER_CHEST_CONTAINER = Registration.CONTAINERS.register("wither_chest_container",
-	            () -> IForgeMenuType.create((windowId, inventory, data) -> new WitherChestContainerMenu(windowId, data.readBlockPos(), inventory, inventory.player)));			
+	            () -> IForgeMenuType.create((windowId, inventory, data) -> new WitherChestContainerMenu(windowId, data.readBlockPos(), inventory, inventory.player)));
+		CELESTIAL_CHEST_CONTAINER = Registration.CONTAINERS.register("celestial_chest_container",
+				() -> IForgeMenuType.create((windowId, inventory, data) -> new CelestialChestContainerMenu(windowId, data.readBlockPos(), inventory, inventory.player)));
 
-		
+
 		KEY_RING_CONTAINER = Registration.CONTAINERS.register("key_ring_container",
 	            () -> IForgeMenuType.create((windowId, inventory, data) -> new KeyRingContainerMenu(windowId, inventory, new ItemStackHandler(KeyRingCapability.INVENTORY_SIZE))));			
 		POUCH_CONTAINER = Registration.CONTAINERS.register("pouch_container",

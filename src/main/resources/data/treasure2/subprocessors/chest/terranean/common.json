@@ -1,0 +1,15 @@
+{
+  "type": "treasure2:standard",
+  "rarity": "treasure2:common",
+  "mimic": 0.05,
+  "loot_table_rarities": [
+    {
+      "rarity": "treasure2:common",
+      "weight": 90
+    },
+    {
+      "rarity": "treasure2:uncommon",
+      "weight": 10
+    }
+  ]
+}

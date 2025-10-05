@@ -1,0 +1,60 @@
+{
+  "name": "treasure2:ruins/aquatic/ruins",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:ruins/aquatic/ship/sunken_ship_1",
+        "projection": "rigid",
+        "processors": "treasure2:ruins_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:ruins/aquatic/ship/sunken_ship_2",
+        "projection": "rigid",
+        "processors": "treasure2:ruins_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:ruins/aquatic/ship/sunken_ship_3",
+        "projection": "rigid",
+        "processors": "treasure2:ruins_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:ruins/aquatic/underwater_ruins_1",
+        "projection": "rigid",
+        "processors": "treasure2:ruins_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:ruins/aquatic/underwater_ruins_2",
+        "projection": "rigid",
+        "processors": "treasure2:ruins_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:ruins/aquatic/underwater_ruins_3",
+        "projection": "rigid",
+        "processors": "treasure2:ruins_processors"
+      }
+    }
+  ]
+}

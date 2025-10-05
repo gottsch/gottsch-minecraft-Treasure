@@ -1,0 +1,29 @@
+{
+  "values": [
+    "minecraft:birch_forest",
+    "minecraft:cherry_grove",
+    "minecraft:dark_forest",
+    "minecraft:forest",
+    "minecraft:flower_forest",
+    "minecraft:grove",
+    "minecraft:meadow",
+    "minecraft:mushroom_fields",
+    "minecraft:old_growth_birch_forest",
+    "minecraft:old_growth_pine_taiga",
+    "minecraft:old_growth_spruce_taiga",
+    "minecraft:plains",
+    "minecraft:savanna",
+    "minecraft:savanna_plateau",
+    "minecraft:sunflower_plains",
+    "minecraft:windswept_forest",
+    "minecraft:windswept_hills",
+    {
+      "id": "#treasure2:bwg_forest",
+      "required": false
+    },
+    {
+      "id": "#treasure2:bop_forest",
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "treasure2:ruins/aquatic/ruins",
+      "weight": 20
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 40,
+    "separation": 35,
+    "salt": 345678
+  }
+}

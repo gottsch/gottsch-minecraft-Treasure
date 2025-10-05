@@ -1,0 +1,26 @@
+{
+  "structures": [
+    {
+      "structure": "treasure2:well/wishing_well",
+      "weight": 1
+    },
+    {
+      "structure": "treasure2:well/desert/wishing_well",
+      "weight": 1
+    },
+    {
+      "structure": "treasure2:well/forest/wishing_well",
+      "weight": 1
+    },
+    {
+      "structure": "treasure2:well/jungle/wishing_well",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 50,
+    "separation": 35,
+    "salt": 1234567
+  }
+}

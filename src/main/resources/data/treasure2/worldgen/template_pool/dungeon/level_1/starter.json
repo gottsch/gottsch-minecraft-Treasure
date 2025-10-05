@@ -1,0 +1,24 @@
+{
+  "name": "treasure2:dungeon/level_1/starter",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 20,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:dungeon/pit/pit_top_1",
+        "projection": "rigid",
+        "processors": "treasure2:pit_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:dungeon/pit/pit_top_2",
+        "projection": "rigid",
+        "processors": "treasure2:pit_processors"
+      }
+    }
+  ]
+}

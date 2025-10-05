@@ -62,5 +62,16 @@
   }, {
     "type" : "single",
     "resource" : "treasure2:entity/chest/vanilla_chest"
-  }]
+  }, {
+    "type" : "single",
+    "resource" : "treasure2:entity/chest/bone_chest"
+  }, {
+    "type" : "single",
+    "resource" : "treasure2:entity/chest/celestial_chest"
+  },
+    {
+      "type" : "single",
+      "resource" : "treasure2:entity/chest/infernal_chest"
+    }
+  ]
 }

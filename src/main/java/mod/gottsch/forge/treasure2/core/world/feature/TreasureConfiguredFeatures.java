@@ -1,23 +1,19 @@
 /*
- * This file is part of  Treasure2.
- * Copyright (c) 2022 Mark Gottschling (gottsch)
+ * This file is part of Treasure2.
+ * Copyright (c) 2025 Mark Gottschling (gottsch)
  *
  * Treasure2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * it under the terms of the Open Software Licence 3.0.
  *
  * Treasure2 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * Open Software Licence 3.0 for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * You should have received a copy of the Open Software Licence
+ * along with Treasure2. If not, see <https://www.tldrlegal.com/license/open-software-licence-3-0>.
  */
 package mod.gottsch.forge.treasure2.core.world.feature;
-
-import java.util.List;
 
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
@@ -37,6 +33,8 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.List;
+
 /**
  * 
  * @author Mark Gottschling on Nov 27, 2022
@@ -49,10 +47,6 @@ public class TreasureConfiguredFeatures {
 	public static final ResourceKey<ConfiguredFeature<?, ?>> OVERWORLD_ONYX_ORE_KEY = registerKey("onyx_ore");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> OVERWORLD_RUBY_ORE_KEY = registerKey("ruby_ore");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> OVERWORLD_SAPPHIRE_ORE_KEY = registerKey("sapphire_ore");
-
-	public static final ResourceKey<ConfiguredFeature<?, ?>> OVERWORLD_TERRANEAN_CHEST = registerKey("terranean_chest");
-	public static final ResourceKey<ConfiguredFeature<?, ?>> OVERWORLD_SUBAQUATIC_CHEST = registerKey("subaquatic_chest");
-	public static final ResourceKey<ConfiguredFeature<?, ?>> OVERWORLD_WELL_CHEST = registerKey("well");
 
 	/**
 	 * 
@@ -85,17 +79,6 @@ public class TreasureConfiguredFeatures {
 		register(context, OVERWORLD_SAPPHIRE_ORE_KEY, Feature.ORE, new OreConfiguration(sapphireOres, 3));
 
 	}
-
-	// Feature
-	public static final RegistryObject<Feature<NoneFeatureConfiguration>> TERRANEAN_CHEST = FEATURES.register("terranean_chest",
-			() -> new TerraneanChestFeature(NoneFeatureConfiguration.CODEC));
-
-	public static final RegistryObject<Feature<NoneFeatureConfiguration>> SUBAQUATIC_CHEST = FEATURES.register("subaquatic_chest",
-			() -> new AquaticChestFeature(NoneFeatureConfiguration.CODEC));
-
-	public static final RegistryObject<Feature<NoneFeatureConfiguration>> WELL = FEATURES.register("well",
-			() -> new WellFeature(NoneFeatureConfiguration.CODEC));
-
 
 	/**
 	 * 

@@ -1,0 +1,15 @@
+{
+  "name": "treasure2:ruins/aqautic/underwater_ruins_3_b",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:ruins/aquatic/underwater_ruins_3_b",
+        "projection": "rigid",
+        "processors": "treasure2:ruins_processors"
+      }
+    }
+  ]
+}

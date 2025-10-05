@@ -1,0 +1,13 @@
+{
+  "values": [
+    "minecraft:desert",
+    {
+      "id": "#treasure2:bwg_desert",
+      "required": false
+    },
+    {
+      "id": "#treasure2:bop_desert",
+      "required": false
+    }
+  ]
+}

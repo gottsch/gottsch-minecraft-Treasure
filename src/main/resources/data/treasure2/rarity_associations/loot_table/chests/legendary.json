@@ -1,0 +1,5 @@
+{
+  "rarity": "treasure2:legendary",
+  "loot_table": "treasure2:chests/legendary",
+  "type": "treasure2:chests"
+}

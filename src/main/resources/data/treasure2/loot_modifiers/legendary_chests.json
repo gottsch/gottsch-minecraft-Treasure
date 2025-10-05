@@ -13,7 +13,7 @@
     } ]
   } ],
   "count" : 2,
-  "rarity" : "legendary",
+  "rarity" : "treasure2:legendary",
   "chance" : 0.2,
   "type" : "treasure2:default"
 }

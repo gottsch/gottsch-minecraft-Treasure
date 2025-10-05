@@ -17,7 +17,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
     mappings channel: mapping_channel, version: mapping_version
- 	
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
  	 // This property allows configuring Gradle's ProcessResources task(s) to run on IDE output locations before launching the game.
     // It is REQUIRED to be set to true for this template to function.
     // See https://docs.gradle.org/current/dsl/org.gradle.language.jvm.tasks.ProcessResources.html
@@ -80,7 +80,7 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 repositories {
     // Put repositories for dependencies here
     // ForgeGradle automatically adds the Forge maven and Maven Central for you
-
+    mavenLocal()
     maven {
         url "file:///${project.projectDir}/../maven"
     }
@@ -105,18 +105,12 @@ dependencies {
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     //minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-    implementation fg.deobf("curse.maven:gottschcore-272450:5852444")
+//    implementation fg.deobf("curse.maven:gottschcore-272450:5852444")
+    implementation fg.deobf("gottsch:gottschcore:1.20.1-2.5.1")
     implementation fg.deobf("curse.maven:jade-324717:5339264")
 
-//    implementation fg.deobf("curse.maven:oh-the-biomes-weve-gone-1070751:5651529")
-//    implementation fg.deobf("curse.maven:corgilib-693313:5643186")
-//    implementation fg.deobf("curse.maven:geckolib-388172:5460309")
-//    implementation fg.deobf("curse.maven:oh-the-trees-youll-grow-962544:5630466")
-//    implementation fg.deobf("curse.maven:terrablender-563928:5378180")
-    // implementation fg.deobf("curse.maven:diamethysts-606423:5354532")
-
-    compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.20.1-84-FORGE:api")
-    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.20.1-84-FORGE")
+//    compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.20.1-84-FORGE:api")
+//    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.20.1-84-FORGE")
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

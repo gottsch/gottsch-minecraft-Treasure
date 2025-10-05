@@ -1,0 +1,34 @@
+{
+  "id":"treasure2:wishing_well_set_2",
+  "category":"wishing_wells",
+  "count": {
+    "min": 1,
+    "max": 3
+  },
+  "mobs": [
+    {
+      "id": "minecraft:zombie",
+      "weight": 30
+    },
+    {
+      "id": "minecraft:zombie_villager",
+      "weight": 10
+    },
+    {
+      "id": "minecraft:skeleton",
+      "weight": 30
+    },
+    {
+      "id": "minecraft:spider",
+      "weight": 20
+    },
+    {
+      "id": "minecraft:witch",
+      "weight": 20
+    },
+    {
+      "id": "minecraft:evoker",
+      "weight": 5
+    }
+  ]
+}

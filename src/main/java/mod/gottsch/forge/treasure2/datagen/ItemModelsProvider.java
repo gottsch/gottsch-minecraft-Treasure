@@ -1,19 +1,17 @@
 /*
- * This file is part of  Treasure2.
- * Copyright (c) 2022 Mark Gottschling (gottsch)
+ * This file is part of Treasure2.
+ * Copyright (c) 2025 Mark Gottschling (gottsch)
  *
  * Treasure2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * it under the terms of the Open Software Licence 3.0.
  *
  * Treasure2 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * Open Software Licence 3.0 for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * You should have received a copy of the Open Software Licence
+ * along with Treasure2. If not, see <https://www.tldrlegal.com/license/open-software-licence-3-0>.
  */
 package mod.gottsch.forge.treasure2.datagen;
 
@@ -104,6 +102,9 @@ public class ItemModelsProvider extends ItemModelProvider {
 		singleTexture(TreasureItems.SKELETON_KEY.getId().getPath(),
 				modLoc("item/horizontal_left_key"), "layer0", modLoc("item/key/skeleton_key"));
 
+		singleTexture(TreasureItems.BONE_KEY.getId().getPath(),
+				modLoc("item/horizontal_left_key"), "layer0", modLoc("item/key/bone_key"));
+
 		singleTexture(TreasureItems.PILFERERS_LOCK_PICK.getId().getPath(),
 				modLoc("item/horizontal_left_key"), "layer0", modLoc("item/key/pilferers_lock_pick"));
 		
@@ -140,8 +141,7 @@ public class ItemModelsProvider extends ItemModelProvider {
 		
 		singleTexture(TreasureItems.ONYX_LOCK.getId().getPath(),
 				mcLoc("item/generated"), "layer0", modLoc("item/lock/onyx_lock"));
-		
-		
+
 		singleTexture(TreasureItems.RUBY_LOCK.getId().getPath(),
 				mcLoc("item/generated"), "layer0", modLoc("item/lock/ruby_lock"));
 		
@@ -153,7 +153,11 @@ public class ItemModelsProvider extends ItemModelProvider {
 		
 		singleTexture(TreasureItems.WITHER_LOCK.getId().getPath(),
 				mcLoc("item/generated"), "layer0", modLoc("item/lock/wither_lock"));
-		
+
+		// NOTE even though not in Creative Tab, still require an item model as to not throw warnings
+		singleTexture(TreasureItems.BONE_LOCK.getId().getPath(),
+				mcLoc("item/generated"), "layer0", modLoc("item/lock/bone_lock"));
+
 		// key ring
 		singleTexture(TreasureItems.KEY_RING.getId().getPath(),
 				mcLoc("item/generated"), "layer0", modLoc("item/key/key_ring"));
@@ -315,6 +319,7 @@ public class ItemModelsProvider extends ItemModelProvider {
 		
 		withExistingParent(TreasureItems.WISHING_WELL_ITEM.getId().getPath(), modLoc("block/wishing_well_block"));
 		withExistingParent(TreasureItems.WISHING_WELL_COBBLESTONE_ITEM.getId().getPath(), modLoc("block/wishing_well_cobblestone_block"));
+		withExistingParent(TreasureItems.WISHING_WELL_MOSSY_COBBLESTONE_ITEM.getId().getPath(), modLoc("block/wishing_well_mossy_cobblestone_block"));
 		withExistingParent(TreasureItems.WISHING_WELL_STONE_BRICKS_ITEM.getId().getPath(), modLoc("block/wishing_well_stone_bricks_block"));
 		withExistingParent(TreasureItems.WISHING_WELL_MOSSY_STONE_BRICKS_ITEM.getId().getPath(), modLoc("block/wishing_well_mossy_stone_bricks_block"));
 		withExistingParent(TreasureItems.DESERT_WISHING_WELL_ITEM.getId().getPath(), modLoc("block/desert_wishing_well_block"));
@@ -335,6 +340,14 @@ public class ItemModelsProvider extends ItemModelProvider {
 				mcLoc("item/generated"), "layer0", modLoc("item/witherwood_hanging_sign"));
 
 		withExistingParent(TreasureItems.STRANGLE_VINES.getId().getPath(), modLoc("block/strangle_vines"));
+
+		// legacy wither to prevent log errors
+		singleTexture(TreasureItems.WITHER_BRANCH.getId().getPath(),
+				mcLoc("item/generated"), "layer0", modLoc("item/witherwood_stick"));
+		singleTexture(TreasureItems.WITHER_ROOT.getId().getPath(),
+				mcLoc("item/generated"), "layer0", modLoc("item/witherwood_root"));
+		withExistingParent(TreasureItems.WITHER_PLANKS.getId().getPath(), modLoc("block/witherwood_planks"));
+		withExistingParent(TreasureItems.WITHER_BROKEN_LOG.getId().getPath(), modLoc("block/witherwood_broken_log"));
 
 
 		TreasureBlocks.CHESTS.forEach(g -> {

@@ -49,7 +49,7 @@
     } ]
   } ],
   "count" : 1,
-  "rarity" : "uncommon",
+  "rarity" : "treasure2:uncommon",
   "chance" : 0.1,
   "type" : "treasure2:default"
 }

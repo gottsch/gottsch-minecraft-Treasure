@@ -1,0 +1,15 @@
+{
+  "name": "treasure2:wither_tree/wither_tree",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:wither_tree/main_wither_tree",
+        "projection": "rigid",
+        "processors": "treasure2:surface_processors"
+      }
+    }
+  ]
+}

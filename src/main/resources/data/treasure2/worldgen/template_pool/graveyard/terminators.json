@@ -1,0 +1,21 @@
+{
+  "name": "treasure2:graveyard/terminators",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:empty_pool_element"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:graveyard/terminator/terminator_1",
+        "projection": "rigid",
+        "processors": "treasure2:graveyard_processors"
+      }
+    }
+  ]
+}

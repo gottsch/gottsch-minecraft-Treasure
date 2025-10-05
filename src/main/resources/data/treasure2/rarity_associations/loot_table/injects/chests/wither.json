@@ -1,0 +1,5 @@
+{
+  "rarity": "treasure2:wither",
+  "loot_table": "treasure2:injects/chests/wither",
+  "type": "treasure2:injects"
+}

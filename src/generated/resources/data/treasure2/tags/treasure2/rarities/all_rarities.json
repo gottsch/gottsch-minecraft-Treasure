@@ -1,0 +1,11 @@
+{
+  "values": [
+    "treasure2:common",
+    "treasure2:uncommon",
+    "treasure2:scarce",
+    "treasure2:rare",
+    "treasure2:epic",
+    "treasure2:legendary",
+    "treasure2:mythical"
+  ]
+}

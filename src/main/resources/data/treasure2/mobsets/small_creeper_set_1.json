@@ -1,0 +1,14 @@
+{
+  "id":"treasure2:small_creeper_set_1",
+  "category":"zombies",
+  "count": {
+    "min": 1,
+    "max": 2
+  },
+  "mobs": [
+    {
+      "id": "minecraft:creeper",
+      "weight": 1
+    }
+  ]
+}
