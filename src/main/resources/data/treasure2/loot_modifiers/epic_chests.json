@@ -19,7 +19,7 @@
     } ]
   } ],
   "count" : 2,
-  "rarity" : "epic",
+  "rarity" : "treasure2:epic",
   "chance" : 0.2,
   "type" : "treasure2:default"
 }

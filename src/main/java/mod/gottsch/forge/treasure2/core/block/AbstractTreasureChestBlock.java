@@ -1,31 +1,21 @@
 /*
- * This file is part of  Treasure2.
- * Copyright (c) 2018 Mark Gottschling (gottsch)
+ * This file is part of Treasure2.
+ * Copyright (c) 2025 Mark Gottschling (gottsch)
  *
  * Treasure2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * it under the terms of the Open Software Licence 3.0.
  *
  * Treasure2 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * Open Software Licence 3.0 for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * You should have received a copy of the Open Software Licence
+ * along with Treasure2. If not, see <https://www.tldrlegal.com/license/open-software-licence-3-0>.
  */
 package mod.gottsch.forge.treasure2.core.block;
 
 
-import java.lang.reflect.Constructor;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-
-import javax.annotation.Nullable;
-
-import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.Heading;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
@@ -34,21 +24,21 @@ import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
 import mod.gottsch.forge.treasure2.core.block.entity.ITreasureChestBlockEntity;
+import mod.gottsch.forge.treasure2.core.cache.TreasureChestCache;
 import mod.gottsch.forge.treasure2.core.entity.monster.Mimic;
-import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.lock.ILockSlot;
 import mod.gottsch.forge.treasure2.core.lock.LockLayout;
 import mod.gottsch.forge.treasure2.core.lock.LockState;
 import mod.gottsch.forge.treasure2.core.network.MimicSpawnS2C;
 import mod.gottsch.forge.treasure2.core.network.TreasureNetworking;
-import mod.gottsch.forge.treasure2.core.registry.ChestRegistry;
-import mod.gottsch.forge.treasure2.core.registry.DimensionalGeneratedCache;
-import mod.gottsch.forge.treasure2.core.registry.GeneratedCache;
-import mod.gottsch.forge.treasure2.core.registry.support.GeneratedChestContext;
+import mod.gottsch.forge.treasure2.core.persistence.TreasureSavedData;
+import mod.gottsch.forge.treasure2.core.rarity.IRarity;
+import mod.gottsch.forge.treasure2.core.rarity.TreasureRarities;
+import mod.gottsch.forge.treasure2.core.registry.RarityTagAssociationRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
@@ -64,7 +54,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.*;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -72,8 +65,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.ChestType;
-import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
@@ -82,6 +73,11 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
+
+import javax.annotation.Nullable;
+import java.lang.reflect.Constructor;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Mark Gottschling on Sep 16, 2018
@@ -106,6 +102,7 @@ public class AbstractTreasureChestBlock extends BaseEntityBlock implements ITrea
 	/*
 	 *  an instance of the blockEntity defined by blockEntityClass
 	 */
+	@Deprecated // replace by inventorySize
 	private final AbstractTreasureChestBlockEntity blockEntityInstance;
 
 	/*
@@ -113,15 +110,44 @@ public class AbstractTreasureChestBlock extends BaseEntityBlock implements ITrea
 	 */
 	private LockLayout lockLayout;
 
-	/**
-	 * 
-	 * @param properties
+	/*
+	 * the inventory size
 	 */
+	private int inventorySize;
+
+	public AbstractTreasureChestBlock(Class<? extends AbstractTreasureChestBlockEntity> be, int inventorySize, LockLayout lockLayout, Properties properties) {
+		super(properties);
+		this.blockEntityClass = be;
+		this.lockLayout = lockLayout;
+		this.blockEntityInstance = null;// newInstanceBlockEntity(new BlockPos(0,0,0), null);
+		this.inventorySize = inventorySize;
+
+		setBounds(
+				new VoxelShape[] {
+						CHEST, 	// N
+						CHEST,  	// E
+						CHEST,  	// S
+						CHEST		// W
+				});
+
+		// set the default state
+		registerDefaultState(
+				this.stateDefinition.any()
+						.setValue(FACING, Direction.NORTH)
+						.setValue(DISCOVERED, true)
+						.setValue(WATERLOGGED, Boolean.valueOf(false))
+		);
+	}
+
+		/**
+         *
+         * @param properties
+         */
 	public AbstractTreasureChestBlock(Class<? extends AbstractTreasureChestBlockEntity> be, LockLayout lockLayout, Properties properties) {
 		super(properties);
 		this.blockEntityClass = be;
 		this.lockLayout = lockLayout;
-		this.blockEntityInstance = newInstanceBlockEntity(new BlockPos(0,0,0), null);
+		this.blockEntityInstance = null;// newInstanceBlockEntity(new BlockPos(0,0,0), null);
 
 		setBounds(
 				new VoxelShape[] {
@@ -157,8 +183,8 @@ public class AbstractTreasureChestBlock extends BaseEntityBlock implements ITrea
 				lockStates.add(lockState.getSlot().getIndex(), lockState);
 			}
 			chestTileEntity.setLockStates(lockStates);
-			Treasure.LOGGER.info("AbstractTreasureChestBlock | newBlockEntity | lockStates -> {}", chestTileEntity.getLockStates());
-			Treasure.LOGGER.info("AbstractTreasureChestBlock | newBlockEntity | tileEntity -> {} @ {}", chestTileEntity, chestTileEntity.getBlockPos());
+//			Treasure.LOGGER.info("AbstractTreasureChestBlock | newBlockEntity | lockStates -> {}", chestTileEntity.getLockStates());
+//			Treasure.LOGGER.info("AbstractTreasureChestBlock | newBlockEntity | tileEntity -> {} @ {}", chestTileEntity, chestTileEntity.getBlockPos());
 		}
 		catch(Exception e) {
 			Treasure.LOGGER.error(e);
@@ -412,19 +438,31 @@ public class AbstractTreasureChestBlock extends BaseEntityBlock implements ITrea
 		newBlockEntity.loadProperties(tag);
 		newBlockEntity.sendUpdates();
 
+		// TODO this needs to be updated to use the new TreasureChestCache
 		// update chest context discovered in the chest cache
-		ResourceLocation dimension = (level.dimensionType().effectsLocation());
-		if (newBlockEntity.getGenerationContext() != null) {
-			Treasure.LOGGER.debug("attempting to get chest cache for dimension -> {}, featureType -> {}", dimension, newBlockEntity.getGenerationContext().getFeatureType());
-			GeneratedCache<GeneratedChestContext> cache = DimensionalGeneratedCache.getChestGeneratedCache(dimension, newBlockEntity.getGenerationContext().getFeatureType());
-			if (cache != null) {
-				Optional<GeneratedChestContext> context = cache.get(newBlockEntity.getGenerationContext().getLootRarity(), new Coords(pos).toShortString());
-				if (context.isPresent()) {
-					context.get().setDiscovered(true);
-					Treasure.LOGGER.debug("updating chest in cache to discovered -> {}", pos.toShortString());
-				}
-			}
-		}
+//		ResourceLocation dimension = (level.dimensionType().effectsLocation());
+//		if (newBlockEntity.getGenerationContext() != null) {
+//			Treasure.LOGGER.debug("attempting to get chest cache for dimension -> {}, featureType -> {}", dimension, newBlockEntity.getGenerationContext().getFeatureType());
+//			GeneratedCache<GeneratedChestContext> cache = DimensionalGeneratedCache.getChestGeneratedCache(dimension, newBlockEntity.getGenerationContext().getFeatureType());
+//			if (cache != null) {
+//				Optional<GeneratedChestContext> context = cache.get(newBlockEntity.getGenerationContext().getLootRarity(), new Coords(pos).toShortString());
+//				if (context.isPresent()) {
+//					context.get().setDiscovered(true);
+//					Treasure.LOGGER.debug("updating chest in cache to discovered -> {}", pos.toShortString());
+//				}
+//			}
+//		}
+
+		TreasureChestCache.getCache().stream()
+				// if matching on dimension and pos, doesn't require to match on biome
+				.filter(chest -> chest.getDimensionName().equals(level.dimensionType().effectsLocation()))
+				.filter(chest -> chest.getCoords().equals(Coords.of(pos)))
+				.findFirst().ifPresent(chest -> {
+					Treasure.LOGGER.debug("marking chest at pos {} as discovered", pos.toShortString());
+					chest.setDiscovered(true);
+					// mark the persistence data as dirty
+					TreasureSavedData.get(level).setDirty();
+				});
 
 		return newBlockEntity;
 	}
@@ -631,15 +669,11 @@ public class AbstractTreasureChestBlock extends BaseEntityBlock implements ITrea
 	}
 
 	/**
-	 * Wrapper for call to the ChestRegistry and handles null values.
+	 * Wrapper for call to the RarityTagAssociationRegistry and handles null values.
 	 */
 	@Override
-	public IRarity getRarity() {
-		IRarity rarity = ChestRegistry.getRarity(this);
-		if (rarity == null) {
-			return Rarity.NONE;
-		}
-		return rarity;
+	public IRarity getRarity(HolderLookup.Provider provider) {
+		return RarityTagAssociationRegistry.getChestRarity(this, provider).orElseGet( () -> TreasureRarities.UNKNOWN.get());
 	}
 
 	@Override
@@ -653,7 +687,13 @@ public class AbstractTreasureChestBlock extends BaseEntityBlock implements ITrea
 		return this;
 	}
 
+	@Deprecated
 	public AbstractTreasureChestBlockEntity getBlockEntityInstance() {
 		return blockEntityInstance;
+	}
+
+	@Override
+	public int getInventorySize() {
+		return this.inventorySize;
 	}
 }

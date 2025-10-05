@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "": { "model": "treasure2:block/proximity_multi_spawner" }
+    }
+}

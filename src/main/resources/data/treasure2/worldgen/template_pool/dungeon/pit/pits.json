@@ -3,7 +3,7 @@
   "fallback": "treasure2:dungeon/pit/pit_ends",
   "elements": [
     {
-      "weight": 3,
+      "weight": 5,
       "element": {
         "element_type": "minecraft:single_pool_element",
         "location": "treasure2:dungeon/pit/pit_1",
@@ -12,7 +12,7 @@
       }
     },
     {
-      "weight": 3,
+      "weight": 5,
       "element": {
         "element_type": "minecraft:single_pool_element",
         "location": "treasure2:dungeon/pit/pit_2",
@@ -20,7 +20,7 @@
         "processors": "treasure2:pit_processors"
       }
     },    {
-      "weight": 3,
+      "weight": 5,
       "element": {
         "element_type": "minecraft:single_pool_element",
         "location": "treasure2:dungeon/pit/pit_3",
@@ -29,7 +29,7 @@
       }
     },
     {
-      "weight": 3,
+      "weight": 1,
       "element": {
         "element_type": "minecraft:single_pool_element",
         "location": "treasure2:dungeon/pit/dynamite_trap_pit_1",
@@ -38,7 +38,16 @@
       }
     },
     {
-      "weight": 3,
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:dungeon/pit/dynamite_trap_pit_2",
+        "projection": "rigid",
+        "processors": "treasure2:pit_processors"
+      }
+    },
+    {
+      "weight": 1,
       "element": {
         "element_type": "minecraft:single_pool_element",
         "location": "treasure2:dungeon/pit/fall_trap_pit_1",
@@ -47,10 +56,37 @@
       }
     },
     {
-      "weight": 3,
+      "weight": 1,
       "element": {
         "element_type": "minecraft:single_pool_element",
         "location": "treasure2:dungeon/pit/lava_trap_pit_1",
+        "projection": "rigid",
+        "processors": "treasure2:pit_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:dungeon/pit/water_trap_pit_1",
+        "projection": "rigid",
+        "processors": "treasure2:pit_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:dungeon/pit/fall_trap_pit_1",
+        "projection": "rigid",
+        "processors": "treasure2:pit_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:dungeon/pit/volcano_trap_pit_1",
         "projection": "rigid",
         "processors": "treasure2:pit_processors"
       }

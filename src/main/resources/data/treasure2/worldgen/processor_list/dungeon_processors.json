@@ -11,7 +11,7 @@
       "alt_loot_table": "treasure2:wishing_well_free_wishables"
     },
     {
-      "processor_type": "treasure2:proximity_mob_set_spawner_processor"
+      "processor_type": "treasure2:spawner_processor"
     },
     {
       "processor_type": "minecraft:rule",

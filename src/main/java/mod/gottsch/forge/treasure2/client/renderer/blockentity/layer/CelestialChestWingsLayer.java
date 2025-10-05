@@ -1,0 +1,47 @@
+/*
+ * This file is part of Treasure2.
+ * Copyright (c) 2025 Mark Gottschling (gottsch)
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the Open Software Licence 3.0.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * Open Software Licence 3.0 for more details.
+ *
+ * You should have received a copy of the Open Software Licence
+ * along with Treasure2. If not, see <https://www.tldrlegal.com/license/open-software-licence-3-0>.
+ */
+package mod.gottsch.forge.treasure2.client.renderer.blockentity.layer;
+
+import mod.gottsch.forge.treasure2.Treasure;
+import mod.gottsch.forge.treasure2.client.model.entity.BarrelMimicModel;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.RenderLayerParent;
+import net.minecraft.client.renderer.entity.layers.EyesLayer;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
+/**
+ * 
+ * @author Mark Gottschling on 9/27/2025
+ *
+ * @param <T>
+ * @param <M>
+ */
+@OnlyIn(Dist.CLIENT)
+public class CelestialChestWingsLayer<T extends Entity, M extends BarrelMimicModel<T>> extends EyesLayer<T, M> {
+	private static final RenderType WINGS = RenderType.eyes(new ResourceLocation(Treasure.MODID,"textures/entity/chest/celestial_chest_eyes.png"));
+
+	public CelestialChestWingsLayer(RenderLayerParent<T, M> layer) {
+		super(layer);
+	}
+
+	public RenderType renderType() {
+		return WINGS;
+	}	   
+
+}

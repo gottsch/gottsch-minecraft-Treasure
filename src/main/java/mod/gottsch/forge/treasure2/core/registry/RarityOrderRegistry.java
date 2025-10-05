@@ -16,15 +16,11 @@
 package mod.gottsch.forge.treasure2.core.registry;
 
 import com.google.common.collect.Maps;
-import mod.gottsch.forge.treasure2.core.rarity.IRarityEntry;
 import mod.gottsch.forge.treasure2.core.rarity.RarityOrder;
 import org.apache.commons.compress.utils.Lists;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.OptionalInt;
-import java.util.stream.IntStream;
 
 /**
  * @author by Mark Gottschling on 9/4/2025

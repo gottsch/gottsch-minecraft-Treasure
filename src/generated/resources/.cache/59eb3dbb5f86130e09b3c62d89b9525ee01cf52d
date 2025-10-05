@@ -1,4 +1,4 @@
-// 1.20.1	2024-08-27T17:06:19.5647453	Loot Tables
+// 1.20.1	2025-09-29T00:18:02.8166084	Loot Tables
 ca3d5635d39fb7ebebbd416d892a8a21f5271358 data/treasure2/loot_tables/blocks/clover_block.json
 b961cc9fa6196bc978033953ce27161efb177bcf data/treasure2/loot_tables/blocks/strangle_vines_plant.json
 ca035c1c05565516c4c1d8abaab16f167fdb82a9 data/treasure2/loot_tables/blocks/stripped_witherwood_log.json
@@ -16,7 +16,6 @@ d7b10e367a5797beff54fc643835a03833d27297 data/treasure2/loot_tables/blocks/withe
 d53058a46ef25c03011cddd3c25807a79c38e435 data/treasure2/loot_tables/blocks/witherwood_root.json
 8eab43934193bb4b072d683ad6877e4ad104805d data/treasure2/loot_tables/blocks/witherwood_sign.json
 59f52ea64ffacbb3a172867e1a69973265cdf56c data/treasure2/loot_tables/blocks/witherwood_slab.json
-1b41cac37e1cb1f821641e962e874c4e45431b10 data/treasure2/loot_tables/blocks/witherwood_soul_log.json
 9b4a1a8c39c10d4da3f222490ef4ce5c4bd54a03 data/treasure2/loot_tables/blocks/witherwood_stairs.json
 cd1de0822ac4ff234a673b2ccc688de338e3f540 data/treasure2/loot_tables/blocks/witherwood_trapdoor.json
 f3d88cb6987e0054961ff7d2e55aea6fd5c7f44f data/treasure2/loot_tables/blocks/witherwood_wall_hanging_sign.json
@@ -27,4 +26,3 @@ d71bee8a682667612fe9803e8b005045e7d4e1a6 data/treasure2/loot_tables/blocks/withe
 37a012bb1a570aa900fcf816ce584692dc00f034 data/treasure2/loot_tables/blocks/wither_log.json
 d1a6319b96aa91fce448a316719a4464f162f8b3 data/treasure2/loot_tables/blocks/wither_planks.json
 4de5edb2eb8d8944de42ecc0e589fecf1ada279d data/treasure2/loot_tables/blocks/wither_root.json
-54ddd34814d95d73491c77ad3f5db83e63fdfc00 data/treasure2/loot_tables/blocks/wither_soul_log.json

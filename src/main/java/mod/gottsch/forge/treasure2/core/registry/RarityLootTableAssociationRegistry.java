@@ -1,14 +1,26 @@
+/*
+ * This file is part of Treasure2.
+ * Copyright (c) 2025 Mark Gottschling (gottsch)
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the Open Software Licence 3.0.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * Open Software Licence 3.0 for more details.
+ *
+ * You should have received a copy of the Open Software Licence
+ * along with Treasure2. If not, see <https://www.tldrlegal.com/license/open-software-licence-3-0>.
+ */
 package mod.gottsch.forge.treasure2.core.registry;
 
 import mod.gottsch.forge.treasure2.core.loot.ILootTableTypes;
 import mod.gottsch.forge.treasure2.core.loot.TreasureLootTableTypes;
-import mod.gottsch.forge.treasure2.core.rarity.IRarityEntry;
+import mod.gottsch.forge.treasure2.core.rarity.IRarity;
 import mod.gottsch.forge.treasure2.core.rarity.RarityLootTableAssociation;
-import mod.gottsch.forge.treasure2.core.rarity.RarityTagAssociation;
 import mod.gottsch.forge.treasure2.core.rarity.TreasureRarities;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.level.block.Block;
 import org.apache.commons.compress.utils.Lists;
 
 import java.util.List;
@@ -41,7 +53,7 @@ public enum RarityLootTableAssociationRegistry {
      * @param rarity
      * @return
      */
-    public static synchronized Optional<ResourceLocation> getLootTableId(ILootTableTypes type, IRarityEntry rarity) {
+    public static synchronized Optional<ResourceLocation> getLootTableId(ILootTableTypes type, IRarity rarity) {
         return RarityLootTableAssociationRegistry.getAssociations().stream()
                 // transform association's rarityId into a RarityEntry class and compare
                 .filter(association -> TreasureRarities.getRarityByName(association.rarityId())

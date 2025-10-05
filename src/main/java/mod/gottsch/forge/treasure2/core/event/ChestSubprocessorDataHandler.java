@@ -20,7 +20,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.rarity.IRarityEntry;
+import mod.gottsch.forge.treasure2.core.rarity.IRarity;
 import mod.gottsch.forge.treasure2.core.rarity.TreasureRarities;
 import mod.gottsch.forge.treasure2.core.registry.ChestSubprocessorDataRegistry;
 import mod.gottsch.forge.treasure2.core.structure.templatesystem.data.ChestSubprocessorData;
@@ -82,7 +82,7 @@ public class ChestSubprocessorDataHandler extends SimpleJsonResourceReloadListen
 
                 // convert parent to FeatureType
                 IFeatureType type = FeatureType.getByValue(parent);
-                IRarityEntry rarity = TreasureRarities.getRarityByName(data.getRarity()).orElseGet(() -> {
+                IRarity rarity = TreasureRarities.getRarityByName(data.getRarity()).orElseGet(() -> {
                     Treasure.LOGGER.warn("unable to locate rarity {}, using default common.");
                     return TreasureRarities.COMMON.get();
                 });

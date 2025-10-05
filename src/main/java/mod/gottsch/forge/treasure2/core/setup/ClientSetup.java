@@ -1,19 +1,17 @@
 /*
- * This file is part of  Treasure2.
- * Copyright (c) 2022 Mark Gottschling (gottsch)
+ * This file is part of Treasure2.
+ * Copyright (c) 2025 Mark Gottschling (gottsch)
  *
  * Treasure2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * it under the terms of the Open Software Licence 3.0.
  *
  * Treasure2 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * Open Software Licence 3.0 for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * You should have received a copy of the Open Software Licence
+ * along with Treasure2. If not, see <https://www.tldrlegal.com/license/open-software-licence-3-0>.
  */
 package mod.gottsch.forge.treasure2.core.setup;
 
@@ -22,14 +20,7 @@ import mod.gottsch.forge.treasure2.client.model.blockentity.*;
 import mod.gottsch.forge.treasure2.client.model.entity.*;
 import mod.gottsch.forge.treasure2.client.renderer.blockentity.*;
 import mod.gottsch.forge.treasure2.client.renderer.entity.*;
-import mod.gottsch.forge.treasure2.client.screen.CompressorChestScreen;
-import mod.gottsch.forge.treasure2.client.screen.KeyRingScreen;
-import mod.gottsch.forge.treasure2.client.screen.PouchScreen;
-import mod.gottsch.forge.treasure2.client.screen.SkullChestScreen;
-import mod.gottsch.forge.treasure2.client.screen.StandardChestScreen;
-import mod.gottsch.forge.treasure2.client.screen.StrongboxScreen;
-import mod.gottsch.forge.treasure2.client.screen.VikingChestScreen;
-import mod.gottsch.forge.treasure2.client.screen.WitherChestScreen;
+import mod.gottsch.forge.treasure2.client.screen.*;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.block.entity.TreasureBlockEntities;
 import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
@@ -86,8 +77,10 @@ public class ClientSetup {
             MenuScreens.register(TreasureContainers.SKULL_CHEST_CONTAINER.get(), SkullChestScreen::new);
             MenuScreens.register(TreasureContainers.COMPRESSOR_CHEST_CONTAINER.get(), CompressorChestScreen::new);
             MenuScreens.register(TreasureContainers.VIKING_CHEST_CONTAINER.get(), VikingChestScreen::new);
-            MenuScreens.register(TreasureContainers.WITHER_CHEST_CONTAINER.get(), WitherChestScreen::new); 
-            MenuScreens.register(TreasureContainers.KEY_RING_CONTAINER.get(), KeyRingScreen::new);           
+            MenuScreens.register(TreasureContainers.WITHER_CHEST_CONTAINER.get(), WitherChestScreen::new);
+			MenuScreens.register(TreasureContainers.CELESTIAL_CHEST_CONTAINER.get(), CelestialChestScreen::new);
+
+			MenuScreens.register(TreasureContainers.KEY_RING_CONTAINER.get(), KeyRingScreen::new);
             MenuScreens.register(TreasureContainers.POUCH_CONTAINER.get(), PouchScreen::new);           
             
             TreasureBlocks.CHESTS.forEach(chest -> {
@@ -137,6 +130,8 @@ public class ClientSetup {
 		event.registerBlockEntityRenderer(TreasureBlockEntities.VANILLA_CHEST_BLOCK_ENTITY_TYPE.get(), VanillaChestRenderer::new);
 		event.registerBlockEntityRenderer(TreasureBlockEntities.WITHER_CHEST_BLOCK_ENTITY_TYPE.get(), WitherChestRenderer::new);
 		event.registerBlockEntityRenderer(TreasureBlockEntities.BONE_CHEST.get(), BoneChestRenderer::new);
+		event.registerBlockEntityRenderer(TreasureBlockEntities.CELESTIAL_CHEST.get(), CelestialChestRenderer::new);
+		event.registerBlockEntityRenderer(TreasureBlockEntities.INFERNAL_CHEST.get(), InfernalChestRenderer::new);
 
 		event.registerEntityRenderer(TreasureEntities.BOUND_SOUL_ENTITY_TYPE.get(), BoundSoulRenderer::new);
 		event.registerEntityRenderer(TreasureEntities.WITHERWOOD_GOLEM_ENTITY_TYPE.get(), WitherwoodGolemRenderer::new);
@@ -180,6 +175,8 @@ public class ClientSetup {
 		event.registerLayerDefinition(BarrelChestModel.LAYER_LOCATION, BarrelChestModel::createBodyLayer);
 		event.registerLayerDefinition(VanillaChestModel.LAYER_LOCATION, VanillaChestModel::createBodyLayer);
 		event.registerLayerDefinition(BoneChestModel.LAYER_LOCATION, BoneChestModel::createBodyLayer);
+		event.registerLayerDefinition(CelestialChestModel.LAYER_LOCATION, CelestialChestModel::createBodyLayer);
+		event.registerLayerDefinition(InfernalChestModel.LAYER_LOCATION, InfernalChestModel::createBodyLayer);
 
 		event.registerLayerDefinition(BoundSoulModel.LAYER_LOCATION, BoundSoulModel::createBodyLayer);
 		event.registerLayerDefinition(WitherwoodGolemModel.LAYER_LOCATION, WitherwoodGolemModel::createBodyLayer);

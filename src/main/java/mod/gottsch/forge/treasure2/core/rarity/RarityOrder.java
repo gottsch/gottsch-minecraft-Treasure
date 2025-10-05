@@ -37,4 +37,11 @@ public record RarityOrder(ResourceLocation rarity, int order) {
      */
     public static final Comparator<RarityOrder> BY_ORDER = Comparator.comparingInt(RarityOrder::order);
 
+    @Override
+    public String toString() {
+        return "RarityOrder{" +
+                "order=" + order +
+                ", rarity=" + rarity +
+                '}';
+    }
 }

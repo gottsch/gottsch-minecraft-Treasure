@@ -40,8 +40,8 @@ public class BoneChestBlock extends StandardChestBlock {
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 
-        AbstractTreasureChestBlockEntity chestTileEntity = (AbstractTreasureChestBlockEntity) super.newBlockEntity(pos, state);
-        chestTileEntity.getLockStates().get(0).setLock((LockItem) TreasureItems.BONE_LOCK.get());
-        return chestTileEntity;
+        AbstractTreasureChestBlockEntity chestBlckEntity = (AbstractTreasureChestBlockEntity) super.newBlockEntity(pos, state);
+        chestBlckEntity.getLockStates().get(0).setLock((LockItem) TreasureItems.BONE_LOCK.get());
+        return chestBlckEntity;
     }
 }

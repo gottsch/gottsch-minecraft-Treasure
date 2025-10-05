@@ -16,7 +16,7 @@
 package mod.gottsch.forge.treasure2.core.loot;
 
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.rarity.IRarityEntry;
+import mod.gottsch.forge.treasure2.core.rarity.IRarity;
 import mod.gottsch.forge.treasure2.core.registry.LootTableRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -67,7 +67,7 @@ public class TreasureLootTableTypes {
 
     // NOTE use this only for interim, so the mod compiles until complete
     @Deprecated
-    public static List<ResourceLocation> getLootTables(ILootTableTypes type, IRarityEntry rarity) {
+    public static List<ResourceLocation> getLootTables(ILootTableTypes type, IRarity rarity) {
         List<ResourceLocation> lootTables = LootTableRegistry.getLootTableIds(type, rarity);
         return lootTables;
 

@@ -26,7 +26,6 @@ import net.minecraft.world.level.block.Block;
 /**
  *
  * a data-driven association that links a Rarity to a tag.
- * this class is designed to be flexible and can handle either Item or Block tags.
  *
  * @author by Mark Gottschling on 8/31/2025
  */

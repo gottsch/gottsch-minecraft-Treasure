@@ -1,50 +1,33 @@
 /*
- * This file is part of  Treasure2.
- * Copyright (c) 2022 Mark Gottschling (gottsch)
+ * This file is part of Treasure2.
+ * Copyright (c) 2025 Mark Gottschling (gottsch)
  *
  * Treasure2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * it under the terms of the Open Software Licence 3.0.
  *
  * Treasure2 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * Open Software Licence 3.0 for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * You should have received a copy of the Open Software Licence
+ * along with Treasure2. If not, see <https://www.tldrlegal.com/license/open-software-licence-3-0>.
  */
 package mod.gottsch.forge.treasure2.core.block.entity;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import mod.gottsch.forge.treasure2.core.generator.chest.ChestGenerationHelper;
-import mod.gottsch.forge.treasure2.core.rarity.IRarityEntry;
-import mod.gottsch.forge.treasure2.core.rarity.RarityAdapter;
-import mod.gottsch.forge.treasure2.core.rarity.TreasureRarities;
-import mod.gottsch.forge.treasure2.core.util.ModUtil;
-import net.minecraft.server.level.ServerLevel;
-import org.jetbrains.annotations.NotNull;
-
-import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.api.TreasureApi;
 import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
 import mod.gottsch.forge.treasure2.core.block.effects.IChestEffects;
 import mod.gottsch.forge.treasure2.core.config.Config;
-import mod.gottsch.forge.treasure2.core.enums.Rarity;
-import mod.gottsch.forge.treasure2.core.generator.chest.IChestGenerator;
+import mod.gottsch.forge.treasure2.core.generator.chest.ChestGenerationHelper;
 import mod.gottsch.forge.treasure2.core.inventory.StandardChestContainerMenu;
 import mod.gottsch.forge.treasure2.core.lock.LockState;
 import mod.gottsch.forge.treasure2.core.particle.TreasureParticles;
-import mod.gottsch.forge.treasure2.core.registry.ChestGeneratorRegistry;
+import mod.gottsch.forge.treasure2.core.rarity.IRarity;
+import mod.gottsch.forge.treasure2.core.rarity.TreasureRarities;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
+import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 import mod.gottsch.forge.treasure2.core.world.feature.IFeatureType;
 import net.minecraft.core.BlockPos;
@@ -57,6 +40,7 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
@@ -76,6 +60,13 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * 
@@ -174,9 +165,9 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 		if (this.isSealed() && !getLevel().isClientSide) {
 			this.setSealed(false);
 			// TODO update generation context to use IRarityEntry
-			IRarity rarity = this.getGenerationContext().getLootRarity();
+//			IRarity rarity = this.getGenerationContext().getLootRarity();
 			// NOTE ADAPTER
-			IRarityEntry rarityEntry = RarityAdapter.get(rarity);
+			IRarity rarityEntry = this.getGenerationContext().getLootRarity(); //RarityAdapter.get(rarity);
 //			Optional<IChestGenerator> chestGenerator = ChestGeneratorRegistry.get(rarity);
 //			if (chestGenerator.isPresent()) {
 //				Treasure.LOGGER.debug("chest gen  -> {}", chestGenerator.get().getClass().getSimpleName());
@@ -417,10 +408,7 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 			}
 			if (getGenerationContext() != null) {
 				CompoundTag contextTag = new CompoundTag();
-				// TEMP save as new values
-				// NOTE ADAPTER
-				IRarityEntry rarityEntry = RarityAdapter.get(generationContext.getLootRarity());
-				String rarityName = TreasureRarities.getKey(rarityEntry).orElse(TreasureRarities.COMMON.getId()).toString();
+				String rarityName = TreasureRarities.getKey(generationContext.getLootRarity()).orElse(TreasureRarities.COMMON.getId()).toString();
 				contextTag.putString(LOOT_RARITY_TAG, rarityName); //getGenerationContext().getLootRarity().getName());
 				contextTag.putString(FEATURE_TYPE_TAG, getGenerationContext().getFeatureType().getValue().toLowerCase());
 				tag.put(GENERATION_CONTEXT_TAG, contextTag);
@@ -492,6 +480,7 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 		}
 	}
 
+	// TODO refactor
 	public void loadProperties(CompoundTag tag) {
 		try {
 			// read the facing
@@ -513,13 +502,10 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 			}
 			if (tag.contains(GENERATION_CONTEXT_TAG)) {
 				CompoundTag contextTag = tag.getCompound(GENERATION_CONTEXT_TAG);
-				Optional<IRarity> rarity = Optional.empty();
+				IRarity rarity = TreasureRarities.COMMON.get();
 				if (contextTag.contains(LOOT_RARITY_TAG)) {
-					// NOTE ADAPTER
 					ResourceLocation rarityName = ModUtil.asLocation(contextTag.getString(LOOT_RARITY_TAG));
-					Optional<IRarityEntry> rarityEntry = TreasureRarities.getRarityByName(rarityName);
-					rarity = Optional.ofNullable(RarityAdapter.get(rarityEntry.orElse(TreasureRarities.COMMON.get())));
-//					rarity = TreasureApi.getRarity(contextTag.getString(LOOT_RARITY_TAG));
+					rarity = TreasureRarities.getRarityByName(rarityName).orElse(TreasureRarities.COMMON.get());
 				}
 				Optional<IFeatureType> featureType = Optional.empty();
 				if (contextTag.contains(FEATURE_TYPE_TAG)) {
@@ -529,7 +515,7 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 
 				AbstractTreasureChestBlockEntity.GenerationContext generationContext = 
 						this.new GenerationContext(
-								rarity.orElse(Rarity.NONE), 
+								rarity,
 								featureType.orElse(FeatureType.UNKNOWN));
 				this.setGenerationContext(generationContext);
 			}	
@@ -689,7 +675,9 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 	}
 
 	/*
-	 * TODO think of something better here. There already is ChestGeneratedContext
+	 * this is data that needs to be stored with chest entity, so when the chest is opened
+	 * for the first time and populated, feature and rarity is known to select the correct
+	 * loot tables.
 	 */
 	public class GenerationContext {
 		/*
@@ -713,9 +701,9 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 			return lootRarity;
 		}
 
-		public ResourceLocation getLootTable() {
-			return AbstractTreasureChestBlockEntity.this.lootTable;
-		}
+//		public ResourceLocation getLootTable() {
+//			return AbstractTreasureChestBlockEntity.this.lootTable;
+//		}
 
 		public IFeatureType getFeatureType() {
 			return featureType;

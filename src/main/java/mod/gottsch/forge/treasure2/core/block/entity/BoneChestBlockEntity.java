@@ -205,7 +205,7 @@ public class BoneChestBlockEntity extends AbstractTreasureChestBlockEntity {
 				setLocked(tag.getBoolean("locked"));
 			}
 		} catch (Exception e) {
-			Treasure.LOGGER.error("Error reading to NBT:", e);
+			Treasure.LOGGER.error("error reading to NBT:", e);
 		}
 	}
 

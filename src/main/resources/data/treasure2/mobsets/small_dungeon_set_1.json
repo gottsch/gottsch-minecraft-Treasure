@@ -1,0 +1,30 @@
+{
+  "id":"treasure2:small_dungeon_set_1",
+  "category":"dungeon",
+  "count": {
+    "min": 2,
+    "max": 4
+  },
+  "mobs": [
+    {
+      "id": "minecraft:zombie",
+      "weight": 20
+    },
+    {
+      "id": "minecraft:spider",
+      "weight": 20
+    },
+    {
+      "id": "minecraft:cave_spider",
+      "weight": 20
+    },
+    {
+      "id": "minecraft:skeleton",
+      "weight": 20
+    },
+    {
+      "id": "minecraft:stray",
+      "weight": 10
+    }
+  ]
+}

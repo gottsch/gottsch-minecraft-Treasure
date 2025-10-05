@@ -21,11 +21,10 @@ import java.util.Optional;
 
 import com.google.common.collect.Maps;
 
-import mod.gottsch.forge.treasure2.core.rarity.IRarityEntry;
+import mod.gottsch.forge.treasure2.core.rarity.IRarity;
 import mod.gottsch.forge.treasure2.core.rarity.RarityTagAssociation;
 import mod.gottsch.forge.treasure2.core.rarity.TreasureRarities;
 import mod.gottsch.forge.treasure2.core.registry.RarityTagAssociationRegistry;
-import net.minecraft.core.Holder;
 import net.minecraft.world.item.Item;
 
 /**
@@ -47,7 +46,7 @@ public class TreasureWishables {
 	 * @param item the Item to check.
 	 * @return the RegistryObject<RarityEntry> associated with the item, or a default.
 	 */
-	public static Optional<IRarityEntry> getRarity(Item item) {
+	public static Optional<IRarity> getRarity(Item item) {
 		return getRarityAssociations().stream()
 				.filter(association -> item.builtInRegistryHolder().is(association.getItemTag()))
 				.findFirst()

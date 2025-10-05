@@ -12,6 +12,5 @@
       "weight": 95
     }
   ],
-  "lock_rarities": ["treasure2:scarce", "treasure2:rare"],
-  "biomes_blacklist":["minecraft:plains", "minecraft:sunflower_plains", "#treasure2:common_blacklist"]
+  "lock_rarities": ["treasure2:scarce", "treasure2:rare"]
 }

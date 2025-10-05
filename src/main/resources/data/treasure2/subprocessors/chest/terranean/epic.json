@@ -7,6 +7,5 @@
       "rarity": "treasure2:epic"
     }
   ],
-  "lock_rarities": ["treasure2:rare", "treasure2:epic"],
-  "biomes_blacklist":["minecraft:plains", "minecraft:sunflower_plains", "#treasure2:common_blacklist"]
+  "lock_rarities": ["treasure2:rare", "treasure2:epic"]
 }

@@ -1,10 +1,6 @@
 {
   "structures": [
     {
-      "structure": "treasure2:well/test_well",
-      "weight": 1
-    },
-    {
       "structure": "treasure2:well/wishing_well",
       "weight": 1
     },

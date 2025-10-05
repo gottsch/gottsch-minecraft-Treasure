@@ -1,25 +1,21 @@
 /*
- * This file is part of  Treasure2.
- * Copyright (c) 2022 Mark Gottschling (gottsch)
+ * This file is part of Treasure2.
+ * Copyright (c) 2025 Mark Gottschling (gottsch)
  *
  * Treasure2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * it under the terms of the Open Software Licence 3.0.
  *
  * Treasure2 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * Open Software Licence 3.0 for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * You should have received a copy of the Open Software Licence
+ * along with Treasure2. If not, see <https://www.tldrlegal.com/license/open-software-licence-3-0>.
  */
 package mod.gottsch.forge.treasure2.core.block.entity;
 
-import mod.gottsch.forge.treasure2.core.block.StructureNeighborDependentStateMarkerBlock;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
-import mod.gottsch.forge.treasure2.core.enums.MarkerType;
 import mod.gottsch.forge.treasure2.core.setup.Registration;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -118,6 +114,14 @@ public class TreasureBlockEntities {
 			Registration.BLOCK_ENTITIES.register("bone_chest",
 					() -> BlockEntityType.Builder.of(BoneChestBlockEntity::new, TreasureBlocks.BONE_CHEST.get()).build(null));
 
+	public static final RegistryObject<BlockEntityType<CelestialChestBlockEntity>> CELESTIAL_CHEST =
+			Registration.BLOCK_ENTITIES.register("celestial_chest",
+					() -> BlockEntityType.Builder.of(CelestialChestBlockEntity::new, TreasureBlocks.CELESTIAL_CHEST.get()).build(null));
+
+	public static final RegistryObject<BlockEntityType<InfernalChestBlockEntity>> INFERNAL_CHEST =
+			Registration.BLOCK_ENTITIES.register("infernal_chest",
+					() -> BlockEntityType.Builder.of(InfernalChestBlockEntity::new, TreasureBlocks.INFERNAL_CHEST.get()).build(null));
+
 	public static final RegistryObject<BlockEntityType<TreasureProximitySpawnerBlockEntity>> TREASURE_PROXIMITY_SPAWNER_ENTITY_TYPE = 
 			Registration.BLOCK_ENTITIES.register("treasure_proximity_spawner", 
 			() -> BlockEntityType.Builder.of(TreasureProximitySpawnerBlockEntity::new, 
@@ -144,46 +148,46 @@ public class TreasureBlockEntities {
 					TreasureBlocks.GRAVESTONE3_SPAWNER_OBSIDIAN.get()
 				).build(null));
 
-	@Deprecated
-	public static final RegistryObject<BlockEntityType<DeferredRandomVanillaSpawnerBlockEntity>> DEFERRED_RANDOM_VANILLA_SPAWNER_ENTITY_TYPE =
-			Registration.BLOCK_ENTITIES.register("deferred_random_vanilla_spawner",
-					() -> BlockEntityType.Builder.of(DeferredRandomVanillaSpawnerBlockEntity::new,
-							TreasureBlocks.DEFERRED_RANDOM_VANILLA_SPAWNER.get())
-							.build(null));
+//	@Deprecated
+//	public static final RegistryObject<BlockEntityType<DeferredRandomVanillaSpawnerBlockEntity>> DEFERRED_RANDOM_VANILLA_SPAWNER_ENTITY_TYPE =
+//			Registration.BLOCK_ENTITIES.register("deferred_random_vanilla_spawner",
+//					() -> BlockEntityType.Builder.of(DeferredRandomVanillaSpawnerBlockEntity::new,
+//							TreasureBlocks.DEFERRED_RANDOM_VANILLA_SPAWNER.get())
+//							.build(null));
 
-	@Deprecated
-	public static final RegistryObject<BlockEntityType<DeferredWitherTreeGeneratorBlockEntity>> DEFERRED_WITHER_TREE_GENERATOR_ENTITY_TYPE =
-			Registration.BLOCK_ENTITIES.register("deferred_wither_tree_generator",
-					() -> BlockEntityType.Builder.of(DeferredWitherTreeGeneratorBlockEntity::new,
-									TreasureBlocks.DEFERRED_WITHER_TREE_GENERATOR.get())
-							.build(null));
-
-	@Deprecated
-	public static final RegistryObject<BlockEntityType<DeferredSubaquaticGeneratorBlockEntity>> DEFERRED_SUBAQUATIC_GENERATOR_ENTITY_TYPE =
-			Registration.BLOCK_ENTITIES.register("deferred_subaquatic_generator",
-					() -> BlockEntityType.Builder.of(DeferredSubaquaticGeneratorBlockEntity::new,
-									TreasureBlocks.DEFERRED_SUBAQUATIC_GENERATOR.get())
-							.build(null));
-
-	@Deprecated
-	public static final RegistryObject<BlockEntityType<DeferredSurfaceGeneratorBlockEntity>> DEFERRED_SURFACE_GENERATOR_ENTITY_TYPE =
-			Registration.BLOCK_ENTITIES.register("deferred_surface_generator",
-					() -> BlockEntityType.Builder.of(DeferredSurfaceGeneratorBlockEntity::new,
-									TreasureBlocks.DEFERRED_SURFACE_GENERATOR.get())
-							.build(null));
-
-	@Deprecated
-	public static final RegistryObject<BlockEntityType<DeferredPitGeneratorBlockEntity>> DEFERRED_PIT_GENERATOR_ENTITY_TYPE =
-			Registration.BLOCK_ENTITIES.register("deferred_pit_generator",
-					() -> BlockEntityType.Builder.of(DeferredPitGeneratorBlockEntity::new,
-									TreasureBlocks.DEFERRED_PIT_GENERATOR.get())
-							.build(null));
+//	@Deprecated
+//	public static final RegistryObject<BlockEntityType<DeferredWitherTreeGeneratorBlockEntity>> DEFERRED_WITHER_TREE_GENERATOR_ENTITY_TYPE =
+//			Registration.BLOCK_ENTITIES.register("deferred_wither_tree_generator",
+//					() -> BlockEntityType.Builder.of(DeferredWitherTreeGeneratorBlockEntity::new,
+//									TreasureBlocks.DEFERRED_WITHER_TREE_GENERATOR.get())
+//							.build(null));
+//
+//	@Deprecated
+//	public static final RegistryObject<BlockEntityType<DeferredSubaquaticGeneratorBlockEntity>> DEFERRED_SUBAQUATIC_GENERATOR_ENTITY_TYPE =
+//			Registration.BLOCK_ENTITIES.register("deferred_subaquatic_generator",
+//					() -> BlockEntityType.Builder.of(DeferredSubaquaticGeneratorBlockEntity::new,
+//									TreasureBlocks.DEFERRED_SUBAQUATIC_GENERATOR.get())
+//							.build(null));
+//
+//	@Deprecated
+//	public static final RegistryObject<BlockEntityType<DeferredSurfaceGeneratorBlockEntity>> DEFERRED_SURFACE_GENERATOR_ENTITY_TYPE =
+//			Registration.BLOCK_ENTITIES.register("deferred_surface_generator",
+//					() -> BlockEntityType.Builder.of(DeferredSurfaceGeneratorBlockEntity::new,
+//									TreasureBlocks.DEFERRED_SURFACE_GENERATOR.get())
+//							.build(null));
+//
+//	@Deprecated
+//	public static final RegistryObject<BlockEntityType<DeferredPitGeneratorBlockEntity>> DEFERRED_PIT_GENERATOR_ENTITY_TYPE =
+//			Registration.BLOCK_ENTITIES.register("deferred_pit_generator",
+//					() -> BlockEntityType.Builder.of(DeferredPitGeneratorBlockEntity::new,
+//									TreasureBlocks.DEFERRED_PIT_GENERATOR.get())
+//							.build(null));
 	
-	public static final RegistryObject<BlockEntityType<MistEmitterBlockEntity>> MIST_EMITTER_BLOCK_ENTITY_TYPE = 
-			Registration.BLOCK_ENTITIES.register("mist_emitter", 
-				() -> BlockEntityType.Builder.of(MistEmitterBlockEntity::new, 
-						TreasureBlocks.WITHERWOOD_SOUL_LOG.get()
-					).build(null));
+//	public static final RegistryObject<BlockEntityType<MistEmitterBlockEntity>> MIST_EMITTER_BLOCK_ENTITY_TYPE =
+//			Registration.BLOCK_ENTITIES.register("mist_emitter",
+//				() -> BlockEntityType.Builder.of(MistEmitterBlockEntity::new,
+//						TreasureBlocks.WITHERWOOD_SOUL_LOG.get()
+//					).build(null));
 
 	// signs
 	public static final RegistryObject<BlockEntityType<TreasureSignBlockEntity>> TREASURE_SIGN =

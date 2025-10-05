@@ -20,6 +20,10 @@
     {
       "id": "#treasure2:bwg_forest",
       "required": false
+    },
+    {
+      "id": "#treasure2:bop_forest",
+      "required": false
     }
   ]
 }

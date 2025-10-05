@@ -20,7 +20,7 @@ import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.item.TreasureItems;
 import mod.gottsch.forge.treasure2.core.loot.TreasureLootGenerators;
 import mod.gottsch.forge.treasure2.core.loot.TreasureLootTableTypes;
-import mod.gottsch.forge.treasure2.core.rarity.IRarityEntry;
+import mod.gottsch.forge.treasure2.core.rarity.IRarity;
 import mod.gottsch.forge.treasure2.core.rarity.TreasureRarities;
 import mod.gottsch.forge.treasure2.core.registry.LootTableRegistry;
 import mod.gottsch.forge.treasure2.core.registry.RarityTagAssociationRegistry;
@@ -45,78 +45,10 @@ import java.util.function.Predicate;
  * @author by Mark Gottschling on 8/25/2025
  */
 public class WishableHandler implements IWishableHandler {
-    /**
-     *
-     * @param level
-     * @param random
-     * @param itemEntity
-     * @param coords
-     * @return
-     */
-    // TODO make Level ServerLevel and all other methods use server level
-//    public Optional<ItemStack> generateLoot(Level world, Random random, ItemEntity itemEntity, ICoords coords) {
-//        ItemStack itemStack = itemEntity.getItem();
-//
-//        // determine rarity of item
-//        IRarityEntry rarity = TreasureWishables.getRarity(itemStack.getItem()).orElse(TreasureRarities.COMMON.get());
-//        List<ResourceLocation> lootTableNames = getLootTables(rarity);
-//
-//        // handle if loot tables is null or size = 0. return an item (default key) to ensure continuing functionality
-//        if (lootTableNames.isEmpty()) {
-//            return Optional.of(getDefaultLootKey(random, rarity));
-//        }
-//
-//        // attempt to get the player who dropped the coin
-//        Optional<Player> player = getPlayerFromItem(world, itemEntity);
-//        player.ifPresent(p -> {
-//            if (Treasure.LOGGER.isDebugEnabled()) {
-//                Treasure.LOGGER.debug("coin dropped by player -> {}", p.getName());
-//            }
-//        });
-//
-//        // select a table shell
-//        ResourceLocation lootTableName = lootTableNames.get(random.nextInt(lootTableNames.size()));
-//        if (lootTableName == null) {
-//            return Optional.empty();
-//        }
-//
-//        // get the vanilla table from shell
-//        LootTable table = world.getServer().getLootData().getLootTable(lootTableName);
-//
-//        // generate a context
-//        LootContext lootContext = getLootContext(world, player.get(), coords);
-//
-//        // process main loot pool items
-//        List<ItemStack> itemStacks = new ArrayList<>();
-//        table.pools.forEach(pool -> {
-//            Treasure.LOGGER.debug("processing pool -> {}", pool.getName());
-//            LootPool lootPool = table.getPool(pool.getName());
-//            lootPool.addRandomItems(itemStacks::add, lootContext);
-//        });
-//
-//        // get all injected loot tables
-//        injectLoot(world, random, itemStacks, rarity, lootContext);
-//
-//        if (Treasure.LOGGER.isDebugEnabled()) {
-//            itemStacks.forEach(stack -> Treasure.LOGGER.debug("possible loot item -> {}", ModUtil.getName(stack.getItem()).toString()));
-//        }
-//
-//        // select one item randomly
-//        if (itemStacks.isEmpty()) {
-//            return Optional.empty(); // Or return a default stack
-//        }
-//        ItemStack outputStack = itemStacks.get(random.nextInt(itemStacks.size()));
-//
-//        if (Treasure.LOGGER.isDebugEnabled()) {
-//            Treasure.LOGGER.debug("loot item output stack -> {}", ModUtil.getName(outputStack.getItem()).toString());
-//        }
-//
-//        return Optional.of(outputStack);
-//    }
 
     public Optional<ItemStack> generateLoot(Level level, Random random, ItemEntity itemEntity, ICoords coords) {
         // determine item rarity with a safe fallback.
-        IRarityEntry rarity = TreasureWishables.getRarity(itemEntity.getItem().getItem())
+        IRarity rarity = TreasureWishables.getRarity(itemEntity.getItem().getItem())
                 .orElse(TreasureRarities.COMMON.get());
 
         // get loot tables, returning a default item if none are found.
@@ -178,7 +110,7 @@ public class WishableHandler implements IWishableHandler {
      * @param rarity the rarity of the loot tables to retrieve.
      * @return
      */
-    public List<ResourceLocation> getLootTables(IRarityEntry rarity) {
+    public List<ResourceLocation> getLootTables(IRarity rarity) {
         return LootTableRegistry.getLootTableIds(TreasureLootTableTypes.WISHABLES.get(), rarity);
     }
 
@@ -189,7 +121,7 @@ public class WishableHandler implements IWishableHandler {
      * @return
      */
     public ItemStack getDefaultLootKey (Random random, ItemEntity itemEntity) {
-        IRarityEntry rarity = TreasureWishables.getRarity(itemEntity.getItem().getItem()).orElse(TreasureRarities.COMMON.get());
+        IRarity rarity = TreasureWishables.getRarity(itemEntity.getItem().getItem()).orElse(TreasureRarities.COMMON.get());
         return getDefaultLootKey(random, rarity);
     }
 
@@ -199,7 +131,7 @@ public class WishableHandler implements IWishableHandler {
      * @param rarity
      * @return
      */
-    public ItemStack getDefaultLootKey(Random random, IRarityEntry rarity) {
+    public ItemStack getDefaultLootKey(Random random, IRarity rarity) {
         List<Item> keys = RarityTagAssociationRegistry.getKeyItems(rarity);
         Item selectedKey = keys.isEmpty()
                 ? TreasureItems.THIEFS_LOCK_PICK.get()
@@ -233,7 +165,7 @@ public class WishableHandler implements IWishableHandler {
      * @param rarity
      * @param lootContext
      */
-    public void injectLoot(Level level, Random random, List<ItemStack> itemStacks, IRarityEntry rarity, LootContext lootContext) {
+    public void injectLoot(Level level, Random random, List<ItemStack> itemStacks, IRarity rarity, LootContext lootContext) {
         List<ResourceLocation> injectLootTableNames = LootTableRegistry.getLootTableIds(TreasureLootTableTypes.WISHABLES.get(), rarity);
 
         if (!injectLootTableNames.isEmpty()) {

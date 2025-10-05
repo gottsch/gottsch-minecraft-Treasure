@@ -16,11 +16,9 @@
 package mod.gottsch.forge.treasure2.core.random;
 
 import mod.gottsch.forge.gottschcore.random.WeightedCollection;
-import mod.gottsch.forge.treasure2.core.rarity.IRarityEntry;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 /**

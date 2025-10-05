@@ -16,11 +16,6 @@
 package mod.gottsch.forge.treasure2.core.item;
 
 
-import mod.gottsch.forge.gottschcore.world.WorldInfo;
-import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
-import mod.gottsch.forge.treasure2.core.block.ITreasureChestBlockProxy;
-import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
 import mod.gottsch.forge.treasure2.core.block.entity.BoneChestBlockEntity;
 import mod.gottsch.forge.treasure2.core.block.entity.ITreasureChestBlockEntity;
 import mod.gottsch.forge.treasure2.core.lock.LockState;
@@ -28,14 +23,12 @@ import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.List;
@@ -74,7 +67,7 @@ public class BoneKey extends KeyItem {
 		BoneChestBlockEntity boneChestBlockEntity = (BoneChestBlockEntity)blockEntity;
 
 		if (boneChestBlockEntity.isLocked()) {
-			if (unlock(lockState.getLock())) {
+			if (unlock(context.getLevel(), lockState.getLock())) {
 				doUnlock(context, boneChestBlockEntity, lockState);
 				boneChestBlockEntity.sendUpdates();
 				return false; // key not broken, successfully unlocked

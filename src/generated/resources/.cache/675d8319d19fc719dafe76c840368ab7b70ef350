@@ -1,13 +1,19 @@
-// 1.20.1	2025-09-15T19:06:56.2184672	Tags for minecraft:worldgen/biome mod id treasure2
-a68f5b07b7e84c0007ac418a916c0acbd4d90081 data/treasure2/tags/worldgen/biome/all_overworld.json
+// 1.20.1	2025-10-02T15:11:26.840377	Tags for minecraft:worldgen/biome mod id treasure2
+194d7c4dc6f048965d339516a77624a75bd939c1 data/treasure2/tags/worldgen/biome/all_overworld.json
+afd9da16b8e57511d3b12c69ccd4555d71ebb29f data/treasure2/tags/worldgen/biome/aquatic.json
 135d8c35b01fe3128dfdd47ae52330fdc30b1295 data/treasure2/tags/worldgen/biome/biome/filter/chests/rarity/terranean/rare.json
+e48d53c07a7c80e07881c9c2b07fad4a74773c39 data/treasure2/tags/worldgen/biome/bop_desert.json
+6c72a032714f56f4fe56435ed44feaa9f3b3500d data/treasure2/tags/worldgen/biome/bop_forest.json
+ff3d86dcb005c3ada2887780b6077bc8a19c9fa4 data/treasure2/tags/worldgen/biome/bop_is_dry.json
+cd79ecea0262ef28efc1ec503050f0fb72e49faf data/treasure2/tags/worldgen/biome/bop_jungle.json
 4a5fc7c3e378d3684d67a16b85afdfed6a9f9577 data/treasure2/tags/worldgen/biome/bwg_desert.json
 d957c4c0c516dd7b09d0365385a220f12ed4e195 data/treasure2/tags/worldgen/biome/bwg_forest.json
 1c7cbd8067265d15a7631606540acd3130aadf4e data/treasure2/tags/worldgen/biome/bwg_is_dry.json
 9962d93c559f18c506c53fb301d31af1abefa7ce data/treasure2/tags/worldgen/biome/bwg_jungle.json
 afd9da16b8e57511d3b12c69ccd4555d71ebb29f data/treasure2/tags/worldgen/biome/config/generators/rarities/wither/blacklist.json
-76f37f18c181fc43835cfecea2e94b6c99c8eb80 data/treasure2/tags/worldgen/biome/temperate.json
-4d9c1721f2735ca4a5c0cd949bab3fe7388dde0f data/treasure2/tags/worldgen/biome/wells_desert.json
+64f683d74ad490405434c964f1628904865a2075 data/treasure2/tags/worldgen/biome/temperate.json
+d944c8e74f267281e6e26b57cb03380d02bd7d81 data/treasure2/tags/worldgen/biome/terranean.json
+b4486cb42b4b80430ce2878cf73f7bf3fe562874 data/treasure2/tags/worldgen/biome/wells_desert.json
 998ae936ff39c4361d714f20044aff4d3fc3654e data/treasure2/tags/worldgen/biome/wells_forest.json
-f09b7f0c774a30ae0a3905907b446c2568974888 data/treasure2/tags/worldgen/biome/wells_general.json
+1aef03dbbbddc1867131986cc610761e5046a10f data/treasure2/tags/worldgen/biome/wells_general.json
 f85bfa0d4b462706e486bac541e720ebc630330c data/treasure2/tags/worldgen/biome/wells_jungle.json

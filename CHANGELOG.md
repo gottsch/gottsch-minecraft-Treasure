@@ -5,20 +5,41 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [4.0.0] - 2025-08-12
+## [4.0.0] - 2025-10-03
+
+---
+> ## This version is a breaking change! Backup your world first.
+---
 
 ### Changed
-- All structure, pit, marker, well, wither grove, etc. generation uses Jigsaw Structures.
+
+---
+- **<font color="#000fff">All structure, pit, marker, well, witherwood grove, etc. generation uses _Jigsaw Structures_.</font>**
+> PreGen compatibility. 
+
+>No cascading nor outside bounds errors. 
+
+> No additional generation lag.
+
+> Able to locate using vanilla command /locate structure
+---
 - Changed License to OSL-3.0.
 - Expanded Mob Sets and Mob Set based Blocks.
 - Removed Deferred generation system.
-- Removed treasure2-structures-xxx.toml config file - no longer necessary.
-- Well structure mob blocks (iron block) takes NBT data ex mob_set
-- Fixed some Config from processing on LoadingConfig.Unload event.
-- 
+- Removed all non-standard config toml files. 
+> Uses /data json files instead.
+- Removed most Config options.
+> Uses /data json files instead.
+- Made the One Key more rare.
+- Fixed reflection called in Constructor error on startup.
+- Fixed all asset errors on startup.
+- Requires GottschCore 2.5.1+
+
 ### Added
-- Shields
-- Xarc Stone
+- **Bone, Celestial, and Infernal Chests**
+- Bone Key, Bone Lock (not accessible to players ie part of Bone Chest).
+- Multiple new surface structures (mausoleum, ponds, statues, natural area, etc)
+- Reduced and cleanup up codebase.
 
 ## [3.12.1] - 2025-04-23
 

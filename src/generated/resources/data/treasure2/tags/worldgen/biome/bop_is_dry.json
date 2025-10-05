@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "#treasure2:bop_desert",
+      "required": false
+    },
+    {
+      "id": "#treasure2:bop_forest",
+      "required": false
+    },
+    {
+      "id": "#treasure2:bop_jungle",
+      "required": false
+    }
+  ]
+}

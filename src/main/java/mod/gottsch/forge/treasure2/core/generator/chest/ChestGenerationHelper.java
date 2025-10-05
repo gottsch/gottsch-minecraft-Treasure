@@ -21,15 +21,15 @@ import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
+import mod.gottsch.forge.treasure2.core.cache.TreasureChestCache;
+import mod.gottsch.forge.treasure2.core.cache.data.TreasureChestCacheData;
 import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.core.loot.TreasureLootTableTypes;
-import mod.gottsch.forge.treasure2.core.rarity.IRarityEntry;
+import mod.gottsch.forge.treasure2.core.rarity.IRarity;
 import mod.gottsch.forge.treasure2.core.rarity.RarityOrder;
 import mod.gottsch.forge.treasure2.core.rarity.TreasureRarities;
-import mod.gottsch.forge.treasure2.core.chest.TreasureChestCache;
 import mod.gottsch.forge.treasure2.core.registry.LootTableRegistry;
 import mod.gottsch.forge.treasure2.core.registry.RarityOrderRegistry;
-import mod.gottsch.forge.treasure2.core.registry.support.TreasureChestCacheData;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -65,6 +65,8 @@ public class ChestGenerationHelper {
     private static final Predicate<LootPool> IS_TREASURE_POOL = pool -> TREASURE_POOL_NAME.equalsIgnoreCase(pool.getName());
     private static final Predicate<LootPool> IS_FILLER_POOL = IS_TREASURE_POOL.negate();
 
+    // TODO could move to LootGenerator as it would be the "base" loot class.
+    //  this helper class is more specialized.
     /**
      * selects a random loot table resource location from the registry based on the given rarity.
      *
@@ -72,7 +74,7 @@ public class ChestGenerationHelper {
      * @param rarity the rarity entry to filter loot tables by.
      * @return an Optional containing the ResourceLocation, or empty if none are found.
      */
-    public static Optional<ResourceLocation> randomLootTable(RandomSource random, IRarityEntry rarity) {
+    public static Optional<ResourceLocation> randomLootTable(RandomSource random, IRarity rarity) {
         List<ResourceLocation> lootTables = LootTableRegistry.getLootTableIds(TreasureLootTableTypes.CHESTS.get(), rarity);
         if (lootTables.isEmpty()) {
             return Optional.empty();
@@ -91,7 +93,7 @@ public class ChestGenerationHelper {
      * @param rarity      the rarity of the chest.
      * @param player      the player context, can be null.
      */
-    public static void fillChest(final ServerLevel level, RandomSource random, final BlockEntity blockEntity, final IRarityEntry rarity, Player player) {
+    public static void fillChest(final ServerLevel level, RandomSource random, final BlockEntity blockEntity, final IRarity rarity, Player player) {
         if (!(blockEntity instanceof AbstractTreasureChestBlockEntity chestBlockEntity)) {
             return;
         }
@@ -114,17 +116,17 @@ public class ChestGenerationHelper {
 
             // 2. prepare for loot generation
             LootContext lootContext = createLootContext(level, chestBlockEntity.getBlockPos(), player, lootTableId);
-            List<ItemStack> treasureStacks = new ArrayList<>();
-            List<ItemStack> fillerStacks = new ArrayList<>();
 
             // 3. generate loot from the primary table
+            List<ItemStack> treasureStacks = new ArrayList<>();
+            List<ItemStack> fillerStacks = new ArrayList<>();
             generateLootFromPools(lootTable, lootContext, treasureStacks, fillerStacks);
             int originalTreasureSize = treasureStacks.size();
             int originalFillerSize = fillerStacks.size();
 
             // 4. inject loot from other registered tables
             addInjectedLoot(level, rarity, lootContext, treasureStacks, fillerStacks);
-            Treasure.LOGGER.debug("Total treasure items: {}, filler items: {}", treasureStacks.size(), fillerStacks.size());
+            Treasure.LOGGER.debug("total treasure items: {}, injected items: {}", treasureStacks.size(), fillerStacks.size());
 
             // 5. add a treasure map to the inventory
             // TODO should only add a treasure map to core OR have to get the order set ie core, speciality, etc.
@@ -141,14 +143,15 @@ public class ChestGenerationHelper {
     /**
      * determines the loot table to use, preferring the one set on the chest entity, otherwise selecting a random one.
      */
-    private static Optional<ResourceLocation> selectLootTable(AbstractTreasureChestBlockEntity chest, RandomSource random, IRarityEntry rarity) {
+    private static Optional<ResourceLocation> selectLootTable(AbstractTreasureChestBlockEntity chest, RandomSource random, IRarity rarity) {
         return Optional.ofNullable(chest.getLootTable()).or(() -> randomLootTable(random, rarity));
     }
 
+    // TODO this could be moved to LootGenerator
     /**
      * creates the LootContext needed for loot generation.
      */
-    private static LootContext createLootContext(ServerLevel level, BlockPos position, Player player, ResourceLocation lootTableId) {
+    public static LootContext createLootContext(ServerLevel level, BlockPos position, Player player, ResourceLocation lootTableId) {
         LootParams.Builder paramsBuilder = new LootParams.Builder(level)
                 .withParameter(LootContextParams.ORIGIN, new Vec3(position.getX(), position.getY(), position.getZ()));
         if (player != null) {
@@ -161,7 +164,7 @@ public class ChestGenerationHelper {
     /**
      * generates items from a loot table's pools, sorting them into treasure and filler lists.
      */
-    private static void generateLootFromPools(LootTable lootTable, LootContext context, List<ItemStack> treasureOut, List<ItemStack> fillerOut) {
+    public static void generateLootFromPools(LootTable lootTable, LootContext context, List<ItemStack> treasureOut, List<ItemStack> fillerOut) {
         for (LootPool pool : lootTable.pools) {
             if (IS_TREASURE_POOL.test(pool)) {
                 Treasure.LOGGER.debug("generating loot from treasure pool -> {}", pool.getName());
@@ -176,7 +179,7 @@ public class ChestGenerationHelper {
     /**
      * finds and adds loot from injectable loot tables based on rarity.
      */
-    private static void addInjectedLoot(ServerLevel level, IRarityEntry rarity, LootContext context, List<ItemStack> treasureOut, List<ItemStack> fillerOut) {
+    public static void addInjectedLoot(ServerLevel level, IRarity rarity, LootContext context, List<ItemStack> treasureOut, List<ItemStack> fillerOut) {
         List<ResourceLocation> injectLootTables = LootTableRegistry.getLootTableIds(TreasureLootTableTypes.INJECTS.get(), rarity)
                 .stream()
                 .filter(s -> s.getPath().contains(TreasureLootTableTypes.CHESTS.get().getName()))
@@ -207,7 +210,7 @@ public class ChestGenerationHelper {
      * @param chestCoords the coordinates of the chest being filled.
      * @param rarity      the rarity of the chest being filled.
      */
-    public static void addTreasureMap(ServerLevel level, RandomSource random, ItemStackHandler inventory, ICoords chestCoords, IRarityEntry rarity) {
+    public static void addTreasureMap(ServerLevel level, RandomSource random, ItemStackHandler inventory, ICoords chestCoords, IRarity rarity) {
         // 1. check if there is space and if maps are enabled and pass a probability check
         if (getEmptySlotsRandomized(inventory, random).isEmpty()
                 || !Config.SERVER.maps.enableMaps.get()
@@ -216,15 +219,18 @@ public class ChestGenerationHelper {
         }
 
         // 2. determine the rarity of the chest the map will point to
-        IRarityEntry mapRarity = getBoostedRarity(rarity, getRarityBoostAmount()).orElse(rarity);
+        IRarity mapRarity = getBoostedRarity(rarity, getRarityBoostAmount()).orElse(rarity);
         Treasure.LOGGER.debug("attempting to generate a treasure map of rarity {} in a {} chest.", mapRarity.getName(), rarity.getName());
 
         // 3. find a valid, undiscovered, un-charted chest location of the target rarity
-        findRandomMapTarget(level, random, mapRarity).ifPresent(targetContext -> {
+        findRandomMapTarget(level, random, mapRarity)
+                // filter out the current chest
+                .filter(map -> !map.getCoords().equals(chestCoords))
+                .ifPresent(targetContext -> {
             Treasure.LOGGER.debug("found map target: {}", targetContext);
 
             // 4. create the map item and add it to the inventory
-            ItemStack mapStack = createMap(level, targetContext.getCoords(), mapRarity, (byte) 2);
+            ItemStack mapStack = createMap(level, targetContext.getCoords(), mapRarity, (byte) 4);
             getEmptySlotsRandomized(inventory, random).stream().findFirst().ifPresent(slot -> {
                 inventory.setStackInSlot(slot, mapStack);
                 targetContext.setChartedFrom(chestCoords);
@@ -246,7 +252,7 @@ public class ChestGenerationHelper {
      * @param zoom   the zoom level of the map.
      * @return a configured treasure map as an ItemStack.
      */
-    public static ItemStack createMap(ServerLevel level, ICoords coords, IRarityEntry rarity, byte zoom) {
+    public static ItemStack createMap(ServerLevel level, ICoords coords, IRarity rarity, byte zoom) {
         ItemStack itemStack = MapItem.create(level, coords.getX(), coords.getZ(), zoom, true, true);
         MapItem.renderBiomePreviewMap(level, itemStack);
         MapItemSavedData.addTargetDecoration(itemStack, coords.toPos(), "+", MapDecoration.Type.RED_X);
@@ -257,7 +263,7 @@ public class ChestGenerationHelper {
     /**
      * finds a random, valid chest generation context to be used as a treasure map target.
      */
-    private static Optional<TreasureChestCacheData> findRandomMapTarget(ServerLevel level, RandomSource random, IRarityEntry targetRarity) {
+    private static Optional<TreasureChestCacheData> findRandomMapTarget(ServerLevel level, RandomSource random, IRarity targetRarity) {
         List<TreasureChestCacheData> cache = TreasureChestCache.getCache();
 
         if (cache.isEmpty()) {
@@ -279,7 +285,7 @@ public class ChestGenerationHelper {
     /**
      * updates the source chest's context to mark it as discovered.
      */
-    private static void updateSourceChestContext(ServerLevel level, ICoords chestCoords, IRarityEntry rarity) {
+    private static void updateSourceChestContext(ServerLevel level, ICoords chestCoords, IRarity rarity) {
         List<TreasureChestCacheData> cache = TreasureChestCache.getCache();
 
         if (cache.isEmpty()) return;
@@ -292,16 +298,36 @@ public class ChestGenerationHelper {
         target.ifPresent(spawn -> spawn.setDiscovered(true));
     }
 
-    public static Optional<IRarityEntry> getBoostedRarity(IRarityEntry rarity, int amount) {
-
+    public static Optional<IRarity> getBoostedRarity(IRarity rarity, int amount) {
+        Treasure.LOGGER.debug("boosted amount -> {}", amount);
         // check the registry(s) for the rarity
-        List<RarityOrder> rarityOrders = RarityOrderRegistry.getCore();
+        List<RarityOrder> rarityOrders = new ArrayList<>(RarityOrderRegistry.getCore());
+        // TODO sort the list of RarityOrders into a List of Rarity
+        rarityOrders.sort(RarityOrder.BY_ORDER);
+//        List<IRarity> sortedRarities = rarityOrders.stream()
+//                // sort by the 'order' field comparator in ascending order.
+//                .sorted(RarityOrder.BY_ORDER)
+//                // map the RarityOrder to an Optional<IRarity> using the resource location.
+//                .map(order -> TreasureRarities.getRarityByName(order.rarity()))
+//                // filter out any entries that didn't resolve to an IRarity.
+//                .filter(Optional::isPresent)
+//                // unwrap the Optional to get the IRarity object.
+//                .map(Optional::get)
+//                // collect the results into a List<IRarity>.
+//                .toList(); // or .collect(Collectors.toList()) for older Java versions
+
+//        Treasure.LOGGER.debug("sorted rarity order -> {}", sortedRarities);
         int index = getIndex(rarityOrders, rarity);
+        Treasure.LOGGER.debug("index of current rarity {} -> {}", rarity, index);
 
         // check if the rarity was found and if there's an element after it.
         if (index != -1 && index + amount < rarityOrders.size()) {
-            RarityOrder rarityOrder = rarityOrders.get(index + 1);
-            return TreasureRarities.getRarityByName(rarityOrder.rarity());
+            RarityOrder rarityOrder = rarityOrders.get(index + amount);
+            Treasure.LOGGER.debug("boosted rarity order -> {}", rarityOrder);
+            Optional<IRarity> boostedRarity = TreasureRarities.getRarityByName(rarityOrder.rarity());
+//            return TreasureRarities.getRarityByName(rarityOrder.rarity());
+            Treasure.LOGGER.debug("boosted rarity -> {}", boostedRarity.orElse(TreasureRarities.UNKNOWN.get()));
+            return boostedRarity;
         }
 
         return Optional.empty();
@@ -311,9 +337,11 @@ public class ChestGenerationHelper {
      * @param rarity the rarity to search by
      * @return
      */
-    private static int getIndex(List<RarityOrder> rarityOrders, IRarityEntry rarity) {
+    private static int getIndex(List<RarityOrder> rarityOrders, IRarity rarity) {
         OptionalInt firstIndex = IntStream.range(0, rarityOrders.size())
-                .filter(i -> rarityOrders.get(i).rarity().equals(rarity))
+                .filter(i -> TreasureRarities.getRarityByName(rarityOrders.get(i).rarity())
+                        .orElse(TreasureRarities.SCARCE.get())
+                        .equals(rarity))
                 .findFirst();
 
         return firstIndex.orElse(-1);

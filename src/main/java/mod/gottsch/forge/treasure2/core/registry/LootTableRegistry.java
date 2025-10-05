@@ -20,7 +20,7 @@ import com.google.common.collect.Table;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.loot.ILootTableTypes;
 import mod.gottsch.forge.treasure2.core.loot.TreasureLootTableTypes;
-import mod.gottsch.forge.treasure2.core.rarity.IRarityEntry;
+import mod.gottsch.forge.treasure2.core.rarity.IRarity;
 import mod.gottsch.forge.treasure2.core.rarity.TreasureRarities;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
@@ -47,16 +47,16 @@ public enum LootTableRegistry {
     /*
      * Guava Table of LootTables by Top-Level(Type) ex chests | wishables | injects, IRarity, List<ResourceLocation>
      */
-    private final static Table<ILootTableTypes, IRarityEntry, List<ResourceLocation>> REGISTRY = HashBasedTable.create();
+    private final static Table<ILootTableTypes, IRarity, List<ResourceLocation>> REGISTRY = HashBasedTable.create();
 
-    public static synchronized void register(ILootTableTypes type, IRarityEntry rarity, ResourceLocation lootTable) {
+    public static synchronized void register(ILootTableTypes type, IRarity rarity, ResourceLocation lootTable) {
         if(!REGISTRY.contains(type, rarity)) {
             REGISTRY.put(type, rarity, new ArrayList<>());
         }
         REGISTRY.get(type, rarity).add(lootTable);
     }
 
-    public static synchronized List<ResourceLocation> getLootTableIds(ILootTableTypes type, IRarityEntry rarity) {
+    public static synchronized List<ResourceLocation> getLootTableIds(ILootTableTypes type, IRarity rarity) {
         return Optional.ofNullable(REGISTRY.get(type, rarity)).orElse(new ArrayList<>());
     }
 
@@ -73,14 +73,14 @@ public enum LootTableRegistry {
         // Then, use getKeys() with LootDataType.TABLE to get the list of all loot tables.
         Collection<ResourceLocation> allLootTables = (Collection<ResourceLocation>) server.getLootData().getKeys(LootDataType.TABLE);
 
-        System.out.println("Found " + allLootTables.size() + " loot tables on server start.");
+        Treasure.LOGGER.debug("found " + allLootTables.size() + " loot tables on server start.");
 
         // step 1: filter the initial list of loot tables once to create a smaller subset
         List<ResourceLocation> treasureLootTables = allLootTables.stream()
                 .filter(location -> location.getNamespace().equals(Treasure.MODID))
                 .toList();
 
-        System.out.println("Found " + treasureLootTables.size() + " treasure loot tables.");
+        Treasure.LOGGER.debug("found " + treasureLootTables.size() + " treasure loot tables.");
 
         // step 2: iterate through associations and use the filtered subset
         RarityLootTableAssociationRegistry.getAssociations().forEach(association -> {
@@ -92,7 +92,7 @@ public enum LootTableRegistry {
                     })
                     .forEach(matchingLootTable -> {
                         Optional<ILootTableTypes> type = TreasureLootTableTypes.getLootTableType(association.typeId());
-                        Optional<IRarityEntry> rarity = TreasureRarities.getRarityByName(association.rarityId());
+                        Optional<IRarity> rarity = TreasureRarities.getRarityByName(association.rarityId());
 
                         type.ifPresent(lootTableType -> rarity.ifPresent(rarityEntry -> {
                             register(lootTableType, rarityEntry, matchingLootTable);

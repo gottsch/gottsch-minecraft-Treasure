@@ -1,21 +1,17 @@
 /*
- * This file is part of  Treasure2.
- * Copyright (c) 2024 Mark Gottschling (gottsch)
- *
- * All rights reserved.
+ * This file is part of Treasure2.
+ * Copyright (c) 2025 Mark Gottschling (gottsch)
  *
  * Treasure2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * it under the terms of the Open Software Licence 3.0.
  *
  * Treasure2 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * Open Software Licence 3.0 for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * You should have received a copy of the Open Software Licence
+ * along with Treasure2. If not, see <https://www.tldrlegal.com/license/open-software-licence-3-0>.
  */
 package mod.gottsch.forge.treasure2.core.block.entity;
 
@@ -26,7 +22,7 @@ import mod.gottsch.forge.gottschcore.size.IntegerRange;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.gottschcore.spatial.ICoords;
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.registry.MobSetRegistry;
+import mod.gottsch.forge.treasure2.core.mobset.MobSetDataRegistry;
 import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -64,7 +60,6 @@ public class ProximityMobSetSpawnerBlockEntity extends AbstractProximityBlockEnt
     private IntegerRange mobSizeRange;
 
     /**
-     *
      * @param pos
      * @param state
      */
@@ -98,6 +93,17 @@ public class ProximityMobSetSpawnerBlockEntity extends AbstractProximityBlockEnt
             int max = tag.contains(MAX_MOBS) ? tag.getInt(MAX_MOBS) : 1;
             this.mobSizeRange = new IntegerRange(min, max);
 
+            /*
+             * load the proximity again AFTER super.load() because GottschCore 2.5.0
+             * has a bug in which it cannot find the proximity value because it is attempting
+             * to load it incorrectly:
+             *    if (tag.contains("proximity", 8)) {... }
+             * in this case, the value of 8 represents a StringTag, but proximity is a DoubleTag.
+             */
+            if (tag.contains(PROXIMITY_TAG)) {
+                setProximity(tag.getDouble(PROXIMITY_TAG));
+            }
+
         } catch (Exception e) {
             Treasure.LOGGER.error("error reading ProximityMobSetSpawnerBlockEntity properties from tag:", e);
         }
@@ -118,10 +124,12 @@ public class ProximityMobSetSpawnerBlockEntity extends AbstractProximityBlockEnt
             }
             tag.putInt(MIN_MOBS, this.getMobSizeRange().getMin());
             tag.putInt(MAX_MOBS, this.getMobSizeRange().getMax());
-    } catch(Exception e) {
-        Treasure.LOGGER.error(e);
-        throw e;
-    }
+
+
+        } catch (Exception e) {
+            Treasure.LOGGER.error(e);
+            throw e;
+        }
     }
 
     private void defaultMobSpawnerSettings() {
@@ -143,9 +151,9 @@ public class ProximityMobSetSpawnerBlockEntity extends AbstractProximityBlockEnt
 
             Iterator players = this.getLevel().players().iterator();
 
-            while(players.hasNext()) {
-                Player player = (Player)players.next();
-                double distanceSq = player.distanceToSqr((double)this.getBlockPos().getX(), (double)this.getBlockPos().getY(), (double)this.getBlockPos().getZ());
+            while (players.hasNext()) {
+                Player player = (Player) players.next();
+                double distanceSq = player.distanceToSqr((double) this.getBlockPos().getX(), (double) this.getBlockPos().getY(), (double) this.getBlockPos().getZ());
                 if (!isTriggered && !this.isDead() && distanceSq < proximitySq) {
                     Treasure.LOGGER.debug("proximity @ -> {} was met.", (new Coords(this.getBlockPos())).toShortString());
                     isTriggered = true;
@@ -162,34 +170,37 @@ public class ProximityMobSetSpawnerBlockEntity extends AbstractProximityBlockEnt
     }
 
     public void execute(Level world, RandomSource random, ICoords blockCoords, ICoords playerCoords) {
-        if (!world.isClientSide()) {
-            ServerLevel level = (ServerLevel)world;
-            int numberOfMobs = RandomHelper.randomInt(random, this.getMobSizeRange().getMin(), this.getMobSizeRange().getMax());
-
-            Optional<WeightedCollection<Integer, ResourceLocation>> weightedMobs = MobSetRegistry.get(getMobSetName());
-            if (weightedMobs.isPresent()) {
-                // for the number of mobs
-                for (int x = 0; x < numberOfMobs; ++x) {
-                    ResourceLocation mobName = DEFAULT_MOB;
-                    if (!weightedMobs.get().isEmpty()) {
-                        mobName = weightedMobs.get().next();
-                    }
-
-                    Optional<EntityType<?>> entityType = EntityType.byString(mobName.toString());
-                    if (entityType.isEmpty()) {
-                        Treasure.LOGGER.debug("unable to get entityType -> {}", mobName);
-                        weightedMobs.get().remove(mobName);
-                        continue;
-                    }
-                    Entity mob = ((EntityType<?>) entityType.get()).create(level);
-                    if (mob instanceof Mob) {
-                        ForgeEventFactory.onFinalizeSpawn((Mob)mob, level, level.getCurrentDifficultyAt(getBlockPos()), MobSpawnType.EVENT, null, null);
-                    }
-                    ModUtil.SpawnEntityHelper.spawn(level, random, entityType.get(), mob, blockCoords);
-                }
-            }
-            this.selfDestruct();
+        if (world.isClientSide()) {
+            return;
         }
+
+        ServerLevel level = (ServerLevel) world;
+        int numberOfMobs = RandomHelper.randomInt(random, this.getMobSizeRange().getMin(), this.getMobSizeRange().getMax());
+
+        MobSetDataRegistry.get(getMobSetName()).ifPresent(data -> {
+            WeightedCollection<Integer, ResourceLocation> collection = new WeightedCollection<>();
+            data.getMobs().forEach(weightedMob -> collection.add(weightedMob.weight(), weightedMob.id()));
+
+            // for the number of mobs
+            for (int i = 0; i < numberOfMobs; i++) {
+                ResourceLocation mobName = Optional.ofNullable(collection.next()).orElse(DEFAULT_MOB);
+
+                EntityType.byString(mobName.toString()).ifPresentOrElse(entityType -> {
+                            Entity mob = entityType.create(level);
+                            if (mob instanceof Mob) {
+                                ForgeEventFactory.onFinalizeSpawn((Mob) mob, level, level.getCurrentDifficultyAt(getBlockPos()), MobSpawnType.EVENT, null, null);
+                            }
+                            ModUtil.SpawnEntityHelper.spawn(level, random, entityType, mob, blockCoords);
+                        },
+                        () -> {
+                            Treasure.LOGGER.debug("unable to get entityType -> {}", mobName);
+                            collection.remove(mobName);
+                        });
+                Optional<EntityType<?>> entityType = EntityType.byString(mobName.toString());
+            }
+        });
+        // TODO this doesn't account for a wrong mobSet ID - do we ignore or use a default list?
+        this.selfDestruct();
     }
 
     private void selfDestruct() {

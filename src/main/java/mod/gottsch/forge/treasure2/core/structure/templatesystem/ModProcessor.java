@@ -28,7 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author by Mark Gottschling on 9/7/2025
  */
 public abstract class ModProcessor extends StructureProcessor {
-    public static final String TREAUSE_CHEST = "treasure_chest";
+    public static final String TREASURE_CHEST = "treasure_chest";
     public static final String VANILLA_CHEST  = "vanilla_chest";
     public static final String DECAY = "decay";
 
@@ -45,13 +45,13 @@ public abstract class ModProcessor extends StructureProcessor {
     }
 
     public static boolean addFinalizeGuard(String key, BlockPos value) {
-        Treasure.LOGGER.debug("adding finalize guard for key {} -> {}", key, value);
+//        Treasure.LOGGER.debug("adding finalize guard for key {} -> {}", key, value);
         boolean isAdded = singlePassFinalizeGuard.computeIfAbsent(key, k -> Collections.synchronizedSet(new HashSet<>())).add(value);
         return isAdded;
     }
 
     public static void removeFromGuards(BlockPos pos) {
-        Treasure.LOGGER.debug("removing guards for pos {} -> {}", pos);
+//        Treasure.LOGGER.debug("removing guards for pos {} -> {}", pos);
         singlePassProcessGuard.forEach((k, v) -> v.remove(pos));
         singlePassFinalizeGuard.forEach((k, v) -> v.remove(pos));
     }

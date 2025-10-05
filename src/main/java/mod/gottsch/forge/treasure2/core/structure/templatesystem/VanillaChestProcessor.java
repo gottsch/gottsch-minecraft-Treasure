@@ -18,47 +18,28 @@ package mod.gottsch.forge.treasure2.core.structure.templatesystem;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.gottschcore.random.RandomHelper;
-import mod.gottsch.forge.gottschcore.spatial.Coords;
-import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.block.ITreasureChestBlock;
 import mod.gottsch.forge.treasure2.core.block.StandardChestBlock;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
 import mod.gottsch.forge.treasure2.core.config.Config;
-import mod.gottsch.forge.treasure2.core.generator.ChestGeneratorData;
-import mod.gottsch.forge.treasure2.core.generator.GeneratorResult;
-import mod.gottsch.forge.treasure2.core.rarity.IRarityEntry;
-import mod.gottsch.forge.treasure2.core.rarity.RarityAdapter;
-import mod.gottsch.forge.treasure2.core.rarity.RarityEntry;
-import mod.gottsch.forge.treasure2.core.registry.*;
-import mod.gottsch.forge.treasure2.core.registry.support.GeneratedChestContext;
-import mod.gottsch.forge.treasure2.core.structure.templatesystem.chest.IChestSubprocessor;
+import mod.gottsch.forge.treasure2.core.registry.MimicRegistry;
 import mod.gottsch.forge.treasure2.core.util.ModUtil;
-import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
-import mod.gottsch.forge.treasure2.core.world.feature.IFeatureType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.RegistryObject;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -106,7 +87,6 @@ public class VanillaChestProcessor extends ModProcessor {
         // TODO change to use association data
         // add mimic if any
         if (Config.SERVER.mobs.enableMimics.get() && RandomHelper.checkProbability(random, Config.SERVER.mobs.mimicProbability.get())) {
-            // TODO update with facing direction that current is.
             Direction direction = state.getValue(ChestBlock.FACING).getOpposite();
 
             // switch to a Treasure2 Vanilla Chest

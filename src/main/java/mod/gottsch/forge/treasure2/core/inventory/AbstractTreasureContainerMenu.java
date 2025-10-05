@@ -1,21 +1,17 @@
 /*
- * This file is part of Legacy Vault.
- * Copyright (c) 2022, Mark Gottschling (gottsch)
- * 
- * All rights reserved.
+ * This file is part of Treasure2.
+ * Copyright (c) 2025 Mark Gottschling (gottsch)
  *
- * Legacy Vault is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the Open Software Licence 3.0.
  *
- * Legacy Vault is distributed in the hope that it will be useful,
+ * Treasure2 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * Open Software Licence 3.0 for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Legacy Vault.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * You should have received a copy of the Open Software Licence
+ * along with Treasure2. If not, see <https://www.tldrlegal.com/license/open-software-licence-3-0>.
  */
 package mod.gottsch.forge.treasure2.core.inventory;
 
@@ -183,41 +179,48 @@ public abstract class AbstractTreasureContainerMenu extends AbstractContainerMen
 	}
 
 	@Override
-	public ItemStack quickMoveStack(Player playerIn, int index) {
-		ItemStack itemStackCopy = ItemStack.EMPTY;
-		Slot slot = this.slots.get(index);
-		if (slot != null && slot.hasItem()) {
-			ItemStack stack = slot.getItem();
-			itemStackCopy = stack.copy();
+	public ItemStack quickMoveStack(Player player, int sourceSlotIndex) {
+		Slot sourceSlot = (Slot) slots.get(sourceSlotIndex);
+		if (sourceSlot == null || !sourceSlot.hasItem())
+			return ItemStack.EMPTY;
+		ItemStack sourceStack = sourceSlot.getItem();
+		ItemStack copyOfSourceStack = sourceStack.copy();
 
-			if (index >= VANILLA_FIRST_SLOT_INDEX && index < VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT) {
-				// TODO add a test Slot.isValid()            	
-				if (!this.moveItemStackTo(stack, CONTAINER_INVENTORY_FIRST_SLOT_INDEX, CONTAINER_INVENTORY_FIRST_SLOT_INDEX + getMenuInventorySlotCount(), true)) {
-					return ItemStack.EMPTY;
-				}
-			} else {
-				if (index >= CONTAINER_INVENTORY_FIRST_SLOT_INDEX && index < CONTAINER_INVENTORY_FIRST_SLOT_INDEX + getMenuInventorySlotCount()) {
-					if (!this.moveItemStackTo(stack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT, false)) {
-						return ItemStack.EMPTY;
-					}
-				} else {
-					Treasure.LOGGER.warn("Invalid slotIndex:" + index);
-					return ItemStack.EMPTY;
-				}
-			}
-
-			if (stack.isEmpty()) {
-				slot.set(ItemStack.EMPTY);
-			} else {
-				slot.setChanged();
-			}
-
-			if (stack.getCount() == itemStackCopy.getCount()) {
+		// check if the slot clicked is one of the vanilla container slots
+		if (sourceSlotIndex >= VANILLA_FIRST_SLOT_INDEX
+				&& sourceSlotIndex < VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT) {
+			/*
+			 * this is a vanilla container slot so merge the stack into the tile inventory
+			 */
+			if (!this.moveItemStackTo(sourceStack, CONTAINER_INVENTORY_FIRST_SLOT_INDEX, CONTAINER_INVENTORY_FIRST_SLOT_INDEX + getMenuInventorySlotCount(), false)) {
 				return ItemStack.EMPTY;
 			}
-			slot.onTake(playerIn, stack);
+		} else if (sourceSlotIndex >= CONTAINER_INVENTORY_FIRST_SLOT_INDEX
+				&& sourceSlotIndex < CONTAINER_INVENTORY_FIRST_SLOT_INDEX + getMenuInventorySlotCount()) {
+			// this is a block entity slot so merge the stack into the players inventory
+			if (!moveItemStackTo(sourceStack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT,
+					false)) {
+				return ItemStack.EMPTY;
+			}
+		} else {
+			Treasure.LOGGER.warn("Invalid slotIndex:" + sourceSlotIndex);
+			return ItemStack.EMPTY;
 		}
-		return itemStackCopy;
+
+		if (sourceStack.isEmpty()) {
+			sourceSlot.set(ItemStack.EMPTY);
+		} else {
+			sourceSlot.setChanged();
+		}
+		// if stack size == 0 (the entire stack was moved) set slot sourceInventory to empty
+		if (sourceStack.getCount() == 0) { // getStackSize
+			sourceSlot.set(ItemStack.EMPTY);
+		} else {
+			sourceSlot.setChanged();
+		}
+
+		sourceSlot.onTake(player, sourceStack); // onPickupFromSlot()
+		return copyOfSourceStack;
 	}
 
 	@Override

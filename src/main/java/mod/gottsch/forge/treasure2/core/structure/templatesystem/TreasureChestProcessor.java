@@ -21,14 +21,15 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mod.gottsch.forge.gottschcore.spatial.Coords;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.ITreasureChestBlock;
+import mod.gottsch.forge.treasure2.core.block.StandardChestBlock;
 import mod.gottsch.forge.treasure2.core.persistence.TreasureSavedData;
-import mod.gottsch.forge.treasure2.core.rarity.IRarityEntry;
-import mod.gottsch.forge.treasure2.core.rarity.RarityEntry;
+import mod.gottsch.forge.treasure2.core.rarity.IRarity;
+import mod.gottsch.forge.treasure2.core.rarity.Rarity;
 import mod.gottsch.forge.treasure2.core.rarity.RarityWeightsManager;
 import mod.gottsch.forge.treasure2.core.rarity.TreasureRarities;
 import mod.gottsch.forge.treasure2.core.registry.ChestSubprocessorDataRegistry;
-import mod.gottsch.forge.treasure2.core.chest.TreasureChestCache;
-import mod.gottsch.forge.treasure2.core.registry.support.TreasureChestCacheData;
+import mod.gottsch.forge.treasure2.core.cache.TreasureChestCache;
+import mod.gottsch.forge.treasure2.core.cache.data.TreasureChestCacheData;
 import mod.gottsch.forge.treasure2.core.structure.BlockRotationUtil;
 import mod.gottsch.forge.treasure2.core.structure.templatesystem.chest.IChestSubprocessor;
 import mod.gottsch.forge.treasure2.core.structure.templatesystem.chest.TreasureChestSubprocessors;
@@ -64,6 +65,11 @@ public class TreasureChestProcessor extends VanillaChestProcessor {
     // property to capture the size of the current piece
     private Vec3i size;
 
+    // cached info
+    // used to cache the structure info of the chest so if multiple passes occur.
+    // the cached info can be used instead of replaced with the original/current info.
+    private StructureTemplate.StructureBlockInfo cachedInfo;
+
     public static final Codec<TreasureChestProcessor> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             FeatureType.CODEC.fieldOf("feature_type").forGetter(TreasureChestProcessor::getFeatureType),
             ResourceLocation.CODEC.optionalFieldOf("dimension", null).forGetter(TreasureChestProcessor::getDimension),
@@ -96,46 +102,49 @@ public class TreasureChestProcessor extends VanillaChestProcessor {
             return current;
         }
 
-        Treasure.LOGGER.debug("Chest processBlock called on piece pos -> {}", piecePos);
-        Treasure.LOGGER.debug("piece rotation -> {}", placementSettings.getRotation());
-        Treasure.LOGGER.debug("Chest processBlock called on relative pos -> {}", relativePos);
-        Treasure.LOGGER.debug("Chest processBlock called on current.pos -> {}", current.pos());
+//        Treasure.LOGGER.debug("Chest processBlock called on piece pos -> {}", piecePos);
+//        Treasure.LOGGER.debug("piece rotation -> {}", placementSettings.getRotation());
+//        Treasure.LOGGER.debug("Chest processBlock called on relative pos -> {}", relativePos);
+//        Treasure.LOGGER.debug("Chest processBlock called on current.pos -> {}", current.pos());
 
-        // TODO current - offset(original/pos) gives piece real world pos
+        // get real world piece pos
         BlockPos newPiecePos = BlockRotationUtil.transformStartCoords(piecePos, this.size, placementSettings.getRotation());
-        Treasure.LOGGER.debug("finalize processing called on piece pos -> {}", newPiecePos);
+        Treasure.LOGGER.debug("attempting process called on piece pos -> {}", newPiecePos);
 
         // NOTE this assumes that the structure has only 1 treasure chest present
         // TODO origin is the unrotated piece pos... rotate it first and this is incorrect pos.
 //        BlockPos origin = piecePos.subtract(relativePos);
-        if (addProcessGuard(TREAUSE_CHEST, newPiecePos)) {
-            Treasure.LOGGER.debug("processBlock called on pos -> {}", newPiecePos);
+        if (addProcessGuard(TREASURE_CHEST, newPiecePos)) {
+            Treasure.LOGGER.debug("single pass processBlock called on pos -> {}", newPiecePos);
             StructureTemplate.StructureBlockInfo info = buildTreasureChest(levelReader, current.state(), current.pos(), placementSettings);
+            Treasure.LOGGER.debug("returned info -> {}", info);
+            cachedInfo = info;
             return info;
         }
 
-        return current;
+        // return the cached info if it exists
+        return cachedInfo != null ? cachedInfo : current;
     }
 
     @Override
-    public @Nullable StructureTemplate.StructureBlockInfo process(LevelReader p_74140_, BlockPos p_74141_, BlockPos p_74142_, StructureTemplate.StructureBlockInfo p_74143_, StructureTemplate.StructureBlockInfo p_74144_, StructurePlaceSettings p_74145_, @Nullable StructureTemplate template) {
+    public @Nullable StructureTemplate.StructureBlockInfo process(LevelReader levelReader, BlockPos piecePos, BlockPos relativePos, StructureTemplate.StructureBlockInfo original, StructureTemplate.StructureBlockInfo current, StructurePlaceSettings placeSettings, @Nullable StructureTemplate template) {
         this.size = template.getSize();
-        return super.process(p_74140_, p_74141_, p_74142_, p_74143_, p_74144_, p_74145_, template);
+        return super.process(levelReader, piecePos, relativePos, original, current, placeSettings, template);
     }
 
     @Override
     public List<StructureTemplate.StructureBlockInfo> finalizeProcessing(ServerLevelAccessor levelAccessor, BlockPos piecePos, BlockPos originalPos, List<StructureTemplate.StructureBlockInfo> blocks, List<StructureTemplate.StructureBlockInfo> processedBlocks, StructurePlaceSettings placeSettings) {
  // NOTE this is the piece, not the entire structure
 
-        Treasure.LOGGER.debug("what is piece pos -> {}", piecePos);
+//        Treasure.LOGGER.debug("what is piece pos -> {}", piecePos);
 //        Treasure.LOGGER.debug("what is original pos? -> {}", originalPos);
-        Treasure.LOGGER.debug("rotation -> {}", placeSettings.getRotation());
+//        Treasure.LOGGER.debug("rotation -> {}", placeSettings.getRotation());
 
         BlockPos newPiecePos = BlockRotationUtil.transformStartCoords(piecePos, this.size, placeSettings.getRotation());
-        Treasure.LOGGER.debug("finalize processing called on piece pos -> {}", newPiecePos);
+//        Treasure.LOGGER.debug("finalize processing called on piece pos -> {}", newPiecePos);
 
-        if (hasProcessGuard(TREAUSE_CHEST, newPiecePos)) {
-            if (addFinalizeGuard(TREAUSE_CHEST, newPiecePos)) {
+        if (hasProcessGuard(TREASURE_CHEST, newPiecePos)) {
+            if (addFinalizeGuard(TREASURE_CHEST, newPiecePos)) {
                 Treasure.LOGGER.debug("finalize processing called on pos -> {}", piecePos);
                 processedBlocks.forEach(info -> {
                     if (info.state().getBlock() instanceof ITreasureChestBlock) {
@@ -165,36 +174,26 @@ public class TreasureChestProcessor extends VanillaChestProcessor {
         FeatureType processedFeatureType = this.featureType == FeatureType.AQUATIC ? this.featureType : FeatureType.TERRANEAN;
 
         // 2. get rarity and ensure it's a valid entry.
-        Optional<RarityEntry> rarityOptional = Optional.ofNullable(RarityWeightsManager.getNextRarity(processedFeatureType))
-                .filter(rarity -> rarity != RarityEntry.NONE);
+        Optional<Rarity> rarityOptional = Optional.ofNullable(RarityWeightsManager.getNextRarity(processedFeatureType))
+                .filter(rarity -> rarity != Rarity.NONE)
+                .filter(rarity -> rarity != TreasureRarities.UNKNOWN.get());
 
-//        if (rarityOptional.isEmpty()) {
-//            Treasure.LOGGER.warn("unable to obtain the next rarity for generator - >{}", processedFeatureType);
-//            return null;
-//        }
-        IRarityEntry rarityEntry = rarityOptional.orElseGet(() -> {
+        IRarity rarityEntry = rarityOptional.orElseGet(() -> {
             Treasure.LOGGER.warn("unable to obtain the next rarity for generator - >{}, reverting to default rarity.", processedFeatureType);
-            return (RarityEntry) TreasureRarities.COMMON.get();
+            return (Rarity) TreasureRarities.COMMON.get();
         });
         Treasure.LOGGER.debug("rarity -> {}", rarityEntry);
 
         // 3. get chest subprocessor data.
         Optional<ChestSubprocessorData> dataOptional = ChestSubprocessorDataRegistry.getAssociation(processedFeatureType, rarityEntry);
-//        if (dataOptional.isEmpty()) {
-//            Treasure.LOGGER.warn("unable to locate chest subprocessor data for feature type -> {} and rarity -> {}", processedFeatureType, rarityEntry.getName());
-//            return null;
-//        }
         ChestSubprocessorData data = dataOptional.orElseGet(() -> {
             Treasure.LOGGER.warn("unable to locate chest subprocessor data for feature type -> {} and rarity -> {}, reverting to default subprocessor data.", processedFeatureType, rarityEntry.getName());
+            // TODO this is going to be null
             return TreasureChestSubprocessors.STANDARD.get().getData();
         });
 
         // 4. get a chest subprocessor.
         Optional<IChestSubprocessor> subprocessorOptional = TreasureChestSubprocessors.getChestSubprocessor(data.getType());
-//        if (subprocessorOptional.isEmpty()) {
-//            Treasure.LOGGER.warn("unable to locate chest subprocessor for processor type -> {}", data.getType());
-//            return null;
-//        }
         IChestSubprocessor subprocessor = subprocessorOptional.orElseGet(() -> {
             Treasure.LOGGER.warn("unable to locate chest subprocessor for processor type -> {}, reverting to default subprocessor", data.getType());
             return TreasureChestSubprocessors.STANDARD.get();
@@ -203,21 +202,23 @@ public class TreasureChestProcessor extends VanillaChestProcessor {
         // 5. set properties and process the subprocessor to get the StructureBlockInfo.
         subprocessor.setFeatureType(processedFeatureType);
         subprocessor.setData(data);
+        Treasure.LOGGER.debug("original chest is facing -> {}", state.getValue(StandardChestBlock.FACING));
         Optional<StructureTemplate.StructureBlockInfo> infoOptional = subprocessor
                 .process(levelReader, placeSettings.getRandom(pos), state, pos,  placeSettings.getRotation(), rarityEntry, data);
 
         // 6. if the block info is present, cache the data and return it. Otherwise, return null.
         return infoOptional.map(info -> {
+            Treasure.LOGGER.debug("info -> {}", info);
             TreasureChestCacheData chestSpawn = new TreasureChestCacheData();
             chestSpawn.setChestName(ModUtil.getName(info.state().getBlock()));
             chestSpawn.setCoords(Coords.of(info.pos()));
 //            chestSpawn.setDimensionName(dimension);
-            chestSpawn.setBiomeName(ModUtil.getName(levelReader.getBiome(pos)));
+            chestSpawn.setBiomeName(ModUtil.getName(levelReader.getBiome(info.pos())));
             chestSpawn.setFeatureType(getFeatureType()); // NOTE the original feature type to describe what feature spawned the chest
             chestSpawn.setRarity(rarityEntry);
             chestSpawn.setDiscovered(false);
             TreasureChestCache.cache(chestSpawn);
-            Treasure.LOGGER.debug("caching chest at pos -> {}", chestSpawn);
+            Treasure.LOGGER.debug("caching chest at pos -> {}", info.pos());
 
             // increment rarity weighted collection - move to placement
             RarityWeightsManager.adjustAllWeightsExcept(featureType, 1, rarityEntry);
@@ -226,6 +227,7 @@ public class TreasureChestProcessor extends VanillaChestProcessor {
         }).orElseGet(() -> {
             Treasure.LOGGER.warn("unable to generate StructureBlockInfo for processor type -> {}, reverting to default chest", data.getType());
             return subprocessor.defaultChest(levelReader, state, pos, placeSettings);
+            // TODO needs to cache the chest here as well.
         });
      }
 

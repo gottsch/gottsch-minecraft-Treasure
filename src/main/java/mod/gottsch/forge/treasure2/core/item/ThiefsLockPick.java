@@ -1,30 +1,25 @@
 /*
- * This file is part of  Treasure2.
- * Copyright (c) 2018 Mark Gottschling (gottsch)
+ * This file is part of Treasure2.
+ * Copyright (c) 2025 Mark Gottschling (gottsch)
  *
  * Treasure2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * it under the terms of the Open Software Licence 3.0.
  *
  * Treasure2 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * Open Software Licence 3.0 for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * You should have received a copy of the Open Software Licence
+ * along with Treasure2. If not, see <https://www.tldrlegal.com/license/open-software-licence-3-0>.
  */
 package mod.gottsch.forge.treasure2.core.item;
 
-import java.util.List;
-import java.util.Random;
-
-import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.gottschcore.random.RandomHelper;
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.enums.Rarity;
-import mod.gottsch.forge.treasure2.core.registry.KeyLockRegistry;
+import mod.gottsch.forge.treasure2.core.rarity.IRarity;
+import mod.gottsch.forge.treasure2.core.rarity.TreasureRarities;
+import mod.gottsch.forge.treasure2.core.registry.RarityTagAssociationRegistry;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -32,6 +27,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+
+import java.util.List;
+import java.util.Random;
 
 
 /**
@@ -61,12 +59,14 @@ public class ThiefsLockPick extends KeyItem {
 		super(properties, durability);
 
 		// add the default fitsLock predicates
-		addFitsLock(lock -> {
-			IRarity rarity = KeyLockRegistry.getRarityByLock(lock);
-			return
-					(rarity == Rarity.COMMON ||
-							rarity == Rarity.UNCOMMON ||
-							rarity == Rarity.SCARCE);
+		addFitsLock((level, lock) -> {
+			return RarityTagAssociationRegistry.getLockRarity(lock, level.registryAccess())
+					.map(rarity ->
+							rarity == TreasureRarities.COMMON.get()
+							|| rarity == TreasureRarities.UNCOMMON.get()
+							|| rarity == TreasureRarities.SCARCE.get()
+					)
+					.orElse(false);
 		});
 	}
 
@@ -109,22 +109,24 @@ public class ThiefsLockPick extends KeyItem {
 	 * @see com.someguyssoftware.treasure2.item.KeyItem#unlock(com.someguyssoftware.treasure2.item.LockItem)
 	 */
 	@Override
-	public boolean unlock(LockItem lockItem) {
-		if (lockItem.acceptsKey(this) || fitsLock(lockItem)) {
+	public boolean unlock(Level level, LockItem lockItem) {
+		if (lockItem.acceptsKey(this) || fitsLock(level, lockItem)) {
 			Treasure.LOGGER.debug("Lock accepts key");
-			if (lockItem.getRarity() == Rarity.COMMON) {
+
+			IRarity rarity = lockItem.getRarity(level.registryAccess());
+			if (rarity == TreasureRarities.COMMON.get()) {
 				if (RandomHelper.checkProbability(new Random(), this.getSuccessProbability())) {
 					Treasure.LOGGER.debug("Unlock attempt met probability");
 					return true;
 				}
 			}
-			else if (lockItem.getRarity() == Rarity.UNCOMMON) {
+			else if (rarity == TreasureRarities.UNCOMMON.get()) {
 				if (RandomHelper.checkProbability(new Random(), this.getUncommonSuccessProbability())) {
 					Treasure.LOGGER.debug("Unlock attempt met probability");
 					return true;
 				}				
 			}
-			else if (lockItem.getRarity() == Rarity.SCARCE) {
+			else if (rarity == TreasureRarities.SCARCE.get()) {
 				if (RandomHelper.checkProbability(new Random(), this.getScarceSuccessProbability())) {
 					Treasure.LOGGER.debug("Unlock attempt met probability");
 					return true;

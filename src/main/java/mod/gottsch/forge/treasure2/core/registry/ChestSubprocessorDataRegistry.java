@@ -1,7 +1,7 @@
 package mod.gottsch.forge.treasure2.core.registry;
 
 import com.google.common.collect.Maps;
-import mod.gottsch.forge.treasure2.core.rarity.IRarityEntry;
+import mod.gottsch.forge.treasure2.core.rarity.IRarity;
 import mod.gottsch.forge.treasure2.core.structure.templatesystem.data.ChestSubprocessorData;
 import mod.gottsch.forge.treasure2.core.world.feature.IFeatureType;
 
@@ -14,13 +14,13 @@ import java.util.Optional;
 public enum ChestSubprocessorDataRegistry {
     INSTANCE;
 
-    private static final Map<IFeatureType, Map<IRarityEntry, ChestSubprocessorData>> MAP = Maps.newHashMap();
+    private static final Map<IFeatureType, Map<IRarity, ChestSubprocessorData>> MAP = Maps.newHashMap();
 
     public static void clear() {
         MAP.clear();
     }
 
-    public static void register(IFeatureType type, IRarityEntry rarity,  ChestSubprocessorData data) {
+    public static void register(IFeatureType type, IRarity rarity, ChestSubprocessorData data) {
         MAP.computeIfAbsent(type, m ->Maps.newHashMap())
 //                .computeIfAbsent(rarity, k -> new ArrayList<>())
                 .put(rarity, data);
@@ -33,7 +33,7 @@ public enum ChestSubprocessorDataRegistry {
 //                .addAll(data);
 //    }
 
-    public static Optional<ChestSubprocessorData> getAssociation(IFeatureType key, IRarityEntry rarity) {
+    public static Optional<ChestSubprocessorData> getAssociation(IFeatureType key, IRarity rarity) {
 //        Map<IRarityEntry, List<ChestSubprocessorData>> innerMap = MAP.get(key);
 //        if (innerMap == null) {
 //            return Collections.emptyList(); // Or return null, depending on your desired behavior

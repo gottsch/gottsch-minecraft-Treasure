@@ -10,7 +10,7 @@
     } ]
   } ],
   "count" : 2,
-  "rarity" : "mythical",
+  "rarity" : "treasure2:mythical",
   "chance" : 0.2,
   "type" : "treasure2:default"
 }

@@ -1,0 +1,41 @@
+{
+  "name": "treasure2:aquatic_weights_set",
+  "rarityWeights": [
+    {
+      "rarity": "treasure2:bone",
+      "weight": 6
+    },
+    {
+      "rarity": "treasure2:crystal_skull",
+      "weight": 4
+    },
+    {
+      "rarity": "treasure2:epic",
+      "weight": 9
+    },
+    {
+      "rarity": "treasure2:gold_skull",
+      "weight": 5
+    },
+    {
+      "rarity": "treasure2:legendary",
+      "weight": 5
+    },
+    {
+      "rarity": "treasure2:mythical",
+      "weight": 2
+    },
+    {
+      "rarity": "treasure2:rare",
+      "weight": 16
+    },
+    {
+      "rarity": "treasure2:scarce",
+      "weight": 36
+    },
+    {
+      "rarity": "treasure2:skull",
+      "weight": 6
+    }
+  ]
+}

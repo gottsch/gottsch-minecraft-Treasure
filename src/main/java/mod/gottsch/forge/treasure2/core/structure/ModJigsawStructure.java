@@ -1,3 +1,18 @@
+/*
+ * This file is part of Treasure2.
+ * Copyright (c) 2025 Mark Gottschling (gottsch)
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the Open Software Licence 3.0.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * Open Software Licence 3.0 for more details.
+ *
+ * You should have received a copy of the Open Software Licence
+ * along with Treasure2. If not, see <https://www.tldrlegal.com/license/open-software-licence-3-0>.
+ */
 package mod.gottsch.forge.treasure2.core.structure;
 
 import com.mojang.serialization.Codec;
@@ -28,16 +43,6 @@ import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 
 import java.util.Optional;
 
-// TODO extend for each type of structure (well, ruins, etc)
-// TODO has to register itself with the specific feature cache (or could make a generic with a detailed key)
-//
-/*
-		// update cache and mark dirty
-		GeneratedContext genContext = new GeneratedContext();
-		genContext.setCoords(wellGenerationResult.get().getData().getSpawnCoords());
-		genContext.setRarity(Rarity.NONE);
-		cache.cache(spawnCoords, genContext);
- */
 
 /**
  * this is a copy of vanilla JigsawStructure since it is final
@@ -153,7 +158,7 @@ public class ModJigsawStructure extends Structure {
 
         // get the origin from the BoundingBox.
         BlockPos origin = new BlockPos(box.minX(), box.minY(), box.minZ());
-        Treasure.LOGGER.debug("the origin pos (key) is -> {}", origin);
+//        Treasure.LOGGER.debug("the origin pos (key) is -> {}", origin);
         // remove any references from the single pass guards
         ModProcessor.removeFromGuards(origin);
 

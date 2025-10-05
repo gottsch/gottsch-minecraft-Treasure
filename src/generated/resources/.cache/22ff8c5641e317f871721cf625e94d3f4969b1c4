@@ -1,4 +1,4 @@
-// 1.20.1	2025-09-16T10:15:17.8095482	Item Models: treasure2
+// 1.20.1	2025-09-29T00:30:07.197194	Item Models: treasure2
 fada6cbc62b47c9f082da8ada98d138476f62651 assets/treasure2/models/item/axe_of_durin.json
 3c42dcb564851f5f4f868b1c80507dc9920a973a assets/treasure2/models/item/barrel_chest.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/treasure2/models/item/barrel_mimic_egg.json
@@ -6,12 +6,14 @@ fada6cbc62b47c9f082da8ada98d138476f62651 assets/treasure2/models/item/axe_of_dur
 71c41558be0db5b23043d97d0162114e664d5a38 assets/treasure2/models/item/black_sword.json
 5932cb08905e3e131741c5221789c60d9eb13db8 assets/treasure2/models/item/bone_chest.json
 1096ec62ae99c75aa9e9de1df56226caf52c820b assets/treasure2/models/item/bone_key.json
+f9e5176a3b0281c53c307941d51dbbe25aa7f2f4 assets/treasure2/models/item/bone_lock.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/treasure2/models/item/bound_soul_egg.json
 6cdb297292fb9c6257884e20b0bb6c8bf552cdb6 assets/treasure2/models/item/callandor.json
 b3123eacc982c9c13d2791b142569f8343586705 assets/treasure2/models/item/cardboard_box.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/treasure2/models/item/cardboard_box_mimic_egg.json
 efd73b81b6b9e8bcf5d7bd5132faaebc81b897f7 assets/treasure2/models/item/cauldron_chest.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/treasure2/models/item/cauldron_chest_mimic_egg.json
+bccee3fcd5cd4d6e95dc29ba40cfd2cab57e6f14 assets/treasure2/models/item/celestial_chest.json
 6ee25b30585774aba18687534b48d6ce4e6ed266 assets/treasure2/models/item/chipped_copper_short_sword.json
 528813ce9b7f79a946654df21859e6b67ad3e1b5 assets/treasure2/models/item/chipped_iron_short_sword.json
 90fd04614ad130137fd9bc05a39a00367fefb7fe assets/treasure2/models/item/chipped_steel_short_sword.json
@@ -65,6 +67,7 @@ ad9b87838da5c8382bf5ecdcd5ddce5fd31fb415 assets/treasure2/models/item/gravestone
 87cf77bd6aaa8c2e21b2c55ed5d3920efd2971da assets/treasure2/models/item/gravestone3_spawner_obsidian.json
 bc1ac8b9e2dff88b2d3d617a0c03af21775d2940 assets/treasure2/models/item/gravestone3_stone.json
 ee6c633d55268405d46eb60e1a295436334fed22 assets/treasure2/models/item/headsmans_axe.json
+fd00a6f800f5e568897e97d66b257a68d14a1629 assets/treasure2/models/item/infernal_chest.json
 4cd85cd64d8bef2b5e3842dba45eef65c316ebd6 assets/treasure2/models/item/ironbound_chest.json
 7303788b9ff2cf5ff5d3f62f4c3dd66770987b52 assets/treasure2/models/item/iron_broadsword.json
 b7a69b9241527ebed366c5bce23cdf02045c3ee2 assets/treasure2/models/item/iron_broad_axe.json
@@ -159,10 +162,14 @@ bfafe797dff2fbf1250c55defea1b5783861c70b assets/treasure2/models/item/witherwood
 c65ba016bfed60ff503fa469de07047d00195baa assets/treasure2/models/item/witherwood_sign.json
 2b459425e42ea01e4db9cc5d5e13b11504154187 assets/treasure2/models/item/witherwood_trapdoor.json
 f5830dc4ec58ff80d9114be917ee88cd8072d28b assets/treasure2/models/item/witherwood_twig.json
+7411b9dc0562c47d87984eed3b1284bb28fd5141 assets/treasure2/models/item/wither_branch.json
+64dd86a7b52a6c4b23549e105ae3ea91b132405f assets/treasure2/models/item/wither_broken_log.json
 e52a962adfef7b123b300ebe7e5074d654f9312f assets/treasure2/models/item/wither_chest.json
 3e46ea216b5c34fb3ad2f5a5936611dac330b22b assets/treasure2/models/item/wither_key.json
 d6bf8e5155cf0338d77499948a8855b2451db561 assets/treasure2/models/item/wither_lock.json
+8c08a53f61b9c8733475aaf8bf648cfb3991a801 assets/treasure2/models/item/wither_planks.json
+1177c0ff90e2a420d5e81918eb9df07b99327e75 assets/treasure2/models/item/wither_root.json
 5f8e8d51945bac1f675c91bd89d9406a9bb06c9d assets/treasure2/models/item/wood_chest.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/treasure2/models/item/wood_chest_mimic_egg.json
 1eb8237ee1214333fbed5f940ec54d36b89ea7f1 assets/treasure2/models/item/wood_key.json
-f9e5176a3b0281c53c307941d51dbbe25aa7f2f4 assets/treasure2/models/item/wood_lock.json
+dd81a85e00029ace741132474dc1bfbbd1b20fc6 assets/treasure2/models/item/wood_lock.json

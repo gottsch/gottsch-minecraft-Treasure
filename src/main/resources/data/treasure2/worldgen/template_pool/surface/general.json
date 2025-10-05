@@ -55,6 +55,15 @@
         "projection": "rigid",
         "processors": "treasure2:surface_statue_processors"
       }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:surface/statue/statue_5",
+        "projection": "rigid",
+        "processors": "treasure2:surface_processors"
+      }
     }
   ]
 }

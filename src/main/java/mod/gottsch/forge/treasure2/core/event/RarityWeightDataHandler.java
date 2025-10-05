@@ -21,8 +21,10 @@ import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.rarity.RarityWeight;
+import mod.gottsch.forge.treasure2.core.rarity.RarityWeightSet;
 import mod.gottsch.forge.treasure2.core.rarity.RarityWeightsManager;
 import mod.gottsch.forge.treasure2.core.rarity.TreasureRarities;
+import mod.gottsch.forge.treasure2.core.registry.RarityOrderRegistry;
 import mod.gottsch.forge.treasure2.core.wishable.TreasureWishables;
 import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 import net.minecraft.resources.ResourceLocation;
@@ -46,7 +48,7 @@ public class RarityWeightDataHandler extends SimpleJsonResourceReloadListener {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 
-    private static final String DATA_DIRECTORY = "rarity_gen_weights";
+    private static final String DATA_DIRECTORY = "rarity_weight_sets";
 
     public RarityWeightDataHandler() {
         super(GSON, DATA_DIRECTORY);
@@ -69,21 +71,20 @@ public class RarityWeightDataHandler extends SimpleJsonResourceReloadListener {
         jsonElementMap.forEach((location, jsonElement) -> {
             try {
                 // deserialize the JSON element into our RarityEntry object using the Codec
-                RarityWeight rarityWeight = RarityWeight.CODEC
+                RarityWeightSet rarityWeightSet = RarityWeightSet.CODEC
                         .parse(JsonOps.INSTANCE, jsonElement)
                         .getOrThrow(false, Treasure.LOGGER::error);
-
-                // prevent wither rarity from being processed.
-                if (rarityWeight.getRarity().equals(TreasureRarities.WITHER.getId())) {
-                    return;
-                }
 
                 // determine the type of association and process accordingly
                 Path path = Paths.get(location.getPath());
 
                 // extract top-level key
                 String parentKey = path.getName(0).toString().trim().toLowerCase();
-                RarityWeightsManager.register(FeatureType.getByValue(parentKey), rarityWeight);
+                rarityWeightSet.rarityWeights().stream()
+                        // ensure we don't load a wither rarity
+                        .filter(rw -> !rw.getRarity().equals(TreasureRarities.WITHER.getId()))
+                        .forEach(rw -> RarityWeightsManager.register(FeatureType.getByValue(parentKey), rw));
+//                RarityWeightsManager.register(FeatureType.getByValue(parentKey), rarityWeight);
             } catch (Exception e) {
                 Treasure.LOGGER.error("failed to parse rarity weight JSON for {}: {}", location, e.getMessage());
             }
@@ -97,6 +98,4 @@ public class RarityWeightDataHandler extends SimpleJsonResourceReloadListener {
         // This is the correct place to do it in Forge 1.20.1.
         event.addListener(new RarityWeightDataHandler());
     }
-
-
 }

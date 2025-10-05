@@ -7,7 +7,7 @@
     } ]
   } ],
   "count" : 2,
-  "rarity" : "scarce",
+  "rarity" : "treasure2:scarce",
   "chance" : 0.2,
   "type" : "treasure2:default"
 }

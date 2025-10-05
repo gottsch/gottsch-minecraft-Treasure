@@ -1,0 +1,14 @@
+{
+  "id":"treasure2:small_husk_set_1",
+  "category":"zombies",
+  "count": {
+    "min": 1,
+    "max": 3
+  },
+  "mobs": [
+    {
+      "id": "minecraft:husk",
+      "weight": 1
+    }
+  ]
+}

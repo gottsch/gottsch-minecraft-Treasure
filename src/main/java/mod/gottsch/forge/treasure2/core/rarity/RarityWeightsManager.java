@@ -15,14 +15,7 @@
  */
 package mod.gottsch.forge.treasure2.core.rarity;
 
-import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.Table;
-import mod.gottsch.forge.gottschcore.enums.IRarity;
-import mod.gottsch.forge.treasure2.api.TreasureApi;
 import mod.gottsch.forge.treasure2.core.random.RarityAdjustingWeightedCollection;
-import mod.gottsch.forge.treasure2.core.random.RarityLevelWeightedCollection;
-import mod.gottsch.forge.treasure2.core.registry.ChestSubprocessorRegistry;
-import mod.gottsch.forge.treasure2.core.structure.templatesystem.chest.IChestSubprocessor;
 import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 import mod.gottsch.forge.treasure2.core.world.feature.IFeatureType;
 import net.minecraft.nbt.CompoundTag;
@@ -32,6 +25,7 @@ import net.minecraft.nbt.Tag;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+
 
 /**
  * NOTE this is loaded from RarityWeightDataHandler
@@ -100,13 +94,13 @@ public enum RarityWeightsManager {
      * @param type
      * @return
      */
-    public static RarityEntry getNextRarity(IFeatureType type) {
-        return (RarityEntry) Optional.ofNullable(RARITY_SELECTOR.get(type))
+    public static Rarity getNextRarity(IFeatureType type) {
+        return (Rarity) Optional.ofNullable(RARITY_SELECTOR.get(type))
                 .map(RarityAdjustingWeightedCollection::next)
-                .orElse(RarityEntry.NONE);
+                .orElse(Rarity.NONE);
     }
 
-    public static void adjustAllWeightsExcept(IFeatureType featureType, int increment, IRarityEntry rarity) {
+    public static void adjustAllWeightsExcept(IFeatureType featureType, int increment, IRarity rarity) {
         if (RARITY_SELECTOR.containsKey(featureType)) {
             RARITY_SELECTOR.put(featureType, new RarityAdjustingWeightedCollection(RARITY_SELECTOR.get(featureType).adjustExcept(increment, rarity)));
         }

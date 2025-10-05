@@ -5,7 +5,7 @@ modLoader="javafml" #mandatory
 loaderVersion="${loader_version_range}"
 
 # License
-license="GNU GPLv3"
+license="OSL-3.0"
 
 # A URL to refer people to when problems occur with this mod
 issueTrackerURL="https://github.com/gottsch/gottsch-minecraft-Treasure/issues" #optional
@@ -32,7 +32,7 @@ displayURL="https://www.curseforge.com/minecraft/mc-mods/treasure2" #optional
 logoFile="treasure2-curseforge-logo.png" #optional
 
 # A text field displayed in the mod UI
-credits="Authored by gottsch" #optional
+credits="" #optional
 
 # A text field displayed in the mod UI
 authors="gottsch" #optional
@@ -64,6 +64,6 @@ description="Adds new chests filled with loot to be discovered."
     modId="gottschcore"
     mandatory=true
 # This version range declares a minimum of the current minecraft version up to but not including the next major version
-    versionRange="[2.2.0,)"
+    versionRange="[2.5.1,3.0.0)"
     ordering="BEFORE"
     side="BOTH"

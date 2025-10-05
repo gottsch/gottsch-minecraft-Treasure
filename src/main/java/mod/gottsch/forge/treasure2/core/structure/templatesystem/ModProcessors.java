@@ -29,11 +29,14 @@ public class ModProcessors {
     public static final DeferredRegister<StructureProcessorType<?>> PROCESSOR_TYPES =
             DeferredRegister.create(Registries.STRUCTURE_PROCESSOR, Treasure.MODID);
 
-    public static final RegistryObject<StructureProcessorType<ProximityMobSetSpawnerProcessor>> MOB_SET_PROCESSOR =
-            PROCESSOR_TYPES.register("proximity_mob_set_spawner_processor", () -> () -> ProximityMobSetSpawnerProcessor.CODEC);
+    public static final RegistryObject<StructureProcessorType<SpawnerProcessor>> MOB_SET_PROCESSOR =
+            PROCESSOR_TYPES.register("spawner_processor", () -> () -> SpawnerProcessor.CODEC);
 
     public static final RegistryObject<StructureProcessorType<TreasureChestProcessor>> CHEST_PROCESSOR =
             PROCESSOR_TYPES.register("chest_processor", () -> () -> TreasureChestProcessor.CODEC);
+
+    public static final RegistryObject<StructureProcessorType<WitherChestProcessor>> WITHER_CHEST_PROCESSOR =
+            PROCESSOR_TYPES.register("wither_chest_processor", () -> () -> WitherChestProcessor.CODEC);
 
     public static final RegistryObject<StructureProcessorType<VanillaChestProcessor>> VANILLA_CHEST_PROCESSOR =
             PROCESSOR_TYPES.register("vanilla_chest_processor", () -> () -> VanillaChestProcessor.CODEC);

@@ -1,40 +1,32 @@
 /*
- * This file is part of  Treasure2.
- * Copyright (c) 2022 Mark Gottschling (gottsch)
+ * This file is part of Treasure2.
+ * Copyright (c) 2025 Mark Gottschling (gottsch)
  *
  * Treasure2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * it under the terms of the Open Software Licence 3.0.
  *
  * Treasure2 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * Open Software Licence 3.0 for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * You should have received a copy of the Open Software Licence
+ * along with Treasure2. If not, see <https://www.tldrlegal.com/license/open-software-licence-3-0>.
  */
 package mod.gottsch.forge.treasure2.core.config;
 
-import java.util.*;
-
-import org.apache.commons.lang3.tuple.Pair;
-
-import com.electronwill.nightconfig.core.CommentedConfig;
-import com.electronwill.nightconfig.core.conversion.ObjectConverter;
-
 import mod.gottsch.forge.gottschcore.config.AbstractConfig;
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.config.StructureConfiguration.StructMeta;
-import mod.gottsch.forge.treasure2.core.util.ModUtil;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.config.ModConfig;
+import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 
@@ -160,11 +152,10 @@ public class Config extends AbstractConfig {
 		public KeysAndLocks keysAndLocks;
 		public Wealth wealth;
 		public Effects effects;
-		public Integration integration;
+//		public Integration integration;
 		public Markers markers;
 		public WitherTree witherTree;
 		public Wells wells;
-		public Pits pits;
 		public Mobs mobs;
 		public Maps maps;
 
@@ -176,11 +167,10 @@ public class Config extends AbstractConfig {
 			keysAndLocks = new KeysAndLocks(builder);	
 			wealth = new Wealth(builder);
 			effects = new Effects(builder);
-			integration = new Integration(builder);
+//			integration = new Integration(builder);
 			markers = new Markers(builder);
 			witherTree = new WitherTree(builder);
 			wells = new Wells(builder);
-			pits = new Pits(builder);
 			mobs = new Mobs(builder);
 			maps = new Maps(builder);
 		}
@@ -188,22 +178,23 @@ public class Config extends AbstractConfig {
 		/*
 		 * 
 		 */
-		public static class Integration {
-			public ConfigValue<List<? extends String>> dimensionsWhiteList;
-
-			public Integration(final ForgeConfigSpec.Builder builder)	 {
-				builder.comment(CATEGORY_DIV, " Integration properties", CATEGORY_DIV)
-				.push("integration");
-
-				dimensionsWhiteList = builder
-						.comment(" Permitted Dimensions for Treasure2 execution.", 
-								" Treasure2 was designed for 'normal' overworld-type dimensions.", 
-								" This setting does not use any wildcards (*). You must explicitly set the dimensions that are allowed.", 
-								" ex. minecraft:overworld")
-						.defineList("dimensionsWhiteList", Arrays.asList(new String []{"minecraft:overworld"}), s -> s instanceof String);
-				builder.pop();
-			}
-		}
+		// TODO is dimensionWhiteList still necessary?
+//		public static class Integration {
+//			public ConfigValue<List<? extends String>> dimensionsWhiteList;
+//
+//			public Integration(final ForgeConfigSpec.Builder builder)	 {
+//				builder.comment(CATEGORY_DIV, " Integration properties", CATEGORY_DIV)
+//				.push("integration");
+//
+//				dimensionsWhiteList = builder
+//						.comment(" Permitted Dimensions for Treasure2 execution.",
+//								" Treasure2 was designed for 'normal' overworld-type dimensions.",
+//								" This setting does not use any wildcards (*). You must explicitly set the dimensions that are allowed.",
+//								" ex. minecraft:overworld")
+//						.defineList("dimensionsWhiteList", Arrays.asList(new String []{"minecraft:overworld"}), s -> s instanceof String);
+//				builder.pop();
+//			}
+//		}
 
 		/*
 		 * 
@@ -366,10 +357,6 @@ public class Config extends AbstractConfig {
 				builder.comment(CATEGORY_DIV, " Treasure Loot and Valuables properties", CATEGORY_DIV)
 				.push("wealth");
 
-				wealthMaxStackSize = builder
-						.comment(" The maximum size of a wealth item stacks. ex. Coins, Gems, Pearls")
-						.defineInRange("wealthMaxStackSize", 16, 1, 64);
-				
 				enableVanillaLootModifiers = builder
 						.comment(" Enable/Disable global loot modifiers that injects Treasure2 loot into vanilla loot tables.")
 						.define("enableVanillaLootModifiers", true);
@@ -379,40 +366,15 @@ public class Config extends AbstractConfig {
 		}
 
 		/*
-		 * 
+		 *
 		 */
 		public static class Markers {
-			public ForgeConfigSpec.BooleanValue enableMarkers;
-			public ForgeConfigSpec.BooleanValue enableMarkerStructures;
-			public ForgeConfigSpec.ConfigValue<Integer> minMarkersPerChest;
-			public ForgeConfigSpec.ConfigValue<Integer> maxMarkersPerChest;
-			public ForgeConfigSpec.ConfigValue<Integer> structureProbability;
 			public ForgeConfigSpec.BooleanValue enableSpawner;
 			public ForgeConfigSpec.ConfigValue<Integer> spawnerProbability;
 
 			public Markers(final ForgeConfigSpec.Builder builder)	 {
 				builder.comment(CATEGORY_DIV, " Gravestones and Markers properties", CATEGORY_DIV)
 				.push("markers");
-
-				enableMarkers = builder
-						.comment(" Enable/disable whether chest markers (gravestones, bones)  are generated when generating treasure chests.")
-						.define("enableMarkers", true);
-
-				enableMarkerStructures = builder
-						.comment(" Enable/disable whether structures (buildings) are generated when generating  treasure chests.")
-						.define("enableMarkerStructures", true);
-
-				minMarkersPerChest = builder
-						.comment(" The minimum number of markers (gravestones, bones) per chest.")
-						.defineInRange("minMarkersPerChest", 3, 1, 5);
-
-				maxMarkersPerChest = builder
-						.comment(" The maximum number of markers (gravestones, bones) per chest.")
-						.defineInRange("maxMarkersPerChest", 6, 1, 10);
-
-				structureProbability = builder
-						.comment(" The probability that a marker will be a structure.")
-						.defineInRange("structureProbability", 15, 1, 100);
 
 				enableSpawner = builder
 						.comment(" Enable/disable whether gravestone markers can spawn mobs (ex. Bound Soul).")
@@ -430,35 +392,12 @@ public class Config extends AbstractConfig {
 		 * 
 		 */
 		public static class WitherTree {
-			public BooleanValue enableWitherTree;
-			public ConfigValue<Integer> maxTrunkSize;
-			public ConfigValue<Integer> minSupportingTrees;
-			public ConfigValue<Integer> maxSupportingTrees;
 			public BooleanValue enablePoisonFog;
 			public BooleanValue enableWitherFog;
-			public BiomesConfig biomes;
 
 			public WitherTree(final ForgeConfigSpec.Builder builder)	 {
 				builder.comment(CATEGORY_DIV, " Wither Tree properties", CATEGORY_DIV)
 				.push("witherTrees");
-
-				enableWitherTree = builder
-						.comment(" Enable/disable whether wither trees will spawn.")
-						.define("enableWitherTree", true);
-
-				maxTrunkSize = builder
-						.comment(" The maximum height a wither tree can reach (in blocks).",
-								" This is the high end of a calculated range. ex. size is randomized between minTrunkSize and maxTrunkSize.",
-								" (The minimum is predefined.)")
-						.defineInRange("maxTrunkSize", 17, 11, 20);
-
-				minSupportingTrees = builder
-						.comment(" The minimum number of supporting wither trees that surround the main tree in the grove.")
-						.defineInRange("minSupportingTrees", 5, 0, 30);
-
-				maxSupportingTrees = builder
-						.comment(" The maximum number of supporting wither trees that surround the main tree in the grove.")
-						.defineInRange("maxSupportingTrees", 15, 0, 30);
 
 				enablePoisonFog = builder
 						.comment(" Enable/disable poison fog around wither trees.")
@@ -468,11 +407,6 @@ public class Config extends AbstractConfig {
 						.comment(" Enable/disable wither fog around wither trees.")
 						.define("enableWitherFog", true);
 
-				BiomesConfig.Data biomesData = new BiomesConfig.Data(new String[] {}, new String[] { "minecraft:ocean", "minecraft:deep_ocean", "minecraft:deep_frozen_ocean", "minecraft:cold_ocean",
-						"minecraft:deep_cold_ocean", "minecraft:lukewarm_ocean", "minecraft:warm_ocean" },
-						new String[] {}, new String[] { "minecraft:ocean", "minecraft:deep_ocean" });
-				biomes = new BiomesConfig(builder, biomesData);
-
 				builder.pop();
 			}
 		}
@@ -481,12 +415,6 @@ public class Config extends AbstractConfig {
 		 * 
 		 */
 		public static class Wells {
-			public BooleanValue enableWells;
-			public ConfigValue<Integer> cacheSize;
-			public ConfigValue<Double> probability;
-			public ConfigValue<Integer> minBlockDistance;
-			public ConfigValue<Integer>	waitChunks;
-			public BiomesConfig biomes;
 
 			public ConfigValue<Integer> scanForItemRadius;
 			public ConfigValue<Integer> scanForWellRadius;
@@ -496,39 +424,6 @@ public class Config extends AbstractConfig {
 			public Wells(final ForgeConfigSpec.Builder builder)	 {
 				builder.comment(CATEGORY_DIV, " Wells properties", CATEGORY_DIV)
 				.push("wells");
-
-				enableWells = builder
-						.comment(" Enable/disable whether wells will spawn.")
-						.define("enableWells", true);
-
-				cacheSize = builder
-						.comment(" The number of wells spawns that are monitored.",
-								" Most recent additions replace least recent when the cache is full.",
-								" This is the set of wells used to measure distance between newly generated wells.",
-								" In general, a high number is better than a low number, especially in a multiplayer world.",
-								" However, wells have a default low probability/great distance, so the number can be",
-								" a lower than that of chests, which spawn much more frequently.")
-						.defineInRange("cacheSize", 50, 25, 1000);
-
-				this.probability = builder
-						.comment(" The probability that a well will generate at selected spawn location.",
-								" Setting a non-100.0 value increases the randomization of well placement.")
-						.defineInRange("probability", 85.0, 0.0, 100.0);
-
-				this.minBlockDistance = builder
-						.comment(" The minimum distance, measured in blocks, that two wells can be in proximity (ie radius).",
-								" Note: Only wells in the registry are checked against this property.",
-								" Default = 600 blocks, or 16 chunks.")
-						.defineInRange("minBlockDistance", 600, 100, 32000);
-
-				this.waitChunks = builder
-						.comment(" The number of chunks that are generated in a new world before wells start to spawn.")
-						.defineInRange("waitChunks", 100, 10, 32000);
-
-				BiomesConfig.Data biomesData = new BiomesConfig.Data(new String[] {}, new String[] { "minecraft:ocean", "minecraft:deep_ocean", "minecraft:deep_frozen_ocean", "minecraft:cold_ocean",
-						"minecraft:deep_cold_ocean", "minecraft:lukewarm_ocean", "minecraft:warm_ocean" },
-						new String[] {}, new String[] { "minecraft:ocean", "minecraft:deep_ocean" });
-				biomes = new BiomesConfig(builder, biomesData);
 
 				this.scanForItemRadius = builder
 						.comment(" The number of blocks in radius around player to scan for tossed/dropped wishables items.",
@@ -549,23 +444,6 @@ public class Config extends AbstractConfig {
 						.comment(" The probability that a well will generate a Clover.")
 						.defineInRange("cloverProbability", 5.0, 0.0, 100.0);
 
-				builder.pop();
-			}
-		}
-
-		/*
-		 * 
-		 */
-		public static class Pits {
-			public ConfigValue<Integer> structureProbability;
-
-			public Pits(final ForgeConfigSpec.Builder builder)	 {
-				builder.comment(CATEGORY_DIV, " Pit properties", CATEGORY_DIV)
-				.push("pits");
-
-				structureProbability = builder
-						.comment("The probability that a pit will contain a structure (treasure room(s), cavern etc.)")
-						.defineInRange("structureProbability", 25, 0, 100);
 				builder.pop();
 			}
 		}
@@ -628,165 +506,6 @@ public class Config extends AbstractConfig {
 				builder.pop();
 			}
 		}
-	}
-
-	/**
-	 * Chest Config
-	 */
-	public static final ForgeConfigSpec CHESTS_CONFIG_SPEC;
-
-	// TODO remove the mapping by dimensions. remove the list in ChestConfigsHolder
-	//	there should only be 1 chest config with a whitelist of dimensions to apply against,
-	// NOT a whole config for each dimension.
-	// TODO make this a map and part of the transform() method loads into a map
-	// TODO either this is a multimap based on dimension or a singular ChestConfiguration
-	// and the generators etc need to be mapped - not in a list.
-	/*
-	 * exposed chest configurations
-	 */
-	public static ChestPlacementConfiguration chestConfig;
-//	public static Map<ResourceLocation, ChestConfiguration> chestConfigMap;
-
-	static {
-		final Pair<ChestConfig, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder()
-				.configure(ChestConfig::new);
-		CHESTS_CONFIG_SPEC = specPair.getRight();
-	}
-
-	/*
-	 * Structure Configuration
-	 */
-	public static final ForgeConfigSpec STRUCTURE_CONFIG_SPEC;
-	public static StructureConfiguration structureConfiguration;
-	public static  Map<ResourceLocation, StructureConfiguration.StructMeta> structConfigMetaMap;
-
-	static {
-		final Pair<InternalStructureConfiguration, ForgeConfigSpec	> structSpecPair = new ForgeConfigSpec.Builder()
-				.configure(InternalStructureConfiguration::new);
-		STRUCTURE_CONFIG_SPEC = structSpecPair.getRight();
-	}
-
-	/*
-	 * Mobs Configuration
-	 */
-	public static final ForgeConfigSpec MOBS_CONFIG_SPEC;
-	public static MobSetConfiguration mobSetConfiguration;
-	public static  Map<ResourceLocation, MobSetConfiguration.MobSet> mobSetMap;
-
-	static {
-		final Pair<InternalMobSetConfiguration, ForgeConfigSpec	> mobSpecPair = new ForgeConfigSpec.Builder()
-				.configure(InternalMobSetConfiguration::new);
-		MOBS_CONFIG_SPEC = mobSpecPair.getRight();
-	}
-
-	private static class ChestConfig {
-		public ChestConfig(ForgeConfigSpec.Builder builder) {
-			builder.comment("####", " rarities = common, uncommon, scarce, rare, epic, legendary, mythical", "####").define("chestConfigs", new ArrayList<>());
-			builder.build();
-		}
-	}
-
-	/**
-	 * 
-	 * @param configData
-	 */
-	public static void transform(CommentedConfig configData) {
-		// convert the data to an object
-		ChestConfigsHolder holder = new ObjectConverter().toObject(configData, ChestConfigsHolder::new);
-		// get the list from the holder and set the config property
-		chestConfig = (holder.chestConfigs != null && !holder.chestConfigs.isEmpty()) ? holder.chestConfigs.get(0) : null;
-
-		// create the chest config map
-//		chestConfigMap = Maps.newHashMap();
-//		chestConfigs.forEach(config -> {
-//			config.getDimensions().forEach(dimension -> {
-//				chestConfigMap.put(ModUtil.asLocation(dimension), config);
-//			});
-//		});
-	}
-
-	/*
-	 * 
-	 */
-	private static class InternalStructureConfiguration {
-		public InternalStructureConfiguration(ForgeConfigSpec.Builder builder) {
-			// NOTE this define() name must match the wrapper property in the toml file.
-			builder.define("structureConfigs", new ArrayList<>());
-			builder.build();
-		}
-	}
-
-	/*
-	 *
-	 */
-	private static class InternalMobSetConfiguration {
-		public InternalMobSetConfiguration(ForgeConfigSpec.Builder builder) {
-			// NOTE this define() name must match the wrapper property in the toml file.
-			builder.define("mobSetConfiguration", new ArrayList<>());
-			builder.build();
-		}
-	}
-
-	/**
-	 * 
-	 * @param configData
-	 * @return
-	 */
-	public static Optional<StructureConfiguration> transformStructureConfiguration(CommentedConfig configData) {
-		StructureConfigurationHolder holder = new ObjectConverter().toObject(configData, StructureConfigurationHolder::new);
-		if (holder == null || holder.structureConfigs == null || holder.structureConfigs.isEmpty()) {
-			return Optional.empty();
-		} else {
-			structureConfiguration = holder.structureConfigs.get(0);
-			structConfigMetaMap = new HashMap<>();
-			structureConfiguration.structMetas.forEach(meta -> {
-				structConfigMetaMap.put(ModUtil.asLocation(meta.getName()), meta);
-			});
-		}
-		return Optional.ofNullable(holder.structureConfigs.get(0));
-	}
-
-	public static Optional<StructMeta> getStructMeta(ResourceLocation location) {
-		return Optional.ofNullable(structConfigMetaMap.get(location));
-	}
-
-	/**
-	 *
-	 * @param configData
-	 * @return
-	 */
-	public static Optional<MobSetConfiguration> transformMobSetConfiguration(CommentedConfig configData) {
-		Treasure.LOGGER.info("transforming mob set config...");
-		MobSetConfigurationHolder holder = new ObjectConverter().toObject(configData, MobSetConfigurationHolder::new);
-		if (holder == null || holder.mobSetConfiguration == null || holder.mobSetConfiguration.isEmpty()) {
-			Treasure.LOGGER.info("mob set holder is null.");
-			return Optional.empty();
-		} else {
-			mobSetConfiguration = holder.mobSetConfiguration.get(0);
-			mobSetMap = new HashMap<>();
-			mobSetConfiguration.mobSets.forEach(mobSet -> {
-				Treasure.LOGGER.info("adding mobset to map -> {}", mobSet);
-				mobSetMap.put(ModUtil.asLocation(mobSet.getName()), mobSet);
-			});
-		}
-		return Optional.ofNullable(holder.mobSetConfiguration.get(0));
-	}
-
-	/**
-	 * A temporary holder classes.
-	 *
-	 */
-	private static class ChestConfigsHolder {
-		public List<ChestPlacementConfiguration> chestConfigs;
-	}
-
-	private static class StructureConfigurationHolder {
-		public List<StructureConfiguration> structureConfigs;
-	}
-
-	private static class MobSetConfigurationHolder {
-		// NOTE this field name MUST match the defined name in InternalMobSetConfiguration.
-		public List<MobSetConfiguration> mobSetConfiguration;
 	}
 }
 

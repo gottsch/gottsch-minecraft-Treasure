@@ -15,7 +15,7 @@
  */
 package mod.gottsch.forge.treasure2.core.random;
 
-import mod.gottsch.forge.treasure2.core.rarity.IRarityEntry;
+import mod.gottsch.forge.treasure2.core.rarity.IRarity;
 import mod.gottsch.forge.treasure2.core.rarity.TreasureRarities;
 import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import net.minecraft.nbt.CompoundTag;
@@ -30,7 +30,7 @@ import java.util.*;
  * @author Mark Gottschling 8/26/2025
  *
  */
-public class RarityAdjustingWeightedCollection extends AdjustingWeightedCollection<IRarityEntry> {
+public class RarityAdjustingWeightedCollection extends AdjustingWeightedCollection<IRarity> {
 
 	private static final String COLLECTION = "collection";
 	private static final String ORIGINAL = "original";
@@ -39,7 +39,7 @@ public class RarityAdjustingWeightedCollection extends AdjustingWeightedCollecti
 		super();
 	}
 
-	public RarityAdjustingWeightedCollection(AdjustingWeightedCollection<IRarityEntry> col) {
+	public RarityAdjustingWeightedCollection(AdjustingWeightedCollection<IRarity> col) {
 		super();
 		this.collection = col.collection;
 		this.original = col.original;
@@ -52,15 +52,15 @@ public class RarityAdjustingWeightedCollection extends AdjustingWeightedCollecti
 	/**
 	 * convenience casting
 	 */
-	public RarityAdjustingWeightedCollection add(Integer weight, IRarityEntry item) {
+	public RarityAdjustingWeightedCollection add(Integer weight, IRarity item) {
 		return (RarityAdjustingWeightedCollection) super.add(weight, item);
 	}
 
-	public RarityAdjustingWeightedCollection only(List<IRarityEntry> rarities) {
+	public RarityAdjustingWeightedCollection only(List<IRarity> rarities) {
 		return (RarityAdjustingWeightedCollection) super.only(rarities);
 	}
 
-	public RarityAdjustingWeightedCollection only(IRarityEntry... rarities) {
+	public RarityAdjustingWeightedCollection only(IRarity... rarities) {
 		return only(Arrays.stream(rarities).toList());
 	}
 
@@ -69,7 +69,7 @@ public class RarityAdjustingWeightedCollection extends AdjustingWeightedCollecti
 	/**
 	 * Convenience casting
 	 */
-	public RarityAdjustingWeightedCollection add(Pair<Integer, Integer> weightPair, IRarityEntry item) {
+	public RarityAdjustingWeightedCollection add(Pair<Integer, Integer> weightPair, IRarity item) {
 		return (RarityAdjustingWeightedCollection) super.add(weightPair, item);
 	}
 

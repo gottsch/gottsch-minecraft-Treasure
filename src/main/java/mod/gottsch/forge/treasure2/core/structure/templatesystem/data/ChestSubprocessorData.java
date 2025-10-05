@@ -40,7 +40,7 @@ public class ChestSubprocessorData {
     // optional list of lock rarites.
     private final List<ResourceLocation> lockRarities;
     // NOTE deprecated?
-    private final List<ResourceLocation> biomesBlacklist;
+//    private final List<ResourceLocation> biomesBlacklist;
 
     // a Codec to parse this data from a JSON file.
     public static final Codec<ChestSubprocessorData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -50,20 +50,21 @@ public class ChestSubprocessorData {
             Codec.DOUBLE.optionalFieldOf("mimic", 0.0).forGetter(ChestSubprocessorData::getMimicProbability),
             RarityWeight.CODEC.listOf().optionalFieldOf("loot_table_rarities", List.of()).forGetter(ChestSubprocessorData::getLootTableRarities),
             ResourceLocation.CODEC.listOf().optionalFieldOf("loot_tables", List.of()).forGetter(ChestSubprocessorData::getLootTables),
-            ResourceLocation.CODEC.listOf().optionalFieldOf("lock_rarities", List.of()).forGetter(ChestSubprocessorData::getLockRarities),
-            ResourceLocation.CODEC.listOf().optionalFieldOf("biomes_blacklist", List.of()).forGetter(ChestSubprocessorData::getBiomesBlacklist)
+            ResourceLocation.CODEC.listOf().optionalFieldOf("lock_rarities", List.of()).forGetter(ChestSubprocessorData::getLockRarities)
+//            ResourceLocation.CODEC.listOf().optionalFieldOf("biomes_blacklist", List.of()).forGetter(ChestSubprocessorData::getBiomesBlacklist)
     ).apply(instance, ChestSubprocessorData::new));
 
     public ChestSubprocessorData(ResourceLocation type, ResourceLocation rarity, Double mimic,
                                  List<RarityWeight> lootTableRarities, List<ResourceLocation> lootTables,
-                                 List<ResourceLocation> lockRarities, List<ResourceLocation> biomesBlacklist) {
+                                 List<ResourceLocation> lockRarities) {
+//            }, List<ResourceLocation> biomesBlacklist) {
         this.type = type;
         this.rarity = rarity;
         this.mimicProbability = mimic;
         this.lootTableRarities = lootTableRarities;
         this.lootTables = lootTables;
         this.lockRarities = lockRarities;
-        this.biomesBlacklist = biomesBlacklist;
+//        this.biomesBlacklist = biomesBlacklist;
     }
 
     public ResourceLocation getRarity() {
@@ -90,7 +91,7 @@ public class ChestSubprocessorData {
         return lockRarities;
     }
 
-    public List<ResourceLocation> getBiomesBlacklist() {
-        return biomesBlacklist;
-    }
+//    public List<ResourceLocation> getBiomesBlacklist() {
+//        return biomesBlacklist;
+//    }
 }

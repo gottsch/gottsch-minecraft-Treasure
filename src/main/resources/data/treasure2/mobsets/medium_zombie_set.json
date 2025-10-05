@@ -1,0 +1,18 @@
+{
+  "id":"treasure2:medium_zombie_set",
+  "category":"zombies",
+  "count": {
+    "min": 2,
+    "max": 5
+  },
+  "mobs": [
+    {
+      "id": "minecraft:zombie",
+      "weight": 90
+    },
+    {
+      "id": "minecraft:zombie_villager",
+      "weight": 10
+    }
+  ]
+}

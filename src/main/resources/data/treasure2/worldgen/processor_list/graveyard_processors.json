@@ -4,7 +4,7 @@
       "processor_type": "treasure2:gravestone_processor"
     },
     {
-      "processor_type": "treasure2:proximity_mob_set_spawner_processor"
+      "processor_type": "treasure2:spawner_processor"
     },
     {
       "processor_type": "treasure2:aged_processor",

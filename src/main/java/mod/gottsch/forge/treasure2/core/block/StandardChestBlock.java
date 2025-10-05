@@ -1,25 +1,22 @@
 /*
- * This file is part of  Treasure2.
- * Copyright (c) 2018 Mark Gottschling (gottsch)
- * 
- * All rights reserved.
+ * This file is part of Treasure2.
+ * Copyright (c) 2025 Mark Gottschling (gottsch)
  *
  * Treasure2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * it under the terms of the Open Software Licence 3.0.
  *
  * Treasure2 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * Open Software Licence 3.0 for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * You should have received a copy of the Open Software Licence
+ * along with Treasure2. If not, see <https://www.tldrlegal.com/license/open-software-licence-3-0>.
  */
 package mod.gottsch.forge.treasure2.core.block;
 
 import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
+import mod.gottsch.forge.treasure2.core.chest.ChestInventorySize;
 import mod.gottsch.forge.treasure2.core.lock.LockLayout;
 import net.minecraft.world.level.material.MapColor;
 
@@ -29,30 +26,19 @@ import net.minecraft.world.level.material.MapColor;
  */
 public class StandardChestBlock extends AbstractTreasureChestBlock {
 
-	/**
-	 *
-	 * @param blockEntityClass
-	 * @param type
-	 */
-	public StandardChestBlock(Class<? extends AbstractTreasureChestBlockEntity> blockEntityClass, LockLayout type) {
-		this(blockEntityClass, type, Properties.of().mapColor(MapColor.WOOD));
-	}
+//	public StandardChestBlock(Class<? extends AbstractTreasureChestBlockEntity> blockEntityClass, LockLayout type) {
+//		this(blockEntityClass, type, Properties.of().mapColor(MapColor.WOOD));
+//	}
 
-	/**
-	 *
-	 * @param blockEntityClass
-	 * @param type
-	 * @param properties
-	 */
 	public StandardChestBlock(Class<? extends AbstractTreasureChestBlockEntity> blockEntityClass, LockLayout type, Properties properties) {
-		super(blockEntityClass, type, properties);
+		super(blockEntityClass, ChestInventorySize.STANDARD.getSize(), type, properties);
 	}
 
-	/**
-	 * 
-	 * @param tagCompound
-	 */
-//	private void dump(CompoundNBT tag, ICoords coords, String title) {
+	public StandardChestBlock(Class<? extends AbstractTreasureChestBlockEntity> blockEntityClass, int inventorySize, LockLayout type, Properties properties) {
+		super(blockEntityClass, inventorySize, type, properties);
+	}
+
+	//	private void dump(CompoundNBT tag, ICoords coords, String title) {
 		//		ChestNBTPrettyPrinter printer = new ChestNBTPrettyPrinter();
 		//		SimpleDateFormat formatter = new SimpleDateFormat("yyyymmdd");
 		//

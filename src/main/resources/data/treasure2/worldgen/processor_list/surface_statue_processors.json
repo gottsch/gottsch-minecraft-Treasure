@@ -4,14 +4,45 @@
       "processor_type": "treasure2:chest_processor",
       "feature_type": "terranean",
       "dimension": "minecraft:overworld",
-      "alt_loot_table": "minecraft:simple_dungeon"
+      "alt_loot_table": "minecraft:chests/simple_dungeon"
     },
     {
-      "processor_type": "treasure2:proximity_mob_set_spawner_processor"
+      "processor_type": "treasure2:spawner_processor"
     },
     {
       "processor_type": "treasure2:aged_processor",
       "mossiness": 0.45
+    },
+    {
+      "processor_type": "minecraft:rule",
+      "rules": [
+        {
+          "input_predicate": {
+            "block": "minecraft:chiseled_stone_bricks",
+            "predicate_type": "minecraft:random_block_match",
+            "probability": 0.25
+          },
+          "location_predicate": {
+            "predicate_type": "minecraft:always_true"
+          },
+          "output_state": {
+            "Name": "minecraft:stone_bricks"
+          }
+        },
+        {
+          "input_predicate": {
+            "block": "minecraft:chiseled_stone_bricks",
+            "predicate_type": "minecraft:random_block_match",
+            "probability": 0.25
+          },
+          "location_predicate": {
+            "predicate_type": "minecraft:always_true"
+          },
+          "output_state": {
+            "Name": "minecraft:mossy_stone_bricks"
+          }
+        }
+      ]
     },
     {
       "processor_type": "minecraft:rule",
@@ -121,7 +152,7 @@
           "input_predicate": {
             "block": "minecraft:cobblestone",
             "predicate_type": "minecraft:random_block_match",
-            "probability": 0.15
+            "probability": 0.25
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
@@ -134,7 +165,7 @@
           "input_predicate": {
             "block": "minecraft:cobblestone",
             "predicate_type": "minecraft:random_block_match",
-            "probability": 0.05
+            "probability": 0.15
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
@@ -236,6 +267,32 @@
             "block": "minecraft:gravel",
             "predicate_type": "minecraft:random_block_match",
             "probability": 0.15
+          },
+          "location_predicate": {
+            "predicate_type": "minecraft:always_true"
+          },
+          "output_state": {
+            "Name": "minecraft:air"
+          }
+        },
+        {
+          "input_predicate": {
+            "block": "minecraft:andesite_wall",
+            "predicate_type": "minecraft:random_block_match",
+            "probability": 0.05
+          },
+          "location_predicate": {
+            "predicate_type": "minecraft:always_true"
+          },
+          "output_state": {
+            "Name": "minecraft:air"
+          }
+        },
+        {
+          "input_predicate": {
+            "block": "minecraft:dark_oak_fence",
+            "predicate_type": "minecraft:random_block_match",
+            "probability": 0.05
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"

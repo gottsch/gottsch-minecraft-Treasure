@@ -49,6 +49,10 @@ public class TreasureChestSubprocessors {
     // register all the chest subprocessors
     public static RegistryObject<IChestSubprocessor> STANDARD = CHEST_SUBPROCESSORS_DEFERRED.register("standard", StandardChestSubprocessor::new);
     public static RegistryObject<IChestSubprocessor> HIGH_TIER_RARITY = CHEST_SUBPROCESSORS_DEFERRED.register("high_tier_rarity", HighTierRarityChestSubprocessor::new);
+    public static RegistryObject<IChestSubprocessor> BONE_CHEST = CHEST_SUBPROCESSORS_DEFERRED.register("bone_chest", BoneChestSubprocessor::new);
+    public static RegistryObject<IChestSubprocessor> WITHER_CHEST = CHEST_SUBPROCESSORS_DEFERRED.register("wither_chest", WitherChestSubprocessor::new);
+    public static RegistryObject<IChestSubprocessor> LEGENDARY_CHEST = CHEST_SUBPROCESSORS_DEFERRED.register("legendary_chest", LegendaryChestSubprocessor::new);
+    public static RegistryObject<IChestSubprocessor> MYTHICAL_CHEST = CHEST_SUBPROCESSORS_DEFERRED.register("mythical_chest", MythicalChestSubprocessor::new);
 
     /*
      *

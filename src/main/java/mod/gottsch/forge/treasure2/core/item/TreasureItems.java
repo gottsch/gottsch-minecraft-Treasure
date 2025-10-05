@@ -1,22 +1,38 @@
+/*
+ * This file is part of Treasure2.
+ * Copyright (c) 2025 Mark Gottschling (gottsch)
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the Open Software Licence 3.0.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * Open Software Licence 3.0 for more details.
+ *
+ * You should have received a copy of the Open Software Licence
+ * along with Treasure2. If not, see <https://www.tldrlegal.com/license/open-software-licence-3-0>.
+ */
 package mod.gottsch.forge.treasure2.core.item;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.capability.DurabilityCapability;
 import mod.gottsch.forge.treasure2.core.capability.DurabilityHandler;
 import mod.gottsch.forge.treasure2.core.capability.IDurabilityHandler;
 import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
-import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.item.weapon.Axe;
 import mod.gottsch.forge.treasure2.core.item.weapon.Sword;
 import mod.gottsch.forge.treasure2.core.item.weapon.TreasureWeapons;
 import mod.gottsch.forge.treasure2.core.material.TreasureArmorMaterial;
+import mod.gottsch.forge.treasure2.core.rarity.IRarity;
+import mod.gottsch.forge.treasure2.core.rarity.TreasureRarities;
 import mod.gottsch.forge.treasure2.core.setup.Registration;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -83,7 +99,7 @@ public class TreasureItems {
 			() -> new KeyItem(new Item.Properties(), 15)
 			.setCategory(KeyLockCategory.ELEMENTAL)
 			.setCraftable(false)
-			.addFitsLock(lock -> {
+			.addFitsLock((level, lock) -> {
 				return
 						(lock == TreasureItems.EMBER_LOCK.get() ||
 								lock == TreasureItems.WOOD_LOCK.get() ||
@@ -242,7 +258,7 @@ public class TreasureItems {
 			.setBreakable(false)
 			.setCraftable(false)
 			// opens any lock
-			.addFitsLock(lock -> {
+			.addFitsLock((level, lock) -> {
 				return true;
 			}));
 
@@ -305,8 +321,8 @@ public class TreasureItems {
 
 	public static RegistryObject<LockItem> WITHER_LOCK = Registration.ITEMS.register("wither_lock", () -> new LockItem(LOCK_ITEM_PROPERTIES.get(), new KeyItem[] {WITHER_KEY.get()}) {
 		@Override
-		public IRarity getRarity() {
-			return Rarity.SCARCE;
+		public IRarity getRarity(HolderLookup.Provider provider) {
+			return TreasureRarities.WITHER.get();
 		};
 	}.setCategory(KeyLockCategory.WITHER));
 
@@ -333,7 +349,7 @@ public class TreasureItems {
 	// wither legacy
 	public static RegistryObject<Item> WITHER_LOG = fromBlock(TreasureBlocks.WITHER_LOG, TREASURE_PROPS_SUPPLIER);
 	public static RegistryObject<Item> WITHER_BROKEN_LOG = fromBlock(TreasureBlocks.WITHER_BROKEN_LOG, TREASURE_PROPS_SUPPLIER);
-	public static RegistryObject<Item> WITHER_SOUL_LOG = fromBlock(TreasureBlocks.WITHER_SOUL_LOG, TREASURE_PROPS_SUPPLIER);
+//	public static RegistryObject<Item> WITHER_SOUL_LOG = fromBlock(TreasureBlocks.WITHER_SOUL_LOG, TREASURE_PROPS_SUPPLIER);
 	public static RegistryObject<Item> WITHER_PLANKS = fromBlock(TreasureBlocks.WITHER_PLANKS, TREASURE_PROPS_SUPPLIER);
 	public static RegistryObject<Item> WITHER_BRANCH = fromBlock(TreasureBlocks.WITHER_BRANCH, TREASURE_PROPS_SUPPLIER);
 	public static RegistryObject<Item> WITHER_ROOT = fromBlock(TreasureBlocks.WITHER_ROOT, TREASURE_PROPS_SUPPLIER);
@@ -345,7 +361,6 @@ public class TreasureItems {
 
 	public static RegistryObject<Item> WITHERWOOD_LOG = fromBlock(TreasureBlocks.WITHERWOOD_LOG, TREASURE_PROPS_SUPPLIER);
 	public static RegistryObject<Item> WITHERWOOD_BROKEN_LOG = fromBlock(TreasureBlocks.WITHERWOOD_BROKEN_LOG, TREASURE_PROPS_SUPPLIER);
-	public static RegistryObject<Item> WITHERWOOD_SOUL_LOG_ITEM = fromBlock(TreasureBlocks.WITHERWOOD_SOUL_LOG, TREASURE_PROPS_SUPPLIER);
 	public static RegistryObject<Item> WITHERWOOD_PLANKS = fromBlock(TreasureBlocks.WITHERWOOD_PLANKS, TREASURE_PROPS_SUPPLIER);
 	public static RegistryObject<Item> WITHERWOOD_STAIRS = fromBlock(TreasureBlocks.WITHERWOOD_STAIRS, TREASURE_PROPS_SUPPLIER);
 	public static RegistryObject<Item> WITHERWOOD_SLAB = fromBlock(TreasureBlocks.WITHERWOOD_SLAB, TREASURE_PROPS_SUPPLIER);
@@ -770,6 +785,12 @@ public class TreasureItems {
 	// other
 	public static final RegistryObject<Item> STRUCTURE_MOB_SET = Registration.ITEMS.register("structure_mob_set", () -> new BlockItem(TreasureBlocks.STRUCTURE_MOB_SET.get(), new Item.Properties()));
 
+	// falling blocks
+	public static final RegistryObject<Item> FALLING_GRASS = fromBlock(TreasureBlocks.FALLING_GRASS, TREASURE_PROPS_SUPPLIER);
+	public static final RegistryObject<Item> FALLING_SAND = fromBlock(TreasureBlocks.FALLING_SAND, TREASURE_PROPS_SUPPLIER);
+	public static final RegistryObject<Item> FALLING_RED_SAND = fromBlock(TreasureBlocks.FALLING_RED_SAND, TREASURE_PROPS_SUPPLIER);
+
+
 	static {
 		// register all the chests
 		TreasureBlocks.CHESTS.forEach(g -> {
@@ -793,7 +814,6 @@ public class TreasureItems {
 		TAB_IGNORE.add(MOB);
 		TAB_IGNORE.add(WITHER_LOG);
 		TAB_IGNORE.add(WITHER_BROKEN_LOG);
-		TAB_IGNORE.add(WITHER_SOUL_LOG);
 		TAB_IGNORE.add(WITHER_PLANKS);
 		TAB_IGNORE.add(WITHER_BRANCH);
 		TAB_IGNORE.add(WITHER_ROOT);
@@ -801,6 +821,10 @@ public class TreasureItems {
 		TAB_IGNORE.add(WISHING_WELL_ITEM);
 		TAB_IGNORE.add(STRUCTURE_MOB_SET);
 		TAB_IGNORE.add(BONE_LOCK);
+
+		BLOCK_ITEM_MAP.put(TreasureBlocks.FALLING_GRASS, FALLING_GRASS);
+		BLOCK_ITEM_MAP.put(TreasureBlocks.FALLING_SAND, FALLING_SAND);
+		BLOCK_ITEM_MAP.put(TreasureBlocks.FALLING_RED_SAND, FALLING_RED_SAND);
 
 	}
 

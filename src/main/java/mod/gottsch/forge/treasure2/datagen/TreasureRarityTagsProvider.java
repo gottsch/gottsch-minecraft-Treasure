@@ -15,20 +15,13 @@
  */
 package mod.gottsch.forge.treasure2.datagen;
 
-import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.treasure2.Treasure;
-import mod.gottsch.forge.treasure2.core.enums.Rarity;
-import mod.gottsch.forge.treasure2.core.rarity.IRarityEntry;
-import mod.gottsch.forge.treasure2.core.rarity.RarityEntry;
+import mod.gottsch.forge.treasure2.core.rarity.IRarity;
 import mod.gottsch.forge.treasure2.core.rarity.TreasureRarities;
-import mod.gottsch.forge.treasure2.core.registry.TreasureTemplateRegistry;
 import mod.gottsch.forge.treasure2.core.tags.TreasureTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.TagsProvider;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 import java.util.concurrent.CompletableFuture;
@@ -36,7 +29,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * @author by Mark Gottschling on 8/23/2025
  */
-public class TreasureRarityTagsProvider extends TagsProvider<IRarityEntry> {
+public class TreasureRarityTagsProvider extends TagsProvider<IRarity> {
 
     // a tag key to represent our wishable common items.
     // This is the tag that the data-driven rarity system looks for.
