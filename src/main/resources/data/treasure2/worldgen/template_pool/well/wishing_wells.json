@@ -1,0 +1,96 @@
+{
+  "name": "treasure2:well/wishing_wells",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:well/general/canopy_top_1",
+        "projection": "rigid",
+        "processors": "treasure2:wells_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:well/general/well_top_1",
+        "projection": "rigid",
+        "processors": "treasure2:wells_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:well/general/wood_draw_top_1",
+        "projection": "rigid",
+        "processors": "treasure2:wells_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:well/unique/canopy_well_2_top",
+        "projection": "rigid",
+        "processors": "treasure2:wells_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:well/unique/canopy_well_3_top",
+        "projection": "rigid",
+        "processors": "treasure2:wells_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:well/unique/canopy_well_4_top",
+        "projection": "rigid",
+        "processors": "treasure2:wells_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:well/unique/canopy_well_5_top",
+        "projection": "rigid",
+        "processors": "treasure2:wells_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:well/unique/forest_well_1_top",
+        "projection": "rigid",
+        "processors": "treasure2:wells_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:well/unique/fountain_1",
+        "projection": "rigid",
+        "processors": "treasure2:wells_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:well/unique/jungle_well_1_top",
+        "projection": "rigid",
+        "processors": "treasure2:wells_processors"
+      }
+    }
+  ]
+}

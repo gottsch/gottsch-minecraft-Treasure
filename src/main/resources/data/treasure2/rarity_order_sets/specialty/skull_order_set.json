@@ -1,0 +1,17 @@
+{
+  "name": "treasure2:skull_order_set",
+  "rarityOrders": [
+    {
+      "rarity": "treasure2:skull",
+      "order": 10
+    },
+    {
+      "rarity": "treasure2:gold_skull",
+      "order": 20
+    },
+    {
+      "rarity": "treasure2:crystal_skull",
+      "order": 30
+    }
+  ]
+}

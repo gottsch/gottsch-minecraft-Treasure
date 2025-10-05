@@ -1,0 +1,15 @@
+{
+  "type": "treasure2:standard",
+  "rarity": "treasure2:scarce",
+  "feature_type": "aquatic",
+  "loot_table_rarities": [
+    {
+      "rarity": "treasure2:scarce",
+      "weight": 70
+    },
+    {
+      "rarity": "treasure2:rare",
+      "weight": 30
+    }
+  ]
+}

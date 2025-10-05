@@ -1,42 +1,37 @@
 /*
- * This file is part of  Treasure2.
- * Copyright (c) 2022 Mark Gottschling (gottsch)
+ * This file is part of Treasure2.
+ * Copyright (c) 2025 Mark Gottschling (gottsch)
  *
  * Treasure2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * it under the terms of the Open Software Licence 3.0.
  *
  * Treasure2 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * Open Software Licence 3.0 for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * You should have received a copy of the Open Software Licence
+ * along with Treasure2. If not, see <https://www.tldrlegal.com/license/open-software-licence-3-0>.
  */
 package mod.gottsch.forge.treasure2.core.item;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.Predicate;
-
-import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.block.AbstractTreasureChestBlock;
 import mod.gottsch.forge.treasure2.core.block.ITreasureChestBlockProxy;
 import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
 import mod.gottsch.forge.treasure2.core.config.Config;
-import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.item.effects.ILockEffects;
 import mod.gottsch.forge.treasure2.core.lock.LockState;
-import mod.gottsch.forge.treasure2.core.registry.KeyLockRegistry;
+import mod.gottsch.forge.treasure2.core.rarity.IRarity;
+import mod.gottsch.forge.treasure2.core.rarity.TreasureRarities;
+import mod.gottsch.forge.treasure2.core.registry.RarityTagAssociationRegistry;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.Containers;
@@ -48,6 +43,11 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Predicate;
 
 
 /**
@@ -102,11 +102,11 @@ public class LockItem extends Item implements ILockEffects {
 	 * Accepts Keys: [list] [color = Gold]
 	 */
 	@Override
-	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flag) {
-		super.appendHoverText(stack, worldIn, tooltip, flag);
+	public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, level, tooltip, flag);
 
 		tooltip.add(Component.translatable(LangUtil.tooltip("key_lock.rarity"),
-				ChatFormatting.BLUE + Component.translatable(getRarity().getValue().toLowerCase()).getString().toUpperCase() ));
+				ChatFormatting.BLUE + Component.translatable(getRarity(Minecraft.getInstance().level.registryAccess()).getName().toLowerCase()).getString().toUpperCase() ));
 		tooltip.add(Component.translatable(LangUtil.tooltip("key_lock.category"), ChatFormatting.GOLD + Component.translatable(getCategory().toString().toLowerCase()).getString().toUpperCase()));
 
 		LangUtil.appendAdvancedHoverText(tooltip, tt -> {
@@ -123,8 +123,8 @@ public class LockItem extends Item implements ILockEffects {
 						.append(Component.translatable(key.getDescription().getString()).withStyle(ChatFormatting.DARK_GREEN)));
 			});
 
-			appendHoverSpecials(stack, worldIn, tooltip, flag);
-			appendHoverExtras(stack, worldIn, tooltip, flag);
+			appendHoverSpecials(stack, level, tooltip, flag);
+			appendHoverExtras(stack, level, tooltip, flag);
 		});
 	}
 
@@ -209,7 +209,6 @@ public class LockItem extends Item implements ILockEffects {
 	 * @param level
 	 * @param player
 	 * @param chestPos
-	 * @param chestTileEntity
 	 * @param lockState
 	 */
 	public void doUnlock(Level level, Player player, BlockPos chestPos, LockState lockState) {
@@ -278,12 +277,8 @@ public class LockItem extends Item implements ILockEffects {
 	/**
 	 * @return the rarity
 	 */
-	public IRarity getRarity() {
-		IRarity rarity = KeyLockRegistry.getRarityByLock(this);
-		if (rarity == null) {
-			return Rarity.NONE;
-		}
-		return rarity;
+	public IRarity getRarity(HolderLookup.Provider provider) {
+		return RarityTagAssociationRegistry.getLockRarity(this, provider).orElseGet(() -> TreasureRarities.UNKNOWN.get());
 	}
 
 	/**
@@ -331,7 +326,7 @@ public class LockItem extends Item implements ILockEffects {
 	 */
 	@Override
 	public String toString() {
-		return "LockItem [name=" + ModUtil.getName(this) + ", rarity=" + getRarity() + ", craftable=" + craftable + ", keys="
+		return "LockItem [name=" + ModUtil.getName(this) + ", craftable=" + craftable + ", keys="
 				+ keys + "]";
 	}
 

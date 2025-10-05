@@ -1,21 +1,17 @@
 /*
- * This file is part of  Treasure2.
- * Copyright (c) 2017 Mark Gottschling (gottsch)
- * 
- * All rights reserved.
+ * This file is part of Treasure2.
+ * Copyright (c) 2025 Mark Gottschling (gottsch)
  *
  * Treasure2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * it under the terms of the Open Software Licence 3.0.
  *
  * Treasure2 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * Open Software Licence 3.0 for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * You should have received a copy of the Open Software Licence
+ * along with Treasure2. If not, see <https://www.tldrlegal.com/license/open-software-licence-3-0>.
  */
 package mod.gottsch.forge.treasure2.core.item;
 
@@ -37,7 +33,10 @@ import mod.gottsch.forge.treasure2.core.wishable.IWishable;
 import mod.gottsch.forge.treasure2.core.wishable.IWishableHandler;
 import mod.gottsch.forge.treasure2.core.wishable.TreasureWishableHandlers;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -74,10 +73,10 @@ public class TreasureChestBlockItem extends BlockItem {
 	 * 
 	 */
 	@Override
-	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-		super.appendHoverText(stack, worldIn, tooltip, flagIn);
+	public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flagIn) {
+		super.appendHoverText(stack, level, tooltip, flagIn);
 		// get the block
-		AbstractTreasureChestBlock tb = (AbstractTreasureChestBlock) getBlock();
+		AbstractTreasureChestBlock block = (AbstractTreasureChestBlock) getBlock();
 
 		boolean isLocked = Optional.ofNullable(stack.getTag()).map(tag -> {
 			if (tag.contains("lockStates")) {
@@ -96,13 +95,29 @@ public class TreasureChestBlockItem extends BlockItem {
 			tooltip.add(Component.literal(LangUtil.NEWLINE));
 		}
 
-		// chest info		
-		tooltip.add(Component.translatable(LangUtil.tooltip("chest.rarity"), ChatFormatting.BLUE + tb.getRarity().toString()));
-		tooltip.add(Component.translatable(LangUtil.tooltip("chest.max_locks"), ChatFormatting.BLUE + String.valueOf(tb.getLockLayout().getMaxLocks())));
-		int size = tb.getBlockEntityInstance() != null ? tb.getBlockEntityInstance().getInventorySize() : ChestInventorySize.getSizeOf(tb);
+		// chest info
+		// this method is called on the client side, so we can't get the registry access from a Level object directly.
+		// instead, we get the provider from the Minecraft client instance's network connection.
+		HolderLookup.Provider registries = Minecraft.getInstance().getConnection().registryAccess();
+
+		tooltip.add(Component.translatable(LangUtil.tooltip("chest.rarity"), ChatFormatting.BLUE + block.getRarity(registries).getDisplayName().toUpperCase()));
+		tooltip.add(Component.translatable(LangUtil.tooltip("chest.max_locks"), ChatFormatting.BLUE + String.valueOf(block.getLockLayout().getMaxLocks())));
+//		int size = block.getBlockEntityInstance() != null ? block.getBlockEntityInstance().getInventorySize() : ChestInventorySize.getSizeOf(block);
+		int size = block.getInventorySize();
 		tooltip.add(Component.translatable(LangUtil.tooltip("chest.container_size"), ChatFormatting.DARK_GREEN + String.valueOf(size)));
 
-		// TODO if locked at tooltip to throw into well
+		// NOTE this won't work as tag is always null when building the creative menu
+//		CompoundTag blockEntityTag = stack.getTagElement(BlockItem.BLOCK_ENTITY_TAG);
+//		if (blockEntityTag != null && blockEntityTag.contains("Items", Tag.TAG_LIST)) {
+//			// Get the ListTag that holds all the serialized item stacks
+//			ListTag itemsTag = blockEntityTag.getList("Items", Tag.TAG_COMPOUND);
+//
+//			// The size of the ListTag is the number of slots in the inventory
+//			int inventorySize = itemsTag.size();
+//			tooltip.add(Component.translatable(LangUtil.tooltip("chest.container_size"), ChatFormatting.DARK_GREEN + String.valueOf(inventorySize)));
+//
+//		}
+			// TODO if locked at tooltip to throw into well
 	}
 
 	/**
@@ -151,6 +166,8 @@ public class TreasureChestBlockItem extends BlockItem {
 						level.setBlockAndUpdate(activePos, Blocks.MOSSY_COBBLESTONE.defaultBlockState());
 					} else if (activeBlock.equals(TreasureBlocks.WISHING_WELL_COBBLESTONE.get())) {
 						level.setBlock(activePos, Blocks.COBBLESTONE.defaultBlockState(), 3);
+					} else if (activeBlock.equals(TreasureBlocks.WISHING_WELL_MOSSY_COBBLESTONE.get())) {
+						level.setBlock(activePos, Blocks.MOSSY_COBBLESTONE.defaultBlockState(), 3);
 					} else if (activeBlock.equals(TreasureBlocks.WISHING_WELL_MOSSY_STONE_BRICKS.get())) {
 						level.setBlock(activePos, Blocks.MOSSY_STONE_BRICKS.defaultBlockState(), 3);
 					} else if (activeBlock.equals(TreasureBlocks.WISHING_WELL_STONE_BRICKS.get())) {

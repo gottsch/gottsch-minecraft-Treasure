@@ -1,0 +1,8 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "treasure2:block/structure_mob_set",
+    "north": "treasure2:block/structure_mob_set"
+  },
+  "render_type": "cutout"
+}

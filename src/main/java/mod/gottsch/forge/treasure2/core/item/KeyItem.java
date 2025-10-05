@@ -1,25 +1,20 @@
 /*
- * This file is part of  Treasure2.
- * Copyright (c) 2018 Mark Gottschling (gottsch)
- * 
- * All rights reserved.
+ * This file is part of Treasure2.
+ * Copyright (c) 2025 Mark Gottschling (gottsch)
  *
  * Treasure2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * it under the terms of the Open Software Licence 3.0.
  *
  * Treasure2 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * Open Software Licence 3.0 for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * You should have received a copy of the Open Software Licence
+ * along with Treasure2. If not, see <https://www.tldrlegal.com/license/open-software-licence-3-0>.
  */
 package mod.gottsch.forge.treasure2.core.item;
 
-import mod.gottsch.forge.gottschcore.enums.IRarity;
 import mod.gottsch.forge.gottschcore.random.RandomHelper;
 import mod.gottsch.forge.gottschcore.world.WorldInfo;
 import mod.gottsch.forge.treasure2.Treasure;
@@ -28,18 +23,20 @@ import mod.gottsch.forge.treasure2.core.block.ITreasureChestBlockProxy;
 import mod.gottsch.forge.treasure2.core.block.entity.AbstractTreasureChestBlockEntity;
 import mod.gottsch.forge.treasure2.core.block.entity.ITreasureChestBlockEntity;
 import mod.gottsch.forge.treasure2.core.capability.DurabilityCapability;
-import mod.gottsch.forge.treasure2.core.capability.DurabilityHandler;
 import mod.gottsch.forge.treasure2.core.capability.IDurabilityHandler;
 import mod.gottsch.forge.treasure2.core.capability.TreasureCapabilities;
 import mod.gottsch.forge.treasure2.core.config.Config;
-import mod.gottsch.forge.treasure2.core.enums.Rarity;
 import mod.gottsch.forge.treasure2.core.item.effects.IKeyEffects;
 import mod.gottsch.forge.treasure2.core.lock.LockState;
-import mod.gottsch.forge.treasure2.core.registry.KeyLockRegistry;
+import mod.gottsch.forge.treasure2.core.rarity.IRarity;
+import mod.gottsch.forge.treasure2.core.rarity.TreasureRarities;
+import mod.gottsch.forge.treasure2.core.registry.RarityTagAssociationRegistry;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import mod.gottsch.forge.treasure2.core.util.ModUtil;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -60,6 +57,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import static mod.gottsch.forge.treasure2.core.capability.TreasureCapabilities.DURABILITY;
@@ -101,7 +99,7 @@ public class KeyItem extends Item implements IKeyEffects {
 	/*
 	 * A list of predicates that determine if a key fits into a lock.
 	 */
-	private List<Predicate<LockItem >> fitsLock;
+	private List<BiPredicate<Level, LockItem >> fitsLock;
 	
 	/*
 	 * A list of predicates that determine if a key will break a lock.
@@ -201,7 +199,7 @@ public class KeyItem extends Item implements IKeyEffects {
 	 * 	 	Damageable: [Yes | No] [color = Dark Red | Green]
 	 */
 	@Override
-	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 //		Treasure.LOGGER.debug("appendHoverText damage -> {}", stack.getDamageValue());
 		// TODO this optional probably can be better written
 		if (stack.getCapability(DURABILITY).isPresent()) {
@@ -217,8 +215,8 @@ public class KeyItem extends Item implements IKeyEffects {
 		else {
 			tooltip.add(Component.translatable(LangUtil.tooltip("cap.durability.amount"), /*stack.getMaxDamage() - stack.getDamageValue()*/"whaat", getDurability()));
 		}
-		
-		tooltip.add(Component.translatable(LangUtil.tooltip("key_lock.rarity"), ChatFormatting.BLUE + Component.translatable(getRarity().getValue().toLowerCase()).getString().toUpperCase() ));
+
+		tooltip.add(Component.translatable(LangUtil.tooltip("key_lock.rarity"), ChatFormatting.BLUE + Component.translatable(getRarity(Minecraft.getInstance().level.registryAccess()).getName().toLowerCase()).getString().toUpperCase() ));
 		tooltip.add(Component.translatable(LangUtil.tooltip("key_lock.category"), ChatFormatting.GOLD + Component.translatable(getCategory().toString().toLowerCase()).getString().toUpperCase()));
 
 		LangUtil.appendAdvancedHoverText(tooltip, tt -> {
@@ -243,8 +241,8 @@ public class KeyItem extends Item implements IKeyEffects {
 			}
 			tooltip.add(Component.translatable(LangUtil.tooltip("key_lock.craftable"), craftable));
 		
-			appendHoverSpecials(stack, worldIn, tooltip, flag);
-			appendHoverExtras(stack, worldIn, tooltip, flag);
+			appendHoverSpecials(stack, level, tooltip, flag);
+			appendHoverExtras(stack, level, tooltip, flag);
 		});
 		// NOTE adding curse here makes it unremovable.
 		// TODO adding curse AFTER the HOLD lambda only adds it once to the tooltip.
@@ -327,32 +325,19 @@ public class KeyItem extends Item implements IKeyEffects {
 			}
 
 			try {
-				ItemStack heldItemStack = context.getPlayer().getItemInHand(context.getHand());	
+				ItemStack heldItemStack = context.getPlayer().getItemInHand(context.getHand());
 				boolean breakKey = true;
 				boolean fitsLock = false;
 				LockState lockState = null;
 				boolean isKeyBroken = false;
 				// check if this key is one that opens a lock (only first lock that key fits is unlocked).
-				lockState = fitsFirstLock(chestBlockEntity.getLockStates());
+				lockState = fitsFirstLock(context.getLevel(), chestBlockEntity.getLockStates());
 				if (lockState != null) {
 					fitsLock = true;
 				}
 
 				if (fitsLock) {
-					if (unlock(lockState.getLock())) {
-						// unlock the lock
-						doUnlock(context, chestBlockEntity, lockState);
-
-						if (!state.getValue(AbstractTreasureChestBlock.DISCOVERED)) {
-							chestBlockEntity = ((AbstractTreasureChestBlock) block).discovered((AbstractTreasureChestBlockEntity) chestBlockEntity, state, context.getLevel(), chestPos, context.getPlayer());
-						}
-						
-						// update the client
-						chestBlockEntity.sendUpdates();
-
-						// don't break the key
-						breakKey = false;
-					}
+					breakKey = useKeyOnLock(context, block, state, chestPos, chestBlockEntity, lockState);
 				}
 
 				IDurabilityHandler cap = heldItemStack.getCapability(DURABILITY).orElseThrow(IllegalStateException::new);
@@ -412,6 +397,35 @@ public class KeyItem extends Item implements IKeyEffects {
 	}
 
 	/**
+	 *
+	 * @param context the original context.
+	 * @param block the calculated block. takes into account use of proxy blocks.
+	 * @param state the calculated state. takes into account use of proxy blocks.
+	 * @param chestPos the calculated chestPos. takes into account use of proxy blocks.
+	 * @param blockEntity the calculated block entity. takes into account use of proxy blocks.
+	 * @param lockState the lock state.
+	 * @return a boolean value to indicate whether the key should be broken
+	 */
+	protected boolean useKeyOnLock(UseOnContext context, Block block, BlockState state, BlockPos chestPos, ITreasureChestBlockEntity blockEntity, LockState lockState) {
+		if (unlock(context.getLevel(), lockState.getLock())) {
+			// unlock the lock
+			doUnlock(context, blockEntity, lockState);
+
+			if (!state.getValue(AbstractTreasureChestBlock.DISCOVERED)) {
+				blockEntity = ((AbstractTreasureChestBlock) block).discovered((AbstractTreasureChestBlockEntity) blockEntity, state, context.getLevel(), chestPos, context.getPlayer());
+			}
+
+			// update the client
+			blockEntity.sendUpdates();
+
+			// don't break the key
+			return false;
+		}
+		// default break the key
+		return true;
+	}
+
+	/**
 	 * 
 	 * @param context
 	 * @param chestTileEntity
@@ -434,12 +448,12 @@ public class KeyItem extends Item implements IKeyEffects {
 	 * @param lockItem
 	 * @return
 	 */
-	public boolean fitsLock(LockItem lockItem) {
+	public boolean fitsLock(Level level, LockItem lockItem) {
 		if (getFitsLock() == null || getFitsLock().isEmpty()) {
 			return false;
 		}
-		for (Predicate<LockItem> p : this.getFitsLock()) {
-			boolean result = p.test(lockItem);
+		for (BiPredicate<Level, LockItem> p : this.getFitsLock()) {
+			boolean result = p.test(level, lockItem);
 			if (!result) {
 				return false;
 			}
@@ -452,13 +466,13 @@ public class KeyItem extends Item implements IKeyEffects {
 	 * @param lockStates
 	 * @return
 	 */
-	public LockState  fitsFirstLock(List<LockState> lockStates) {
+	public LockState  fitsFirstLock(Level level, List<LockState> lockStates) {
 		LockState lockState = null;
 		// check if this key is one that opens a lock (only first lock that key fits is unlocked).
 		for (LockState ls : lockStates) {
 			if (ls.getLock() != null) {
 				lockState = ls;
-				if (lockState.getLock().acceptsKey(this) || fitsLock(lockState.getLock())) {
+				if (lockState.getLock().acceptsKey(this) || fitsLock(level, lockState.getLock())) {
 					return ls;
 				}
 			}
@@ -471,8 +485,8 @@ public class KeyItem extends Item implements IKeyEffects {
 	 * @param lockItem
 	 * @return
 	 */
-	public boolean unlock(LockItem lockItem) {	
-		if (lockItem.acceptsKey(this) || fitsLock(lockItem)) {
+	public boolean unlock(Level level, LockItem lockItem) {
+		if (lockItem.acceptsKey(this) || fitsLock(level, lockItem)) {
 			Treasure.LOGGER.debug("lock -> {} accepts key -> {}", ModUtil.getName(lockItem), ModUtil.getName(this));
 			if (RandomHelper.checkProbability(new Random(), this.getSuccessProbability())) {
 				Treasure.LOGGER.debug("unlock attempt met probability");
@@ -520,12 +534,8 @@ public class KeyItem extends Item implements IKeyEffects {
 	/**
 	 * @return the rarity
 	 */
-	public IRarity getRarity() {
-		IRarity rarity = KeyLockRegistry.getRarityByKey(this);
-		if (rarity == null) {
-			return Rarity.NONE;
-		}
-		return rarity;
+	public IRarity getRarity(RegistryAccess provider) {
+		return RarityTagAssociationRegistry.getKeyRarity(this, provider).orElseGet(() -> TreasureRarities.UNKNOWN.get());
 	}
 
 	/**
@@ -543,12 +553,14 @@ public class KeyItem extends Item implements IKeyEffects {
 		return this;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
-		return "KeyItem [rarity=" + getRarity() + ", craftable=" + craftable + "]";
+		return "KeyItem{" +
+				"breakable=" + breakable +
+				", category=" + category +
+				", craftable=" + craftable +
+				", durability=" + durability +
+				"} " + super.toString();
 	}
 
 	/**
@@ -583,7 +595,7 @@ public class KeyItem extends Item implements IKeyEffects {
 		return this;
 	}
 
-	public KeyItem addFitsLock(Predicate<LockItem> p) {
+	public KeyItem addFitsLock(BiPredicate<Level, LockItem> p) {
 		if (fitsLock == null) {
 			fitsLock = new ArrayList<>();
 		}
@@ -591,7 +603,7 @@ public class KeyItem extends Item implements IKeyEffects {
 		return this;
 	}
 
-	public List<Predicate<LockItem>> getFitsLock() {
+	public List<BiPredicate<Level, LockItem>> getFitsLock() {
 		return this.fitsLock;
 	}
 

@@ -1,19 +1,17 @@
 /*
- * This file is part of  Treasure2.
- * Copyright (c) 2022 Mark Gottschling (gottsch)
+ * This file is part of Treasure2.
+ * Copyright (c) 2025 Mark Gottschling (gottsch)
  *
  * Treasure2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * it under the terms of the Open Software Licence 3.0.
  *
  * Treasure2 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * Open Software Licence 3.0 for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * You should have received a copy of the Open Software Licence
+ * along with Treasure2. If not, see <https://www.tldrlegal.com/license/open-software-licence-3-0>.
  */
 package mod.gottsch.forge.treasure2.datagen;
 
@@ -67,6 +65,8 @@ public class LanguageGen extends LanguageProvider {
         add(TreasureItems.PILFERERS_LOCK_PICK.get(), "Pilferer's Lock Pick");
         add(TreasureItems.THIEFS_LOCK_PICK.get(), "Thief's Lock Pick");
         add(TreasureItems.ONE_KEY.get(), "The One Key");
+        add(TreasureItems.BONE_KEY.get(), "Bone Key");
+
         // locks
         add(TreasureItems.WOOD_LOCK.get(), "Wood Lock");
         add(TreasureItems.STONE_LOCK.get(), "Stone Lock");
@@ -84,7 +84,8 @@ public class LanguageGen extends LanguageProvider {
         
         add(TreasureItems.SPIDER_LOCK.get(), "Spider Lock");
         add(TreasureItems.WITHER_LOCK.get(), "Wither Lock");
-        
+        add(TreasureItems.BONE_LOCK.get(), "Bone Lock");
+
         // key ring
         add(TreasureItems.KEY_RING.get(), "Key Ring");     
         
@@ -104,13 +105,15 @@ public class LanguageGen extends LanguageProvider {
         add(TreasureItems.TREASURE_TOOL.get(), "Treasure Tool");
         add(TreasureItems.POUCH.get(), "Pouch");
         add(TreasureBlocks.SPANISH_MOSS.get(), "Spanish Moss");
-        add(TreasureBlocks.WISHING_WELL.get(), "Wishing Well Stone");
+        add(TreasureBlocks.WISHING_WELL.get(), "Wishing Well Mossy Cobblestone");
         add(TreasureBlocks.WISHING_WELL_COBBLESTONE.get(), "Wishing Well Cobblestone");
+        add(TreasureBlocks.WISHING_WELL_MOSSY_COBBLESTONE.get(), "Wishing Well Mossy Cobblestone");
         add(TreasureBlocks.WISHING_WELL_STONE_BRICKS.get(), "Wishing Well Stone Bricks");
         add(TreasureBlocks.WISHING_WELL_MOSSY_STONE_BRICKS.get(), "Wishing Well Mossy Stone Bricks");
         add(TreasureBlocks.DESERT_WISHING_WELL.get(), "Desert Wishing Well Stone");
         add(TreasureItems.EYE_PATCH.get(), "Eye Patch");
         add(TreasureItems.CLOVER.get(), "Four Leaf Clover");
+        add(TreasureItems.STRUCTURE_MOB_SET.get(), "Structure Mob Set");
         
         // swords
         add(TreasureItems.COPPER_SHORT_SWORD.get(), "Copper Short Sword");
@@ -178,13 +181,14 @@ public class LanguageGen extends LanguageProvider {
         add(TreasureBlocks.VANILLA_CHEST.get(), "Treasure Chest");
         add(TreasureBlocks.WITHER_CHEST.get(), "Wither Chest");
         add(TreasureBlocks.WITHER_CHEST_TOP.get(), "Wither Chest");
-
+        add(TreasureBlocks.BONE_CHEST.get(), "Bone Chest");
+        add(TreasureBlocks.CELESTIAL_CHEST.get(), "Celestial Chest");
+        add(TreasureBlocks.INFERNAL_CHEST.get(), "Infernal Chest");
         // legacy wither
         add(TreasureBlocks.WITHER_BRANCH.get(), "Witherwood Branch");
         add(TreasureBlocks.WITHER_ROOT.get(), "Witherwood Root");
         add(TreasureBlocks.WITHER_LOG.get(), "Witherwood Log");
         add(TreasureBlocks.WITHER_BROKEN_LOG.get(), "Witherwood Broken Log");
-        add(TreasureBlocks.WITHER_SOUL_LOG.get(), "Witherwood Soul Log");
         add(TreasureBlocks.WITHER_PLANKS.get(), "Witherwood Planks");
 
         // current wither
@@ -193,7 +197,6 @@ public class LanguageGen extends LanguageProvider {
 
         add(TreasureBlocks.WITHERWOOD_LOG.get(), "Witherwood Log");
         add(TreasureBlocks.WITHERWOOD_BROKEN_LOG.get(), "Witherwood Broken Log");
-        add(TreasureBlocks.WITHERWOOD_SOUL_LOG.get(), "Witherwood Soul Log");
         add(TreasureBlocks.WITHERWOOD_PLANKS.get(), "Witherwood Planks");
         add(TreasureBlocks.WITHERWOOD_SLAB.get(), "Witherwood Slab");
         add(TreasureBlocks.WITHERWOOD_STAIRS.get(), "Witherwood Stairs");
@@ -292,7 +295,7 @@ public class LanguageGen extends LanguageProvider {
         add(LangUtil.tooltip("treasure_tool"), "Required for most Treasure2 recipes");
         add(LangUtil.tooltip("pouch"), "Holds small valuables - coins, gems, charms, etc.");
         add(LangUtil.tooltip("wishable"), "Can be thrown into Wishing Wells for loot");
-        add(LangUtil.tooltip("clover"), "Can use on certain blocks, like Mossy Cobblestone, to transform them into Wishing Well blocks.~All adjacent block with in a 4 block radius will be transformed.");
+        add(LangUtil.tooltip("clover"), "Can use on certain blocks, like Mossy Cobblestone, to transform them into Wishing Well blocks.~All adjacent block within a 4 block radius will be transformed.");
 
         // keys and locks
         add(LangUtil.tooltip("key_lock.rarity"), "Rarity: %s");
@@ -313,6 +316,7 @@ public class LanguageGen extends LanguageProvider {
         add(LangUtil.tooltip("key_lock.one_key.specials"), "Opens ALL locks");
         add(LangUtil.tooltip("key_lock.one_key.lore"), "One Key to rule them all.");
         add(LangUtil.tooltip("key_lock.key_ring"), "Container for keys");
+        add(LangUtil.tooltip("key_lock.bone_key.specials"), "Opens Bone Chests.");
         
         // chests
         add(LangUtil.tooltip("chest.locked"), "Locked!");
@@ -385,14 +389,24 @@ public class LanguageGen extends LanguageProvider {
         add(LangUtil.screen("barrel_chest.name"), "Treasure Barrel");
         add(LangUtil.screen("vanilla_chest.name"), "Treasure Chest");
         add(LangUtil.screen("wither_chest.name"), "Wither Chest");
+        add(LangUtil.screen("bone_chest.name"), "Bone Chest");
+        add(LangUtil.screen("celestial_chest.name"), "Celestial Chest");
+        add(LangUtil.screen("infernal_chest.name"), "Infernal Chest");
 
+        add(LangUtil.screen("treasure_map.common"), "Common Treasure Map");
         add(LangUtil.screen("treasure_map.uncommon"), "Uncommon Treasure Map");
         add(LangUtil.screen("treasure_map.scarce"), "Scarce Treasure Map");
         add(LangUtil.screen("treasure_map.rare"), "Rare Treasure Map");
         add(LangUtil.screen("treasure_map.epic"), "Epic Treasure Map");
         add(LangUtil.screen("treasure_map.legendary"), "Legendary Treasure Map");
         add(LangUtil.screen("treasure_map.mythical"), "Mythical Treasure Map");
-        
+        add(LangUtil.screen("treasure_map.skull"), "Scarce Treasure Map");
+        add(LangUtil.screen("treasure_map.gold_skull"), "Rare Treasure Map");
+        add(LangUtil.screen("treasure_map.crystal_skull"), "Epic Treasure Map");
+        add(LangUtil.screen("treasure_map.bone"), "Scarce Treasure Map");
+        add(LangUtil.screen("treasure_map.cauldron"), "Epic Treasure Map");
+        add(LangUtil.screen("treasure_map.wither"), "Scarce Treasure Map");
+
         /*
          *  chat
          */

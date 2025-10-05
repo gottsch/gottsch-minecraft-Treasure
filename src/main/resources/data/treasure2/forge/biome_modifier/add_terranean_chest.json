@@ -1,6 +1,0 @@
-{
-  "type" : "forge:add_features",
-  "biomes" : "#treasure2:all_overworld",
-  "features" : "treasure2:terranean_chest_placed",
-  "step" : "top_layer_modification"
-}

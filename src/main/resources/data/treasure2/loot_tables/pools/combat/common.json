@@ -1,5 +1,4 @@
 {
-  "version" : "1.0",
   "type" : "minecraft:chest",
   "pools" : [ {
     "name" : "common_armor",

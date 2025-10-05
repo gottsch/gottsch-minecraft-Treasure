@@ -1,8 +1,4 @@
 {
-  "version" : "1.0.0",
-  "since" : "mc1.18.2-v.3.0.0",
-  "category" : "general",
-  "rarity" : "scarce",
   "type" : "minecraft:chest",
   "pools" : [ {
     "name" : "treasure",

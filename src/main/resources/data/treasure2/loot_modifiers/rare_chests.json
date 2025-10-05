@@ -18,7 +18,7 @@
       "loot_table_id" : "minecraft:pillager_outpost"
     }, {
       "condition" : "forge:loot_table_id",
-      "loot_table_id" : "minecraft:simple_dungeon"
+      "loot_table_id" : "minecraft:chests/simple_dungeon"
     }
     , {
       "condition" : "forge:loot_table_id",
@@ -26,7 +26,7 @@
     } ]
   } ],
   "count" : 2,
-  "rarity" : "rare",
+  "rarity" : "treasure2:rare",
   "chance" : 0.2,
   "type" : "treasure2:default"
 }

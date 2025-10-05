@@ -1,0 +1,16 @@
+{
+  "type": "treasure2:bone_chest",
+  "rarity": "treasure2:bone",
+  "mimic": 0.0,
+  "loot_table_rarities": [
+    {
+      "rarity": "treasure2:epic",
+      "weight": 30
+    },
+    {
+      "rarity": "treasure2:legendary",
+      "weight": 70
+    }
+  ],
+  "lock_rarities": ["treasure2:bone"]
+}

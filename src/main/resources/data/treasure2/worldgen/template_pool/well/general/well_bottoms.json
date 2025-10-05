@@ -1,0 +1,24 @@
+{
+  "name": "treasure2:well/general/wells_bottoms",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:well/general/well_bottom_1",
+        "projection": "rigid",
+        "processors": "treasure2:wells_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:well/general/medium_well_bottom_1",
+        "projection": "rigid",
+        "processors": "treasure2:wells_processors"
+      }
+    }
+  ]
+}

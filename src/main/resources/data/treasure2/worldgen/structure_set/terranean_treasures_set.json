@@ -1,0 +1,34 @@
+{
+  "structures": [
+    {
+      "structure": "treasure2:surface/general",
+      "weight": 15
+    },
+    {
+      "structure": "treasure2:surface/temperate",
+      "weight": 5
+    },
+    {
+      "structure": "treasure2:ruins/ruins",
+      "weight": 20
+    },
+    {
+      "structure": "treasure2:ruins/desert/ruins",
+      "weight": 20
+    },
+    {
+      "structure": "treasure2:dungeon/general",
+      "weight": 60
+    },
+    {
+      "structure": "treasure2:wither_tree/wither_tree",
+      "weight": 4
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 25,
+    "separation": 15,
+    "salt": 2345678
+  }
+}

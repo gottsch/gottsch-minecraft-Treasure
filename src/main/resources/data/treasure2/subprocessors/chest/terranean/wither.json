@@ -1,0 +1,7 @@
+{
+  "type": "treasure2:wither_chest",
+  "rarity": "treasure2:wither",
+  "mimic": 0.0,
+  "loot_tables": ["treasure2:chests/wither/wither_chest"],
+  "lock_rarities": ["treasure2:wither"]
+}

@@ -1,0 +1,11 @@
+{
+  "type": "treasure2:legendary_chest",
+  "rarity": "treasure2:legendary",
+  "mimic": 0.4,
+  "loot_table_rarities": [
+    {
+      "rarity": "treasure2:legendary"
+    }
+  ],
+  "lock_rarities": ["treasure2:epic"]
+}

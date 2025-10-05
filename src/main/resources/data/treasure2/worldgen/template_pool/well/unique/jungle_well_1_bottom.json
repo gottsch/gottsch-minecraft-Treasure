@@ -1,0 +1,15 @@
+{
+  "name": "treasure2:well/unique/jungle_well_1_bottom",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:well/unique/jungle_well_1_bottom",
+        "projection": "rigid",
+        "processors": "treasure2:wells_processors"
+      }
+    }
+  ]
+}

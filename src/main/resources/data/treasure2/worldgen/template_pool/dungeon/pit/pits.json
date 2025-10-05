@@ -1,0 +1,212 @@
+{
+  "name": "treasure2:dungeon/pit/pits",
+  "fallback": "treasure2:dungeon/pit/pit_ends",
+  "elements": [
+    {
+      "weight": 5,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:dungeon/pit/pit_1",
+        "projection": "rigid",
+        "processors": "treasure2:pit_processors"
+      }
+    },
+    {
+      "weight": 5,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:dungeon/pit/pit_2",
+        "projection": "rigid",
+        "processors": "treasure2:pit_processors"
+      }
+    },    {
+      "weight": 5,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:dungeon/pit/pit_3",
+        "projection": "rigid",
+        "processors": "treasure2:pit_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:dungeon/pit/dynamite_trap_pit_1",
+        "projection": "rigid",
+        "processors": "treasure2:pit_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:dungeon/pit/dynamite_trap_pit_2",
+        "projection": "rigid",
+        "processors": "treasure2:pit_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:dungeon/pit/fall_trap_pit_1",
+        "projection": "rigid",
+        "processors": "treasure2:pit_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:dungeon/pit/lava_trap_pit_1",
+        "projection": "rigid",
+        "processors": "treasure2:pit_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:dungeon/pit/water_trap_pit_1",
+        "projection": "rigid",
+        "processors": "treasure2:pit_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:dungeon/pit/fall_trap_pit_1",
+        "projection": "rigid",
+        "processors": "treasure2:pit_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:dungeon/pit/volcano_trap_pit_1",
+        "projection": "rigid",
+        "processors": "treasure2:pit_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:dungeon/pit/room/end/basic_2",
+        "projection": "rigid",
+        "processors": "treasure2:dungeon_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:dungeon/pit/room/end/basic_3",
+        "projection": "rigid",
+        "processors": "treasure2:dungeon_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:dungeon/pit/room/end/basic_4",
+        "projection": "rigid",
+        "processors": "treasure2:dungeon_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:dungeon/pit/room/end/basic_5",
+        "projection": "rigid",
+        "processors": "treasure2:dungeon_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:dungeon/pit/room/end/cave_1",
+        "projection": "rigid",
+        "processors": "treasure2:dungeon_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:dungeon/pit/room/end/cave_2",
+        "projection": "rigid",
+        "processors": "treasure2:dungeon_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:dungeon/pit/room/end/cobblestone_1",
+        "projection": "rigid",
+        "processors": "treasure2:dungeon_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:dungeon/pit/room/end/ionic_1",
+        "projection": "rigid",
+        "processors": "treasure2:dungeon_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:dungeon/pit/room/end/mine_1",
+        "projection": "rigid",
+        "processors": "treasure2:dungeon_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:dungeon/pit/room/end/room_1",
+        "projection": "rigid",
+        "processors": "treasure2:dungeon_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:dungeon/pit/room/end/room_2",
+        "projection": "rigid",
+        "processors": "treasure2:dungeon_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:dungeon/pit/room/end/room_3",
+        "projection": "rigid",
+        "processors": "treasure2:dungeon_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:dungeon/pit/room/end/room_4",
+        "projection": "rigid",
+        "processors": "treasure2:dungeon_processors"
+      }
+    }
+  ]
+}

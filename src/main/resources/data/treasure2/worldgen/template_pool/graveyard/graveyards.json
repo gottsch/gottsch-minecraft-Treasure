@@ -1,0 +1,30 @@
+{
+  "name": "treasure2:graveyard/graveyards",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 2,
+      "element": {
+        "element_type": "minecraft:empty_pool_element"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:graveyard/3x3_graveyard",
+        "projection": "rigid",
+        "processors": "treasure2:graveyard_processors"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "treasure2:graveyard/5x5_graveyard",
+        "projection": "rigid",
+        "processors": "treasure2:graveyard_processors"
+      }
+    }
+  ]
+}

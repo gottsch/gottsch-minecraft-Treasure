@@ -1,3 +1,18 @@
+/*
+ * This file is part of Treasure2.
+ * Copyright (c) 2025 Mark Gottschling (gottsch)
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the Open Software Licence 3.0.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * Open Software Licence 3.0 for more details.
+ *
+ * You should have received a copy of the Open Software Licence
+ * along with Treasure2. If not, see <https://www.tldrlegal.com/license/open-software-licence-3-0>.
+ */
 package mod.gottsch.forge.treasure2.client.model.blockentity;
 
 import java.util.function.Function;
@@ -22,13 +37,21 @@ public abstract class AbstractTreasureChestModel extends Model implements ITreas
 	public AbstractTreasureChestModel(ModelPart root) {
 		super(RenderType::entitySolid);
 	}
-	
-	// TODO this is moot right now and does nothing
-	@Override
-	public final RenderType getChestRenderType(ResourceLocation location) {
-		return super.renderType(location);
+
+	public AbstractTreasureChestModel(ModelPart root, Function<ResourceLocation, RenderType> renderType) {
+		super(renderType);
 	}
-	
+
+	public Function<ResourceLocation, RenderType> getRenderType() {
+		return this.renderType;
+	}
+
+	// TODO this is moot right now and does nothing
+//	@Override
+//	public final RenderType getChestRenderType(ResourceLocation location) {
+//		return super.renderType(location);
+//	}
+//
 	public final Function<ResourceLocation, RenderType> getChestRenderType() {
 		return super.renderType;
 	}

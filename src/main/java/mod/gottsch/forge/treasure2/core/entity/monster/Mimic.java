@@ -1,19 +1,17 @@
 /*
- * This file is part of  Treasure2.
- * Copyright (c) 2023 Mark Gottschling (gottsch)
+ * This file is part of Treasure2.
+ * Copyright (c) 2025 Mark Gottschling (gottsch)
  *
  * Treasure2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * it under the terms of the Open Software Licence 3.0.
  *
  * Treasure2 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * Open Software Licence 3.0 for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * You should have received a copy of the Open Software Licence
+ * along with Treasure2. If not, see <https://www.tldrlegal.com/license/open-software-licence-3-0>.
  */
 package mod.gottsch.forge.treasure2.core.entity.monster;
 
@@ -50,9 +48,9 @@ import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
  *
  */
 public abstract class Mimic extends Monster {
-	private static final EntityDataAccessor<Boolean> ACTIVE = SynchedEntityData.defineId(PirateChestMimic.class, EntityDataSerializers.BOOLEAN);
-	private static final EntityDataAccessor<Float> DATA_AMOUNT = SynchedEntityData.defineId(PirateChestMimic.class, EntityDataSerializers.FLOAT);
-	private static final EntityDataAccessor<Boolean >TARGET = SynchedEntityData.defineId(PirateChestMimic.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Boolean> ACTIVE = SynchedEntityData.defineId(Mimic.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Float> DATA_AMOUNT = SynchedEntityData.defineId(Mimic.class, EntityDataSerializers.FLOAT);
+	private static final EntityDataAccessor<Boolean >TARGET = SynchedEntityData.defineId(Mimic.class, EntityDataSerializers.BOOLEAN);
 	
 	/*
 		MC 1.18.2: net/minecraft/world/entity/Mob.lootTable

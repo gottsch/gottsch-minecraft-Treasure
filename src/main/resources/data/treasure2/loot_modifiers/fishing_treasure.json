@@ -4,7 +4,7 @@
     "loot_table_id" : "minecraft:gameplay/fishing/treasure"
   } ],
   "count" : 1,
-  "rarity": "scarce",
+  "rarity": "treasure2:scarce",
   "chance": 0.10,
   "type" : "treasure2:default"
 }

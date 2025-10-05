@@ -1,3 +1,18 @@
+/*
+ * This file is part of Treasure2.
+ * Copyright (c) 2025 Mark Gottschling (gottsch)
+ *
+ * Treasure2 is free software: you can redistribute it and/or modify
+ * it under the terms of the Open Software Licence 3.0.
+ *
+ * Treasure2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * Open Software Licence 3.0 for more details.
+ *
+ * You should have received a copy of the Open Software Licence
+ * along with Treasure2. If not, see <https://www.tldrlegal.com/license/open-software-licence-3-0>.
+ */
 package mod.gottsch.forge.treasure2.datagen.loot;
 
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
@@ -26,8 +41,8 @@ public class TreasureBlockLootTables extends BlockLootSubProvider {
                 createSingleItemTable(TreasureItems.WITHERWOOD_LOG.get()));
         this.add(TreasureBlocks.WITHER_BROKEN_LOG.get(), block ->
                 createSingleItemTable(TreasureItems.WITHERWOOD_BROKEN_LOG.get()));
-        this.add(TreasureBlocks.WITHER_SOUL_LOG.get(), block ->
-                createSingleItemTable(TreasureItems.WITHERWOOD_LOG.get()));
+//        this.add(TreasureBlocks.WITHER_SOUL_LOG.get(), block ->
+//                createSingleItemTable(TreasureItems.WITHERWOOD_LOG.get()));
         this.add(TreasureBlocks.WITHER_PLANKS.get(), block ->
                 createSingleItemTable(TreasureItems.WITHERWOOD_PLANKS.get()));
         this.add(TreasureBlocks.WITHER_BRANCH.get(), block ->
@@ -49,8 +64,8 @@ public class TreasureBlockLootTables extends BlockLootSubProvider {
         this.add(TreasureBlocks.STRIPPED_WITHERWOOD_WOOD.get(), block ->
                 createSingleItemTable(TreasureItems.STRIPPED_WITHERWOOD_WOOD.get()));
 
-        this.add(TreasureBlocks.WITHERWOOD_SOUL_LOG.get(), block ->
-                createSingleItemTable(TreasureItems.WITHERWOOD_LOG.get()));
+//        this.add(TreasureBlocks.WITHERWOOD_SOUL_LOG.get(), block ->
+//                createSingleItemTable(TreasureItems.WITHERWOOD_LOG.get()));
 
         this.add(TreasureBlocks.WITHERWOOD_BRANCH.get(), block ->
                 createSingleItemTable(TreasureItems.WITHERWOOD_STICK.get()));
@@ -109,7 +124,7 @@ public class TreasureBlockLootTables extends BlockLootSubProvider {
                 TreasureBlocks.WITHERWOOD_SIGN.get(),
                 TreasureBlocks.WITHERWOOD_SLAB.get(),
                 TreasureBlocks.WITHERWOOD_STAIRS.get(),
-                TreasureBlocks.WITHERWOOD_SOUL_LOG.get(),
+//                TreasureBlocks.WITHERWOOD_SOUL_LOG.get(),
                 TreasureBlocks.WITHERWOOD_TRAPDOOR.get(),
                 TreasureBlocks.WITHERWOOD_WALL_SIGN.get(),
                 TreasureBlocks.WITHERWOOD_WALL_HANGING_SIGN.get(),
@@ -121,7 +136,7 @@ public class TreasureBlockLootTables extends BlockLootSubProvider {
                 // legacy wither
                 TreasureBlocks.WITHER_LOG.get(),
                 TreasureBlocks.WITHER_BROKEN_LOG.get(),
-                TreasureBlocks.WITHER_SOUL_LOG.get(),
+//                TreasureBlocks.WITHER_SOUL_LOG.get(),
                 TreasureBlocks.WITHER_PLANKS.get(),
                 TreasureBlocks.WITHER_ROOT.get(),
                 TreasureBlocks.WITHER_BRANCH.get()

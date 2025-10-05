@@ -1,0 +1,16 @@
+{
+  "type": "treasure2:high_tier_rarity",
+  "rarity": "treasure2:rare",
+  "mimic": 0.2,
+  "loot_table_rarities": [
+    {
+      "rarity": "treasure2:scarce",
+      "weight": 5
+    },
+    {
+      "rarity": "treasure2:rare",
+      "weight": 95
+    }
+  ],
+  "lock_rarities": ["treasure2:scarce", "treasure2:rare"]
+}

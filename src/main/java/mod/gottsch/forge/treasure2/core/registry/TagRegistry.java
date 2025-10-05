@@ -1,19 +1,17 @@
 /*
- * This file is part of  Treasure2.
- * Copyright (c) 2022 Mark Gottschling (gottsch)
+ * This file is part of Treasure2.
+ * Copyright (c) 2025 Mark Gottschling (gottsch)
  *
  * Treasure2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * it under the terms of the Open Software Licence 3.0.
  *
  * Treasure2 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * Open Software Licence 3.0 for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * You should have received a copy of the Open Software Licence
+ * along with Treasure2. If not, see <https://www.tldrlegal.com/license/open-software-licence-3-0>.
  */
 package mod.gottsch.forge.treasure2.core.registry;
 
@@ -90,11 +88,12 @@ public class TagRegistry {
 	public static void registerChests(IRarity rarity, TagKey<Block> chestTag) {
 		registerTags(rarity, Triple.of(null, null, chestTag));
 	}
-	
-	public static void registerWishable(IRarity rarity, TagKey<Item> wishableTag) {
-//		registerRarity(rarity);
-		registerWishableTag(rarity, wishableTag);
-	}
+
+//	@Deprecated
+//	public static void registerWishable(IRarity rarity, TagKey<Item> wishableTag) {
+////		registerRarity(rarity);
+//		registerWishableTag(rarity, wishableTag);
+//	}
 
 	public static void registerBiomeWhitelist(IRarity rarity, TagKey<Biome> tag) {
 		registerBiomeWhitelistTag(rarity, tag);
@@ -181,17 +180,19 @@ public class TagRegistry {
 	}
 
 	// TODO this should return optional
-	public static TagKey<Item> getWishableTag(IRarity rarity) {
-		if (WISHABLE_TAGS_REGISTRY.containsKey(rarity)) {
-			return WISHABLE_TAGS_REGISTRY.get(rarity);
-		}
-		return null;
-	}
-	
-	public static List<IRarity> getWishableKeys() {
-		Set<IRarity> keys = WISHABLE_TAGS_REGISTRY.keySet();
-		return new ArrayList<>(keys);
-	}
+//	@Deprecated
+//	public static TagKey<Item> getWishableTag(IRarity rarity) {
+//		if (WISHABLE_TAGS_REGISTRY.containsKey(rarity)) {
+//			return WISHABLE_TAGS_REGISTRY.get(rarity);
+//		}
+//		return null;
+//	}
+//
+//	@Deprecated
+//	public static List<IRarity> getWishableKeys() {
+//		Set<IRarity> keys = WISHABLE_TAGS_REGISTRY.keySet();
+//		return new ArrayList<>(keys);
+//	}
 
 	public static Optional<TagKey<Biome>> getBiomeWhitelistTag(IRarity rarity) {
 		if(BIOME_WHITELIST_TAGS_REGISTRY.containsKey(rarity)) {

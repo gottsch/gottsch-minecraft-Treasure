@@ -1,19 +1,17 @@
 /*
- * This file is part of  Treasure2.
- * Copyright (c) 2022 Mark Gottschling (gottsch)
+ * This file is part of Treasure2.
+ * Copyright (c) 2025 Mark Gottschling (gottsch)
  *
  * Treasure2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * it under the terms of the Open Software Licence 3.0.
  *
  * Treasure2 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * Open Software Licence 3.0 for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Treasure2.  If not, see <http://www.gnu.org/licenses/lgpl>.
+ * You should have received a copy of the Open Software Licence
+ * along with Treasure2. If not, see <https://www.tldrlegal.com/license/open-software-licence-3-0>.
  */
 package mod.gottsch.forge.treasure2.core.block;
 
@@ -24,8 +22,10 @@ import java.util.function.ToIntFunction;
 
 import mod.gottsch.forge.treasure2.core.block.entity.*;
 import mod.gottsch.forge.treasure2.core.block.state.properties.TreasureWoodTypes;
+import mod.gottsch.forge.treasure2.core.chest.ChestInventorySize;
 import mod.gottsch.forge.treasure2.core.lock.LockLayouts;
 import mod.gottsch.forge.treasure2.core.setup.Registration;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.flag.FeatureFlag;
 import net.minecraft.world.level.block.*;
@@ -77,25 +77,25 @@ public class TreasureBlocks {
 			LockLayouts.SAFE, Properties.of().mapColor(MapColor.METAL).strength(4.0F).lightLevel(light)).setBounds(TreasureShapeBuilder.buildSafe()));
 
 	public static final RegistryObject<Block> IRON_STRONGBOX = Registration.BLOCKS.register("iron_strongbox", () -> new StandardChestBlock(IronStrongboxBlockEntity.class,
-			LockLayouts.STRONGBOX, Properties.of().mapColor(MapColor.METAL).strength(4.0F).lightLevel(light)).setBounds(TreasureShapeBuilder.buildStrongbox()));
+			ChestInventorySize.STRONGBOX.getSize(), LockLayouts.STRONGBOX, Properties.of().mapColor(MapColor.METAL).strength(4.0F).lightLevel(light)).setBounds(TreasureShapeBuilder.buildStrongbox()));
 
 	public static final RegistryObject<Block> GOLD_STRONGBOX = Registration.BLOCKS.register("gold_strongbox", () -> new StandardChestBlock(GoldStrongboxBlockEntity.class,
-			LockLayouts.STRONGBOX, Properties.of().mapColor(MapColor.WOOD).strength(4.0F).lightLevel(light)).setBounds(TreasureShapeBuilder.buildStrongbox()));
+			ChestInventorySize.STRONGBOX.getSize(), LockLayouts.STRONGBOX, Properties.of().mapColor(MapColor.WOOD).strength(4.0F).lightLevel(light)).setBounds(TreasureShapeBuilder.buildStrongbox()));
 
 	public static final RegistryObject<Block> DREAD_PIRATE_CHEST = Registration.BLOCKS.register("dread_pirate_chest", () -> new StandardChestBlock(DreadPirateChestBlockEntity.class,
 			LockLayouts.STANDARD, Properties.of().mapColor(MapColor.WOOD).strength(4.0F).lightLevel(light)));
 
 	public static final RegistryObject<Block> COMPRESSOR_CHEST = Registration.BLOCKS.register("compressor_chest", () -> new StandardChestBlock(CompressorChestBlockEntity.class,
-			LockLayouts.COMPRESSOR, Properties.of().mapColor(MapColor.WOOD).strength(3.0F).lightLevel(light)).setBounds(TreasureShapeBuilder.buildCompressorChest()));
+			ChestInventorySize.COMPRESOR.getSize(), LockLayouts.COMPRESSOR, Properties.of().mapColor(MapColor.WOOD).strength(3.0F).lightLevel(light)).setBounds(TreasureShapeBuilder.buildCompressorChest()));
 
 	public static final RegistryObject<Block> SKULL_CHEST = Registration.BLOCKS.register("skull_chest", () -> new StandardChestBlock(SkullChestBlockEntity.class,
-			LockLayouts.SKULL, Properties.of().mapColor(MapColor.WOOD).strength(3.0F).lightLevel(light)).setBounds(TreasureShapeBuilder.buildSkull()));
+			ChestInventorySize.SKULL.getSize(), LockLayouts.SKULL, Properties.of().mapColor(MapColor.WOOD).strength(3.0F).lightLevel(light)).setBounds(TreasureShapeBuilder.buildSkull()));
 
 	public static final RegistryObject<Block> GOLD_SKULL_CHEST = Registration.BLOCKS.register("gold_skull_chest", () -> new StandardChestBlock(GoldSkullChestBlockEntity.class,
-			LockLayouts.SKULL, Properties.of().mapColor(MapColor.WOOD).strength(3.0F).lightLevel(light)).setBounds(TreasureShapeBuilder.buildSkull()));
+			ChestInventorySize.SKULL.getSize(), LockLayouts.SKULL, Properties.of().mapColor(MapColor.WOOD).strength(3.0F).lightLevel(light)).setBounds(TreasureShapeBuilder.buildSkull()));
 
 	public static final RegistryObject<Block> CRYSTAL_SKULL_CHEST = Registration.BLOCKS.register("crystal_skull_chest", () -> new StandardChestBlock(CrystalSkullChestBlockEntity.class,
-			LockLayouts.SKULL, Properties.of().mapColor(MapColor.WOOD).strength(3.0F).lightLevel(light)).setBounds(TreasureShapeBuilder.buildSkull()));
+			ChestInventorySize.SKULL.getSize(), LockLayouts.SKULL, Properties.of().mapColor(MapColor.WOOD).strength(3.0F).lightLevel(light)).setBounds(TreasureShapeBuilder.buildSkull()));
 
 	public static final RegistryObject<Block> CAULDRON_CHEST = Registration.BLOCKS.register("cauldron_chest", () -> new StandardChestBlock(CauldronChestBlockEntity.class,
 			LockLayouts.TOP_SPLIT, Properties.of().mapColor(MapColor.METAL).strength(3.0F).lightLevel(light)).setBounds(TreasureShapeBuilder.buildCauldronChest()));
@@ -122,6 +122,15 @@ public class TreasureBlocks {
 			LockLayouts.ARMOIRE, Properties.of().mapColor(MapColor.WOOD).strength(2.5F).lightLevel(light)));
 
 	public static final RegistryObject<Block> WITHER_CHEST_TOP = Registration.BLOCKS.register("wither_chest_top", () -> new WitherChestTopBlock(Properties.of().mapColor(MapColor.WOOD).strength(2.5F).noLootTable()));
+
+	public static final RegistryObject<Block> BONE_CHEST = Registration.BLOCKS.register("bone_chest", () -> new BoneChestBlock(BoneChestBlockEntity.class,
+			LockLayouts.SINGLE_STANDARD, Properties.of().mapColor(MapColor.WOOD).strength(2.5F).lightLevel(light)));
+
+	public static final RegistryObject<Block> CELESTIAL_CHEST = Registration.BLOCKS.register("celestial_chest", () -> new StandardChestBlock(CelestialChestBlockEntity.class,
+			LockLayouts.CELESTIAL, Properties.of().mapColor(MapColor.METAL).strength(2.5F).lightLevel(light)).setBounds(TreasureShapeBuilder.buildCelestialChest()));
+
+	public static final RegistryObject<Block> INFERNAL_CHEST = Registration.BLOCKS.register("infernal_chest", () -> new StandardChestBlock(InfernalChestBlockEntity.class,
+			LockLayouts.CELESTIAL, Properties.of().mapColor(MapColor.METAL).strength(2.5F).lightLevel(light)).setBounds(TreasureShapeBuilder.buildCelestialChest()));
 
 	// ore
 	public static final Supplier<Properties> ORE_PROPS = () -> Properties.of().mapColor(MapColor.STONE).strength(3.0F, 5.0F);
@@ -183,7 +192,8 @@ public class TreasureBlocks {
 	public static final RegistryObject<Block> SKULL_CROSSBONES = Registration.BLOCKS.register("skull_and_crossbones", () -> new GravestoneBlock(Block.Properties.of().mapColor(MapColor.STONE)
 			.strength(3.0F).sound(SoundType.STONE)).setBounds(TreasureShapeBuilder.buildSkullCrossbones()));
 
-	public static final RegistryObject<Block> SKELETON = Registration.BLOCKS.register("skeleton", () -> new SkeletonBlock(Block.Properties.of().mapColor(MapColor.STONE).strength(3.0F).sound(SoundType.STONE)));
+	public static final RegistryObject<Block> SKELETON = Registration.BLOCKS.register("skeleton", () -> new SkeletonBlock(Block.Properties.of().mapColor(MapColor.STONE)
+			.strength(3.0F).sound(SoundType.STONE)));
 
 	// proximity spawners
 	public static final RegistryObject<Block> PROXIMITY_SPAWNER = Registration.BLOCKS.register("proximity_spawner", () -> new ProximityBlock(Block.Properties.of().replaceable().noCollission().noLootTable().air()));
@@ -198,16 +208,16 @@ public class TreasureBlocks {
 	public static final RegistryObject<Block> GRAVESTONE3_SPAWNER_OBSIDIAN = Registration.BLOCKS.register("gravestone3_spawner_obsidian", () -> new GravestoneSpawnerBlock(Block.Properties.of().mapColor(MapColor.STONE)
 			.strength(3.0F).sound(SoundType.STONE)).setBounds(TreasureShapeBuilder.buildGravestone3()));
 
-	public static final RegistryObject<Block> DEFERRED_RANDOM_VANILLA_SPAWNER = Registration.BLOCKS.register("deferred_random_vanilla_spawner", () -> new DeferredRandomVanillaSpawnerBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE)
-			.strength(3.0F).sound(SoundType.STONE)));
-	public static final RegistryObject<Block> DEFERRED_WITHER_TREE_GENERATOR = Registration.BLOCKS.register("deferred_wither_tree_generator", () -> new DeferredGeneratorBlock(DeferredWitherTreeGeneratorBlockEntity.class, BlockBehaviour.Properties.of().mapColor(MapColor.STONE)
-			.strength(3.0F).sound(SoundType.STONE)));
-	public static final RegistryObject<Block> DEFERRED_SURFACE_GENERATOR = Registration.BLOCKS.register("deferred_surface_generator", () -> new DeferredGeneratorBlock(DeferredSurfaceGeneratorBlockEntity.class, BlockBehaviour.Properties.of().mapColor(MapColor.STONE)
-			.strength(3.0F).sound(SoundType.STONE)));
-	public static final RegistryObject<Block> DEFERRED_SUBAQUATIC_GENERATOR = Registration.BLOCKS.register("deferred_subaquatic_generator", () -> new DeferredGeneratorBlock(DeferredSubaquaticGeneratorBlockEntity.class, BlockBehaviour.Properties.of().mapColor(MapColor.STONE)
-			.strength(3.0F).sound(SoundType.STONE)));
-	public static final RegistryObject<Block> DEFERRED_PIT_GENERATOR = Registration.BLOCKS.register("deferred_pit_generator", () -> new DeferredGeneratorBlock(DeferredPitGeneratorBlockEntity.class, BlockBehaviour.Properties.of().mapColor(MapColor.STONE)
-			.strength(3.0F).sound(SoundType.STONE)));
+//	public static final RegistryObject<Block> DEFERRED_RANDOM_VANILLA_SPAWNER = Registration.BLOCKS.register("deferred_random_vanilla_spawner", () -> new DeferredRandomVanillaSpawnerBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE)
+//			.strength(3.0F).sound(SoundType.STONE)));
+//	public static final RegistryObject<Block> DEFERRED_WITHER_TREE_GENERATOR = Registration.BLOCKS.register("deferred_wither_tree_generator", () -> new DeferredGeneratorBlock(DeferredWitherTreeGeneratorBlockEntity.class, BlockBehaviour.Properties.of().mapColor(MapColor.STONE)
+//			.strength(3.0F).sound(SoundType.STONE)));
+//	public static final RegistryObject<Block> DEFERRED_SURFACE_GENERATOR = Registration.BLOCKS.register("deferred_surface_generator", () -> new DeferredGeneratorBlock(DeferredSurfaceGeneratorBlockEntity.class, BlockBehaviour.Properties.of().mapColor(MapColor.STONE)
+//			.strength(3.0F).sound(SoundType.STONE)));
+//	public static final RegistryObject<Block> DEFERRED_SUBAQUATIC_GENERATOR = Registration.BLOCKS.register("deferred_subaquatic_generator", () -> new DeferredGeneratorBlock(DeferredSubaquaticGeneratorBlockEntity.class, BlockBehaviour.Properties.of().mapColor(MapColor.STONE)
+//			.strength(3.0F).sound(SoundType.STONE)));
+//	public static final RegistryObject<Block> DEFERRED_PIT_GENERATOR = Registration.BLOCKS.register("deferred_pit_generator", () -> new DeferredGeneratorBlock(DeferredPitGeneratorBlockEntity.class, BlockBehaviour.Properties.of().mapColor(MapColor.STONE)
+//			.strength(3.0F).sound(SoundType.STONE)));
 
 	// falling blocks
 	public static final RegistryObject<Block> FALLING_GRASS = Registration.BLOCKS.register("falling_grass", () -> new FallingGrassBlock(Properties.of().mapColor(MapColor.DIRT)
@@ -222,14 +232,14 @@ public class TreasureBlocks {
 	// legacy
 	public static final RegistryObject<Block> WITHER_LOG = Registration.BLOCKS.register("wither_log", () -> witherwoodLog(MapColor.WOOD, MapColor.PODZOL));
 	public static final RegistryObject<Block> WITHER_BROKEN_LOG = Registration.BLOCKS.register("wither_broken_log", () -> log(MapColor.WOOD, MapColor.PODZOL));
-	public static final RegistryObject<Block> WITHER_SOUL_LOG = Registration.BLOCKS.register("wither_soul_log", () -> new WitherSoulLog(Properties.of().mapColor(MapColor.WOOD)));
+//	public static final RegistryObject<Block> WITHER_SOUL_LOG = Registration.BLOCKS.register("wither_soul_log", () -> new WitherSoulLog(Properties.of().mapColor(MapColor.WOOD)));
 	public static final RegistryObject<Block> WITHER_BRANCH = Registration.BLOCKS.register("wither_branch", () -> new WitherBranchBlock(Properties.of().mapColor(MapColor.WOOD)));
 	public static final RegistryObject<Block> WITHER_ROOT = Registration.BLOCKS.register("wither_root", () -> new WitherRootBlock(Properties.of().mapColor(MapColor.WOOD)));
 	public static final RegistryObject<Block> WITHER_PLANKS = Registration.BLOCKS.register("wither_planks", () -> new WitherPlanksBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
 
 	// current
 	public static final RegistryObject<Block> WITHERWOOD_BROKEN_LOG = Registration.BLOCKS.register("witherwood_broken_log", () -> new WitherBrokenLogBlock(Properties.of().mapColor(MapColor.WOOD)));
-	public static final RegistryObject<Block> WITHERWOOD_SOUL_LOG = Registration.BLOCKS.register("witherwood_soul_log", () -> new WitherSoulLog(Properties.of().mapColor(MapColor.WOOD)));
+//	public static final RegistryObject<Block> WITHERWOOD_SOUL_LOG = Registration.BLOCKS.register("witherwood_soul_log", () -> new WitherSoulLog(Properties.of().mapColor(MapColor.WOOD)));
 	public static final RegistryObject<Block> WITHERWOOD_BRANCH = Registration.BLOCKS.register("witherwood_branch", () -> new WitherBranchBlock(Properties.of().mapColor(MapColor.WOOD)));
 	public static final RegistryObject<Block> WITHERWOOD_ROOT = Registration.BLOCKS.register("witherwood_root", () -> new WitherRootBlock(Properties.of().mapColor(MapColor.WOOD)));
 	public static final RegistryObject<Block> WITHERWOOD_TWIG = Registration.BLOCKS.register("witherwood_twig", () -> new WitherTwigBlock(Properties.of()));
@@ -262,8 +272,13 @@ public class TreasureBlocks {
 	public static final RegistryObject<Block> SPANISH_MOSS = Registration.BLOCKS.register("spanish_moss", () -> new SpanishMossBlock(Properties.of().mapColor(MapColor.WOOD)));
 	public static final RegistryObject<Block> WISHING_WELL = Registration.BLOCKS.register("wishing_well_block", () -> new WishingWellBlock(
 			Properties.of().mapColor(MapColor.STONE).strength(2.0F).sound(SoundType.STONE)));
+
+	// TODO add wishing_well_cobblestone to replace wishing_well_block (but keep it for legacy)
 	public static final RegistryObject<Block> WISHING_WELL_COBBLESTONE = Registration.BLOCKS.register("wishing_well_cobblestone_block", () -> new WishingWellBlock(
 			Properties.of().mapColor(MapColor.STONE).strength(2.0F).sound(SoundType.STONE)));
+	public static final RegistryObject<Block> WISHING_WELL_MOSSY_COBBLESTONE = Registration.BLOCKS.register("wishing_well_mossy_cobblestone_block", () -> new WishingWellBlock(
+			Properties.of().mapColor(MapColor.STONE).strength(2.0F).sound(SoundType.STONE)));
+
 	public static final RegistryObject<Block> WISHING_WELL_STONE_BRICKS = Registration.BLOCKS.register("wishing_well_stone_bricks_block", () -> new WishingWellBlock(
 			Properties.of().mapColor(MapColor.STONE).strength(2.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> WISHING_WELL_MOSSY_STONE_BRICKS = Registration.BLOCKS.register("wishing_well_mossy_stone_bricks_block", () -> new WishingWellBlock(
@@ -273,6 +288,9 @@ public class TreasureBlocks {
 			Properties.of().mapColor(MapColor.STONE).strength(2.0F).sound(SoundType.STONE)));
 
 	public static final RegistryObject<Block> CLOVER = Registration.BLOCKS.register("clover_block", () -> new Block(Properties.copy(Blocks.TALL_GRASS)));
+
+	public static final RegistryObject<Block> STRUCTURE_MOB_SET = Registration.BLOCKS.register("structure_mob_set", () -> new StructureMobSetBlock(Block.Properties.of().noLootTable()));
+	public static final RegistryObject<Block> STRUCTURE_NEIGHBOR_DEPENDENT_STATE_MARKER = Registration.BLOCKS.register("structure_neighbor_dependent_state_marker", () -> new StructureNeighborDependentStateMarkerBlock(Block.Properties.of().replaceable().noCollission().noLootTable().air()));
 
 	// collections
 	public static final List<RegistryObject<Block>> CHESTS = new ArrayList<>(25);
@@ -301,6 +319,9 @@ public class TreasureBlocks {
 		CHESTS.add(WITHER_CHEST);
 		CHESTS.add(BARREL_CHEST);
 		CHESTS.add(VANILLA_CHEST);
+		CHESTS.add(BONE_CHEST);
+		CHESTS.add(CELESTIAL_CHEST);
+		CHESTS.add(INFERNAL_CHEST);
 
 		GRAVESTONES.add(GRAVESTONE1_STONE);
 		GRAVESTONES.add(GRAVESTONE1_COBBLESTONE);

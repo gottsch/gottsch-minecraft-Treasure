@@ -1,0 +1,5 @@
+{
+  "rarity": "treasure2:scarce",
+  "loot_table": "treasure2:injects/chests/scarce",
+  "type": "treasure2:injects"
+}
