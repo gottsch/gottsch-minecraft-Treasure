@@ -15,13 +15,13 @@
  */
 package mod.gottsch.forge.treasure2.core.registry;
 
+import com.google.common.collect.Lists;
 import mod.gottsch.forge.treasure2.core.loot.ILootTableTypes;
 import mod.gottsch.forge.treasure2.core.loot.TreasureLootTableTypes;
 import mod.gottsch.forge.treasure2.core.rarity.IRarity;
 import mod.gottsch.forge.treasure2.core.rarity.RarityLootTableAssociation;
 import mod.gottsch.forge.treasure2.core.rarity.TreasureRarities;
 import net.minecraft.resources.ResourceLocation;
-import org.apache.commons.compress.utils.Lists;
 
 import java.util.List;
 import java.util.Optional;
