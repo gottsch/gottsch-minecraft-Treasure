@@ -15,9 +15,9 @@
  */
 package mod.gottsch.forge.treasure2.core.registry;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import mod.gottsch.forge.treasure2.core.rarity.RarityOrder;
-import org.apache.commons.compress.utils.Lists;
 
 import java.util.List;
 import java.util.Map;
