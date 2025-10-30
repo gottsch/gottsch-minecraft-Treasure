@@ -108,6 +108,8 @@ dependencies {
 //    implementation fg.deobf("curse.maven:gottschcore-272450:5852444")
     implementation fg.deobf("gottsch:gottschcore:1.20.1-2.5.1")
     implementation fg.deobf("curse.maven:jade-324717:5339264")
+    implementation fg.deobf("curse.maven:treasure2-twilight-forest-loot-pack-493871:5018989")
+    implementation fg.deobf("curse.maven:the-twilight-forest-227639:5468648")
 
 //    compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.20.1-84-FORGE:api")
 //    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.20.1-84-FORGE")

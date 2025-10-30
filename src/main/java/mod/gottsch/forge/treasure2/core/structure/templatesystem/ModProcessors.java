@@ -53,10 +53,6 @@ public class ModProcessors {
     public static final RegistryObject<StructureProcessorType<GravestoneProcessor>> GRAVESTONE_PROCESSOR =
             PROCESSOR_TYPES.register("gravestone_processor", () -> () -> GravestoneProcessor.CODEC);
 
-
-    public static final RegistryObject<StructureProcessorType<Dirt>> DIRT =
-            PROCESSOR_TYPES.register("dirt", () -> () -> Dirt.CODEC);
-
     public static void register(IEventBus eventBus) {
         PROCESSOR_TYPES.register(eventBus);
     }

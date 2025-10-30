@@ -23,6 +23,10 @@
     {
       "structure": "treasure2:wither_tree/wither_tree",
       "weight": 4
+    },
+    {
+      "structure": "treasure2:decay_test",
+      "weight": 512
     }
   ],
   "placement": {

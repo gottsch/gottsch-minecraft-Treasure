@@ -166,14 +166,21 @@ public class WishableHandler implements IWishableHandler {
      * @param lootContext
      */
     public void injectLoot(Level level, Random random, List<ItemStack> itemStacks, IRarity rarity, LootContext lootContext) {
-        List<ResourceLocation> injectLootTableNames = LootTableRegistry.getLootTableIds(TreasureLootTableTypes.WISHABLES.get(), rarity);
+//        List<ResourceLocation> injectLootTableNames = LootTableRegistry.getLootTableIds(TreasureLootTableTypes.WISHABLES.get(), rarity);
 
-        if (!injectLootTableNames.isEmpty()) {
-            Treasure.LOGGER.debug("size of injectable tables -> {}", injectLootTableNames.size());
-            itemStacks.addAll(getInjectedLootItems(level, random, injectLootTableNames, lootContext, p -> {
-                return !p.getName().equalsIgnoreCase(TreasureLootGenerators.TREASURE_POOL);
-            }));
-        }
+        List<ResourceLocation> injectLootTableNames = LootTableRegistry.getLootTableIds(TreasureLootTableTypes.INJECTS.get(), rarity)
+                .stream()
+                .filter(s -> s.getPath().contains(TreasureLootTableTypes.WISHABLES.get().getName()))
+                .toList();
+
+        if (injectLootTableNames.isEmpty()) return;
+
+        // TODO update this like ChestGenerationHelper
+        Treasure.LOGGER.debug("size of injectable tables -> {}", injectLootTableNames.size());
+        itemStacks.addAll(getInjectedLootItems(level, random, injectLootTableNames, lootContext, p -> {
+            return !p.getName().equalsIgnoreCase(TreasureLootGenerators.TREASURE_POOL);
+        }));
+
     }
 
     public List<ItemStack> getInjectedLootItems(Level level, Random random, List<ResourceLocation> lootTableNames,

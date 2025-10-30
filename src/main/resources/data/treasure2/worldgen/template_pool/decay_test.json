@@ -1,14 +1,14 @@
 {
-  "name": "treasure2:dirt",
+  "name": "treasure2:decay_test",
   "fallback": "minecraft:empty",
   "elements": [
     {
       "weight": 1,
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "treasure2:dirt",
+        "location": "treasure2:plains_fountain_01",
         "projection": "rigid",
-        "processors": "treasure2:dirt"
+        "processors": "treasure2:ruins_processors"
       }
     }
   ]

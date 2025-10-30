@@ -1,0 +1,5 @@
+{
+  "rarity": "treasure2:common",
+  "loot_table": "treasure2:injects/wishables/common",
+  "type": "treasure2:injects"
+}
