@@ -1,0 +1,5 @@
+{
+  "rarity": "treasure2:uncommon",
+  "loot_table": "treasure2:injects/wishables/uncommon",
+  "type": "treasure2:injects"
+}
