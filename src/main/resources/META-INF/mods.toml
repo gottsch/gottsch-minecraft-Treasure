@@ -8,7 +8,7 @@ loaderVersion="${loader_version_range}"
 license="OSL-3.0"
 
 # A URL to refer people to when problems occur with this mod
-issueTrackerURL="https://github.com/gottsch/gottsch-minecraft-Treasure/issues" #optional
+issueTrackerURL="https://github.com/gottsch/gottsch-minecraft-neoforge-Treasure/issues" #optional
 
 # A list of mods - how many allowed here is determined by the individual mod loader
 [[mods]] #mandatory
@@ -23,7 +23,7 @@ version="${mod_version}" #mandatory
 displayName="Treasure2" #mandatory
 
 # A URL to query for updates for this mod. See the JSON update specification <here>
-updateJSONURL="https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/1.20.1-main/update.json" #optional
+updateJSONURL="https://raw.githubusercontent.com/gottsch/gottsch-minecraft-neoforge-Treasure/1.21.1-main/update.json" #optional
 
 # A URL for the "homepage" for this mod, displayed in the mod UI
 displayURL="https://www.curseforge.com/minecraft/mc-mods/treasure2" #optional
