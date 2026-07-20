@@ -1,11 +1,11 @@
 {
     "homepage": "https://minecraft.curseforge.com/projects/treasure2",
     "promos": {
-    "1.20.1-latest": "4.0.3",
-    "1.20.1-recommended": "4.0.3"
+    "1.20.1-latest": "4.0.4",
+    "1.20.1-recommended": "4.0.4"
   },
     "1.20.1": {
-      "4.0.3": "See https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/1.20.1-main/CHANGELOG.md"
+      "4.0.4": "See https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/1.20.1-main/CHANGELOG.md"
     }
 }
 

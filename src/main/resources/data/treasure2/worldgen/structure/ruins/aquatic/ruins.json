@@ -12,6 +12,6 @@
   "step": "surface_structures",
   "terrain_adaptation": "beard_thin",
   "use_expansion_hack": true,
-  "feature_type": "terranean",
+  "feature_type": "aquatic",
   "probability": 0.9
 }

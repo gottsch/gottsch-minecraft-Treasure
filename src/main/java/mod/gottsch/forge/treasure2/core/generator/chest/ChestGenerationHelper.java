@@ -93,14 +93,23 @@ public class ChestGenerationHelper {
      * @param rarity      the rarity of the chest.
      * @param player      the player context, can be null.
      */
-    public static void fillChest(final ServerLevel level, RandomSource random, final BlockEntity blockEntity, final IRarity rarity, Player player) {
+    public static void fillChest(final ServerLevel level, RandomSource random, final BlockEntity blockEntity, IRarity rarity, Player player) {
         if (!(blockEntity instanceof AbstractTreasureChestBlockEntity chestBlockEntity)) {
             return;
         }
 
+        // guard against a missing generation context (e.g. sealed with no rarity ever recorded) so
+        // loot generation degrades to a sane default instead of NPE-ing partway through and leaving
+        // the chest permanently empty.
+        if (rarity == null) {
+            Treasure.LOGGER.warn("chest at -> {} has no loot rarity recorded, defaulting to common", chestBlockEntity.getBlockPos());
+            rarity = TreasureRarities.COMMON.get();
+        }
+        final IRarity finalRarity = rarity;
+
         chestBlockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(itemHandler -> {
             // 1. select a loot table for the chest
-            Optional<ResourceLocation> lootTableIdOpt = selectLootTable(chestBlockEntity, random, rarity);
+            Optional<ResourceLocation> lootTableIdOpt = selectLootTable(chestBlockEntity, random, finalRarity);
             if (lootTableIdOpt.isEmpty()) {
                 Treasure.LOGGER.warn("could not determine a loot table for chest at -> {}", chestBlockEntity.getBlockPos());
                 return;
@@ -125,14 +134,14 @@ public class ChestGenerationHelper {
             int originalFillerSize = fillerStacks.size();
 
             // 4. inject loot from other registered tables
-            addInjectedLoot(level, rarity, lootContext, treasureStacks, fillerStacks);
-            Treasure.LOGGER.debug("total treasure items: {}, injected items: {}", treasureStacks.size(), fillerStacks.size());
+            addInjectedLoot(level, finalRarity, lootContext, treasureStacks, fillerStacks);
+            Treasure.LOGGER.debug("total treasure items: {}, fill items: {}", treasureStacks.size(), fillerStacks.size());
 
             // 5. add a treasure map to the inventory
             // TODO should only add a treasure map to core OR have to get the order set ie core, speciality, etc.
             // TODO orders should be housed in TreasureRarities
             // TODO if an ordering cannot be found then don't add a map
-            addTreasureMap(level, random, (ItemStackHandler) itemHandler, Coords.of(chestBlockEntity.getBlockPos()), rarity);
+            addTreasureMap(level, random, (ItemStackHandler) itemHandler, Coords.of(chestBlockEntity.getBlockPos()), finalRarity);
 
             // 6. populate the chest inventory
             populateInventory((ItemStackHandler) itemHandler, random, treasureStacks, originalTreasureSize);
