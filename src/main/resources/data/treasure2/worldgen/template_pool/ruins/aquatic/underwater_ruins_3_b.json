@@ -8,7 +8,7 @@
         "element_type": "minecraft:single_pool_element",
         "location": "treasure2:ruins/aquatic/underwater_ruins_3_b",
         "projection": "rigid",
-        "processors": "treasure2:ruins_processors"
+        "processors": "treasure2:aquatic_ruins_processors"
       }
     }
   ]

@@ -163,11 +163,10 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 	public AbstractContainerMenu createMenu(int windowId, Inventory playerInventory, Player playerEntity) {
 		Treasure.LOGGER.debug("is chest sealed -> {}", this.isSealed());
 		if (this.isSealed() && !getLevel().isClientSide) {
-			this.setSealed(false);
 			// TODO update generation context to use IRarityEntry
 //			IRarity rarity = this.getGenerationContext().getLootRarity();
 			// NOTE ADAPTER
-			IRarity rarityEntry = this.getGenerationContext().getLootRarity(); //RarityAdapter.get(rarity);
+			IRarity rarityEntry = this.getGenerationContext() != null ? this.getGenerationContext().getLootRarity() : null; //RarityAdapter.get(rarity);
 //			Optional<IChestGenerator> chestGenerator = ChestGeneratorRegistry.get(rarity);
 //			if (chestGenerator.isPresent()) {
 //				Treasure.LOGGER.debug("chest gen  -> {}", chestGenerator.get().getClass().getSimpleName());
@@ -178,6 +177,9 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 //			else {
 //				Treasure.LOGGER.warn("treasure chest at -> {} does not reference a valid generator -> {}", this.worldPosition, chestGenerator.get().getClass().getSimpleName());
 //			}
+			// only clear the seal once the chest is actually filled, so a failed fill doesn't
+			// permanently strand the chest empty - it will simply retry on the next open.
+			this.setSealed(false);
 		}
 		return createChestContainerMenu(windowId, playerInventory, playerEntity);
 	}
