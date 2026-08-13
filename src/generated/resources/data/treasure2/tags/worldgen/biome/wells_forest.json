@@ -10,11 +10,11 @@
     "minecraft:old_growth_spruce_taiga",
     "minecraft:windswept_forest",
     {
-      "id": "#treasure2:bwg_forest",
+      "id": "#treasure2:bop_forest",
       "required": false
     },
     {
-      "id": "#treasure2:bwg_jungle",
+      "id": "#treasure2:bwg_forest",
       "required": false
     }
   ]

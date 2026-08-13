@@ -183,6 +183,9 @@ public class TreasureBiomeTagsProvider extends BiomeTagsProvider {
         tag(TreasureTags.Biomes.BOP_IS_DRY).addOptionalTag(TreasureTags.Biomes.BOP_JUNGLE);
         tag(TreasureTags.Biomes.WELLS_GENERAL).addOptional(BiomesOPlenty.ASPEN_GLADE);
         tag(TreasureTags.Biomes.WELLS_GENERAL).addOptional(BiomesOPlenty.AURORAL_GARDEN);
+        // NOTE bayou/bog/marsh are the BOP analogs of vanilla swamp/mangrove_swamp, which are included above.
+        tag(TreasureTags.Biomes.WELLS_GENERAL).addOptional(BiomesOPlenty.BAYOU);
+        tag(TreasureTags.Biomes.WELLS_GENERAL).addOptional(BiomesOPlenty.BOG);
         tag(TreasureTags.Biomes.WELLS_GENERAL).addOptional(BiomesOPlenty.CLOVER_PATCH);
         tag(TreasureTags.Biomes.WELLS_GENERAL).addOptional(BiomesOPlenty.COLD_DESERT);
         tag(TreasureTags.Biomes.WELLS_GENERAL).addOptional(BiomesOPlenty.CONIFEROUS_FOREST);
@@ -202,12 +205,14 @@ public class TreasureBiomeTagsProvider extends BiomeTagsProvider {
         tag(TreasureTags.Biomes.WELLS_GENERAL).addOptional(BiomesOPlenty.LAVENDER_FIELD);
         tag(TreasureTags.Biomes.WELLS_GENERAL).addOptional(BiomesOPlenty.LUSH_SAVANNA);
 
+        tag(TreasureTags.Biomes.WELLS_GENERAL).addOptional(BiomesOPlenty.MARSH);
         tag(TreasureTags.Biomes.WELLS_GENERAL).addOptional(BiomesOPlenty.MOOR);
         tag(TreasureTags.Biomes.WELLS_GENERAL).addOptional(BiomesOPlenty.MUSKEG);
         tag(TreasureTags.Biomes.WELLS_GENERAL).addOptional(BiomesOPlenty.MYSTIC_GROVE);
 
         tag(TreasureTags.Biomes.WELLS_GENERAL).addOptional(BiomesOPlenty.ORCHARD);
         tag(TreasureTags.Biomes.WELLS_GENERAL).addOptional(BiomesOPlenty.ORIGIN_VALLEY);
+        tag(TreasureTags.Biomes.WELLS_GENERAL).addOptional(BiomesOPlenty.OVERGROWN_GREENS);
         tag(TreasureTags.Biomes.WELLS_GENERAL).addOptional(BiomesOPlenty.PASTURE);
         tag(TreasureTags.Biomes.WELLS_GENERAL).addOptional(BiomesOPlenty.PRAIRIE);
         tag(TreasureTags.Biomes.WELLS_GENERAL).addOptional(BiomesOPlenty.PUMPKIN_PATCH);
@@ -226,6 +231,10 @@ public class TreasureBiomeTagsProvider extends BiomeTagsProvider {
         tag(TreasureTags.Biomes.WELLS_GENERAL).addOptional(BiomesOPlenty.WASTELAND_STEPPE);
         tag(TreasureTags.Biomes.WELLS_GENERAL).addOptional(BiomesOPlenty.WETLAND);
         tag(TreasureTags.Biomes.WELLS_GENERAL).addOptional(BiomesOPlenty.WINTRY_ORIGIN_VALLEY);
+
+        // NOTE BOP_FOREST arrives via TEMPERATE. BOP_JUNGLE has no such path, so it is added directly
+        // for parity with vanilla jungle/bamboo_jungle/sparse_jungle above.
+        tag(TreasureTags.Biomes.WELLS_GENERAL).addOptionalTag(TreasureTags.Biomes.BOP_JUNGLE);
 
         tag(TreasureTags.Biomes.WELLS_GENERAL).addOptionalTag(TreasureTags.Biomes.BWG_FOREST);
         tag(TreasureTags.Biomes.WELLS_GENERAL).addOptionalTag(TreasureTags.Biomes.BWG_JUNGLE);
@@ -258,8 +267,11 @@ public class TreasureBiomeTagsProvider extends BiomeTagsProvider {
         tag(TreasureTags.Biomes.WELLS_GENERAL).addOptional(BiomesWeveGone.TEMPERATE_GROVE);
 
         // forest well integrations
+        tag(TreasureTags.Biomes.WELLS_FOREST).addOptionalTag(TreasureTags.Biomes.BOP_FOREST);
         tag(TreasureTags.Biomes.WELLS_FOREST).addOptionalTag(TreasureTags.Biomes.BWG_FOREST);
-        tag(TreasureTags.Biomes.WELLS_FOREST).addOptionalTag(TreasureTags.Biomes.BWG_JUNGLE);
+        // jungle well integrations
+        tag(TreasureTags.Biomes.WELLS_JUNGLE).addOptionalTag(TreasureTags.Biomes.BOP_JUNGLE);
+        tag(TreasureTags.Biomes.WELLS_JUNGLE).addOptionalTag(TreasureTags.Biomes.BWG_JUNGLE);
         // desert well integrations
         tag(TreasureTags.Biomes.WELLS_DESERT).addOptionalTag(TreasureTags.Biomes.BWG_DESERT);
         tag(TreasureTags.Biomes.WELLS_DESERT).addOptionalTag(TreasureTags.Biomes.BOP_DESERT);

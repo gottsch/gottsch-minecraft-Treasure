@@ -1,4 +1,4 @@
-// 1.20.1	2025-10-02T15:11:26.840377	Tags for minecraft:worldgen/biome mod id treasure2
+// 1.20.1	2026-08-13T10:35:15.2569847	Tags for minecraft:worldgen/biome mod id treasure2
 194d7c4dc6f048965d339516a77624a75bd939c1 data/treasure2/tags/worldgen/biome/all_overworld.json
 afd9da16b8e57511d3b12c69ccd4555d71ebb29f data/treasure2/tags/worldgen/biome/aquatic.json
 135d8c35b01fe3128dfdd47ae52330fdc30b1295 data/treasure2/tags/worldgen/biome/biome/filter/chests/rarity/terranean/rare.json
@@ -14,6 +14,6 @@ afd9da16b8e57511d3b12c69ccd4555d71ebb29f data/treasure2/tags/worldgen/biome/conf
 64f683d74ad490405434c964f1628904865a2075 data/treasure2/tags/worldgen/biome/temperate.json
 d944c8e74f267281e6e26b57cb03380d02bd7d81 data/treasure2/tags/worldgen/biome/terranean.json
 b4486cb42b4b80430ce2878cf73f7bf3fe562874 data/treasure2/tags/worldgen/biome/wells_desert.json
-998ae936ff39c4361d714f20044aff4d3fc3654e data/treasure2/tags/worldgen/biome/wells_forest.json
-1aef03dbbbddc1867131986cc610761e5046a10f data/treasure2/tags/worldgen/biome/wells_general.json
-f85bfa0d4b462706e486bac541e720ebc630330c data/treasure2/tags/worldgen/biome/wells_jungle.json
+f6411b2660b39c722479be7b61784d710f752ddd data/treasure2/tags/worldgen/biome/wells_forest.json
+a3cdfb2ee53129fc0314a8ee9c87200390079012 data/treasure2/tags/worldgen/biome/wells_general.json
+99e3887ac5ca72f6d9bdab687cb09e91c72f3879 data/treasure2/tags/worldgen/biome/wells_jungle.json
