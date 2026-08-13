@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.0.5] - 2026-08-13
+
+### Changed
+- Structures and chests were noticeably rarer when playing with Biomes O' Plenty. Several BOP biomes were never registered as valid generation biomes, so any terrain they covered was quietly skipped. Bayou, Bog, Marsh, Fungal Jungle and Overgrown Greens now generate treasure like their vanilla counterparts.
+- Forest and jungle wishing wells never appeared in Biomes O' Plenty forests or jungles. They now do.
+- Biomes We've Gone jungles were being offered forest wishing wells instead of jungle wishing wells. They now get jungle wells.
+
 ## [4.0.4] - 2026-07-19
 
 ### Changed

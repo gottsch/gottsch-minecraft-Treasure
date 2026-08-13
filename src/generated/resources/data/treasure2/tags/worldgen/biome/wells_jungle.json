@@ -2,6 +2,14 @@
   "values": [
     "minecraft:bamboo_jungle",
     "minecraft:jungle",
-    "minecraft:sparse_jungle"
+    "minecraft:sparse_jungle",
+    {
+      "id": "#treasure2:bop_jungle",
+      "required": false
+    },
+    {
+      "id": "#treasure2:bwg_jungle",
+      "required": false
+    }
   ]
 }

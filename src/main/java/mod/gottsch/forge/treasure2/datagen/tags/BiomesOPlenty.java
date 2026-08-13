@@ -68,6 +68,7 @@ public class BiomesOPlenty {
     public static final ResourceLocation OMINOUS_WOODS = new ResourceLocation(BOP, "ominous_woods");
     public static final ResourceLocation ORCHARD = new ResourceLocation(BOP, "orchard");
     public static final ResourceLocation ORIGIN_VALLEY = new ResourceLocation(BOP, "origin_valley");
+    public static final ResourceLocation OVERGROWN_GREENS = new ResourceLocation(BOP, "overgrown_greens");
     public static final ResourceLocation PASTURE = new ResourceLocation(BOP, "pasture");
     public static final ResourceLocation PRAIRIE = new ResourceLocation(BOP, "prairie");
     public static final ResourceLocation PUMPKIN_PATCH = new ResourceLocation(BOP, "pumpkin_patch");
