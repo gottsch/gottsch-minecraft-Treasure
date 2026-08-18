@@ -175,3 +175,27 @@ publishing {
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
 }
+
+// Publish to BOTH targets in one go.
+//
+// This artifact is CONSUMED by other projects in this workspace, and a consumer's build.gradle
+// typically lists mavenLocal() AND file://.../git/maven -- Gradle takes the first repo holding the
+// coordinate. So publishing to only one leaves the other serving a stale jar, and a downstream mod
+// silently keeps building against old code: the version number does not change when the contents
+// do, so nothing looks wrong anywhere.
+//
+// Added 2026-08-16, after a GottschCore SpawnUtil fix went to mavenLocal only and left every
+// consumer resolving from ../maven (Village Dungeons among them) on the buggy build. Only the
+// libraries something depends on carry this task; the workspace's other ~109 publishing projects
+// are release-only and cannot poison a build.
+//
+//   ./gradlew publishAll
+//
+// AND VERIFY THE JAR CONTENTS, not the version: the published jar is reobfuscated to SRG names, so
+// grep for the SRG method (e.g. m_146870_ for Entity.discard) rather than the source name, which
+// will never appear and will happily "confirm" any change you like.
+tasks.register('publishAll') {
+    group = 'publishing'
+    description = 'Publishes to the shared ../maven repo AND to mavenLocal, so neither can go stale.'
+    dependsOn 'publish', 'publishToMavenLocal'
+}
