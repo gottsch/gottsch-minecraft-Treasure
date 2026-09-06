@@ -27,8 +27,6 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * 
@@ -103,7 +101,7 @@ public enum TreasureArmorMaterial implements StringRepresentable, ArmorMaterial 
 		return this.repairIngredient;
 	}
 
-	@OnlyIn(Dist.CLIENT)
+	@Override
 	public String getName() {
 		return Treasure.MODID + ":" + this.name;
 	}
