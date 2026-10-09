@@ -86,6 +86,16 @@ public class ChestGeneration {
     }
 
     /**
+     * Generate a chest, with no supplemental loot.
+     */
+    public static StructureTemplate.StructureBlockInfo generate(LevelReader level, BlockPos pos,
+            RandomSource random, Direction facing, IFeatureType featureType,
+            Optional<IRarity> rarity, Optional<ResourceLocation> lootTable) {
+
+        return generate(level, pos, random, facing, featureType, rarity, lootTable, Optional.empty());
+    }
+
+    /**
      * Generate a chest.
      *
      * @param level      read-only level; used for the fluid state under the chest and the biome
@@ -99,12 +109,15 @@ public class ChestGeneration {
      *                   feed the adaptive weights</strong> &mdash; see {@code adjustWeights} below
      * @param lootTable  overrides the table the subprocessor chose. It must be a table Treasure2 can
      *                   resolve when the chest is opened; this does not register anything
+     * @param supplementalLootTable a table rolled into the slots left empty after the chest fills
+     *                   itself on first open. Any vanilla-format table the server can load
      * @return the block info to place. Never empty: a subprocessor that declines falls back to
      *         {@code defaultChest}, exactly as the processor path always did
      */
     public static StructureTemplate.StructureBlockInfo generate(LevelReader level, BlockPos pos,
             RandomSource random, Direction facing, IFeatureType featureType,
-            Optional<IRarity> rarity, Optional<ResourceLocation> lootTable) {
+            Optional<IRarity> rarity, Optional<ResourceLocation> lootTable,
+            Optional<ResourceLocation> supplementalLootTable) {
 
         // 1. map feature type to either TERRANEAN or AQUATIC.
         IFeatureType processedFeatureType = featureType == FeatureType.AQUATIC ? featureType : FeatureType.TERRANEAN;
@@ -167,6 +180,7 @@ public class ChestGeneration {
         });
 
         info = applyLootTable(info, lootTable);
+        info = applySupplementalLootTable(info, supplementalLootTable);
         cache(level, info, featureType, rarityEntry);
 
         // The weights are a self-balancing draw: adjusting them for a rarity nobody drew would skew
@@ -205,6 +219,20 @@ public class ChestGeneration {
             return info;
         }
         info.nbt().putString(AbstractTreasureChestBlockEntity.LOOT_TABLE_TAG, lootTable.get().toString());
+        return info;
+    }
+
+    /**
+     * Record the caller's supplemental table on the chest; it is rolled when the chest fills itself.
+     */
+    private static StructureTemplate.StructureBlockInfo applySupplementalLootTable(
+            StructureTemplate.StructureBlockInfo info, Optional<ResourceLocation> supplementalLootTable) {
+
+        if (supplementalLootTable.isEmpty() || info.nbt() == null) {
+            return info;
+        }
+        info.nbt().putString(AbstractTreasureChestBlockEntity.SUPPLEMENTAL_LOOT_TABLE_TAG,
+                supplementalLootTable.get().toString());
         return info;
     }
 

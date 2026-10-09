@@ -131,6 +131,26 @@ public class TreasureApi {
 	}
 
 	/**
+	 * Generate a real Treasure2 chest whose empty slots are topped up from the caller's own table.
+	 *
+	 * <p>A Treasure2 chest is generated sealed and fills itself the first time it is opened. After
+	 * that fill, {@code supplementalLootTable} is rolled into whatever slots are still empty, so the
+	 * caller's loot never displaces Treasure2's. A full chest gets none, and what does not fit is
+	 * dropped.</p>
+	 *
+	 * @param supplementalLootTable any vanilla-format loot table the server can load
+	 * @see #generateChest(LevelReader, BlockPos, RandomSource, Direction, IFeatureType, Optional, Optional)
+	 */
+	public static StructureTemplate.StructureBlockInfo generateChest(LevelReader level, BlockPos pos,
+			RandomSource random, Direction facing, IFeatureType featureType,
+			Optional<IRarity> rarity, Optional<ResourceLocation> lootTable,
+			Optional<ResourceLocation> supplementalLootTable) {
+
+		return ChestGeneration.generate(level, pos, random, facing, featureType, rarity, lootTable,
+				supplementalLootTable);
+	}
+
+	/**
 	 * Complete the cache entry for a chest placed by {@link #generateChest}, once a level that knows
 	 * its own dimension is available. Call it from a structure processor's
 	 * {@code finalizeProcessing}.

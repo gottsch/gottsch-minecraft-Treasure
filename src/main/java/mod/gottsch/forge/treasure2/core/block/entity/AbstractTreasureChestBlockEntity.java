@@ -80,6 +80,8 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 	public static final String FACING_TAG = "facing";
 	public static final String SEALED_TAG = "sealed";
 	public static final String LOOT_TABLE_TAG = "lootTable";
+	/** A foreign mod's table, rolled into whatever slots the chest's own loot leaves empty. */
+	public static final String SUPPLEMENTAL_LOOT_TABLE_TAG = "supplementalLootTable";
 	public static final String MIMIC_TAG = "mimic";
 
 	public static final String GENERATION_CONTEXT_TAG = "generationContext";
@@ -118,6 +120,12 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 	 * The loot table assigned to this block entity
 	 */
 	private ResourceLocation lootTable;
+
+	/*
+	 * A caller-supplied table that tops up the empty slots after the chest is filled. See
+	 * TreasureApi.generateChest.
+	 */
+	private ResourceLocation supplementalLootTable;
 
 	/*
 	 * The mimic assigned to this block entity
@@ -404,6 +412,9 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 			if (getLootTable() != null) {
 				tag.putString(LOOT_TABLE_TAG, getLootTable().toString());
 			}
+			if (getSupplementalLootTable() != null) {
+				tag.putString(SUPPLEMENTAL_LOOT_TABLE_TAG, getSupplementalLootTable().toString());
+			}
 
 			if (getMimic() != null) {
 				tag.putString(MIMIC_TAG, getMimic().toString());
@@ -495,6 +506,11 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 			if (tag.contains(LOOT_TABLE_TAG)) {
 				if (!tag.getString(LOOT_TABLE_TAG).isEmpty()) {
 					this.setLootTable(new ResourceLocation(tag.getString(LOOT_TABLE_TAG)));
+				}
+			}
+			if (tag.contains(SUPPLEMENTAL_LOOT_TABLE_TAG)) {
+				if (!tag.getString(SUPPLEMENTAL_LOOT_TABLE_TAG).isEmpty()) {
+					this.setSupplementalLootTable(new ResourceLocation(tag.getString(SUPPLEMENTAL_LOOT_TABLE_TAG)));
 				}
 			}
 			if (tag.contains(MIMIC_TAG)) {
@@ -653,6 +669,14 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 	@Override
 	public void setLootTable(ResourceLocation lootTable) {
 		this.lootTable = lootTable;
+	}
+
+	public ResourceLocation getSupplementalLootTable() {
+		return supplementalLootTable;
+	}
+
+	public void setSupplementalLootTable(ResourceLocation supplementalLootTable) {
+		this.supplementalLootTable = supplementalLootTable;
 	}
 
 
