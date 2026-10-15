@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.util.ShareTagUtil;
 import com.someguyssoftware.treasure2.adornment.AdornmentSize;
 import com.someguyssoftware.treasure2.adornment.TreasureAdornmentRegistry;
 import com.someguyssoftware.treasure2.capability.AdornmentCapabilityProvider;
@@ -175,66 +176,33 @@ public class Adornment extends ModItem {
 	 * or having the client update when the Anvil GUI is open.
 	 */
 	@Override
-    public NBTTagCompound getNBTShareTag(ItemStack stack) {
-//		Treasure.logger.debug("writing share tag");
-		// read cap -> write nbt
-		NBTTagCompound charmableTag;
-		charmableTag = (NBTTagCompound) CAPABILITY_STORAGE.writeNBT(
-				TreasureCapabilities.CHARMABLE,
-				stack.getCapability(TreasureCapabilities.CHARMABLE, null),
-				null);
-		NBTTagCompound runestonesTag;
-		runestonesTag = (NBTTagCompound) RUNESTONES_STORAGE.writeNBT(
-				TreasureCapabilities.RUNESTONES,
-				stack.getCapability(TreasureCapabilities.RUNESTONES, null),
-				null);		
-		NBTTagCompound durabilityTag = (NBTTagCompound) DURABILITY_STORAGE.writeNBT(
-				TreasureCapabilities.DURABILITY,
-				stack.getCapability(TreasureCapabilities.DURABILITY, null),
-				null);
-		
-		NBTTagCompound tag = new NBTTagCompound();
-		tag.setTag("charmable", charmableTag);
-		tag.setTag("runestones", runestonesTag);
-		tag.setTag("durability", durabilityTag);
-		
-		return tag;
+	public NBTTagCompound getNBTShareTag(ItemStack stack) {
+		// keep the stack's own tag and add the capabilities to it
+		NBTTagCompound capabilities = new NBTTagCompound();
+		ShareTagUtil.put(capabilities, "charmable", stack.getCapability(TreasureCapabilities.CHARMABLE, null) == null ? null :
+				CAPABILITY_STORAGE.writeNBT(TreasureCapabilities.CHARMABLE, stack.getCapability(TreasureCapabilities.CHARMABLE, null), null));
+		ShareTagUtil.put(capabilities, "runestones", stack.getCapability(TreasureCapabilities.RUNESTONES, null) == null ? null :
+				RUNESTONES_STORAGE.writeNBT(TreasureCapabilities.RUNESTONES, stack.getCapability(TreasureCapabilities.RUNESTONES, null), null));
+		ShareTagUtil.put(capabilities, "durability", stack.getCapability(TreasureCapabilities.DURABILITY, null) == null ? null :
+				DURABILITY_STORAGE.writeNBT(TreasureCapabilities.DURABILITY, stack.getCapability(TreasureCapabilities.DURABILITY, null), null));
+		return ShareTagUtil.create(stack, capabilities);
 	}
 	
-    @Override
-    public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt) {
-        super.readNBTShareTag(stack, nbt);
-        Treasure.LOGGER.debug("reading share tag");
-        if (nbt == null) {
-        	Treasure.LOGGER.debug("nbt is null - how?");
-        	return;
-        }
-        // read nbt -> write key item
-        if (nbt.hasKey("charmable")) {
-        	NBTTagCompound tag = nbt.getCompoundTag("charmable");
-	       CAPABILITY_STORAGE.readNBT(
-	    		   TreasureCapabilities.CHARMABLE, 
-					stack.getCapability(TreasureCapabilities.CHARMABLE, null), 
-					null,
-					tag);
-        }
-        if (nbt.hasKey("runestones")) {
-        	NBTTagCompound tag = nbt.getCompoundTag("runestones");
-	       RUNESTONES_STORAGE.readNBT(
-	    		   TreasureCapabilities.RUNESTONES, 
-					stack.getCapability(TreasureCapabilities.RUNESTONES, null), 
-					null,
-					tag);
-        }
-        if (nbt.hasKey("durability")) {
-        	NBTTagCompound tag = nbt.getCompoundTag("durability");
-	       DURABILITY_STORAGE.readNBT(
-	    		   TreasureCapabilities.DURABILITY, 
-					stack.getCapability(TreasureCapabilities.DURABILITY, null), 
-					null,
-					tag);
-        }
-    }
+	@Override
+	public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt) {
+		// the stack's tag must not include the capabilities
+		super.readNBTShareTag(stack, ShareTagUtil.getStackTag(nbt));
+		NBTTagCompound capabilities = ShareTagUtil.getCapabilities(nbt);
+		if (capabilities.hasKey("charmable") && stack.getCapability(TreasureCapabilities.CHARMABLE, null) != null) {
+			CAPABILITY_STORAGE.readNBT(TreasureCapabilities.CHARMABLE, stack.getCapability(TreasureCapabilities.CHARMABLE, null), null, capabilities.getTag("charmable"));
+		}
+		if (capabilities.hasKey("runestones") && stack.getCapability(TreasureCapabilities.RUNESTONES, null) != null) {
+			RUNESTONES_STORAGE.readNBT(TreasureCapabilities.RUNESTONES, stack.getCapability(TreasureCapabilities.RUNESTONES, null), null, capabilities.getTag("runestones"));
+		}
+		if (capabilities.hasKey("durability") && stack.getCapability(TreasureCapabilities.DURABILITY, null) != null) {
+			DURABILITY_STORAGE.readNBT(TreasureCapabilities.DURABILITY, stack.getCapability(TreasureCapabilities.DURABILITY, null), null, capabilities.getTag("durability"));
+		}
+	}
     
     /**
      * Queries the percentage of the 'Durability' bar that should be drawn.

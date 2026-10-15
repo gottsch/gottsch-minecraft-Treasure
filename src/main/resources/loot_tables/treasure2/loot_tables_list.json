@@ -24,11 +24,6 @@
 		"pools/tools/uncommon",
 		"pools/tools/scarce",
 		"pools/tools/rare",
-		"pools/treasure/common",
-		"pools/treasure/uncommon",
-		"pools/treasure/scarce",
-		"pools/treasure/rare",
-		"pools/treasure/epic",
 		"pools/treasure/common_adornments",
 		"pools/treasure/common_all",
 		"pools/treasure/common_charms",
@@ -56,12 +51,10 @@
 		"pools/treasure/legendary_adornments",
 		"pools/treasure/legendary_all",
 		"pools/treasure/legendary_charms",
-		"pools/treasure/legendary_treasure",
 		
 		"pools/treasure/mythical_adornments",
 		"pools/treasure/mythical_all",
-		"pools/treasure/mythical_charms",
-		"pools/treasure/mythical_treasure"
+		"pools/treasure/mythical_charms"
     ],
     "injectResources": [
 

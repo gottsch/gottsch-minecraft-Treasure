@@ -365,7 +365,7 @@ public class GenUtil {
 		double minDistanceSq = minDistance * minDistance;
 
 		// get a list of chests
-		List<ChestInfo> infos = ChestRegistry.getInstance().getValues();
+		List<ChestInfo> infos = ChestRegistry.getInstance().getValues(world.provider.getDimension());
 
 		if (infos == null || infos.size() == 0) {
 			Treasure.LOGGER

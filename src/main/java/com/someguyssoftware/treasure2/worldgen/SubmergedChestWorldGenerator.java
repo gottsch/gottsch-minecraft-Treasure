@@ -250,7 +250,7 @@ public class SubmergedChestWorldGenerator implements ITreasureWorldGenerator {
 				
     			if (result.isSuccess()) {
     				// add to registry
-    				ChestRegistry.getInstance().register(coords.toShortString(), new ChestInfo(rarity, coords));
+    				ChestRegistry.getInstance().register(new ChestInfo(rarity, coords, world.provider.getDimension()));
     				// reset the chunk counts
         			chunksSinceLastChest = 0;
     			}
@@ -365,7 +365,7 @@ public class SubmergedChestWorldGenerator implements ITreasureWorldGenerator {
 		double minDistanceSq = minDistance * minDistance;
 		
 		// get a list of dungeons
-		List<ChestInfo> infos = ChestRegistry.getInstance().getValues();
+		List<ChestInfo> infos = ChestRegistry.getInstance().getValues(world.provider.getDimension());
 
 		if (infos == null || infos.size() == 0) {
 			Treasure.LOGGER.debug("Unable to locate the ChestConfig Registry or the Registry doesn't contain any values");

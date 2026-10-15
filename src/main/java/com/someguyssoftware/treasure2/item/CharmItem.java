@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.util.ShareTagUtil;
 import com.someguyssoftware.treasure2.capability.CharmableCapabilityProvider;
 import com.someguyssoftware.treasure2.capability.CharmableCapabilityStorage;
 import com.someguyssoftware.treasure2.capability.ICharmableCapability;
@@ -110,24 +111,21 @@ public class CharmItem extends ModItem {
 	 * NOTE getShareTag() and readShareTag() are required to sync item capabilities server -> client. I needed this when holding charms in hands and then swapping hands.
 	 */
 	@Override
-    public NBTTagCompound getNBTShareTag(ItemStack stack) {
-		NBTTagCompound charmableTag;
-		charmableTag = (NBTTagCompound) CAPABILITY_STORAGE.writeNBT(
-				TreasureCapabilities.CHARMABLE,
-				stack.getCapability(TreasureCapabilities.CHARMABLE, null),
-				null);
-		
-		return charmableTag;
-    }
+	public NBTTagCompound getNBTShareTag(ItemStack stack) {
+		// keep the stack's own tag and add the capabilities to it
+		NBTTagCompound capabilities = new NBTTagCompound();
+		ShareTagUtil.put(capabilities, "charmable", stack.getCapability(TreasureCapabilities.CHARMABLE, null) == null ? null :
+				CAPABILITY_STORAGE.writeNBT(TreasureCapabilities.CHARMABLE, stack.getCapability(TreasureCapabilities.CHARMABLE, null), null));
+		return ShareTagUtil.create(stack, capabilities);
+	}
 
-    @Override
-    public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt) {
-        super.readNBTShareTag(stack, nbt);
-
-        if (nbt instanceof NBTTagCompound) {
-	       CAPABILITY_STORAGE.readNBT(
-	    		   TreasureCapabilities.CHARMABLE, 
-					stack.getCapability(TreasureCapabilities.CHARMABLE, null), null, nbt);
-        }
-    }
+	@Override
+	public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt) {
+		// the stack's tag must not include the capabilities
+		super.readNBTShareTag(stack, ShareTagUtil.getStackTag(nbt));
+		NBTTagCompound capabilities = ShareTagUtil.getCapabilities(nbt);
+		if (capabilities.hasKey("charmable") && stack.getCapability(TreasureCapabilities.CHARMABLE, null) != null) {
+			CAPABILITY_STORAGE.readNBT(TreasureCapabilities.CHARMABLE, stack.getCapability(TreasureCapabilities.CHARMABLE, null), null, capabilities.getTag("charmable"));
+		}
+	}
 }

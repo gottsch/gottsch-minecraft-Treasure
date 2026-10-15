@@ -1,132 +1,122 @@
-buildscript {
-    repositories {
-   		maven { url = "http://files.minecraftforge.net/maven" }
-        jcenter()       
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:3.+'
-    }
-}
 plugins {
-	 //  must use gradle v3.0+ for this version of shadow (2.0.1).  Update gradle-wrapper.properties
-	id "com.github.johnrengelman.shadow" version "4.0.4"
+    id 'java-library'
+    id 'eclipse'
+    id 'idea'
+    id 'maven-publish'
+    id 'com.gtnewhorizons.retrofuturagradle' version '1.4.9'
+    id 'com.gradleup.shadow' version '8.3.5'
 }
 
-apply plugin: 'net.minecraftforge.gradle'
-//Only edit below this line, the above code adds and enables the nessasary things for Forge to be setup.
-apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
+version = "${minecraft_version}-${mod_version}"
+group = mod_group_id
+base {
+    archivesName = mod_id
+}
 
-version = "mc${mc_version}-f${forge_version}-${mod_version_type}${mod_version}"
-group = "${package_group}" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "${mod_name}"
+// Gradle runs on a modern JDK; the mod is compiled and run with Java 8 (auto-provisioned by the foojay resolver)
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(8)
+        // Azul covers the most platforms for Java 8 toolchains
+        vendor = JvmVendorSpec.AZUL
+    }
+}
 
-sourceCompatibility = targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
-compileJava {
-    sourceCompatibility = targetCompatibility = '1.8'
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
 }
 
 minecraft {
-    // The mappings can be changed at any time, and must be in the following format.
-    // snapshot_YYYYMMDD   Snapshot are built nightly.
-    // stable_#            Stables are built at the discretion of the MCP team.
-    // Use non-default mappings at your own risk. they may not always work.
-    // Simply re-run your setup task after changing the mappings to update your workspace.
-    mappings channel: 'snapshot', version: '20171003-1.12'
-    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
-    
-    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    mcVersion = minecraft_version
+    mcpMappingChannel = mapping_channel
+    mcpMappingVersion = mapping_version
+    username = 'Developer'
 
-    // Default run configurations.
-    // These can be tweaked, removed, or duplicated as needed.
-    runs {
-        client {
-            workingDirectory project.file('run')
+    // generates com.someguyssoftware.treasure2.Tags with the mod version from gradle.properties
+    injectedTags.put('VERSION', mod_version)
+    injectedTags.put('MOD_ID', mod_id)
+    injectedTags.put('MOD_NAME', mod_name)
+}
 
-            // Recommended logging data for a userdev environment
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
-            // Recommended logging level for the console
-            property 'forge.logging.console.level', 'debug'
-        }
-
-        server {
-            // Recommended logging data for a userdev environment
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
-            // Recommended logging level for the console
-            property 'forge.logging.console.level', 'debug'
-        }
-    }
+tasks.injectTags.configure {
+    outputClassName = 'com.someguyssoftware.treasure2.Tags'
 }
 
 repositories {
     maven {
-        name 'Curseforge Maven'
-        url 'https://minecraft.curseforge.com/api/maven/'
+        name = 'CurseMaven'
+        url = 'https://www.cursemaven.com'
+        content {
+            includeGroup 'curse.maven'
+        }
     }
-    maven { 
-        url 'https://maven.blamejared.com' 
-    }
-     maven {
-        url "https://www.cursemaven.com"
-    }
-    maven {
-        // location of the maven that hosts JEI files
-        name = "Progwml6 maven"
-        url = "http://dvs1.progwml6.com/files/maven"
-    }
-    flatDir {
-        // location for sources
-        dirs 'libs'
-    }
+    mavenCentral()
 }
 
-def gottschcore_path="../GottschCore-1.12.2/build/libs/GottschCore-mc${mc_version}-f${gottschcore_forge_version}-v${gottschcore_version}.jar"
-def baubles_path="../ModCommonLibs/libs/Baubles-1.12-1.5.2.jar"
-println gottschcore_path
-println baubles_path
+// dependencies bundled (and relocated) into the mod jar
+configurations {
+    shade
+    implementation.extendsFrom shade
+}
+
 dependencies {
-	minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2854'
-	compile files('../ModCommonLibs/libs/commons-cli-1.4.jar')
-	implementation fg.deobf("curse.maven:gottschcore-${gottschcore_project_id}:${gottschcore_field_id}") // for prod
-	implementation fg.deobf("curse.maven:baubles-${baubles_project_id}:${baubles_field_id}")
-//	compile files(gottschcore_path)
-	shadow files(gottschcore_path) // for dev
+    implementation rfg.deobf("curse.maven:gottschcore-${gottschcore_project_id}:${gottschcore_file_id}")
+    implementation rfg.deobf("curse.maven:baubles-${baubles_project_id}:${baubles_file_id}")
+    shade "commons-cli:commons-cli:${commons_cli_version}"
 }
 
-jar {
+tasks.named('processResources', ProcessResources).configure {
+    def replaceProperties = [
+            minecraft_version: minecraft_version, mod_id: mod_id, mod_name: mod_name,
+            mod_version: mod_version, mod_authors: mod_authors, mod_description: mod_description
+    ]
+    inputs.properties replaceProperties
+
+    filesMatching('mcmod.info') {
+        expand replaceProperties
+    }
+}
+
+tasks.named('jar', Jar).configure {
     manifest {
         attributes([
-            "Specification-Title": "${archivesBaseName}",
-            "Specification-Vendor": "Some Guys Software",
-            "Specification-Version": "1", // We are version 1 of ourselves
-            "Implementation-Title": "${archivesBaseName}-${version}",
-            "Implementation-Version": "${version}",
-            "Implementation-Vendor" :"Some Guys Software",
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+                'Specification-Title'     : mod_id,
+                'Specification-Vendor'    : mod_authors,
+                'Specification-Version'   : '1', // We are version 1 of ourselves
+                'Implementation-Title'    : project.name,
+                'Implementation-Version'  : project.version,
+                'Implementation-Vendor'   : mod_authors,
+                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
 }
 
-shadowJar {
-	// with version 4.0.4+ of ShadowJar, the dependencies are required to  instruct what files
-	// are included in the shadow
-	dependencies {
-     	include(dependency(files('../ModCommonLibs/libs/commons-cli-1.4.jar')))
-   }
-    // move everything under "io.github" (which in the DelaunayTriangulator lib) to "com.someguyssoftware.dungeons2.triangulation"
-    relocate "org.apache.commons.cli", "com.someguyssoftware.treasure2.cli"
-	// Replace the default JAR
-    classifier '' 
+// shade commons-cli into the dev jar, then reobfuscate the shaded jar into the release jar
+tasks.named('shadowJar').configure {
+    configurations = [project.configurations.shade]
+    relocate 'org.apache.commons.cli', 'com.someguyssoftware.treasure2.cli'
+    archiveClassifier = 'dev-shaded'
+    manifest.inheritFrom tasks.jar.manifest
 }
 
-reobf {
-	// Reobfuscate the shadowed JAR
-    shadowJar {} 
+tasks.named('reobfJar').configure {
+    inputJar = tasks.named('shadowJar').flatMap { it.archiveFile }
 }
 
-//an array containing destination paths
-def destinations = ["${dest_folder}", "${mods_folder}", "${dest_server_folder}"]
-println destinations[0]
+// the release jar is the reobfuscated one: treasure2-<mc version>-<mod version>.jar
+tasks.named('jar').configure {
+    archiveClassifier = 'dev'
+}
+
+eclipse {
+    classpath {
+        downloadSources = true
+    }
+}
+
+idea {
+    module {
+        downloadSources = true
+        inheritOutputDirs = true
+    }
+}

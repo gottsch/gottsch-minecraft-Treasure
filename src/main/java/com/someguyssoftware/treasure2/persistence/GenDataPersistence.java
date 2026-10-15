@@ -47,6 +47,7 @@ public class GenDataPersistence extends WorldSavedData {
 
 	private static final String RARITY_TAG_NAME = "rarity";
 	private static final String DIMENSION_ID_TAG_NAME = "dimensionID";
+	private static final String DIMENSION_TAG_NAME = "dimension";
 	private static final String DIMENSIONS_TAG_NAME = "dimensions";
 	private static final String BIOME_ID_TAG_NAME = "biomeID";
 	private static final String BIOMES_TAG_NAME = "biomes";
@@ -132,13 +133,14 @@ public class GenDataPersistence extends WorldSavedData {
 		NBTTagList chestRegistryTagList = treasureGen.getTagList(CHEST_REGISTRY_TAG_NAME, 10);
 		for (int i = 0; i < chestRegistryTagList.tagCount(); i++) {
 			NBTTagCompound chunkTag = chestRegistryTagList.getCompoundTagAt(i);
-			String key = chunkTag.getString(KEY_TAG_NAME);
 			String rarity = chunkTag.getString(RARITY_TAG_NAME);
 			NBTTagCompound coords = chunkTag.getCompoundTag(COORDS_TAG_NAME);
 			int x = coords.getInteger("x");
 			int y = coords.getInteger("y");
 			int z = coords.getInteger("z");
-			chestRegistry.register(key, new ChestInfo(Rarity.getByValue(rarity), new Coords(x, y, z)));
+			// chests saved before 2.3.3 have no dimension - assume the overworld
+			int dimension = chunkTag.hasKey(DIMENSION_TAG_NAME) ? chunkTag.getInteger(DIMENSION_TAG_NAME) : 0;
+			chestRegistry.register(new ChestInfo(Rarity.getByValue(rarity), new Coords(x, y, z), dimension));
 		}
 		Treasure.LOGGER.debug("ChestConfig Registry size after loading -> {}", chestRegistry.getValues().size());
 		
@@ -250,6 +252,7 @@ public class GenDataPersistence extends WorldSavedData {
 				entry.setTag(KEY_TAG_NAME, key);
 				entry.setTag(RARITY_TAG_NAME, rarity);
 				entry.setTag(COORDS_TAG_NAME, coords);
+				entry.setInteger(DIMENSION_TAG_NAME, element.getDimension());
 				
 				// add entry to list
 				chestRegistryTagList.appendTag(entry);

@@ -7,7 +7,9 @@ gradle.log
 !/gradle/
 !/LICENSE.txt
 !/README.md
+!/CHANGELOG.md
 !build.gradle
+!settings.gradle
 !/gradle.properties
 !.gitattributes
 !*.json

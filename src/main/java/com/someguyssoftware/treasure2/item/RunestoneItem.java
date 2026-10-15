@@ -28,6 +28,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
 
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.util.ShareTagUtil;
 import com.someguyssoftware.treasure2.capability.IRunestonesCapability;
 import com.someguyssoftware.treasure2.capability.InventoryType;
 import com.someguyssoftware.treasure2.capability.RunestonesCapabilityProvider;
@@ -121,25 +122,21 @@ public class RunestoneItem extends ModItem {
 	 * NOTE getShareTag() and readShareTag() are required to sync item capabilities server -> client. I needed this when holding charms in hands and then swapping hands.
 	 */
 	@Override
-    public NBTTagCompound getNBTShareTag(ItemStack stack) {
-//		Treasure.logger.debug("writing share tag");
-		NBTTagCompound tag;
-		tag = (NBTTagCompound) CAPABILITY_STORAGE.writeNBT(
-				TreasureCapabilities.RUNESTONES,
-				stack.getCapability(TreasureCapabilities.RUNESTONES, null),
-				null);
-		
-		return tag;
-    }
+	public NBTTagCompound getNBTShareTag(ItemStack stack) {
+		// keep the stack's own tag and add the capabilities to it
+		NBTTagCompound capabilities = new NBTTagCompound();
+		ShareTagUtil.put(capabilities, "runestones", stack.getCapability(TreasureCapabilities.RUNESTONES, null) == null ? null :
+				CAPABILITY_STORAGE.writeNBT(TreasureCapabilities.RUNESTONES, stack.getCapability(TreasureCapabilities.RUNESTONES, null), null));
+		return ShareTagUtil.create(stack, capabilities);
+	}
 
-    @Override
-    public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt) {
-        super.readNBTShareTag(stack, nbt);
-//        Treasure.logger.debug("reading share tag");
-        if (nbt instanceof NBTTagCompound) {
-	       CAPABILITY_STORAGE.readNBT(
-	    		   TreasureCapabilities.RUNESTONES, 
-					stack.getCapability(TreasureCapabilities.RUNESTONES, null), null, nbt);
-        }
-    }
+	@Override
+	public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt) {
+		// the stack's tag must not include the capabilities
+		super.readNBTShareTag(stack, ShareTagUtil.getStackTag(nbt));
+		NBTTagCompound capabilities = ShareTagUtil.getCapabilities(nbt);
+		if (capabilities.hasKey("runestones") && stack.getCapability(TreasureCapabilities.RUNESTONES, null) != null) {
+			CAPABILITY_STORAGE.readNBT(TreasureCapabilities.RUNESTONES, stack.getCapability(TreasureCapabilities.RUNESTONES, null), null, capabilities.getTag("runestones"));
+		}
+	}
 }
