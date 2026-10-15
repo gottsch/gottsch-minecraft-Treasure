@@ -59,8 +59,42 @@ configurations {
     implementation.extendsFrom shade
 }
 
+/*
+ * RFG's dev environment always runs Forge 14.23.5.2847 (hard-coded in RFG), but GottschCore declares
+ * required-after:forge@[14.23.5.2854,) so FML refuses to load it in runClient/runServer.
+ * For the dev runtime only, use a copy of the GottschCore jar with that minimum lowered to 2847.
+ * Compiling uses the unmodified jar and nothing here affects the released mod jar.
+ */
+def gottschcoreDevJar = file("build/devDeps/gottschcore-${gottschcore_version}-${gottschcore_file_id}-dev.jar")
+if (!gottschcoreDevJar.exists()) {
+    def original = configurations.detachedConfiguration(
+            dependencies.create("curse.maven:gottschcore-${gottschcore_project_id}:${gottschcore_file_id}")).singleFile
+    // same-length replacement, so the class file constant pool stays valid
+    byte[] from = 'forge@[14.23.5.2854,)'.getBytes('UTF-8')
+    byte[] to = 'forge@[14.23.5.2847,)'.getBytes('UTF-8')
+    gottschcoreDevJar.parentFile.mkdirs()
+    new java.util.zip.ZipFile(original).withCloseable { zip ->
+        new java.util.zip.ZipOutputStream(new FileOutputStream(gottschcoreDevJar)).withCloseable { out ->
+            zip.entries().each { entry ->
+                byte[] bytes = zip.getInputStream(entry).bytes
+                if (entry.name.endsWith('.class')) {
+                    for (int i = 0; i <= bytes.length - from.length; i++) {
+                        if (Arrays.equals(Arrays.copyOfRange(bytes, i, i + from.length), from)) {
+                            System.arraycopy(to, 0, bytes, i, to.length)
+                        }
+                    }
+                }
+                out.putNextEntry(new java.util.zip.ZipEntry(entry.name))
+                out.write(bytes)
+                out.closeEntry()
+            }
+        }
+    }
+}
+
 dependencies {
-    implementation rfg.deobf("curse.maven:gottschcore-${gottschcore_project_id}:${gottschcore_file_id}")
+    compileOnly rfg.deobf("curse.maven:gottschcore-${gottschcore_project_id}:${gottschcore_file_id}")
+    runtimeOnly rfg.deobf(files(gottschcoreDevJar))
     implementation rfg.deobf("curse.maven:baubles-${baubles_project_id}:${baubles_file_id}")
     shade "commons-cli:commons-cli:${commons_cli_version}"
 }
