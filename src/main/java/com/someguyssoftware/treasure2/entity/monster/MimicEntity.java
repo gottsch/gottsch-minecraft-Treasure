@@ -69,6 +69,10 @@ public abstract class MimicEntity extends EntityMob implements IEntityAdditional
 	/** Flag whether lid is opening (or closing */
 	public boolean isOpening = true;
 
+	/** Ticks since the mimic woke (capped), so the models can play their open animation. Not saved. */
+	private int activeTicks = 0;
+	private static final int MAX_ACTIVE_TICKS = 100;
+
 	private static final String CHEST_LOOT_TABLE_TAG = "chestLootTable";
 	/** The loot table of the chest this mimic disguised itself as. The mimic drops the chest's full loot roll. */
 	private ResourceLocation chestLootTable;
@@ -117,6 +121,7 @@ public abstract class MimicEntity extends EntityMob implements IEntityAdditional
 
 		prevLidAngle = lidAngle;
 		if (isActive()) {
+			activeTicks = Math.min(activeTicks + 1, MAX_ACTIVE_TICKS);
 			// chomp
 			if (lidAngle <= 0F) {
 				lidAngle = 0.0F;
@@ -138,6 +143,7 @@ public abstract class MimicEntity extends EntityMob implements IEntityAdditional
 			// interpolated body yaw can't drift off it)
 			lidAngle = Math.max(0.0F, lidAngle - 0.1F);
 			isOpening = true;
+			activeTicks = 0;
 			faceLikeChest();
 		}
 	}
@@ -328,6 +334,10 @@ public abstract class MimicEntity extends EntityMob implements IEntityAdditional
 
 	public void setActive(boolean active) {
 		this.dataManager.set(ACTIVE, active);
+	}
+
+	public int getActiveTicks() {
+		return activeTicks;
 	}
 
 	/**

@@ -2,6 +2,7 @@ package com.someguyssoftware.treasure2.client.render.entity;
 
 import org.lwjgl.opengl.GL11;
 
+import com.someguyssoftware.treasure2.client.render.entity.layer.MimicEyesLayer;
 import com.someguyssoftware.treasure2.entity.monster.MimicEntity;
 
 import net.minecraft.client.model.ModelBase;
@@ -40,7 +41,19 @@ public class MimicEntityRenderer extends RenderLiving<MimicEntity> {
     public MimicEntityRenderer(RenderManager renderManager, ModelBase model, ResourceLocation texture) {
     	super(renderManager, model, 0.4F);
     	setModel(model);
-    	setTexture(texture);    	
+    	setTexture(texture);
+    }
+
+    /**
+     *
+     * @param renderManager
+     * @param model
+     * @param texture
+     * @param eyesTexture the glowing eyes layer's texture
+     */
+    public MimicEntityRenderer(RenderManager renderManager, ModelBase model, ResourceLocation texture, ResourceLocation eyesTexture) {
+    	this(renderManager, model, texture);
+    	addLayer(new MimicEyesLayer(this, eyesTexture));
     }
     
     /**

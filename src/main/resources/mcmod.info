@@ -6,7 +6,7 @@
   "version": "${mod_version}",
   "mcversion": "${minecraft_version}",
   "url": "https://www.curseforge.com/minecraft/mc-mods/treasure2",
-  "updateUrl": "",
+  "updateUrl": "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/1.12.2-master/update.json",
    "authorList":["gottsch"],
   "credits": "My son, Mason, for inspiration and ideas. CuddleBeak, for some Keys and Locks textures. mn_ti for Chinese and to DarkKnightComes for Polish translation. Mythical Sausage for tutorials on house/tower designs. OdinsRagnarok for Spanish translation and DarvinSlav for Russian translation. sfs131010 for updated Chinese translation. Xemnes for updated textures for locks, keys, adornments, gems, ores.",
   "logoFile": "",

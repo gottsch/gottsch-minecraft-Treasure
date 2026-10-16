@@ -17,6 +17,7 @@ import com.someguyssoftware.treasure2.client.model.MilkCrateModel;
 import com.someguyssoftware.treasure2.client.model.MimicModel;
 import com.someguyssoftware.treasure2.client.model.OysterChestModel;
 import com.someguyssoftware.treasure2.client.model.SafeModel;
+import com.someguyssoftware.treasure2.client.model.entity.WoodChestMimicModel;
 import com.someguyssoftware.treasure2.client.model.SkullChestModel;
 import com.someguyssoftware.treasure2.client.model.SpiderChestModel;
 import com.someguyssoftware.treasure2.client.model.StandardChestModel;
@@ -208,10 +209,11 @@ public class ClientProxy {
 		RenderingRegistry.registerEntityRenderingHandler(WoodMimicEntity.class, 	
 				new MimicEntityRenderer(
 						Minecraft.getMinecraft().getRenderManager(), 
-						new MimicModel(),
-						new ResourceLocation(Treasure.MODID + ":textures/entity/mob/wood-mimic.png")));
+						new WoodChestMimicModel(),
+						new ResourceLocation(Treasure.MODID + ":textures/entity/mob/wood_chest_mimic.png"),
+						new ResourceLocation(Treasure.MODID + ":textures/entity/mob/wood_chest_mimic_eyes.png")));
 
-		RenderingRegistry.registerEntityRenderingHandler(PirateMimicEntity.class, 	
+		RenderingRegistry.registerEntityRenderingHandler(PirateMimicEntity.class,	
 				new MimicEntityRenderer(
 						Minecraft.getMinecraft().getRenderManager(), 
 						new MimicModel(),
