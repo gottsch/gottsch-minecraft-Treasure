@@ -62,6 +62,12 @@ public class WitherMistParticle extends AbstractMistParticle {
 		if (WorldInfo.isServerSide(Minecraft.getMinecraft().world)) {
 			return;
 		}
+		// only report the local player - the server only applies the effect to the player that sends the message,
+		// and every other player's own client reports them.
+		if (player != Minecraft.getMinecraft().player) {
+			return;
+		}
+
 		PotionEffect potionEffect = player.getActivePotionEffect(MobEffects.WITHER);
 		// if player does not have Wither effect, add it
 		if (potionEffect == null) {

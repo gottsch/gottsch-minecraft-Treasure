@@ -5,6 +5,6 @@
 		"1.12.2-recommended": "2.4.0"
 	},
 	"1.12.2": {
-		"2.4.0": "[Should reference teh CHANGELOG"
+		"2.4.0": "See https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/1.12.2-master/CHANGELOG.md"
 	}
 }

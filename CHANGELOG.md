@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.4.0] - Unreleased
 
+### 🛠️ Fixed
+- Servers no longer fill their log with "sent a mist message for another player" warnings when several players stand in the same poison or wither mist (caused by the 2.3.3 mist fix).
+- The in-game "update available" notice never worked for 1.12.2: the mod read the update file of a different Minecraft version. It now reads the 1.12.2 one.
+
 ### ⚙️ Changed
 - Mimics are no longer separate blocks. Any chest that has a mimic can turn out to be one, and a chest's mimic always matches the chest: a wood chest is always a wood mimic, a pirate chest always a pirate mimic.
 - Killing a mimic drops the loot the chest would have held.

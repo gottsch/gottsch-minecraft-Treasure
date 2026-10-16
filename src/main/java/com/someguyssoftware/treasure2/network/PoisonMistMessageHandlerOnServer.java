@@ -67,7 +67,7 @@ public class PoisonMistMessageHandlerOnServer implements IMessageHandler<PoisonM
 	        // only ever affect the player that sent the message - never trust a player name supplied by the client.
 	        EntityPlayerMP player = sendingPlayer;
 	        if (!player.getName().equals(message.getPlayerName())) {
-	        	Treasure.LOGGER.warn("{} sent a mist message for another player -> {}", player.getName(), message.getPlayerName());
+	        	Treasure.LOGGER.debug("{} sent a mist message for another player, ignoring it -> {}", player.getName(), message.getPlayerName());
 	        	return;
 	        }
 	        

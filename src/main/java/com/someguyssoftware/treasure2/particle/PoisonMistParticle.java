@@ -63,6 +63,12 @@ public class PoisonMistParticle extends AbstractMistParticle {
 			return;
 		}
 
+		// only report the local player - the server only applies the effect to the player that sends the message,
+		// and every other player's own client reports them.
+		if (player != Minecraft.getMinecraft().player) {
+			return;
+		}
+
 		PotionEffect potionEffect = player.getActivePotionEffect(MobEffects.POISON);
 		// if player does not have poison effect, add it
 		if (potionEffect == null) {

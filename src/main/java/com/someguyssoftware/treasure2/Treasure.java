@@ -126,7 +126,7 @@ public class Treasure extends AbstractMod {
 	protected static final String NAME = "Treasure2";
 	protected static final String VERSION = Tags.VERSION;
 
-	public static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/master/update.json";
+	public static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/gottsch/gottsch-minecraft-Treasure/1.12.2-master/update.json";
 
 	private static final String VERSION_URL = "";
 	private static final BuildVersion MINECRAFT_VERSION = new BuildVersion(1, 12, 2);
