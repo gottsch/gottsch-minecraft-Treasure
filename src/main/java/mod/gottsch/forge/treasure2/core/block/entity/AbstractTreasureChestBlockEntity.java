@@ -603,6 +603,8 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 	public CompoundTag getUpdateTag() {
 		CompoundTag tag = super.getUpdateTag();
 		saveAdditional(tag);
+		// don't tell clients which chests are mimics. the renderer doesn't need it.
+		tag.remove(MIMIC_TAG);
 		return tag;
 	}
 

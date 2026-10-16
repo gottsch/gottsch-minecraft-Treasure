@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - On a server, a modified client could make poison and wither mist hit any player it liked, wherever they were. Mist now only ever affects the player actually standing in it.
 - A chest could open completely empty and stay that way if its loot couldn't be generated the first time it was opened. It now stays sealed and tries again the next time it's opened, instead of being emptied for good.
+- Breaking or blowing up a mimic chest no longer defuses it. The mimic springs, just as if the chest had been opened, so a locked mimic can no longer be picked up and carried off as a chest.
+- Clients are no longer told which chests are mimics, so a mod or NBT viewer can't give them away.
+- Key rings and pouches no longer lose their custom name, enchantments or other mods' data on the client.
+- Update notices work again. Since 4.0.4 the mod had been checking the wrong update file, so no new version was ever announced in game.
 
 ## [4.1.0] - 2026-08-18
 
