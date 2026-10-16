@@ -46,7 +46,7 @@ public class ChestConfig implements IChestConfig {
 	@RangeInt(min = 5, max = 250)
 	public int maxDepth;
 
-	@Comment({"The probability that a chest will be a mimic.", "NOTE: only common Wooden ChestConfig have mimics avaiable."})
+	@Comment({"The probability that a chest will be a mimic.", "NOTE: only chests that have a mimic can be one (ex. wood chest, pirate chest)."})
 	@Name("04. Mimic probability:")
 	@RangeDouble(min = 0.0, max = 100.0)
 	public double mimicProbability = 0.0;

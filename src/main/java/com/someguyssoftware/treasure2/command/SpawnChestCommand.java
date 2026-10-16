@@ -29,6 +29,7 @@ import com.someguyssoftware.treasure2.enums.ChestGeneratorType;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.enums.WorldGeneratorType;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
+import com.someguyssoftware.treasure2.registry.MimicRegistry;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 import com.someguyssoftware.treasure2.worldgen.SurfaceChestWorldGenerator;
 
@@ -38,6 +39,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 
 /**
@@ -51,6 +53,7 @@ public class SpawnChestCommand extends CommandBase {
 	private static final String CHEST_ARG = "chest";
 	private static final String LOCKED_ARG = "locked";
 	private static final String SEALED_ARG = "sealed";
+	private static final String MIMIC_ARG = "mimic";
 //	private static final String LOCKS_ARG = "locks";
 //	private static final String LOOTTABLE_ARG = "loottable";
 	
@@ -93,7 +96,7 @@ public class SpawnChestCommand extends CommandBase {
 
 	@Override
 	public String getUsage(ICommandSender var1) {
-		return "/t2-chest <x> <y> <z> [-rarity <rarity>] [-facing <facing>] [-chest <chest>] [-locked] [-sealed]: generates a Treasure! chest at location (x,y,z)";
+		return "/t2-chest <x> <y> <z> [-rarity <rarity>] [-facing <facing>] [-chest <chest>] [-locked] [-sealed] [-mimic]: generates a Treasure! chest at location (x,y,z)";
 		// [-locks <lock1> <lock2> <lock3>] 
 		//  [-loottable <loottable>]
 	}
@@ -128,6 +131,7 @@ public class SpawnChestCommand extends CommandBase {
 			options.addOption(CHEST_ARG, true, "");
 			options.addOption(LOCKED_ARG, false, "");
 			options.addOption(SEALED_ARG, false, "");			
+			options.addOption(MIMIC_ARG, false, "");
 			
 			// parse the command line arguments
 			CommandLine line = parser.parse(options, parserArgs);
@@ -240,6 +244,17 @@ public class SpawnChestCommand extends CommandBase {
 					((AbstractChestBlock)chest).rotateLockStates(world, pos, Direction.NORTH.getRotation(direction));
 					// update the client
 					((AbstractTreasureChestTileEntity) tileEntity).sendUpdates();
+				}
+
+				// make it a mimic. which mimic is decided by the chest, so only chests that have one can be a mimic.
+				if (line.hasOption(MIMIC_ARG)) {
+					if (MimicRegistry.hasMimic(chest)) {
+						tileEntity.setMimic(true);
+						tileEntity.markDirty();
+					}
+					else {
+						commandSender.sendMessage(new TextComponentString(chest.getRegistryName() + " does not have a mimic."));
+					}
 				}
 			}
 			

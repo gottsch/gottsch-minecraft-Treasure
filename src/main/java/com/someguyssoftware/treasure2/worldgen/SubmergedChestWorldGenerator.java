@@ -299,7 +299,7 @@ public class SubmergedChestWorldGenerator implements ITreasureWorldGenerator {
 		}
 		Treasure.LOGGER.debug("submerged spawn coords -> {}", markerCoords.toShortString());
 
-		GeneratorResult<ChestGeneratorData> chestResult = chestSelector.generate(world, random, chestCoords, chestRarity, genResult.getData().getChestContext().getState());
+		GeneratorResult<ChestGeneratorData> chestResult = chestSelector.generate(world, random, chestCoords, chestRarity, genResult.getData().getChestContext().getState(), config);
 		if (!chestResult.isSuccess()) {
 			return result.fail();
 		}

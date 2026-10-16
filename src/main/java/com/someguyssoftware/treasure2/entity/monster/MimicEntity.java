@@ -23,6 +23,7 @@ import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -41,6 +42,10 @@ public abstract class MimicEntity extends EntityMob {
 	public float prevLidAngle = 0F;
 	/** Flag whether lid is opening (or closing */
 	public boolean isOpening = true;
+
+	private static final String CHEST_LOOT_TABLE_TAG = "chestLootTable";
+	/** The loot table of the chest this mimic disguised itself as. The mimic drops the chest's full loot roll. */
+	private ResourceLocation chestLootTable;
 
 
 	/**
@@ -140,8 +145,38 @@ public abstract class MimicEntity extends EntityMob {
 	 * 
 	 */
 	@Override
+	public void writeEntityToNBT(NBTTagCompound compound) {
+		super.writeEntityToNBT(compound);
+		if (chestLootTable != null) {
+			compound.setString(CHEST_LOOT_TABLE_TAG, chestLootTable.toString());
+		}
+	}
+
+	@Override
+	public void readEntityFromNBT(NBTTagCompound compound) {
+		super.readEntityFromNBT(compound);
+		if (compound.hasKey(CHEST_LOOT_TABLE_TAG, 8) && !compound.getString(CHEST_LOOT_TABLE_TAG).isEmpty()) {
+			chestLootTable = new ResourceLocation(compound.getString(CHEST_LOOT_TABLE_TAG));
+		}
+	}
+
+	public ResourceLocation getChestLootTable() {
+		return chestLootTable;
+	}
+
+	public void setChestLootTable(ResourceLocation chestLootTable) {
+		this.chestLootTable = chestLootTable;
+	}
+
+	/**
+	 * The chest's loot table if the mimic came from a chest, otherwise a random scarce loot table.
+	 */
+	@Override
 	protected ResourceLocation getLootTable() {
-		ResourceLocation lootTableResourceLocation = selectLootTableResourceLocation(new Random(), Rarity.SCARCE);
+		if (chestLootTable != null) {
+			return chestLootTable;
+		}
+		ResourceLocation lootTableResourceLocation = selectLootTableResourceLocation(getRNG(), Rarity.SCARCE);
 
 		if (lootTableResourceLocation == null) {
 			Treasure.LOGGER.warn("Unable to select a lootTable resource location.");
@@ -178,6 +213,6 @@ public abstract class MimicEntity extends EntityMob {
 			}
 			Treasure.LOGGER.debug("Selected resource location index --> {}", index);
 		}
-		return location.getResourceLocation();
+		return location == null ? null : location.getResourceLocation();
 	}	
 }

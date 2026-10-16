@@ -445,6 +445,11 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		@Comment({ "Enable/Disable whether a milk crate will spawn." })
 		@Name("19. Enable milk crate:")
 		public boolean enableMilkCrate = true;
+
+		@Comment({ "Enable/Disable mimics. When enabled, a generated chest that has a mimic can be one, using each",
+		"chest collection's 'Mimic probability'. A chest's mimic always matches the chest (ex. wood chest -> wood mimic)." })
+		@Name("20. Enable mimics:")
+		public boolean enableMimics = true;
 		
 		@Ignore public Map<String, Boolean> chestEnablementMap = new HashMap<>();
 		

@@ -5,14 +5,21 @@ package com.someguyssoftware.treasure2.block;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
+
+import javax.annotation.Nullable;
 
 import com.someguyssoftware.gottschcore.block.AbstractModContainerBlock;
+import com.someguyssoftware.gottschcore.loot.LootTableShell;
 import com.someguyssoftware.gottschcore.enums.Rotate;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.ILockSlot;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
+import com.someguyssoftware.treasure2.entity.monster.MimicEntity;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.lock.LockState;
+import com.someguyssoftware.treasure2.registry.MimicRegistry;
+import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.ITreasureChestTileEntity;
 
 import net.minecraft.block.material.Material;
@@ -21,11 +28,17 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Mirror;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -361,4 +374,87 @@ public abstract class AbstractChestBlock extends AbstractModContainerBlock imple
 		return this;
 	}
 
+	/**
+	 * Replaces the chest with its mimic. The mimic is always the one registered for this chest block in
+	 * MimicRegistry, so it matches the chest. Anything stored in the chest is dropped, and the mimic
+	 * carries the chest's loot table and drops its full roll when killed.
+	 *
+	 * @param world
+	 * @param pos
+	 * @param state
+	 * @param te the chest's tile entity
+	 * @param player the player that triggered the mimic, or null to target the nearest player
+	 * @param removeBlock false when the block is already being broken
+	 * @return true if a mimic was spawned
+	 */
+	protected boolean spawnMimic(World world, BlockPos pos, IBlockState state, AbstractTreasureChestTileEntity te,
+			@Nullable EntityPlayer player, boolean removeBlock) {
+		Optional<ResourceLocation> mimicName = MimicRegistry.getMimic(this);
+		Entity entity = mimicName.isPresent() ? EntityList.createEntityByIDFromName(mimicName.get(), world) : null;
+		if (!(entity instanceof MimicEntity)) {
+			// flagged as a mimic, but this chest has no (valid) mimic - treat it as a normal chest
+			Treasure.LOGGER.warn("Chest {} @ {} is flagged as a mimic, but has no registered mimic -> {}", getRegistryName(), pos, mimicName.orElse(null));
+			te.setMimic(false);
+			te.markDirty();
+			return false;
+		}
+		MimicEntity mimic = (MimicEntity) entity;
+
+		float yaw;
+		switch (state.getValue(FACING)) {
+		case NORTH:
+			yaw = 180.0F;
+			break;
+		case EAST:
+			yaw = -90.0F;
+			break;
+		case WEST:
+			yaw = 90.0F;
+			break;
+		default:
+			yaw = 0.0F;
+		}
+		mimic.setLocationAndAngles(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, yaw, 0.0F);
+		mimic.rotationYawHead = yaw;
+		mimic.renderYawOffset = yaw;
+		mimic.setChestLootTable(getMimicLootTable(world, te));
+
+		if (player == null) {
+			player = world.getClosestPlayer(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, 16.0D, false);
+		}
+		if (player != null && !player.isCreative() && !player.isSpectator()) {
+			mimic.setAttackTarget(player);
+		}
+
+		// drop anything stored in the chest, then remove the tile entity BEFORE the block, so that
+		// breakBlock() neither drops the chest as an item nor spawns the mimic again.
+		InventoryHelper.dropInventoryItems(world, pos, (IInventory) te);
+		te.setMimic(false);
+		world.removeTileEntity(pos);
+		if (removeBlock) {
+			world.setBlockToAir(pos);
+		}
+
+		world.spawnEntity(mimic);
+		return true;
+	}
+
+	/**
+	 * The chest's loot table, or one selected the same way the chest would have when opened.
+	 * Null lets the mimic fall back to its own loot table.
+	 */
+	@Nullable
+	private ResourceLocation getMimicLootTable(World world, AbstractTreasureChestTileEntity te) {
+		if (te.getLootTable() != null) {
+			return te.getLootTable();
+		}
+		if (te.getGenerationContext() != null && te.getGenerationContext().getChestGeneratorType() != null) {
+			Optional<LootTableShell> shell = te.getGenerationContext().getChestGeneratorType().getChestGenerator()
+					.selectLootTable2(world.rand, te.getGenerationContext().getLootRarity());
+			if (shell.isPresent()) {
+				return shell.get().getResourceLocation();
+			}
+		}
+		return null;
+	}
 }

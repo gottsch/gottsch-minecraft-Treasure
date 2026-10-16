@@ -1,10 +1,10 @@
 {
 	"homepage": "https://minecraft.curseforge.com/projects/treasure2",
 	"promos": {
-		"1.12.2-latest": "2.3.3",
-		"1.12.2-recommended": "2.3.3"
+		"1.12.2-latest": "2.4.0",
+		"1.12.2-recommended": "2.4.0"
 	},
 	"1.12.2": {
-		"2.3.3": "Fixed Wither chests always being empty (#414).\nFixed world gen crash decorating wishing wells with flowers (#357).\nFixed mist effects being applicable to other players by a modified client.\nFixed keys, charms, runestones and adornments losing names/enchantments on the client.\nFixed White Pearl well treasure pool.\nTreasure Tool stacks to 1.\nChest registry is per dimension.\nJar renamed to treasure2-1.12.2-<version>.jar."
+		"2.4.0": "[Should reference teh CHANGELOG"
 	}
 }

@@ -113,52 +113,10 @@ public class MimicChestBlock extends AbstractChestBlock {
 			return true;
 		}
 
-		// get the facing direction of the chest
-		EnumFacing chestFacing = state.getValue(FACING);
-//		Treasure.logger.debug("Mimic facing -> {}", chestFacing);
-		float yaw = 0.0F;
-		switch (chestFacing) {
-		case NORTH:
-			yaw = 180.0F;
-			break;
-		case EAST:
-			yaw = -90.0F;
-			break;
-		case WEST:
-			yaw = 90.0F;
-			break;
-		case SOUTH:
-			yaw = 0.0F;
-			break;
+		// legacy mimic block (pre 2.4.0) - always the mimic registered for this block
+		if (te != null) {
+			spawnMimic(worldIn, pos, state, te, playerIn, true);
 		}
-//		Treasure.logger.debug("Mimic yaw -> {}", yaw);
-
-		// remove the tile entity
-		worldIn.setBlockToAir(pos);
-
-		/*
-		 * spawn the mimic
-		 */
-		MimicEntity mimic = null;
-		try {
-			mimic = getMimicClass().getConstructor(World.class).newInstance(worldIn);
-		} catch (Exception e) {
-			Treasure.LOGGER.error("Error creating mimic:", e);
-		}
-
-		if (mimic != null) {
-			EntityLiving entityLiving = (EntityLiving) mimic;
-
-			// TODO why doesn't this set the initial rotation!!!
-			entityLiving.setLocationAndAngles((double) pos.getX() + 0.5D, (double) pos.getY(),
-					(double) pos.getZ() + 0.5D, yaw, 0.0F);
-			worldIn.spawnEntity(entityLiving);
-
-		}
-
-		// remove the tile entity
-		worldIn.removeTileEntity(pos);
-
 		return true;
 	}
 
@@ -177,7 +135,11 @@ public class MimicChestBlock extends AbstractChestBlock {
 	 */
 	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-		// do nothing
+		// breaking or blowing up a mimic turns it into the mimic
+		TileEntity te = worldIn.getTileEntity(pos);
+		if (WorldInfo.isServerSide(worldIn) && te instanceof AbstractTreasureChestTileEntity) {
+			spawnMimic(worldIn, pos, state, (AbstractTreasureChestTileEntity) te, null, false);
+		}
 	}
 
 	/**

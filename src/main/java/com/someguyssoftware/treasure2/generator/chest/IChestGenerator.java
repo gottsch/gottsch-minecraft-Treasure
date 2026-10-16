@@ -26,6 +26,7 @@ import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
 import com.someguyssoftware.treasure2.config.IChestConfig;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
+import com.someguyssoftware.treasure2.registry.MimicRegistry;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.ChestGeneratorData;
 import com.someguyssoftware.treasure2.generator.GenUtil;
@@ -60,6 +61,21 @@ public interface IChestGenerator {
 
 	default public GeneratorResult<ChestGeneratorData> generate(final World world, final Random random, ICoords coords,
 			final Rarity rarity, IBlockState state) {
+		return generate(world, random, coords, rarity, state, TreasureConfig.CHESTS.surfaceChests.configMap.get(rarity));
+	}
+
+	/**
+	 * 
+	 * @param world
+	 * @param random
+	 * @param coords
+	 * @param rarity
+	 * @param state
+	 * @param config the chest config of the collection being generated (surface or submerged); decides the mimic probability
+	 * @return
+	 */
+	default public GeneratorResult<ChestGeneratorData> generate(final World world, final Random random, ICoords coords,
+			final Rarity rarity, IBlockState state, IChestConfig config) {
 		GeneratorResult<ChestGeneratorData> result = new GeneratorResult<>(ChestGeneratorData.class);
 		result.getData().setSpawnCoords(coords);
 		// select a loot table
@@ -101,6 +117,9 @@ public interface IChestGenerator {
 		
 		// update the backing tile entity's generation contxt
 		addGenerationContext((AbstractTreasureChestTileEntity) tileEntity, rarity);
+
+		// maybe make it a mimic
+		addMimic(random, chest, (AbstractTreasureChestTileEntity) tileEntity, config);
 		
 		// if (!(chest instanceof IMimicBlock)) {
 		// 	logger.debug("Generating loot from loot table for rarity {}", rarity);
@@ -162,22 +181,24 @@ public interface IChestGenerator {
 		
 		AbstractChestBlock chest = (AbstractChestBlock) chestList
 				.get(RandomHelper.randomInt(random, 0, chestList.size() - 1));
-
-		// TODO should have a map of available mimics mapped by chest. for now, since
-		// only one mimic, just test for it determine if should be mimic get the config
-		IChestConfig config = TreasureConfig.CHESTS.surfaceChests.configMap.get(rarity);
-		if (chest == TreasureBlocks.WOOD_CHEST) {
-			if (RandomHelper.checkProbability(random, config.getMimicProbability())) {
-				chest = (AbstractChestBlock) TreasureBlocks.WOOD_MIMIC;
-				LOGGER.debug("Selecting a WOOD MIMIC chest!");
-			}
-		} else if (chest == TreasureBlocks.PIRATE_CHEST) {
-			if (RandomHelper.checkProbability(random, config.getMimicProbability())) {
-				chest = (AbstractChestBlock) TreasureBlocks.PIRATE_MIMIC;
-				LOGGER.debug("Selecting a PIRATE MIMIC chest!");
-			}
-		}
 		return chest;
+	}
+
+	/**
+	 * Flags the chest as a mimic, if mimics are enabled, the chest has a mimic and the config's probability is met.
+	 * Which mimic is decided by the chest block when it springs (see MimicRegistry).
+	 * 
+	 * @param random
+	 * @param chest
+	 * @param tileEntity
+	 * @param config
+	 */
+	default public void addMimic(Random random, AbstractChestBlock chest, AbstractTreasureChestTileEntity tileEntity, IChestConfig config) {
+		if (TreasureConfig.CHESTS.enableMimics && config != null && MimicRegistry.hasMimic(chest)
+				&& RandomHelper.checkProbability(random, config.getMimicProbability())) {
+			tileEntity.setMimic(true);
+			LOGGER.debug("Chest {} is a mimic!", chest.getRegistryName());
+		}
 	}
 
 	/**

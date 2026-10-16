@@ -340,14 +340,15 @@ public class TreasureBlocks {
 		// map the chests by rarity
 		chests = ArrayListMultimap.create();
 
-		// mimics
+		// legacy mimics (pre 2.4.0). kept registered for existing worlds, but no longer generated or in the creative tab -
+		// any chest with a registered mimic can now be a mimic (see MimicRegistry).
 		WOOD_MIMIC = new MimicChestBlock(Treasure.MODID, TreasureConfig.WOOD_MIMIC_ID, WoodChestTileEntity.class,
 				WoodMimicEntity.class, TreasureChestTypes.STANDARD, Rarity.COMMON).setBounds(stdChestBounds)
-				.setHardness(2.5F);
+				.setHardness(2.5F).setCreativeTab(null);
 
 		PIRATE_MIMIC = new MimicChestBlock(Treasure.MODID, TreasureConfig.PIRATE_MIMIC_ID, PirateChestTileEntity.class,
 				PirateMimicEntity.class, TreasureChestTypes.STANDARD, Rarity.SCARCE).setBounds(stdChestBounds)
-				.setHardness(2.5F);
+				.setHardness(2.5F).setCreativeTab(null);
 
 		// gravestone bounds
 		AxisAlignedBB[] gbs = new AxisAlignedBB[4];

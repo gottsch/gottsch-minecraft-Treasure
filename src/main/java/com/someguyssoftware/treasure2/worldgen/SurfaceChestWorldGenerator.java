@@ -376,7 +376,7 @@ public class SurfaceChestWorldGenerator implements ITreasureWorldGenerator {
 			return result.fail();
 		}
 	
-		GeneratorResult<ChestGeneratorData> chestResult = chestGenerator.generate(world, random, chestCoords, chestRarity, genResult.getData().getChestContext().getState());
+		GeneratorResult<ChestGeneratorData> chestResult = chestGenerator.generate(world, random, chestCoords, chestRarity, genResult.getData().getChestContext().getState(), config);
 		if (!chestResult.isSuccess()) {
 			return result.fail();
 		}

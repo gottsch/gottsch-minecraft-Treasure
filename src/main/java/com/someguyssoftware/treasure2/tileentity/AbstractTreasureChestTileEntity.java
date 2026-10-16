@@ -50,6 +50,8 @@ import net.minecraftforge.common.util.Constants;
  *
  */
 public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEntity implements ITreasureChestTileEntity, ITickable {
+	public static final String MIMIC_TAG = "mimic";
+
 	public class GenerationContext {
 		/*
 		 * The rarity level of the loot that the chest will contain
@@ -106,6 +108,12 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	 * Properties detailing how the tile entity was generated
 	 */
 	private GenerationContext generationContext;
+
+	/*
+	 * Whether this chest is a mimic. Which mimic is decided by the chest block (see MimicRegistry),
+	 * so a chest's mimic always matches the chest.
+	 */
+	private boolean mimic;
 
 	private int numberOfSlots = 27; // default size
 	
@@ -277,6 +285,9 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 				contextTag.setString("chestGenType", getGenerationContext().getChestGeneratorType().name());
 				sourceTag.setTag("genContext", contextTag);
 			}
+			if (isMimic()) {
+				sourceTag.setBoolean(MIMIC_TAG, true);
+			}
 		} catch (Exception e) {
 			LOGGER.error("Error writing Properties to NBT:", e);
 		}
@@ -380,6 +391,7 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 				AbstractTreasureChestTileEntity.GenerationContext genContext = this.new GenerationContext(rarity, genType);
 				this.setGenerationContext(genContext);
 			}
+			this.setMimic(sourceTag.getBoolean(MIMIC_TAG));
 		} catch (Exception e) {
 			LOGGER.error("Error reading Properties from NBT:", e);
 		}
@@ -422,7 +434,10 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 
 	@Override
 	public NBTTagCompound getUpdateTag() {
-		return this.writeToNBT(new NBTTagCompound());
+		NBTTagCompound tag = this.writeToNBT(new NBTTagCompound());
+		// never tell the client which chests are mimics
+		tag.removeTag(MIMIC_TAG);
+		return tag;
 	}
 
 	@Override
@@ -740,6 +755,14 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 	@Override
 	public void setSealed(boolean sealed) {
 		this.sealed = sealed;
+	}
+
+	public boolean isMimic() {
+		return mimic;
+	}
+
+	public void setMimic(boolean mimic) {
+		this.mimic = mimic;
 	}
 
 	@Override

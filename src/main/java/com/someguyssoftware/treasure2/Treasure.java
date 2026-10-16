@@ -48,6 +48,7 @@ import com.someguyssoftware.treasure2.command.SpawnRuinsCommand;
 import com.someguyssoftware.treasure2.command.SpawnWellStructureCommand;
 import com.someguyssoftware.treasure2.command.SpawnWitherTreeCommand;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
+import com.someguyssoftware.treasure2.registry.MimicRegistry;
 import com.someguyssoftware.treasure2.enums.WorldGeneratorType;
 import com.someguyssoftware.treasure2.eventhandler.AnvilEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.CharmEventHandler;
@@ -83,6 +84,7 @@ import com.someguyssoftware.treasure2.worldgen.WitherTreeWorldGenerator;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.Mod;
@@ -283,6 +285,12 @@ public class Treasure extends AbstractMod {
 			return;
 
 		super.init(event);
+
+		// register each chest's mimic. the legacy mimic blocks map to the mimic they always were.
+		MimicRegistry.register(TreasureBlocks.WOOD_CHEST.getRegistryName(), new ResourceLocation(MODID, TreasureConfig.WOOD_MIMIC_ID));
+		MimicRegistry.register(TreasureBlocks.PIRATE_CHEST.getRegistryName(), new ResourceLocation(MODID, TreasureConfig.PIRATE_MIMIC_ID));
+		MimicRegistry.register(TreasureBlocks.WOOD_MIMIC.getRegistryName(), new ResourceLocation(MODID, TreasureConfig.WOOD_MIMIC_ID));
+		MimicRegistry.register(TreasureBlocks.PIRATE_MIMIC.getRegistryName(), new ResourceLocation(MODID, TreasureConfig.PIRATE_MIMIC_ID));
 
 		// register world generators
 		WORLD_GENERATORS.put(WorldGeneratorType.SURFACE_CHEST, new SurfaceChestWorldGenerator());

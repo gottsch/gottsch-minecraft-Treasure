@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.0] - Unreleased
+
+### ⚙️ Changed
+- Mimics are no longer separate blocks. Any chest that has a mimic can turn out to be one, and a chest's mimic always matches the chest: a wood chest is always a wood mimic, a pirate chest always a pirate mimic.
+- Killing a mimic drops the loot the chest would have held.
+- Breaking or blowing up a mimic turns it into the mimic instead of dropping a chest.
+- Mimic chances now follow the right settings for underwater chests. Before, underwater chests used the land chest settings.
+- New `Enable mimics` config option to turn mimics off completely.
+- `/t2-chest` has a new `-mimic` option.
+- The old Wood Mimic and Pirate Mimic blocks are no longer generated or in the creative tab. Any already in a world still work.
+
+---
+
 ## [2.3.3] - 2026-10-15
 
 ### 🛠️ Fixed
@@ -12,7 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - A chest whose loot fails to generate is no longer left permanently empty. It stays sealed and tries again the next time it is opened.
 - Fixed a world generation crash when decorating wishing wells with flowers ("Cannot set property ... to dandelion on block minecraft:red_flower"). (#357)
 - On multiplayer servers, a modified client could poison or wither any other player through the mist effects. Mist now only ever affects the player who is standing in it.
-- Keys, lock picks, charms, runestones and adornments no longer lose their custom name, enchantments or other mods' data on the client.
+- Keys, lock picks, charms, runestones and adornments no laonger lose their custom name, enchantments or other mods' data on the client.
 - The White Pearl wishing well never gave its treasure items. It now does.
 - The Treasure Tool now only stacks to 1, which prevents it from being duplicated when crafting.
 - A chest in one dimension no longer stops chests from generating at the same coordinates in another dimension.

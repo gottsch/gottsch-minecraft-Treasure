@@ -162,6 +162,11 @@ public class TreasureChestBlock extends AbstractChestBlock {
 			return true;
 		}
 
+		// a mimic springs before its locks are checked - the locks are part of the disguise
+		if (te != null && te.isMimic() && spawnMimic(worldIn, pos, state, te, playerIn, true)) {
+			return true;
+		}
+
 		boolean isLocked = false;
 		// determine if chest is locked
 		if (te.hasLocks()) {
@@ -187,6 +192,13 @@ public class TreasureChestBlock extends AbstractChestBlock {
 		AbstractTreasureChestTileEntity te = null;
 		if (tileEntity instanceof AbstractTreasureChestTileEntity) {
 			te = (AbstractTreasureChestTileEntity)tileEntity;
+		}
+
+		// a mimic can't be mined or blown up as a chest - it turns into the mimic instead
+		if (te != null && te.isMimic() && WorldInfo.isServerSide(worldIn)
+				&& spawnMimic(worldIn, pos, state, te, null, false)) {
+			super.breakBlock(worldIn, pos, state);
+			return;
 		}
 
 		if (te != null) {
