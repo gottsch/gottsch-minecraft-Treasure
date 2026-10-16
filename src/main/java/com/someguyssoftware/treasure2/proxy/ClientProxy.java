@@ -3,6 +3,8 @@
  */
 package com.someguyssoftware.treasure2.proxy;
 
+import java.util.Arrays;
+
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.client.model.BandedChestModel;
 import com.someguyssoftware.treasure2.client.model.CardboardBoxModel;
@@ -35,7 +37,14 @@ import com.someguyssoftware.treasure2.client.render.tileentity.StrongboxTileEnti
 import com.someguyssoftware.treasure2.client.render.tileentity.TreasureChestTileEntityRenderer;
 import com.someguyssoftware.treasure2.client.render.tileentity.WitherChestTileEntityRenderer;
 import com.someguyssoftware.treasure2.entity.monster.BoundSoulEntity;
+import com.someguyssoftware.treasure2.entity.monster.CardboardBoxMimicEntity;
+import com.someguyssoftware.treasure2.entity.monster.CauldronChestMimicEntity;
+import com.someguyssoftware.treasure2.entity.monster.CrateChestMimicEntity;
+import com.someguyssoftware.treasure2.entity.monster.MilkCrateMimicEntity;
+import com.someguyssoftware.treasure2.entity.monster.MimicEntity;
+import com.someguyssoftware.treasure2.entity.monster.MoldyCrateChestMimicEntity;
 import com.someguyssoftware.treasure2.entity.monster.PirateMimicEntity;
+import com.someguyssoftware.treasure2.entity.monster.VikingChestMimicEntity;
 import com.someguyssoftware.treasure2.entity.monster.WoodMimicEntity;
 import com.someguyssoftware.treasure2.particle.MistTextureStitcher;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
@@ -207,6 +216,17 @@ public class ClientProxy {
 						Minecraft.getMinecraft().getRenderManager(), 
 						new MimicModel(),
 						new ResourceLocation(Treasure.MODID + ":textures/entity/mob/pirate-mimic.png")));
+
+		// TODO Phase 3 - interim: the new mimics use the generic model and wood texture until their own models are ported
+		for (Class<? extends MimicEntity> mimic : Arrays.asList(VikingChestMimicEntity.class, CauldronChestMimicEntity.class,
+				CrateChestMimicEntity.class, MoldyCrateChestMimicEntity.class, CardboardBoxMimicEntity.class,
+				MilkCrateMimicEntity.class)) {
+			RenderingRegistry.registerEntityRenderingHandler(mimic,
+					new MimicEntityRenderer(
+							Minecraft.getMinecraft().getRenderManager(),
+							new MimicModel(),
+							new ResourceLocation(Treasure.MODID + ":textures/entity/mob/wood-mimic.png")));
+		}
 
 		RenderingRegistry.registerEntityRenderingHandler(BoundSoulEntity.class, 	
 				new BoundSoulRenderer(

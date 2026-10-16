@@ -534,6 +534,13 @@ item.treasure2:treasure_tool.name=Treasure Tool
 entity.wood_mimic.name=Wood Mimic
 entity.pirate_mimic.name=Pirate Mimic
 entity.bound_soul.name=Bound Soul
+entity.viking_chest_mimic.name=Viking Chest Mimic
+entity.cauldron_chest_mimic.name=Cauldron Chest Mimic
+entity.crate_chest_mimic.name=Crate Mimic
+entity.moldy_crate_chest_mimic.name=Moldy Crate Mimic
+entity.cardboard_box_mimic.name=Cardboard Box Mimic
+entity.milk_crate_mimic.name=Milk Crate Mimic
+sounds.treasure2.ambient_mimic=Mimic chatters
 
 #groups
 itemGroup.treasure2:treasure_tab=Treasure2!

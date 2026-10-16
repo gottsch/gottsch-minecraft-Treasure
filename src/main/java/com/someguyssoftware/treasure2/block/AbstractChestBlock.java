@@ -418,6 +418,8 @@ public abstract class AbstractChestBlock extends AbstractModContainerBlock imple
 		mimic.rotationYawHead = yaw;
 		mimic.renderYawOffset = yaw;
 		mimic.setChestLootTable(getMimicLootTable(world, te));
+		// a sprung mimic is awake straight away, lid chomping, whether or not it has a target
+		mimic.setActive(true);
 
 		if (player == null) {
 			player = world.getClosestPlayer(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, 16.0D, false);

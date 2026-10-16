@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Servers no longer fill their log with "sent a mist message for another player" warnings when several players stand in the same poison or wither mist (caused by the 2.3.3 mist fix).
 - The in-game "update available" notice never worked for 1.12.2: the mod read the update file of a different Minecraft version. It now reads the 1.12.2 one.
 
+### ✨ Added
+- Six new mimics: Viking chest, Cauldron chest, Crate, Moldy Crate, Cardboard Box and Milk Crate. Each can hide as its matching chest and has its own spawn egg.
+- Mimics now make a quiet chattering sound now and then, so a careful listener can catch one.
+
 ### ⚙️ Changed
 - Mimics are no longer separate blocks. Any chest that has a mimic can turn out to be one, and a chest's mimic always matches the chest: a wood chest is always a wood mimic, a pirate chest always a pirate mimic.
 - Killing a mimic drops the loot the chest would have held.
@@ -19,6 +23,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New `Enable mimics` config option to turn mimics off completely.
 - `/t2-chest` has a new `-mimic` option.
 - The old Wood Mimic and Pirate Mimic blocks are no longer generated or in the creative tab. Any already in a world still work.
+- A mimic that springs from a chest snaps its lid from the moment it appears. One hatched from a spawn egg sits with its lid shut, like a chest, until it first finds someone to attack.
+- A mimic now faces the same way as the chest it came from, instead of turning round to face south when it appears.
 
 ---
 

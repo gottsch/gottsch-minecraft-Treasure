@@ -81,6 +81,12 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	// mimics
 	@Ignore public static final String WOOD_MIMIC_ID = "wood_mimic";
 	@Ignore public static final String PIRATE_MIMIC_ID = "pirate_mimic";
+	@Ignore public static final String VIKING_CHEST_MIMIC_ID = "viking_chest_mimic";
+	@Ignore public static final String CAULDRON_CHEST_MIMIC_ID = "cauldron_chest_mimic";
+	@Ignore public static final String CRATE_CHEST_MIMIC_ID = "crate_chest_mimic";
+	@Ignore public static final String MOLDY_CRATE_CHEST_MIMIC_ID = "moldy_crate_chest_mimic";
+	@Ignore public static final String CARDBOARD_BOX_MIMIC_ID = "cardboard_box_mimic";
+	@Ignore public static final String MILK_CRATE_MIMIC_ID = "milk_crate_mimic";
 
 	// locks
 	@Ignore public static final String WOOD_LOCK_ID = "wood_lock";
