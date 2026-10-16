@@ -92,10 +92,11 @@ public class ChestGenerationHelper {
      * @param blockEntity the block entity of the chest.
      * @param rarity      the rarity of the chest.
      * @param player      the player context, can be null.
+     * @return true if loot was generated into the chest, false if no loot table could be used.
      */
-    public static void fillChest(final ServerLevel level, RandomSource random, final BlockEntity blockEntity, IRarity rarity, Player player) {
+    public static boolean fillChest(final ServerLevel level, RandomSource random, final BlockEntity blockEntity, IRarity rarity, Player player) {
         if (!(blockEntity instanceof AbstractTreasureChestBlockEntity chestBlockEntity)) {
-            return;
+            return false;
         }
 
         // guard against a missing generation context (e.g. sealed with no rarity ever recorded) so
@@ -107,19 +108,19 @@ public class ChestGenerationHelper {
         }
         final IRarity finalRarity = rarity;
 
-        chestBlockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(itemHandler -> {
+        return chestBlockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).map(itemHandler -> {
             // 1. select a loot table for the chest
             Optional<ResourceLocation> lootTableIdOpt = selectLootTable(chestBlockEntity, random, finalRarity);
             if (lootTableIdOpt.isEmpty()) {
                 Treasure.LOGGER.warn("could not determine a loot table for chest at -> {}", chestBlockEntity.getBlockPos());
-                return;
+                return false;
             }
             ResourceLocation lootTableId = lootTableIdOpt.get();
 
             LootTable lootTable = LootTableRegistry.getLootTable(level, lootTableId);
             if (lootTable == LootTable.EMPTY) {
                 Treasure.LOGGER.warn("unable to load lootTable -> {}", lootTableId);
-                return;
+                return false;
             }
             Treasure.LOGGER.debug("selected loot table -> {} for chest at -> {}", lootTableId, chestBlockEntity.getBlockPos());
 
@@ -149,7 +150,8 @@ public class ChestGenerationHelper {
 
             // 7. top up the empty slots from the caller's supplemental table, if one was given.
             addSupplementalLoot(level, random, chestBlockEntity, (ItemStackHandler) itemHandler, player);
-        });
+            return true;
+        }).orElse(false);
     }
 
     /**

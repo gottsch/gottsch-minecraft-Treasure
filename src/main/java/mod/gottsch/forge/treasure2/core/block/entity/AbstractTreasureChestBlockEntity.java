@@ -180,14 +180,15 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 //				Treasure.LOGGER.debug("chest gen  -> {}", chestGenerator.get().getClass().getSimpleName());
 				// fill the chest with loot
 //				chestGenerator.get().fillChest(getLevel(), getLevel().getRandom(), this, this.getGenerationContext().getLootRarity(), playerEntity);
-				ChestGenerationHelper.fillChest((ServerLevel) getLevel(), getLevel().getRandom(), this, rarityEntry, playerEntity);
+				// only clear the seal once the chest is actually filled, so a failed fill doesn't
+				// permanently strand the chest empty - it will simply retry on the next open.
+				if (ChestGenerationHelper.fillChest((ServerLevel) getLevel(), getLevel().getRandom(), this, rarityEntry, playerEntity)) {
+					this.setSealed(false);
+				}
 //			}
 //			else {
 //				Treasure.LOGGER.warn("treasure chest at -> {} does not reference a valid generator -> {}", this.worldPosition, chestGenerator.get().getClass().getSimpleName());
 //			}
-			// only clear the seal once the chest is actually filled, so a failed fill doesn't
-			// permanently strand the chest empty - it will simply retry on the next open.
-			this.setSealed(false);
 		}
 		return createChestContainerMenu(windowId, playerInventory, playerEntity);
 	}

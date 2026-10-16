@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.1.1] - 2026-10-16
+
+### Changed
+- On a server, a modified client could make poison and wither mist hit any player it liked, wherever they were. Mist now only ever affects the player actually standing in it.
+- A chest could open completely empty and stay that way if its loot couldn't be generated the first time it was opened. It now stays sealed and tries again the next time it's opened, instead of being emptied for good.
+
 ## [4.1.0] - 2026-08-18
 
 ### Added
