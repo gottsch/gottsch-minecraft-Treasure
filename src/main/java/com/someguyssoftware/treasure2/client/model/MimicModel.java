@@ -163,11 +163,13 @@ public class MimicModel extends ModelBase {
 		// start render matrix
 		GlStateManager.pushMatrix();
 
-		// (rotate 180 degrees around the z-axis)
-		GlStateManager.rotate(15F, 1.0F, 0F, 0F);
+		// an active mimic leans forward. a non-active one sits flat on the ground like a chest.
+		if (!(entity instanceof MimicEntity) || ((MimicEntity) entity).isActive()) {
+			GlStateManager.rotate(15F, 1.0F, 0F, 0F);
 
-		// move mimic up slight so as not to be in the ground
-		GlStateManager.translate(0, -0.2F, -0.2F);
+			// move mimic up slight so as not to be in the ground
+			GlStateManager.translate(0, -0.2F, -0.2F);
+		}
 
 		base.render(f5);
 		lid.render(f5);

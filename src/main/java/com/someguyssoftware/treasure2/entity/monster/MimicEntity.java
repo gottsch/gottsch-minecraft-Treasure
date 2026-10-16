@@ -6,6 +6,8 @@ package com.someguyssoftware.treasure2.entity.monster;
 import java.util.List;
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import com.someguyssoftware.gottschcore.loot.LootTableShell;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.treasure2.Treasure;
@@ -15,7 +17,9 @@ import com.someguyssoftware.treasure2.sound.TreasureSounds;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
@@ -30,9 +34,12 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
@@ -81,6 +88,8 @@ public abstract class MimicEntity extends EntityMob implements IEntityAdditional
 	 */
 	protected void initEntityAI() {
 		this.tasks.addTask(0, new EntityAISwimming(this));
+		// while non-active, sit still like a chest (blocks moving and looking; targeting still runs)
+		this.tasks.addTask(1, new EntityAIDormant(this));
 		this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.0D, false));
 		this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D));
 		this.tasks.addTask(8, new EntityAILookIdle(this));
@@ -125,9 +134,11 @@ public abstract class MimicEntity extends EntityMob implements IEntityAdditional
 			}
 		}
 		else {
-			// close the lid and sit still like a chest
+			// close the lid and sit still like a chest, squared up to a chest facing (on both sides, so the client's
+			// interpolated body yaw can't drift off it)
 			lidAngle = Math.max(0.0F, lidAngle - 0.1F);
 			isOpening = true;
+			faceLikeChest();
 		}
 	}
 
@@ -258,8 +269,91 @@ public abstract class MimicEntity extends EntityMob implements IEntityAdditional
 		return this.dataManager.get(ACTIVE);
 	}
 
+	/**
+	 * Squares the mimic up to the nearest of the four chest facings (N, E, S, W).
+	 */
+	public void faceLikeChest() {
+		float yaw = Math.round(MathHelper.wrapDegrees(rotationYaw) / 90.0F) * 90.0F;
+		rotationYaw = yaw;
+		prevRotationYaw = yaw;
+		rotationYawHead = yaw;
+		prevRotationYawHead = yaw;
+		renderYawOffset = yaw;
+		prevRenderYawOffset = yaw;
+		rotationPitch = 0.0F;
+		prevRotationPitch = 0.0F;
+	}
+
+	/**
+	 * A spawn egg gives the mimic a random yaw - square it up like a placed chest.
+	 */
+	@Override
+	@Nullable
+	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
+		livingdata = super.onInitialSpawn(difficulty, livingdata);
+		if (!isActive()) {
+			faceLikeChest();
+		}
+		return livingdata;
+	}
+
+	/**
+	 * Keeps a non-active mimic still and squared up like a chest. Uses all the movement, look and jump mutex bits, so
+	 * wandering, looking around and attacking can't run until the mimic becomes active (when it gets a target).
+	 */
+	static class EntityAIDormant extends EntityAIBase {
+		private final MimicEntity mimic;
+
+		EntityAIDormant(MimicEntity mimic) {
+			this.mimic = mimic;
+			setMutexBits(7);
+		}
+
+		@Override
+		public boolean shouldExecute() {
+			return !mimic.isActive();
+		}
+
+		@Override
+		public void startExecuting() {
+			mimic.getNavigator().clearPath();
+		}
+
+		@Override
+		public void updateTask() {
+			mimic.getNavigator().clearPath();
+			mimic.faceLikeChest();
+		}
+	}
+
 	public void setActive(boolean active) {
 		this.dataManager.set(ACTIVE, active);
+	}
+
+	/**
+	 * Using a non-active mimic wakes it, whoever the player is. Waking doesn't target the player - targeting is left to
+	 * the AI, which ignores creative and spectator players.
+	 */
+	@Override
+	protected boolean processInteract(EntityPlayer player, EnumHand hand) {
+		if (!isActive()) {
+			if (!world.isRemote) {
+				setActive(true);
+			}
+			return true;
+		}
+		return super.processInteract(player, hand);
+	}
+
+	/**
+	 * Being hurt by anything wakes a non-active mimic.
+	 */
+	@Override
+	public boolean attackEntityFrom(DamageSource source, float amount) {
+		if (!world.isRemote && !isActive() && !isEntityInvulnerable(source)) {
+			setActive(true);
+		}
+		return super.attackEntityFrom(source, amount);
 	}
 
 	public boolean hasTarget() {
