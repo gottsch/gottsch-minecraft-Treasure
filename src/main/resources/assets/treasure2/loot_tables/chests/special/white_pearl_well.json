@@ -12,7 +12,7 @@
 			"entries": [
                 {
                     "type": "loot_table",
-                    "name": "treasure2:pools/treasure/rare",
+                    "name": "treasure2:pools/treasure/rare_treasure",
                     "weight": 1
                 }
 			]

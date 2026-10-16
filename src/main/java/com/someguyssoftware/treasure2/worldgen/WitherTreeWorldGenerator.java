@@ -232,7 +232,7 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 
 				if (result.isSuccess()) {
 					// add to registry
-					ChestRegistry.getInstance().register(coords.toShortString(), new ChestInfo(Rarity.SCARCE, coords));
+					ChestRegistry.getInstance().register(new ChestInfo(Rarity.SCARCE, coords, world.provider.getDimension()));
     				WitherTreeRegistry.getInstance().register(dimensionID, coords, biomeID);
 				}
 			}
@@ -693,7 +693,7 @@ public class WitherTreeWorldGenerator implements ITreasureWorldGenerator {
 		double minDistanceSq = minDistance * minDistance;
 
 		// get a list of dungeons
-		List<ChestInfo> infos = ChestRegistry.getInstance().getValues();
+		List<ChestInfo> infos = ChestRegistry.getInstance().getValues(world.provider.getDimension());
 
 		if (infos == null || infos.size() == 0) {
 			Treasure.LOGGER

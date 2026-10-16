@@ -13,6 +13,7 @@ import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.util.ShareTagUtil;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.block.ITreasureChestProxy;
 import com.someguyssoftware.treasure2.capability.DurabilityCapability;
@@ -121,25 +122,23 @@ public class KeyItem extends ModItem implements IKeyEffects {
 	 * or having the client update when the Anvil GUI is open.
 	 */
 	@Override
-    public NBTTagCompound getNBTShareTag(ItemStack stack) {
-		NBTTagCompound nbt = null;
-		// read effective max damage cap -> write nbt
-		nbt = (NBTTagCompound) CAPABILITY_STORAGE.writeNBT(
-				TreasureCapabilities.DURABILITY, 
-				stack.getCapability(TreasureCapabilities.DURABILITY, null), null);
-		return nbt;
+	public NBTTagCompound getNBTShareTag(ItemStack stack) {
+		// keep the stack's own tag and add the capabilities to it
+		NBTTagCompound capabilities = new NBTTagCompound();
+		ShareTagUtil.put(capabilities, "durability", stack.getCapability(TreasureCapabilities.DURABILITY, null) == null ? null :
+				CAPABILITY_STORAGE.writeNBT(TreasureCapabilities.DURABILITY, stack.getCapability(TreasureCapabilities.DURABILITY, null), null));
+		return ShareTagUtil.create(stack, capabilities);
 	}
 	
-    @Override
-    public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt) {
-        super.readNBTShareTag(stack, nbt);
-        // read nbt -> write key item
-        CAPABILITY_STORAGE.readNBT(
-        		TreasureCapabilities.DURABILITY, 
-				stack.getCapability(TreasureCapabilities.DURABILITY, null), 
-				null,
-				nbt);
-    }
+	@Override
+	public void readNBTShareTag(ItemStack stack, @Nullable NBTTagCompound nbt) {
+		// the stack's tag must not include the capabilities
+		super.readNBTShareTag(stack, ShareTagUtil.getStackTag(nbt));
+		NBTTagCompound capabilities = ShareTagUtil.getCapabilities(nbt);
+		if (capabilities.hasKey("durability") && stack.getCapability(TreasureCapabilities.DURABILITY, null) != null) {
+			CAPABILITY_STORAGE.readNBT(TreasureCapabilities.DURABILITY, stack.getCapability(TreasureCapabilities.DURABILITY, null), null, capabilities.getTag("durability"));
+		}
+	}
     
 	/**
 	 * Format:

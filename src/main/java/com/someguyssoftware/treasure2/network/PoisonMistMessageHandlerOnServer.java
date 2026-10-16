@@ -8,7 +8,6 @@ import com.someguyssoftware.treasure2.Treasure;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -65,8 +64,12 @@ public class PoisonMistMessageHandlerOnServer implements IMessageHandler<PoisonM
 	   */
 	  void processMessage(PoisonMistMessageToServer message, EntityPlayerMP sendingPlayer) {
 		  try {
-	        MinecraftServer minecraftServer = sendingPlayer.mcServer;
-	        EntityPlayerMP player = minecraftServer.getPlayerList().getPlayerByUsername(message.getPlayerName());
+	        // only ever affect the player that sent the message - never trust a player name supplied by the client.
+	        EntityPlayerMP player = sendingPlayer;
+	        if (!player.getName().equals(message.getPlayerName())) {
+	        	Treasure.LOGGER.warn("{} sent a mist message for another player -> {}", player.getName(), message.getPlayerName());
+	        	return;
+	        }
 	        
 	        if (player != null) {
 		        PotionEffect potionEffect = player.getActivePotionEffect(MobEffects.POISON);

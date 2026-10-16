@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.ListMultimap;
@@ -52,6 +53,14 @@ public class ChestRegistry {
 		return registry.containsKey(key);
 	}
 	
+	/**
+	 * Registers a ChestInfo, keyed by its dimension and coords.
+	 * @param info
+	 */
+	public void register(final ChestInfo info) {
+		register(info.getDimension() + ":" + info.getCoords().toShortString(), info);
+	}
+
 	/**
 	 * Registers a ChestInfo with a key.
 	 * @param key
@@ -101,6 +110,15 @@ public class ChestRegistry {
 		return new ArrayList<>(set);
 	}
 	
+	/**
+	 * This will not update parent collection.
+	 * @param dimension
+	 * @return the chests registered in the dimension
+	 */
+	public List<ChestInfo> getValues(int dimension) {
+		return getValues().stream().filter(info -> info.getDimension() == dimension).collect(Collectors.toList());
+	}
+
 	public void clear() {
 		registry.clear();
 	}

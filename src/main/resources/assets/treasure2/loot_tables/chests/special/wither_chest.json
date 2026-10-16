@@ -7,7 +7,7 @@
 			"name" : "combat",
 			"rolls" : 2,
 			"entries" : [ {
-				"type" : "minecraft:loot_table",
+				"type" : "loot_table",
 				"name" : "treasure2:pools/combat/scarce",
 				"weight" : 20
 			} ]

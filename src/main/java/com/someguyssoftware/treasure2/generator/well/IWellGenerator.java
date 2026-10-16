@@ -3,6 +3,8 @@
  */
 package com.someguyssoftware.treasure2.generator.well;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.cube.Cube;
@@ -18,6 +20,7 @@ import com.someguyssoftware.treasure2.generator.IGeneratorResult;
 import com.someguyssoftware.treasure2.world.gen.structure.TemplateHolder;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.BlockDirt;
 import net.minecraft.block.BlockDirt.DirtType;
 import net.minecraft.block.BlockFlower;
@@ -136,7 +139,7 @@ public interface IWellGenerator<RESULT extends IGeneratorResult<?>> {
 	 * @param meta
 	 */
 	public default IBlockState getDecorationBlockState(World world, Block block) {
-		Random random = new Random();
+		Random random = world.rand;
 		if (block == Blocks.RED_FLOWER) {
 			return getRedFlowerBlockState(world, random, block);
 		}
@@ -157,9 +160,9 @@ public interface IWellGenerator<RESULT extends IGeneratorResult<?>> {
 	 * @return
 	 */
 	public default IBlockState getRedFlowerBlockState(World world, Random random, Block block) {
-		int meta = random.nextInt(8)+1;
-		IBlockState blockState =block.getDefaultState().withProperty(((BlockFlower)block).getTypeProperty(), BlockFlower.EnumFlowerType.values()[meta]);
-		return blockState;
+		// select from the values the block allows rather than indexing EnumFlowerType directly -
+		// a red flower can not be a dandelion
+		return withRandomValue(random, block.getDefaultState(), ((BlockFlower)block).getTypeProperty());
 	}
 	
 	/**
@@ -181,7 +184,21 @@ public interface IWellGenerator<RESULT extends IGeneratorResult<?>> {
 	 * @return
 	 */
 	public default IBlockState getGrassBlockState(World world, Random random, Block block) {
-		int meta = random.nextInt(3);
-		return block.getDefaultState().withProperty(BlockTallGrass.TYPE, BlockTallGrass.EnumType.values()[meta]);	
+		return withRandomValue(random, block.getDefaultState(), BlockTallGrass.TYPE);
+	}
+
+	/**
+	 * Sets the property to a random value that is allowed by the block state.
+	 * @param random
+	 * @param state
+	 * @param property
+	 * @return
+	 */
+	public default <T extends Comparable<T>> IBlockState withRandomValue(Random random, IBlockState state, IProperty<T> property) {
+		List<T> values = new ArrayList<>(property.getAllowedValues());
+		if (values.isEmpty()) {
+			return state;
+		}
+		return state.withProperty(property, values.get(random.nextInt(values.size())));
 	}
 }
