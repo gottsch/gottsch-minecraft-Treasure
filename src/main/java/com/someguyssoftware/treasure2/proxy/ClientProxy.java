@@ -14,9 +14,15 @@ import com.someguyssoftware.treasure2.client.model.CompressorChestModel;
 import com.someguyssoftware.treasure2.client.model.CrateChestModel;
 import com.someguyssoftware.treasure2.client.model.DreadPirateChestModel;
 import com.someguyssoftware.treasure2.client.model.MilkCrateModel;
-import com.someguyssoftware.treasure2.client.model.MimicModel;
 import com.someguyssoftware.treasure2.client.model.OysterChestModel;
 import com.someguyssoftware.treasure2.client.model.SafeModel;
+import com.someguyssoftware.treasure2.client.model.entity.CardboardBoxMimicModel;
+import com.someguyssoftware.treasure2.client.model.entity.CauldronChestMimicModel;
+import com.someguyssoftware.treasure2.client.model.entity.CrateChestMimicModel;
+import com.someguyssoftware.treasure2.client.model.entity.MilkCrateMimicModel;
+import com.someguyssoftware.treasure2.client.model.entity.MoldyCrateChestMimicModel;
+import com.someguyssoftware.treasure2.client.model.entity.PirateChestMimicModel;
+import com.someguyssoftware.treasure2.client.model.entity.VikingChestMimicModel;
 import com.someguyssoftware.treasure2.client.model.entity.WoodChestMimicModel;
 import com.someguyssoftware.treasure2.client.model.SkullChestModel;
 import com.someguyssoftware.treasure2.client.model.SpiderChestModel;
@@ -73,6 +79,7 @@ import com.someguyssoftware.treasure2.tileentity.WitherChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.WoodChestTileEntity;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelZombie;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
@@ -206,29 +213,14 @@ public class ClientProxy {
 		/*
 		 *  register the entity render handlers
 		 */		
-		RenderingRegistry.registerEntityRenderingHandler(WoodMimicEntity.class, 	
-				new MimicEntityRenderer(
-						Minecraft.getMinecraft().getRenderManager(), 
-						new WoodChestMimicModel(),
-						new ResourceLocation(Treasure.MODID + ":textures/entity/mob/wood_chest_mimic.png"),
-						new ResourceLocation(Treasure.MODID + ":textures/entity/mob/wood_chest_mimic_eyes.png")));
-
-		RenderingRegistry.registerEntityRenderingHandler(PirateMimicEntity.class,	
-				new MimicEntityRenderer(
-						Minecraft.getMinecraft().getRenderManager(), 
-						new MimicModel(),
-						new ResourceLocation(Treasure.MODID + ":textures/entity/mob/pirate-mimic.png")));
-
-		// TODO Phase 3 - interim: the new mimics use the generic model and wood texture until their own models are ported
-		for (Class<? extends MimicEntity> mimic : Arrays.asList(VikingChestMimicEntity.class, CauldronChestMimicEntity.class,
-				CrateChestMimicEntity.class, MoldyCrateChestMimicEntity.class, CardboardBoxMimicEntity.class,
-				MilkCrateMimicEntity.class)) {
-			RenderingRegistry.registerEntityRenderingHandler(mimic,
-					new MimicEntityRenderer(
-							Minecraft.getMinecraft().getRenderManager(),
-							new MimicModel(),
-							new ResourceLocation(Treasure.MODID + ":textures/entity/mob/wood-mimic.png")));
-		}
+		registerMimicRenderer(WoodMimicEntity.class, new WoodChestMimicModel(), "wood_chest_mimic");
+		registerMimicRenderer(PirateMimicEntity.class, new PirateChestMimicModel(), "pirate_chest_mimic");
+		registerMimicRenderer(VikingChestMimicEntity.class, new VikingChestMimicModel(), "viking_chest_mimic");
+		registerMimicRenderer(CauldronChestMimicEntity.class, new CauldronChestMimicModel(), "cauldron_chest_mimic");
+		registerMimicRenderer(CrateChestMimicEntity.class, new CrateChestMimicModel(), "crate_chest_mimic");
+		registerMimicRenderer(MoldyCrateChestMimicEntity.class, new MoldyCrateChestMimicModel(), "moldy_crate_chest_mimic");
+		registerMimicRenderer(CardboardBoxMimicEntity.class, new CardboardBoxMimicModel(), "cardboard_box_mimic");
+		registerMimicRenderer(MilkCrateMimicEntity.class, new MilkCrateMimicModel(), "milk_crate_mimic");
 
 		RenderingRegistry.registerEntityRenderingHandler(BoundSoulEntity.class, 	
 				new BoundSoulRenderer(
@@ -238,5 +230,20 @@ public class ClientProxy {
 		//	    {
 		//	        INSTANCE.entityRenderers.put(entityClass, renderFactory);
 		//	    }
+	}
+
+	/**
+	 * Registers a mimic's renderer with its model, texture and glowing eyes texture.
+	 * @param mimic
+	 * @param model
+	 * @param textureName the texture's name in textures/entity/mob/; the eyes texture is the same name + "_eyes"
+	 */
+	private static void registerMimicRenderer(Class<? extends MimicEntity> mimic, ModelBase model, String textureName) {
+		RenderingRegistry.registerEntityRenderingHandler(mimic,
+				new MimicEntityRenderer(
+						Minecraft.getMinecraft().getRenderManager(),
+						model,
+						new ResourceLocation(Treasure.MODID, "textures/entity/mob/" + textureName + ".png"),
+						new ResourceLocation(Treasure.MODID, "textures/entity/mob/" + textureName + "_eyes.png")));
 	}
 }

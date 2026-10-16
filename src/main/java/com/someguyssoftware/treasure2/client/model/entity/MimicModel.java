@@ -1,5 +1,9 @@
 package com.someguyssoftware.treasure2.client.model.entity;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import com.someguyssoftware.treasure2.entity.monster.MimicEntity;
 
 import net.minecraft.client.model.ModelBase;
@@ -20,9 +24,20 @@ public abstract class MimicModel extends ModelBase {
 	/** The rotation of the diamond-shaped teeth. */
 	protected static final float TOOTH_RADIANS = 0.7854F;
 
+	/** Parts that would give the disguise away (teeth, flesh), so they are hidden until the mimic wakes. */
+	private final List<ModelRenderer> hiddenWhileDormant = new ArrayList<>();
+
 	@Override
 	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 		setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
+		renderModel(scale);
+	}
+
+	/**
+	 * Renders the model's root parts. Override when there is more than one root.
+	 * @param scale
+	 */
+	protected void renderModel(float scale) {
 		getBody().render(scale);
 	}
 
@@ -34,10 +49,13 @@ public abstract class MimicModel extends ModelBase {
 		getBody().rotateAngleX = 0F;
 		getBody().rotationPointY = getBodyY();
 		getLid().rotateAngleX = 0F;
+		for (ModelRenderer part : hiddenWhileDormant) {
+			part.showModel = mimic.isActive();
+		}
 
 		if (!mimic.isActive()) {
 			// sit closed, like a chest
-			openAnim(mimic, ageInTicks, 0F);
+			openAnim(mimic, limbSwing, limbSwingAmount, ageInTicks, 0F);
 			return;
 		}
 
@@ -45,19 +63,21 @@ public abstract class MimicModel extends ModelBase {
 		float openAge = mimic.getActiveTicks() + (ageInTicks - mimic.ticksExisted);
 		float timeSlice = openAge / getMaxOpenEventTime();
 		if (timeSlice <= 1F) {
-			openAnim(mimic, ageInTicks, timeSlice);
+			openAnim(mimic, limbSwing, limbSwingAmount, ageInTicks, timeSlice);
 		}
 		else {
-			activeAnim(mimic, ageInTicks);
+			activeAnim(mimic, limbSwing, limbSwingAmount, ageInTicks);
 		}
 	}
 
 	/**
 	 * Concrete classes should override to set any additional animations.
 	 * @param mimic
+	 * @param limbSwing
+	 * @param limbSwingAmount
 	 * @param ageInTicks
 	 */
-	public void activeAnim(MimicEntity mimic, float ageInTicks) {
+	public void activeAnim(MimicEntity mimic, float limbSwing, float limbSwingAmount, float ageInTicks) {
 		getBody().rotateAngleX = BODY_RADIANS; // 15 degrees
 
 		// chomp
@@ -72,12 +92,15 @@ public abstract class MimicModel extends ModelBase {
 	}
 
 	/**
-	 * Poses the model part way open. A time slice of 0 is the closed chest, 1 is fully open.
+	 * Poses the model part way open. A time slice of 0 is the closed chest, 1 is fully open. The model is shared by
+	 * every mimic of its kind, so this must set every part that activeAnim() moves.
 	 * @param mimic
+	 * @param limbSwing
+	 * @param limbSwingAmount
 	 * @param ageInTicks
 	 * @param timeSlice
 	 */
-	public abstract void openAnim(MimicEntity mimic, float ageInTicks, float timeSlice);
+	public abstract void openAnim(MimicEntity mimic, float limbSwing, float limbSwingAmount, float ageInTicks, float timeSlice);
 
 	public abstract ModelRenderer getBody();
 	public abstract float getBodyY();
@@ -97,6 +120,14 @@ public abstract class MimicModel extends ModelBase {
 
 	public void bobMouth(ModelRenderer mouth, float originRot, float maxRot, float age) {
 		mouth.rotateAngleX = -(degToRad(originRot + MathHelper.cos(age * 0.25F) * maxRot));
+	}
+
+	/**
+	 * Hides these parts (and their children) while the mimic is non-active.
+	 * @param parts
+	 */
+	protected void hideWhileDormant(ModelRenderer... parts) {
+		hiddenWhileDormant.addAll(Arrays.asList(parts));
 	}
 
 	/**

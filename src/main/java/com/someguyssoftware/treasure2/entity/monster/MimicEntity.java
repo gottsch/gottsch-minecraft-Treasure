@@ -17,6 +17,7 @@ import com.someguyssoftware.treasure2.sound.TreasureSounds;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -37,6 +38,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
@@ -61,13 +63,6 @@ public abstract class MimicEntity extends EntityMob implements IEntityAdditional
 
 	private static final String ACTIVE_TAG = "active";
 	private static final String AMOUNT_TAG = "amount";
-
-	/** The current angle of the lid (between 0 and 1) */
-	public float lidAngle = 0F;
-	/** The angle of the lid last tick */
-	public float prevLidAngle = 0F;
-	/** Flag whether lid is opening (or closing */
-	public boolean isOpening = true;
 
 	/** Ticks since the mimic woke (capped), so the models can play their open animation. Not saved. */
 	private int activeTicks = 0;
@@ -119,30 +114,12 @@ public abstract class MimicEntity extends EntityMob implements IEntityAdditional
 	public void onUpdate() {
 		super.onUpdate();
 
-		prevLidAngle = lidAngle;
 		if (isActive()) {
 			activeTicks = Math.min(activeTicks + 1, MAX_ACTIVE_TICKS);
-			// chomp
-			if (lidAngle <= 0F) {
-				lidAngle = 0.0F;
-				isOpening = true;
-			}
-			if (lidAngle >= 1.0F) {
-				lidAngle = 1.0F;
-				isOpening = false;
-			}
-
-			if (isOpening) {
-				lidAngle += 0.1F;
-			} else {
-				lidAngle -= 0.1F;
-			}
 		}
 		else {
-			// close the lid and sit still like a chest, squared up to a chest facing (on both sides, so the client's
-			// interpolated body yaw can't drift off it)
-			lidAngle = Math.max(0.0F, lidAngle - 0.1F);
-			isOpening = true;
+			// sit still like a chest, squared up to a chest facing (on both sides, so the client's interpolated body
+			// yaw can't drift off it)
 			activeTicks = 0;
 			faceLikeChest();
 		}
@@ -291,16 +268,54 @@ public abstract class MimicEntity extends EntityMob implements IEntityAdditional
 	}
 
 	/**
-	 * A spawn egg gives the mimic a random yaw - square it up like a placed chest.
+	 * A spawn egg gives the mimic a random yaw. Turn it to face the nearest player (the one placing it), squared up, the
+	 * way a placed chest faces whoever places it.
 	 */
 	@Override
 	@Nullable
 	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
 		livingdata = super.onInitialSpawn(difficulty, livingdata);
 		if (!isActive()) {
+			EntityPlayer player = world.getClosestPlayerToEntity(this, 16.0D);
+			if (player != null) {
+				rotationYaw = (float)(MathHelper.atan2(player.posZ - posZ, player.posX - posX) * (180D / Math.PI)) - 90.0F;
+			}
 			faceLikeChest();
 		}
 		return livingdata;
+	}
+
+	/**
+	 * A non-active mimic is solid like a chest: it can't be pushed and nothing walks through it.
+	 */
+	@Override
+	@Nullable
+	public AxisAlignedBB getCollisionBoundingBox() {
+		return isActive() || !isEntityAlive() ? null : getEntityBoundingBox();
+	}
+
+	@Override
+	public boolean canBePushed() {
+		return isActive() && super.canBePushed();
+	}
+
+	@Override
+	public void applyEntityCollision(Entity entity) {
+		if (isActive()) {
+			super.applyEntityCollision(entity);
+		}
+	}
+
+	@Override
+	protected void collideWithEntity(Entity entity) {
+		if (isActive()) {
+			super.collideWithEntity(entity);
+		}
+	}
+
+	@Override
+	public boolean isPushedByWater() {
+		return isActive() && super.isPushedByWater();
 	}
 
 	/**

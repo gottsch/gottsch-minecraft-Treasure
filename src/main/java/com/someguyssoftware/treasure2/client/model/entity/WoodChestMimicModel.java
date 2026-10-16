@@ -87,8 +87,8 @@ public class WoodChestMimicModel extends MimicModel {
 	}
 
 	@Override
-	public void activeAnim(MimicEntity mimic, float ageInTicks) {
-		super.activeAnim(mimic, ageInTicks);
+	public void activeAnim(MimicEntity mimic, float limbSwing, float limbSwingAmount, float ageInTicks) {
+		super.activeAnim(mimic, limbSwing, limbSwingAmount, ageInTicks);
 		latch.rotateAngleX = LATCH_RADIANS;
 		eye1.rotateAngleX = EYE_RADIANS;
 		eye2.rotateAngleX = eye1.rotateAngleX;
@@ -97,7 +97,7 @@ public class WoodChestMimicModel extends MimicModel {
 	}
 
 	@Override
-	public void openAnim(MimicEntity mimic, float ageInTicks, float timeSlice) {
+	public void openAnim(MimicEntity mimic, float limbSwing, float limbSwingAmount, float ageInTicks, float timeSlice) {
 		body.rotateAngleX = timeSlice * BODY_RADIANS;
 		lid.rotateAngleX = timeSlice * getMaxOpenAngle();
 		latch.rotateAngleX = timeSlice * LATCH_RADIANS;
