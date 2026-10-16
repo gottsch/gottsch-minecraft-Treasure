@@ -21,7 +21,6 @@ package com.someguyssoftware.treasure2.client.gui;
 
 import static com.someguyssoftware.treasure2.Treasure.LOGGER;
 
-import java.util.Random;
 
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.client.gui.inventory.CharmingTableGui;
@@ -94,16 +93,22 @@ public class GuiHandler implements IGuiHandler {
 		if (tileEntity instanceof ITreasureChestTileEntity) {
 			ITreasureChestTileEntity chestTileEntity = (ITreasureChestTileEntity) tileEntity;
 			LOGGER.debug("is chest sealed -> {}", chestTileEntity.isSealed());
-			if (chestTileEntity.isSealed()) {
-				chestTileEntity.setSealed(false);
-                LOGGER.debug("chest gen type -> {}", chestTileEntity.getGenerationContext().getChestGeneratorType()); 
+			if (chestTileEntity.isSealed() && chestTileEntity.getGenerationContext() != null) {
+                LOGGER.debug("chest gen type -> {}", chestTileEntity.getGenerationContext().getChestGeneratorType());
                 // construct the chest generator used to create the tile entity
                 IChestGenerator chestGenerator = chestTileEntity.getGenerationContext().getChestGeneratorType().getChestGenerator();
-                LOGGER.debug("chest gen  -> {}", chestTileEntity.getGenerationContext().getChestGeneratorType().getChestGenerator().getClass().getSimpleName());
-                
-                // fill the chest with loot
-                chestGenerator.fillChest(world, new Random(), tileEntity, chestTileEntity.getGenerationContext().getLootRarity(), player);
+                LOGGER.debug("chest gen  -> {}", chestGenerator.getClass().getSimpleName());
 
+                // fill the chest with loot. only unseal once filled, so a failed fill can be retried on the next open
+                // instead of leaving the chest permanently empty.
+                boolean filled = false;
+                try {
+                	filled = chestGenerator.fillChest(world, world.rand, tileEntity, chestTileEntity.getGenerationContext().getLootRarity(), player);
+                }
+                catch(Exception e) {
+                	LOGGER.error("Unable to fill chest with loot ->", e);
+                }
+                chestTileEntity.setSealed(!filled);
 			}
 		}
 

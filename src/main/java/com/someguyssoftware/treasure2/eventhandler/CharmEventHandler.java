@@ -123,10 +123,10 @@ public class CharmEventHandler {
 
 			// weapon buffs processing
 			ItemStack heldStack = player.getHeldItem(EnumHand.MAIN_HAND);
-			if (heldStack != null & heldStack.getItem() instanceof IWeapon) {
+			if (heldStack != null && heldStack.getItem() instanceof IWeapon) {
 				IWeapon weapon = (IWeapon) heldStack.getItem();
 				Treasure.LOGGER.debug("original damage -> {}", event.getAmount());
-				if (RandomHelper.checkProbability(new Random(), weapon.getCriticalChance())) {
+				if (RandomHelper.checkProbability(player.getRNG(), weapon.getCriticalChance())) {
 					event.setAmount(event.getAmount() + weapon.getCriticalDamage());
 					Treasure.LOGGER.debug("new + critical damage -> {}", event.getAmount());
 				}
@@ -277,7 +277,7 @@ public class CharmEventHandler {
 			}
 
 			// if charm is executable and executes successfully
-			if (context.getEntity().getCharm().update(player.world, new Random(), new Coords(player.getPosition()), player, event, context.getEntity())) {
+			if (context.getEntity().getCharm().update(player.world, player.getRNG(), new Coords(player.getPosition()), player, event, context.getEntity())) {
 				// TODO handle the durability of the adornment
 				processUsage(player.world, player, event, context);
 

@@ -13,6 +13,7 @@ import com.someguyssoftware.treasure2.enums.Rarity;
 public class ChestInfo {
 	private ICoords coords;
 	private Rarity rarity;
+	private int dimension;
 	
 	/**
 	 * 
@@ -25,8 +26,19 @@ public class ChestInfo {
 	 * @param coords
 	 */
 	public ChestInfo(Rarity rarity, ICoords coords) {
+		this(rarity, coords, 0);
+	}
+
+	/**
+	 * 
+	 * @param rarity
+	 * @param coords
+	 * @param dimension
+	 */
+	public ChestInfo(Rarity rarity, ICoords coords, int dimension) {
 		setRarity(rarity);
 		setCoords(coords);
+		setDimension(dimension);
 	}
 	
 	/**
@@ -55,5 +67,13 @@ public class ChestInfo {
 	 */
 	public void setRarity(Rarity rarity) {
 		this.rarity = rarity;
+	}
+
+	public int getDimension() {
+		return dimension;
+	}
+
+	public void setDimension(int dimension) {
+		this.dimension = dimension;
 	}
 }

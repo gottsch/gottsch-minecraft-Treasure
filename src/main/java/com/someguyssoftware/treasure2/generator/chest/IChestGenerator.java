@@ -186,8 +186,9 @@ public interface IChestGenerator {
 	 * @param random
 	 * @param tileEntity
 	 * @param lootRarity
+	 * @return true if the chest was filled, false if no usable loot table was found
 	 */
-	default public void fillChest(final World world, Random random, final TileEntity tileEntity, final Rarity rarity, EntityPlayer player) {
+	default public boolean fillChest(final World world, Random random, final TileEntity tileEntity, final Rarity rarity, EntityPlayer player) {
 		Optional<LootTableShell> lootTableShell = null;
 		ResourceLocation lootTableResourceLocation = ((AbstractTreasureChestTileEntity)tileEntity).getLootTable();
 		Treasure.LOGGER.debug("chest has loot table property of -> {}", lootTableResourceLocation);
@@ -205,15 +206,20 @@ public interface IChestGenerator {
 		}
 		else {
 			Treasure.LOGGER.debug("Unable to select a LootTable for rarity -> {}", rarity);
-			return;
+			return false;
 		}
 		Treasure.LOGGER.debug("loot table resource -> {}", lootTableResourceLocation); 
 		
 		LootTable lootTable = world.getLootTableManager().getLootTableFromLocation(lootTableResourceLocation);
 		if (lootTable == null) {
 			LOGGER.warn("Unable to select a lootTable.");
-			return;
-		}		
+			return false;
+		}
+		// vanilla returns the empty table when the json fails to load
+		if (lootTable == LootTable.EMPTY_LOOT_TABLE) {
+			LOGGER.warn("Loot table {} is empty or failed to load - check the log for loot table errors.", lootTableResourceLocation);
+			return false;
+		}
 		Treasure.LOGGER.debug("selected loot table -> {} from resource -> {}", lootTable, lootTableResourceLocation);
 		
 		// update rarity from lootTableShell		
@@ -249,6 +255,10 @@ public interface IChestGenerator {
 			LOGGER.debug("processing pool -> {}", pool.getName());
 			// go get the vanilla managed pool
 			LootPool lootPool = lootTable.getPool(pool.getName());
+			if (lootPool == null) {
+				LOGGER.warn("Loot table {} does not have a pool named -> {}", lootTableResourceLocation, pool.getName());
+				continue;
+			}
 			
 			// geneate loot from pools
 			if (pool.getName().equalsIgnoreCase("treasure") || pool.getName().equalsIgnoreCase("charms")) {
@@ -283,6 +293,7 @@ public interface IChestGenerator {
 		
 		// fill the chest with items
 		fillInventory((IInventory) tileEntity, random, itemStacks.stream().limit(lootItemSize).collect(Collectors.toList()));
+		return true;
 	}
 
 	/**

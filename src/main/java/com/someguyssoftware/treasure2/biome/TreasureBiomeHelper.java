@@ -88,79 +88,79 @@ public class TreasureBiomeHelper {
 	
 /*
  Ocean	ocean	0
- Deep Ocean	deep_ocean	24
- Frozen Ocean	frozen_ocean	10
- Deep Frozen Ocean	deep_frozen_ocean	50
- Cold Ocean	cold_ocean	46
- Deep Cold Ocean	deep_cold_ocean	49
- Lukewarm Ocean	lukewarm_ocean	45
- Deep Lukewarm Ocean	deep_lukewarm_ocean	48
- Warm Ocean	warm_ocean	44
- Deep Warm Ocean	deep_warm_ocean	47
- River	river	7
- Frozen River	frozen_river	11
- Beach	beach	16
- Stone Shore	stone_shore	25
- Snowy Beach	snowy_beach	26
- Forest	forest	4
- Wooded Hills	wooded_hills	18
- Flower Forest	flower_forest	132
- Birch Forest	birch_forest	27
- Birch Forest Hills	birch_forest_hills	28
- Tall Birch Forest	tall_birch_forest	155
- Tall Birch Hills	tall_birch_hills	156
- Dark Forest	dark_forest	29
- Dark Forest Hills	dark_forest_hills	157
- Jungle	jungle	21
- Jungle Hills	jungle_hills	22
- Modified Jungle	modified_jungle	149
- Jungle Edge	jungle_edge	23
- Modified Jungle Edge	modified_jungle_edge	151
- Bamboo Jungle	bamboo_jungle	168
- Bamboo Jungle Hills	bamboo_jungle_hills	169
- Taiga	taiga	5
- Taiga Hills	taiga_hills	19
- Taiga Mountains	taiga_mountains	133
- Snowy Taiga	snowy_taiga	30
- Snowy Taiga Hills	snowy_taiga_hills	31
- Snowy Taiga Mountains	snowy_taiga_mountains	158
- Giant Tree Taiga	giant_tree_taiga	32
- Giant Tree Taiga Hills	giant_tree_taiga_hills	33
- Giant Spruce Taiga	giant_spruce_taiga	160
- Giant Spruce Taiga Hills	giant_spruce_taiga_hills	161
- Mushroom Fields	mushroom_fields	14
- Mushroom Field Shore	mushroom_field_shore	15
- Swamp	swamp	6
- Swamp Hills	swamp_hills	134
- Savanna	savanna	35
- Savanna Plateau	savanna_plateau	36
- Shattered Savanna	shattered_savanna	163
- Shattered Savanna Plateau	shattered_savanna_plateau	164
- Plains	plains	1
- Sunflower Plains	sunflower_plains	129
- Desert	desert	2
- Desert Hills	desert_hills	17
- Desert Lakes	desert_lakes	130
- Snowy Tundra	snowy_tundra	12
- Snowy Mountains	snowy_mountains	13
- Ice Spikes	ice_spikes	140
- Mountains	mountains	3
- Wooded Mountains	wooded_mountains	34
- Gravelly Mountains	gravelly_mountains	131
- Gravelly Mountains+	modified_gravelly_mountains	162
- Mountain Edge	mountain_edge	20
- Badlands	badlands	37
- Badlands Plateau	badlands_plateau	39
- Modified Badlands Plateau	modified_badlands_plateau	167
- Wooded Badlands Plateau	wooded_badlands_plateau	38
- Modified Wooded Badlands Plateau	modified_wooded_badlands_plateau	166
- Eroded Badlands	eroded_badlands	165
- Nether	nether	8
- The End	the_end	9
- Small End Islands	small_end_islands	40
- End Midlands	end_midlands	41
- End Highlands	end_highlands	42
- End Barrens	end_barrens	43
- The Void	the_void	127
+Â Deep Ocean	deep_ocean	24
+Â Frozen Ocean	frozen_ocean	10
+Â Deep Frozen Ocean	deep_frozen_ocean	50
+Â Cold Ocean	cold_ocean	46
+Â Deep Cold Ocean	deep_cold_ocean	49
+Â Lukewarm Ocean	lukewarm_ocean	45
+Â Deep Lukewarm Ocean	deep_lukewarm_ocean	48
+Â Warm Ocean	warm_ocean	44
+Â Deep Warm Ocean	deep_warm_ocean	47
+Â River	river	7
+Â Frozen River	frozen_river	11
+Â Beach	beach	16
+Â Stone Shore	stone_shore	25
+Â Snowy Beach	snowy_beach	26
+Â Forest	forest	4
+Â Wooded Hills	wooded_hills	18
+Â Flower Forest	flower_forest	132
+Â Birch Forest	birch_forest	27
+Â Birch Forest Hills	birch_forest_hills	28
+Â Tall Birch Forest	tall_birch_forest	155
+Â Tall Birch Hills	tall_birch_hills	156
+Â Dark Forest	dark_forest	29
+Â Dark Forest Hills	dark_forest_hills	157
+Â Jungle	jungle	21
+Â Jungle Hills	jungle_hills	22
+Â Modified Jungle	modified_jungle	149
+Â Jungle Edge	jungle_edge	23
+Â Modified Jungle Edge	modified_jungle_edge	151
+Â Bamboo Jungle	bamboo_jungle	168
+Â Bamboo Jungle Hills	bamboo_jungle_hills	169
+Â Taiga	taiga	5
+Â Taiga Hills	taiga_hills	19
+Â Taiga Mountains	taiga_mountains	133
+Â Snowy Taiga	snowy_taiga	30
+Â Snowy Taiga Hills	snowy_taiga_hills	31
+Â Snowy Taiga Mountains	snowy_taiga_mountains	158
+Â Giant Tree Taiga	giant_tree_taiga	32
+Â Giant Tree Taiga Hills	giant_tree_taiga_hills	33
+Â Giant Spruce Taiga	giant_spruce_taiga	160
+Â Giant Spruce Taiga Hills	giant_spruce_taiga_hills	161
+Â Mushroom Fields	mushroom_fields	14
+Â Mushroom Field Shore	mushroom_field_shore	15
+Â Swamp	swamp	6
+Â Swamp Hills	swamp_hills	134
+Â Savanna	savanna	35
+Â Savanna Plateau	savanna_plateau	36
+Â Shattered Savanna	shattered_savanna	163
+Â Shattered Savanna Plateau	shattered_savanna_plateau	164
+Â Plains	plains	1
+Â Sunflower Plains	sunflower_plains	129
+Â Desert	desert	2
+Â Desert Hills	desert_hills	17
+Â Desert Lakes	desert_lakes	130
+Â Snowy Tundra	snowy_tundra	12
+Â Snowy Mountains	snowy_mountains	13
+Â Ice Spikes	ice_spikes	140
+Â Mountains	mountains	3
+Â Wooded Mountains	wooded_mountains	34
+Â Gravelly Mountains	gravelly_mountains	131
+Â Gravelly Mountains+	modified_gravelly_mountains	162
+Â Mountain Edge	mountain_edge	20
+Â Badlands	badlands	37
+Â Badlands Plateau	badlands_plateau	39
+Â Modified Badlands Plateau	modified_badlands_plateau	167
+Â Wooded Badlands Plateau	wooded_badlands_plateau	38
+Â Modified Wooded Badlands Plateau	modified_wooded_badlands_plateau	166
+Â Eroded Badlands	eroded_badlands	165
+Â Nether	nether	8
+Â The End	the_end	9
+Â Small End Islands	small_end_islands	40
+Â End Midlands	end_midlands	41
+Â End Highlands	end_highlands	42
+Â End Barrens	end_barrens	43
+Â The Void	the_void	127
 */
 }

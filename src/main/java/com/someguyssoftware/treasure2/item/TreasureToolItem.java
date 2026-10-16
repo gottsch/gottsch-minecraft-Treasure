@@ -28,6 +28,8 @@ public class TreasureToolItem extends ModItem {
 	public TreasureToolItem(String modID, String name) {
 		setItemName(modID, name);
 		setCreativeTab(Treasure.TREASURE_TAB);
+		// the tool is returned as a container item on crafting, stacking it can produce duplicates
+		setMaxStackSize(1);
 	}
 	
 	@SuppressWarnings("deprecation")
