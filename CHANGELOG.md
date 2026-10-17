@@ -23,7 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - A mimic no longer makes its ambient sound while it is still dormant. It goes quiet until it is sprung from a chest or finds a target.
 - The big teeth of crate and moldy crate mimics no longer poke up through the lid while the mimic opens.
 - The Viking chest mimic's teeth no longer poke through its lid.
-- Lock pick tooltips now show the real chance of picking each lock. They showed made-up chances instead, so the Pilferer's Lock Pick claimed 24% on uncommon locks when the real chance is 32%, and any changed config value showed wrong.
+- Lock pick tooltips now show the chances set in the config, the same ones used when picking a lock. They showed made-up chances before, so the Pilferer's Lock Pick claimed 24% on uncommon locks when the real chance is 32%, and on a server they could show 0%.
 - Callandor can now be found. Its place in the mythical loot pool handed out Oathbringer instead, so Callandor never dropped.
 
 ## [4.0.6] - 2026-09-06

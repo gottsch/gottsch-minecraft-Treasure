@@ -16,6 +16,7 @@
 package mod.gottsch.forge.treasure2.core.item;
 
 import mod.gottsch.forge.gottschcore.random.RandomHelper;
+import mod.gottsch.forge.treasure2.core.config.Config;
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.rarity.IRarity;
 import mod.gottsch.forge.treasure2.core.rarity.TreasureRarities;
@@ -144,8 +145,17 @@ public class ThiefsLockPick extends KeyItem {
 		return this;
 	}
 
+	/*
+	 * read from the server config so the tooltip and unlock() always agree with it. server configs are synced to
+	 * clients, so this is right on a dedicated server client too. falls back to the field when no world is loaded.
+	 */
+	@Override
+	public double getSuccessProbability() {
+		return Config.SERVER_SPEC.isLoaded() ? Config.SERVER.keysAndLocks.thiefsLockPickCommonSuccessProbability.get() : super.getSuccessProbability();
+	}
+
 	public double getUncommonSuccessProbability() {
-		return uncommonSuccessProbability;
+		return Config.SERVER_SPEC.isLoaded() ? Config.SERVER.keysAndLocks.thiefsLockPickUncommonSuccessProbability.get() : uncommonSuccessProbability;
 	}
 
 	public void setUncommonSuccessProbability(double uncommonSuccessProbability) {
@@ -153,7 +163,7 @@ public class ThiefsLockPick extends KeyItem {
 	}
 
 	public double getScarceSuccessProbability() {
-		return scarceSuccessProbability;
+		return Config.SERVER_SPEC.isLoaded() ? Config.SERVER.keysAndLocks.thiefsLockPickScarceSuccessProbability.get() : scarceSuccessProbability;
 	}
 
 	public void setScarceSuccessProbability(double scarceSuccessProbability) {
