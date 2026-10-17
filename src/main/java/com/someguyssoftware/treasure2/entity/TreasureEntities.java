@@ -10,6 +10,7 @@ import com.someguyssoftware.treasure2.entity.monster.CardboardBoxMimicEntity;
 import com.someguyssoftware.treasure2.entity.monster.CauldronChestMimicEntity;
 import com.someguyssoftware.treasure2.entity.monster.CrateChestMimicEntity;
 import com.someguyssoftware.treasure2.entity.monster.MilkCrateMimicEntity;
+import com.someguyssoftware.treasure2.entity.monster.VanillaChestMimicEntity;
 import com.someguyssoftware.treasure2.entity.monster.MimicEntity;
 import com.someguyssoftware.treasure2.entity.monster.MoldyCrateChestMimicEntity;
 import com.someguyssoftware.treasure2.entity.monster.PirateMimicEntity;
@@ -67,7 +68,8 @@ public class TreasureEntities {
 					mimic(CrateChestMimicEntity.class, TreasureConfig.CRATE_CHEST_MIMIC_ID, CrateChestMimicEntity.MOB_ID, 0x6e5c60, 0x434343),
 					mimic(MoldyCrateChestMimicEntity.class, TreasureConfig.MOLDY_CRATE_CHEST_MIMIC_ID, MoldyCrateChestMimicEntity.MOB_ID, 0x635360, 0x464646),
 					mimic(CardboardBoxMimicEntity.class, TreasureConfig.CARDBOARD_BOX_MIMIC_ID, CardboardBoxMimicEntity.MOB_ID, 0x6f5e60, 0x404040),
-					mimic(MilkCrateMimicEntity.class, TreasureConfig.MILK_CRATE_MIMIC_ID, MilkCrateMimicEntity.MOB_ID, 0x965738, 0x773e28));
+					mimic(MilkCrateMimicEntity.class, TreasureConfig.MILK_CRATE_MIMIC_ID, MilkCrateMimicEntity.MOB_ID, 0x965738, 0x773e28),
+					mimic(VanillaChestMimicEntity.class, TreasureConfig.VANILLA_CHEST_MIMIC_ID, VanillaChestMimicEntity.MOB_ID, 0x8f691d, 0xab792d));
 
 			// add data fixers
 			DataFixer dataFixer = new DataFixer(1343);
@@ -81,6 +83,7 @@ public class TreasureEntities {
 			MoldyCrateChestMimicEntity.registerFixes(dataFixer);
 			CardboardBoxMimicEntity.registerFixes(dataFixer);
 			MilkCrateMimicEntity.registerFixes(dataFixer);
+			VanillaChestMimicEntity.registerFixes(dataFixer);
 		}
 
 		/**

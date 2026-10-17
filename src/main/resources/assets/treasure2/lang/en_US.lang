@@ -18,6 +18,7 @@ tile.treasure2:spider_chest.name=Spider Chest
 tile.treasure2:viking_chest.name=Viking Chest
 tile.treasure2:cardboard_box.name=Cardboard Box
 tile.treasure2:milk_crate.name=Milk Crate
+tile.treasure2:vanilla_chest.name=Treasure Chest
 
 tile.treasure2:wood_mimic.name=Wood Mimic
 tile.treasure2:pirate_mimic.name=Pirate Mimic
@@ -540,6 +541,7 @@ entity.crate_chest_mimic.name=Crate Mimic
 entity.moldy_crate_chest_mimic.name=Moldy Crate Mimic
 entity.cardboard_box_mimic.name=Cardboard Box Mimic
 entity.milk_crate_mimic.name=Milk Crate Mimic
+entity.vanilla_chest_mimic.name=Chest Mimic
 sounds.treasure2.ambient_mimic=Mimic chatters
 
 #groups
@@ -753,6 +755,7 @@ display.spider_chest.name=Spider Chest
 display.viking_chest.name=Viking Chest
 display.cardboard_box.name=Cardboard Box
 display.milk_crate.name=Milk Crate
+display.vanilla_chest.name=Treasure Chest
 display.crystal_skull_chest.name=Crystal Skull
 display.jeweler_bench.name=Jeweler's Bench
 display.jeweler_bench.cost=Cost: %s

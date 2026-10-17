@@ -77,6 +77,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	@Ignore public static final String VIKING_CHEST_ID = "viking_chest";
 	@Ignore public static final String CARDBOARD_BOX_ID = "cardboard_box";
 	@Ignore public static final String MILK_CRATE_ID = "milk_crate";
+	@Ignore public static final String VANILLA_CHEST_ID = "vanilla_chest";
 
 	// mimics
 	@Ignore public static final String WOOD_MIMIC_ID = "wood_mimic";
@@ -87,6 +88,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	@Ignore public static final String MOLDY_CRATE_CHEST_MIMIC_ID = "moldy_crate_chest_mimic";
 	@Ignore public static final String CARDBOARD_BOX_MIMIC_ID = "cardboard_box_mimic";
 	@Ignore public static final String MILK_CRATE_MIMIC_ID = "milk_crate_mimic";
+	@Ignore public static final String VANILLA_CHEST_MIMIC_ID = "vanilla_chest_mimic";
 
 	// locks
 	@Ignore public static final String WOOD_LOCK_ID = "wood_lock";
@@ -246,6 +248,7 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	@Ignore public static final String VIKING_CHEST_TE_ID = "viking_chest_tile_entity";
 	@Ignore public static final String CARDBOARD_BOX_TE_ID = "cardboard_box_tile_entity";
 	@Ignore public static final String MILK_CRATE_TE_ID = "milk_crate_tile_entity";
+	@Ignore public static final String VANILLA_CHEST_TE_ID = "vanilla_chest_tile_entity";
 	@Ignore public static final String PROXIMITY_SPAWNER_TE_ID = "proximity_spawner_tile_entity";
 	@Ignore public static final String GRAVESTONE_TE_ID = "gravestone_tile_entity";
 	@Ignore public static final String GRAVESTONE_PROXIMITY_SPAWNER_TE_ID = "gravestone_proximity_spawner_tile_entity";
@@ -456,6 +459,11 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		"chest collection's 'Mimic probability'. A chest's mimic always matches the chest (ex. wood chest -> wood mimic)." })
 		@Name("20. Enable mimics:")
 		public boolean enableMimics = true;
+
+		@RequiresMcRestart
+		@Comment({ "Enable/Disable whether a vanilla-looking treasure chest will spawn." })
+		@Name("21. Enable vanilla chest:")
+		public boolean enableVanillaChest = true;
 		
 		@Ignore public Map<String, Boolean> chestEnablementMap = new HashMap<>();
 		
@@ -512,21 +520,22 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 			chestEnablementMap.put(WOOD_CHEST_ID, enableWoodChest);
 			chestEnablementMap.put(CRATE_CHEST_ID, enableCrate);
 			chestEnablementMap.put(MOLDY_CRATE_CHEST_ID, enableMoldyCrate);
-			chestEnablementMap.put(IRONBOUND_CHEST_ID, enableMoldyCrate);
-			chestEnablementMap.put(PIRATE_CHEST_ID, enableMoldyCrate);
-			chestEnablementMap.put(IRON_STRONGBOX_ID, enableMoldyCrate);
-			chestEnablementMap.put(GOLD_STRONGBOX_ID, enableMoldyCrate);
-			chestEnablementMap.put(SAFE_ID, enableMoldyCrate);
-			chestEnablementMap.put(DREAD_PIRATE_CHEST_ID, enableMoldyCrate);
-			chestEnablementMap.put(COMPRESSOR_CHEST_ID, enableMoldyCrate);
-			chestEnablementMap.put(SPIDER_CHEST_ID, enableMoldyCrate);
-			chestEnablementMap.put(VIKING_CHEST_ID, enableMoldyCrate);
-			chestEnablementMap.put(SKULL_CHEST_ID, enableMoldyCrate);
-			chestEnablementMap.put(GOLD_SKULL_CHEST_ID, enableMoldyCrate);
-			chestEnablementMap.put(CRYSTAL_SKULL_CHEST_ID, enableMoldyCrate);
-			chestEnablementMap.put(CAULDRON_CHEST_ID, enableMoldyCrate);
-			chestEnablementMap.put(CARDBOARD_BOX_ID, enableMoldyCrate);
-			chestEnablementMap.put(MILK_CRATE_ID, enableMoldyCrate);
+			chestEnablementMap.put(IRONBOUND_CHEST_ID, enableIronboundChest);
+			chestEnablementMap.put(PIRATE_CHEST_ID, enablePirateChest);
+			chestEnablementMap.put(IRON_STRONGBOX_ID, enableIronStrongbox);
+			chestEnablementMap.put(GOLD_STRONGBOX_ID, enableGoldStrongbox);
+			chestEnablementMap.put(SAFE_ID, enableSafe);
+			chestEnablementMap.put(DREAD_PIRATE_CHEST_ID, enableDreadPirateChest);
+			chestEnablementMap.put(COMPRESSOR_CHEST_ID, enableCompressorChest);
+			chestEnablementMap.put(SPIDER_CHEST_ID, enableSpiderChest);
+			chestEnablementMap.put(VIKING_CHEST_ID, enableVikingChest);
+			chestEnablementMap.put(SKULL_CHEST_ID, enableSkullChest);
+			chestEnablementMap.put(GOLD_SKULL_CHEST_ID, enableGoldSkullChest);
+			chestEnablementMap.put(CRYSTAL_SKULL_CHEST_ID, enableCrystalSkullChest);
+			chestEnablementMap.put(CAULDRON_CHEST_ID, enableCauldronChest);
+			chestEnablementMap.put(CARDBOARD_BOX_ID, enableCardboardBox);
+			chestEnablementMap.put(MILK_CRATE_ID, enableMilkCrate);
+			chestEnablementMap.put(VANILLA_CHEST_ID, enableVanillaChest);
 		}
 
 		public class ChestCollection implements IChestCollection {

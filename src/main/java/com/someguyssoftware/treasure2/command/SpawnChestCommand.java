@@ -72,6 +72,7 @@ public class SpawnChestCommand extends CommandBase {
 		VIKING(TreasureBlocks.VIKING_CHEST),
 		CARDBOARD_BOX(TreasureBlocks.CARDBOARD_BOX),
 		MILK_CRATE(TreasureBlocks.MILK_CRATE),
+		VANILLA(TreasureBlocks.VANILLA_CHEST),
 		WITHER(TreasureBlocks.WITHER_CHEST),
 		SKULL(TreasureBlocks.SKULL_CHEST),
 		GOLD_SKULL(TreasureBlocks.GOLD_SKULL_CHEST),

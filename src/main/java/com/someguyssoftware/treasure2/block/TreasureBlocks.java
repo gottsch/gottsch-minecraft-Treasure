@@ -51,6 +51,7 @@ import com.someguyssoftware.treasure2.tileentity.GravestoneProximitySpawnerTileE
 import com.someguyssoftware.treasure2.tileentity.IronStrongboxTileEntity;
 import com.someguyssoftware.treasure2.tileentity.IronboundChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.MilkCrateTileEntity;
+import com.someguyssoftware.treasure2.tileentity.VanillaChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.MistEmitterTileEntity;
 import com.someguyssoftware.treasure2.tileentity.MoldyCrateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.PirateChestTileEntity;
@@ -101,6 +102,7 @@ public class TreasureBlocks {
 	public static final Block VIKING_CHEST;
 	public static final Block CARDBOARD_BOX;
 	public static final Block MILK_CRATE;
+	public static final Block VANILLA_CHEST;
 
 	// mimic chests
 	public static final Block WOOD_MIMIC;
@@ -337,6 +339,10 @@ public class TreasureBlocks {
 								new AxisAlignedBB(0.171875D, 0.0D, 0.171875D,  0.828125D, 0.640625D,  0.828125D)
 						}).setHardness(2.5F);
 
+		// a common chest that looks like a vanilla chest
+		VANILLA_CHEST = new TreasureChestBlock(Treasure.MODID, TreasureConfig.VANILLA_CHEST_ID, VanillaChestTileEntity.class,
+				TreasureChestTypes.SINGLE_STANDARD, Rarity.COMMON).setBounds(stdChestBounds).setHardness(2.5F);
+
 		// map the chests by rarity
 		chests = ArrayListMultimap.create();
 
@@ -542,6 +548,7 @@ public class TreasureBlocks {
 					VIKING_CHEST,
 					CARDBOARD_BOX,
 					MILK_CRATE,
+					VANILLA_CHEST,
 					WOOD_MIMIC, 
 					PIRATE_MIMIC, 
 					GRAVESTONE1_STONE,
@@ -635,6 +642,7 @@ public class TreasureBlocks {
 					new TreasureChestItemBlock(VIKING_CHEST), 
 					new TreasureChestItemBlock(CARDBOARD_BOX),
 					new TreasureChestItemBlock(MILK_CRATE),
+					new TreasureChestItemBlock(VANILLA_CHEST),
 
 					new MimicChestItemBlock(WOOD_MIMIC),
 					new MimicChestItemBlock(PIRATE_MIMIC),
@@ -718,6 +726,8 @@ public class TreasureBlocks {
 					new ResourceLocation(Treasure.MODID + ":" + TreasureConfig.CARDBOARD_BOX_TE_ID));
 			GameRegistry.registerTileEntity(MilkCrateTileEntity.class,
 					new ResourceLocation(Treasure.MODID + ":" + TreasureConfig.MILK_CRATE_TE_ID));
+			GameRegistry.registerTileEntity(VanillaChestTileEntity.class,
+					new ResourceLocation(Treasure.MODID + ":" + TreasureConfig.VANILLA_CHEST_TE_ID));
 
 			GameRegistry.registerTileEntity(ProximitySpawnerTileEntity.class,
 					new ResourceLocation(Treasure.MODID + ":" + TreasureConfig.PROXIMITY_SPAWNER_TE_ID));

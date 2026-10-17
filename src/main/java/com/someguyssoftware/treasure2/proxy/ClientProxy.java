@@ -14,12 +14,14 @@ import com.someguyssoftware.treasure2.client.model.CompressorChestModel;
 import com.someguyssoftware.treasure2.client.model.CrateChestModel;
 import com.someguyssoftware.treasure2.client.model.DreadPirateChestModel;
 import com.someguyssoftware.treasure2.client.model.MilkCrateModel;
+import com.someguyssoftware.treasure2.client.model.VanillaChestModel;
 import com.someguyssoftware.treasure2.client.model.OysterChestModel;
 import com.someguyssoftware.treasure2.client.model.SafeModel;
 import com.someguyssoftware.treasure2.client.model.entity.CardboardBoxMimicModel;
 import com.someguyssoftware.treasure2.client.model.entity.CauldronChestMimicModel;
 import com.someguyssoftware.treasure2.client.model.entity.CrateChestMimicModel;
 import com.someguyssoftware.treasure2.client.model.entity.MilkCrateMimicModel;
+import com.someguyssoftware.treasure2.client.model.entity.VanillaChestMimicModel;
 import com.someguyssoftware.treasure2.client.model.entity.MoldyCrateChestMimicModel;
 import com.someguyssoftware.treasure2.client.model.entity.PirateChestMimicModel;
 import com.someguyssoftware.treasure2.client.model.entity.VikingChestMimicModel;
@@ -48,6 +50,7 @@ import com.someguyssoftware.treasure2.entity.monster.CardboardBoxMimicEntity;
 import com.someguyssoftware.treasure2.entity.monster.CauldronChestMimicEntity;
 import com.someguyssoftware.treasure2.entity.monster.CrateChestMimicEntity;
 import com.someguyssoftware.treasure2.entity.monster.MilkCrateMimicEntity;
+import com.someguyssoftware.treasure2.entity.monster.VanillaChestMimicEntity;
 import com.someguyssoftware.treasure2.entity.monster.MimicEntity;
 import com.someguyssoftware.treasure2.entity.monster.MoldyCrateChestMimicEntity;
 import com.someguyssoftware.treasure2.entity.monster.PirateMimicEntity;
@@ -67,6 +70,7 @@ import com.someguyssoftware.treasure2.tileentity.GoldStrongboxTileEntity;
 import com.someguyssoftware.treasure2.tileentity.IronStrongboxTileEntity;
 import com.someguyssoftware.treasure2.tileentity.IronboundChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.MilkCrateTileEntity;
+import com.someguyssoftware.treasure2.tileentity.VanillaChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.MoldyCrateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.OysterChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.PirateChestTileEntity;
@@ -210,6 +214,11 @@ public class ClientProxy {
 				MilkCrateTileEntity.class,
 				new MilkCrateTileEntityRenderer("milk-crate", new MilkCrateModel())); 
 
+		// vanilla chest
+		ClientRegistry.bindTileEntitySpecialRenderer(
+				VanillaChestTileEntity.class,
+				new TreasureChestTileEntityRenderer("vanilla-chest", new VanillaChestModel()));
+
 		/*
 		 *  register the entity render handlers
 		 */		
@@ -221,6 +230,7 @@ public class ClientProxy {
 		registerMimicRenderer(MoldyCrateChestMimicEntity.class, new MoldyCrateChestMimicModel(), "moldy_crate_chest_mimic");
 		registerMimicRenderer(CardboardBoxMimicEntity.class, new CardboardBoxMimicModel(), "cardboard_box_mimic");
 		registerMimicRenderer(MilkCrateMimicEntity.class, new MilkCrateMimicModel(), "milk_crate_mimic");
+		registerMimicRenderer(VanillaChestMimicEntity.class, new VanillaChestMimicModel(), "vanilla_chest_mimic");
 
 		RenderingRegistry.registerEntityRenderingHandler(BoundSoulEntity.class, 	
 				new BoundSoulRenderer(

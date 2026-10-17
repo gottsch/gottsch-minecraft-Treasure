@@ -51,6 +51,7 @@ public class TreasureModels {
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.VIKING_CHEST));
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.CARDBOARD_BOX));
         registerItemModel(Item.getItemFromBlock(TreasureBlocks.MILK_CRATE));
+        registerItemModel(Item.getItemFromBlock(TreasureBlocks.VANILLA_CHEST));
         
 		// MIMICS
 		registerItemModel(Item.getItemFromBlock(TreasureBlocks.WOOD_MIMIC));

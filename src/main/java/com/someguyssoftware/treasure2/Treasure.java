@@ -297,6 +297,7 @@ public class Treasure extends AbstractMod {
 		MimicRegistry.register(TreasureBlocks.MOLDY_CRATE_CHEST.getRegistryName(), new ResourceLocation(MODID, TreasureConfig.MOLDY_CRATE_CHEST_MIMIC_ID));
 		MimicRegistry.register(TreasureBlocks.CARDBOARD_BOX.getRegistryName(), new ResourceLocation(MODID, TreasureConfig.CARDBOARD_BOX_MIMIC_ID));
 		MimicRegistry.register(TreasureBlocks.MILK_CRATE.getRegistryName(), new ResourceLocation(MODID, TreasureConfig.MILK_CRATE_MIMIC_ID));
+		MimicRegistry.register(TreasureBlocks.VANILLA_CHEST.getRegistryName(), new ResourceLocation(MODID, TreasureConfig.VANILLA_CHEST_MIMIC_ID));
 
 		// register world generators
 		WORLD_GENERATORS.put(WorldGeneratorType.SURFACE_CHEST, new SurfaceChestWorldGenerator());
