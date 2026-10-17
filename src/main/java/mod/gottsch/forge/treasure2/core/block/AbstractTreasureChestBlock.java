@@ -367,6 +367,8 @@ public class AbstractTreasureChestBlock extends BaseEntityBlock implements ITrea
 
 		Mob mob = spawn((ServerLevel)level, level.getRandom(), entityType, pos, player, yRot);
 		if (mob != null) {
+			// a mimic sprung from a chest is awake from the start
+			((Mimic)mob).setActive(true);
 			// update the loot table in the mimic
 			((Mimic)mob).setLootTable(blockEntity.getLootTable());			
 			// update client

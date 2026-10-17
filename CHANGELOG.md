@@ -20,6 +20,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Key rings and pouches no longer lose their custom name, enchantments or other mods' data on the client.
 - Update notices work again. Since 4.0.4 the mod had been checking the wrong update file, so no new version was ever announced in game.
 - Treasure2 now loads after GottschCore, the library it depends on. It had been set to load before it.
+- A mimic no longer makes its ambient sound while it is still dormant. It goes quiet until it is sprung from a chest or finds a target.
+- The big teeth of crate and moldy crate mimics no longer poke up through the lid while the mimic opens.
+- The Viking chest mimic's teeth no longer poke through its lid.
 
 ## [4.0.6] - 2026-09-06
 

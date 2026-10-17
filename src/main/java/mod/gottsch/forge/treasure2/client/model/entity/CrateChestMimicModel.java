@@ -176,7 +176,8 @@ public class CrateChestMimicModel<T extends Entity> extends MimicModel<T> {
 		eye1.xRot = timeSlice * -1.003564F;
 		eyeSocket.xRot = timeSlice * -0.174533F;
 		tongue.xRot = timeSlice * -0.174533F;
-		bigTeeth.xRot = timeSlice * 0.174533F;
+		// swing from the folded rest angle, not from 0 (which stands the teeth up through the lid)
+		bigTeeth.xRot = -0.8727F + timeSlice * (0.174533F + 0.8727F);
 	}
 
 	@Override
