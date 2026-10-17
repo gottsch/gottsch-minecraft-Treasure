@@ -111,7 +111,10 @@
       "entryName" : "diamond_sword",
       "type" : "item",
       "name" : "minecraft:diamond_sword",
-      "weight" : 10
+      "weight" : 10,
+      "functions" : [ {
+        "function" : "enchant_randomly"
+      } ]
     }, {
       "entryName" : "steel_sword",
       "type" : "item",

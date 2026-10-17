@@ -40,7 +40,7 @@
 					"type": "item",
 					"name": "minecraft:wool",
 					"weight": 25,
-						"functions": [
+					"functions": [
 						{
 							"function": "set_count",
 							"count": {
@@ -114,13 +114,13 @@
 					"entryName": "iron_ingot",
 					"type": "item",
 					"name": "minecraft:iron_ingot",
-					"weight": 30,
+					"weight": 50,
 					"functions": [
 						{
 							"function": "set_count",
 							"count": {
 								"min": 1,
-								"max": 5
+								"max": 4
 							}
 						}
 					]
@@ -144,7 +144,7 @@
 					"entryName": "bone",
 					"type": "item",
 					"name": "minecraft:bone",
-					"weight": 50,
+					"weight": 25,
 					"functions": [
 						{
 							"function": "set_count",
@@ -159,7 +159,7 @@
 					"entryName": "spider_eye",
 					"type": "item",
 					"name": "minecraft:spider_eye",
-					"weight": 35,
+					"weight": 15,
 					"functions": [
 						{
 							"function": "set_count",
@@ -174,13 +174,13 @@
 					"entryName": "rotten_flesh",
 					"type": "item",
 					"name": "minecraft:rotten_flesh",
-					"weight": 50
+					"weight": 15
 				},
 				{
 					"entryName": "string",
 					"type": "item",
 					"name": "minecraft:string",
-					"weight": 50,
+					"weight": 25,
 					"functions": [
 						{
 							"function": "set_count",
@@ -192,31 +192,16 @@
 					]
 				},
 				{
-					"entryName": "clay_ball",
+					"entryName": "coal",
 					"type": "item",
-					"name": "minecraft:iron_ingot",
-					"weight": 10,
+					"name": "minecraft:coal",
+					"weight": 40,
 					"functions": [
 						{
 							"function": "set_count",
 							"count": {
 								"min": 1,
-								"max": 2
-							}
-						}
-					]
-				},
-				{
-					"entryName": "brick",
-					"type": "item",
-					"name": "minecraft:iron_ingot",
-					"weight": 10,
-					"functions": [
-						{
-							"function": "set_count",
-							"count": {
-								"min": 1,
-								"max": 2
+								"max": 4
 							}
 						}
 					]

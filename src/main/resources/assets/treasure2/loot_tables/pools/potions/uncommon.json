@@ -32,7 +32,7 @@
 				{
 					"entryName": "potion_uc3",
 					"type": "item",
-					"name": "minecraft:potion",
+					"name": "minecraft:splash_potion",
 					"weight": 10,
 					"functions": [
 						{

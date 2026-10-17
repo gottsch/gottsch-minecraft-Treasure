@@ -1,0 +1,143 @@
+{
+	"version": "1.0",
+	"pools": [
+		{
+			"name": "mythical_potions",
+			"rolls": 1,
+			"entries": [
+				{
+					"entryName": "potion_m1",
+					"type": "item",
+					"name": "minecraft:potion",
+					"weight": 15,
+					"functions": [
+						{
+							"function": "set_nbt",
+							"tag": "{Potion:\"treasure2:extra_strong_healing\"}"
+						}
+					]
+				},
+				{
+					"entryName": "potion_m2",
+					"type": "item",
+					"name": "minecraft:potion",
+					"weight": 15,
+					"functions": [
+						{
+							"function": "set_nbt",
+							"tag": "{Potion:\"treasure2:extra_strong_strength\"}"
+						}
+					]
+				},
+				{
+					"entryName": "potion_m3",
+					"type": "item",
+					"name": "minecraft:potion",
+					"weight": 15,
+					"functions": [
+						{
+							"function": "set_nbt",
+							"tag": "{Potion:\"treasure2:extra_strong_swiftness\"}"
+						}
+					]
+				},
+				{
+					"entryName": "potion_m4",
+					"type": "item",
+					"name": "minecraft:potion",
+					"weight": 15,
+					"functions": [
+						{
+							"function": "set_nbt",
+							"tag": "{Potion:\"treasure2:extra_strong_regeneration\"}"
+						}
+					]
+				},
+				{
+					"entryName": "potion_m5",
+					"type": "item",
+					"name": "minecraft:potion",
+					"weight": 15,
+					"functions": [
+						{
+							"function": "set_nbt",
+							"tag": "{Potion:\"treasure2:extra_strong_leaping\"}"
+						}
+					]
+				},
+				{
+					"entryName": "potion_m6",
+					"type": "item",
+					"name": "minecraft:potion",
+					"weight": 5,
+					"functions": [
+						{
+							"function": "set_nbt",
+							"tag": "{Potion:\"minecraft:long_fire_resistance\"}"
+						}
+					]
+				},
+				{
+					"entryName": "potion_m7",
+					"type": "item",
+					"name": "minecraft:potion",
+					"weight": 5,
+					"functions": [
+						{
+							"function": "set_nbt",
+							"tag": "{Potion:\"minecraft:long_invisibility\"}"
+						}
+					]
+				},
+				{
+					"entryName": "potion_m8",
+					"type": "item",
+					"name": "minecraft:potion",
+					"weight": 5,
+					"functions": [
+						{
+							"function": "set_nbt",
+							"tag": "{Potion:\"minecraft:long_water_breathing\"}"
+						}
+					]
+				},
+				{
+					"entryName": "potion_m9",
+					"type": "item",
+					"name": "minecraft:potion",
+					"weight": 5,
+					"functions": [
+						{
+							"function": "set_nbt",
+							"tag": "{Potion:\"minecraft:long_night_vision\"}"
+						}
+					]
+				},
+				{
+					"entryName": "potion_m10",
+					"type": "item",
+					"name": "minecraft:lingering_potion",
+					"weight": 5,
+					"functions": [
+						{
+							"function": "set_nbt",
+							"tag": "{Potion:\"treasure2:extra_strong_poison\"}"
+						}
+					]
+				},
+				{
+					"entryName": "potion_m11",
+					"type": "item",
+					"name": "minecraft:lingering_potion",
+					"weight": 5,
+					"functions": [
+						{
+							"function": "set_nbt",
+							"tag": "{Potion:\"minecraft:strong_harming\"}"
+						}
+					]
+				}
+			]
+		}
+	]
+}

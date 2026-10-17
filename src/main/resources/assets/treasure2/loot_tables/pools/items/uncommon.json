@@ -18,8 +18,8 @@
 								"max": 6
 							}
 						}
-					]						
-				},			
+					]
+				},
 				{
 					"entryName": "iron_ingot",
 					"type": "item",
@@ -33,7 +33,7 @@
 								"max": 7
 							}
 						}
-					]						
+					]
 				},
 				{
 					"entryName": "paper",
@@ -48,7 +48,7 @@
 								"max": 2
 							}
 						}
-					]						
+					]
 				},
 				{
 					"entryName": "reeds",
@@ -63,8 +63,8 @@
 								"max": 2
 							}
 						}
-					]						
-				},				
+					]
+				},
 				{
 					"entryName": "book",
 					"type": "item",
@@ -78,13 +78,13 @@
 								"max": 2
 							}
 						}
-					]						
+					]
 				},
 				{
 					"entryName": "bowl",
 					"type": "item",
 					"name": "minecraft:bowl",
-					"weight": 30				
+					"weight": 30
 				},
 				{
 					"entryName": "redstone",
@@ -99,7 +99,7 @@
 								"max": 3
 							}
 						}
-					]						
+					]
 				},
 				{
 					"entryName": "redstone_torch",
@@ -114,7 +114,7 @@
 								"max": 2
 							}
 						}
-					]						
+					]
 				},
 				{
 					"entryName": "coal",
@@ -129,13 +129,13 @@
 								"max": 5
 							}
 						}
-					]						
+					]
 				},
 				{
 					"entryName": "bow",
 					"type": "item",
 					"name": "minecraft:bow",
-					"weight": 25			
+					"weight": 25
 				},
 				{
 					"entryName": "clay",
@@ -150,13 +150,13 @@
 								"max": 3
 							}
 						}
-					]						
+					]
 				},
 				{
 					"entryName": "bucket",
 					"type": "item",
 					"name": "minecraft:bucket",
-					"weight": 50					
+					"weight": 50
 				},
 				{
 					"entryName": "slime_ball",
@@ -171,7 +171,7 @@
 								"max": 3
 							}
 						}
-					]						
+					]
 				},
 				{
 					"entryName": "lead",
@@ -186,7 +186,7 @@
 								"max": 3
 							}
 						}
-					]						
+					]
 				},
 				{
 					"entryName": "fermented_spider_eye",
@@ -201,7 +201,46 @@
 								"max": 3
 							}
 						}
-					]						
+					]
+				},
+				{
+					"entryName": "saddle",
+					"type": "item",
+					"name": "minecraft:saddle",
+					"weight": 20
+				},
+				{
+					"entryName": "name_tag",
+					"type": "item",
+					"name": "minecraft:name_tag",
+					"weight": 20
+				},
+				{
+					"entryName": "record_13",
+					"type": "item",
+					"name": "minecraft:record_13",
+					"weight": 10
+				},
+				{
+					"entryName": "record_cat",
+					"type": "item",
+					"name": "minecraft:record_cat",
+					"weight": 10
+				},
+				{
+					"entryName": "enchanted_book",
+					"type": "item",
+					"name": "minecraft:book",
+					"weight": 20,
+					"functions": [
+						{
+							"function": "enchant_with_levels",
+							"levels": {
+								"min": 5,
+								"max": 10
+							}
+						}
+					]
 				}
 			]
 		}

@@ -44,7 +44,7 @@
 				{
 					"entryName": "potion_s4",
 					"type": "item",
-					"name": "minecraft:potion",
+					"name": "minecraft:splash_potion",
 					"weight": 10,
 					"functions": [
 						{
@@ -92,7 +92,7 @@
 				{
 					"entryName": "potion_s8",
 					"type": "item",
-					"name": "minecraft:potion",
+					"name": "minecraft:splash_potion",
 					"weight": 10,
 					"functions": [
 						{
@@ -100,7 +100,7 @@
 							"tag": "{Potion:\"minecraft:strong_poison\"}"
 						}
 					]
-				}	
+				}
 			]
 		}
 	]

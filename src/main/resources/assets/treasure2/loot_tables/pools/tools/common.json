@@ -6,12 +6,6 @@
 			"rolls": 1,
 			"entries": [
 				{
-					"entryName": "stone_sword",
-					"type": "item",
-					"name": "minecraft:stone_sword",
-					"weight": 25	
-				},
-				{
 					"entryName": "stone_pickaxe",
 					"type": "item",
 					"name": "minecraft:stone_pickaxe",
@@ -24,10 +18,10 @@
 					"weight": 25
 				},
 				{
-					"entryName": "golden_sword",
+					"entryName": "stone_shovel",
 					"type": "item",
-					"name": "minecraft:golden_sword",
-					"weight": 15
+					"name": "minecraft:stone_shovel",
+					"weight": 25
 				},
 				{
 					"entryName": "golden_pickaxe",
@@ -40,6 +34,24 @@
 					"type": "item",
 					"name": "minecraft:golden_axe",
 					"weight": 15
+				},
+				{
+					"entryName": "golden_shovel",
+					"type": "item",
+					"name": "minecraft:golden_shovel",
+					"weight": 10
+				},
+				{
+					"entryName": "fishing_rod",
+					"type": "item",
+					"name": "minecraft:fishing_rod",
+					"weight": 15
+				},
+				{
+					"entryName": "shears",
+					"type": "item",
+					"name": "minecraft:shears",
+					"weight": 10
 				}
 			]
 		}

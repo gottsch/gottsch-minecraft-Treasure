@@ -68,7 +68,7 @@
 				{
 					"entryName": "potion_r6",
 					"type": "item",
-					"name": "minecraft:potion",
+					"name": "minecraft:splash_potion",
 					"weight": 10,
 					"functions": [
 						{
@@ -104,7 +104,7 @@
 				{
 					"entryName": "potion_r9",
 					"type": "item",
-					"name": "minecraft:potion",
+					"name": "minecraft:splash_potion",
 					"weight": 10,
 					"functions": [
 						{
@@ -112,7 +112,7 @@
 							"tag": "{Potion:\"minecraft:long_poison\"}"
 						}
 					]
-				}				
+				}
 			]
 		}
 	]

@@ -9,25 +9,65 @@
 					"entryName": "diamond_chestplate",
 					"type": "item",
 					"name": "minecraft:diamond_chestplate",
-					"weight": 10		
+					"weight": 10,
+					"functions": [
+						{
+							"function": "enchant_with_levels",
+							"levels": {
+								"min": 20,
+								"max": 30
+							},
+							"treasure": true
+						}
+					]
 				},
 				{
 					"entryName": "diamond_leggings",
 					"type": "item",
 					"name": "minecraft:diamond_leggings",
-					"weight": 10		
+					"weight": 10,
+					"functions": [
+						{
+							"function": "enchant_with_levels",
+							"levels": {
+								"min": 20,
+								"max": 30
+							},
+							"treasure": true
+						}
+					]
 				},
 				{
 					"entryName": "diamond_helmet",
 					"type": "item",
 					"name": "minecraft:diamond_helmet",
-					"weight": 10	
+					"weight": 10,
+					"functions": [
+						{
+							"function": "enchant_with_levels",
+							"levels": {
+								"min": 20,
+								"max": 30
+							},
+							"treasure": true
+						}
+					]
 				},
 				{
 					"entryName": "diamond_boots",
 					"type": "item",
 					"name": "minecraft:diamond_boots",
-					"weight": 10
+					"weight": 10,
+					"functions": [
+						{
+							"function": "enchant_with_levels",
+							"levels": {
+								"min": 20,
+								"max": 30
+							},
+							"treasure": true
+						}
+					]
 				},
 				{
 					"entryName": "iron_chestplate",
@@ -37,8 +77,10 @@
 					"functions": [
 						{
 							"function": "enchant_with_levels",
-							"levels": 30,
-							"treasure": true
+							"levels": {
+								"min": 15,
+								"max": 25
+							}
 						}
 					]
 				},
@@ -50,10 +92,12 @@
 					"functions": [
 						{
 							"function": "enchant_with_levels",
-							"levels": 30,
-							"treasure": true
+							"levels": {
+								"min": 15,
+								"max": 25
+							}
 						}
-					]						
+					]
 				},
 				{
 					"entryName": "iron_helmet",
@@ -63,10 +107,12 @@
 					"functions": [
 						{
 							"function": "enchant_with_levels",
-							"levels": 30,
-							"treasure": true
+							"levels": {
+								"min": 15,
+								"max": 25
+							}
 						}
-					]		
+					]
 				},
 				{
 					"entryName": "iron_boots",
@@ -76,10 +122,12 @@
 					"functions": [
 						{
 							"function": "enchant_with_levels",
-							"levels": 30,
-							"treasure": true
+							"levels": {
+								"min": 15,
+								"max": 25
+							}
 						}
-					]	
+					]
 				}
 			]
 		}

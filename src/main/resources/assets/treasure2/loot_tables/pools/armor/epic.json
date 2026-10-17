@@ -15,6 +15,9 @@
 							"function": "enchant_with_levels",
 							"levels": 30,
 							"treasure": true
+						},
+						{
+							"function": "enchant_randomly"
 						}
 					]
 				},
@@ -28,8 +31,11 @@
 							"function": "enchant_with_levels",
 							"levels": 30,
 							"treasure": true
+						},
+						{
+							"function": "enchant_randomly"
 						}
-					]		
+					]
 				},
 				{
 					"entryName": "diamond_helmet",
@@ -41,8 +47,11 @@
 							"function": "enchant_with_levels",
 							"levels": 30,
 							"treasure": true
+						},
+						{
+							"function": "enchant_randomly"
 						}
-					]	
+					]
 				},
 				{
 					"entryName": "diamond_boots",
@@ -54,6 +63,9 @@
 							"function": "enchant_with_levels",
 							"levels": 30,
 							"treasure": true
+						},
+						{
+							"function": "enchant_randomly"
 						}
 					]
 				},
@@ -65,12 +77,12 @@
 					"functions": [
 						{
 							"function": "enchant_with_levels",
-							"levels": 30,
+							"levels": {
+								"min": 20,
+								"max": 30
+							},
 							"treasure": true
-						},
-						{
-							"function": "enchant_randomly"
-						}						
+						}
 					]
 				},
 				{
@@ -81,13 +93,13 @@
 					"functions": [
 						{
 							"function": "enchant_with_levels",
-							"levels": 30,
+							"levels": {
+								"min": 20,
+								"max": 30
+							},
 							"treasure": true
-						},
-						{
-							"function": "enchant_randomly"
-						}		
-					]						
+						}
+					]
 				},
 				{
 					"entryName": "iron_helmet",
@@ -97,13 +109,13 @@
 					"functions": [
 						{
 							"function": "enchant_with_levels",
-							"levels": 30,
+							"levels": {
+								"min": 20,
+								"max": 30
+							},
 							"treasure": true
-						},
-						{
-							"function": "enchant_randomly"
-						}		
-					]		
+						}
+					]
 				},
 				{
 					"entryName": "iron_boots",
@@ -113,19 +125,19 @@
 					"functions": [
 						{
 							"function": "enchant_with_levels",
-							"levels": 30,
+							"levels": {
+								"min": 20,
+								"max": 30
+							},
 							"treasure": true
-						},
-						{
-							"function": "enchant_randomly"
-						}		
-					]	
+						}
+					]
 				},
 				{
 					"entryName": "diamond_horse_armor",
 					"type": "item",
 					"name": "minecraft:diamond_horse_armor",
-					"weight": 25	
+					"weight": 25
 				}
 			]
 		}

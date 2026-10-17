@@ -9,32 +9,32 @@
 					"entryName": "iron_chestplate",
 					"type": "item",
 					"name": "minecraft:iron_chestplate",
-					"weight": 12.5		
+					"weight": 12
 				},
 				{
 					"entryName": "iron_leggings",
 					"type": "item",
 					"name": "minecraft:iron_leggings",
-					"weight": 20		
+					"weight": 20
 				},
 				{
 					"entryName": "iron_helmet",
 					"type": "item",
 					"name": "minecraft:iron_helmet",
-					"weight": 20		
+					"weight": 20
 				},
 				{
 					"entryName": "iron_boots",
 					"type": "item",
 					"name": "minecraft:iron_boots",
-					"weight": 20		
+					"weight": 20
 				},
 				{
 					"entryName": "shield",
 					"type": "item",
 					"name": "minecraft:shield",
-					"weight": 20		
-				},				
+					"weight": 20
+				},
 				{
 					"entryName": "golden_chestplate",
 					"type": "item",
@@ -55,7 +55,7 @@
 						{
 							"function": "enchant_randomly"
 						}
-					]						
+					]
 				},
 				{
 					"entryName": "golden_helmet",
@@ -66,7 +66,7 @@
 						{
 							"function": "enchant_randomly"
 						}
-					]		
+					]
 				},
 				{
 					"entryName": "golden_boots",
@@ -77,8 +77,8 @@
 						{
 							"function": "enchant_randomly"
 						}
-					]	
-				}	
+					]
+				}
 			]
 		}
 	]

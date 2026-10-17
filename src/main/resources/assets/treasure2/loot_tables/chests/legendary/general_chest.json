@@ -23,7 +23,7 @@
 			"entries": [
                 {
                     "type": "loot_table",
-                    "name": "treasure2:pools/items/epic",
+                    "name": "treasure2:pools/items/legendary",
                     "weight": 1
                 }
 			]
@@ -51,7 +51,7 @@
 			"entries": [
 	                {
                     "type": "loot_table",
-                    "name": "treasure2:pools/food/epic",
+                    "name": "treasure2:pools/food/legendary",
                     "weight": 1
                 }
 			]
@@ -76,14 +76,14 @@
 			"entries": [
 		            {
                     "type": "loot_table",
-                    "name": "treasure2:pools/potions/epic",
+                    "name": "treasure2:pools/potions/legendary",
                     "weight": 1
                 }
 			]
 		},
 
 		{
-			"name": "rare_items",
+			"name": "epic_items",
 			"rolls": {
 				"min": 0,
 				"max": 5
@@ -91,13 +91,13 @@
 			"entries": [
                 {
                     "type": "loot_table",
-                    "name": "treasure2:pools/items/rare",
+                    "name": "treasure2:pools/items/epic",
                     "weight": 1
                 }
 			]
 		},
 		{
-			"name": "rare_armor",
+			"name": "epic_armor",
 			"rolls": {
 				"min": 0,
 				"max": 2
@@ -105,13 +105,13 @@
 			"entries": [
 	                {
                     "type": "loot_table",
-                    "name": "treasure2:pools/armor/rare",
+                    "name": "treasure2:pools/armor/epic",
                     "weight": 1
                 }
 			]
 		},
 		{
-			"name": "rare_food",
+			"name": "epic_food",
 			"rolls": {
 				"min": 0,
 				"max": 3
@@ -119,13 +119,13 @@
 			"entries": [
 	                {
                     "type": "loot_table",
-                    "name": "treasure2:pools/food/rare",
+                    "name": "treasure2:pools/food/epic",
                     "weight": 1
                 }
 			]
 		},
 		{
-			"name": "rare_tools",
+			"name": "epic_tools",
 			"rolls": {
 				"min": 0,
 				"max": 2
@@ -133,13 +133,13 @@
 			"entries": [
 	            {
                     "type": "loot_table",
-                    "name": "treasure2:pools/tools/rare",
+                    "name": "treasure2:pools/tools/epic",
                     "weight": 1
                 }
 			]
 		},
 		{
-			"name": "rare_potions",
+			"name": "epic_potions",
 			"rolls": {
 				"min": 0,
 				"max": 2
@@ -147,7 +147,7 @@
 			"entries": [
 		            {
                     "type": "loot_table",
-                    "name": "treasure2:pools/potions/rare",
+                    "name": "treasure2:pools/potions/epic",
                     "weight": 1
                 }
 			]

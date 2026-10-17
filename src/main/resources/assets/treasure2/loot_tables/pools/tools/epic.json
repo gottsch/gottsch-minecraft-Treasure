@@ -6,39 +6,54 @@
 			"rolls": 1,
 			"entries": [
 				{
-					"entryName": "iron_sword",
+					"entryName": "diamond_pickaxe",
 					"type": "item",
-					"name": "minecraft:iron_sword",
-					"weight": 35	,
-					"functions": [
-						{
-							"function": "enchant_with_levels",
-							"levels": 30,
-							"treasure": true
-						},
-						{
-							"function": "enchant_with_levels",
-							"levels": 20,
-							"treasure": true
-						},
-						{
-							"function": "enchant_randomly"
-						}
-					]
-				},
-				{
-					"entryName": "diamond_sword",
-					"type": "item",
-					"name": "minecraft:diamond_sword",
+					"name": "minecraft:diamond_pickaxe",
 					"weight": 50,
 					"functions": [
 						{
 							"function": "enchant_with_levels",
 							"levels": 30,
 							"treasure": true
-						},
+						}
+					]
+				},
+				{
+					"entryName": "diamond_axe",
+					"type": "item",
+					"name": "minecraft:diamond_axe",
+					"weight": 40,
+					"functions": [
 						{
-							"function": "enchant_randomly"
+							"function": "enchant_with_levels",
+							"levels": 30,
+							"treasure": true
+						}
+					]
+				},
+				{
+					"entryName": "diamond_shovel",
+					"type": "item",
+					"name": "minecraft:diamond_shovel",
+					"weight": 40,
+					"functions": [
+						{
+							"function": "enchant_with_levels",
+							"levels": 30,
+							"treasure": true
+						}
+					]
+				},
+				{
+					"entryName": "fishing_rod",
+					"type": "item",
+					"name": "minecraft:fishing_rod",
+					"weight": 15,
+					"functions": [
+						{
+							"function": "enchant_with_levels",
+							"levels": 30,
+							"treasure": true
 						}
 					]
 				}

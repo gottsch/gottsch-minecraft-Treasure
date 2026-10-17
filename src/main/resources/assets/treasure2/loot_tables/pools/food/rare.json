@@ -24,7 +24,7 @@
 								"max": 3
 							}
 						}
-					]	
+					]
 				},
 				{
 					"entryName": "speckled_melon",
@@ -45,7 +45,7 @@
 								"max": 5
 							}
 						}
-					]	
+					]
 				},
 				{
 					"entryName": "beetroot_seed",
@@ -60,7 +60,13 @@
 								"max": 3
 							}
 						}
-					]	
+					]
+				},
+				{
+					"entryName": "golden_apple",
+					"type": "item",
+					"name": "minecraft:golden_apple",
+					"weight": 15
 				}
 			]
 		}

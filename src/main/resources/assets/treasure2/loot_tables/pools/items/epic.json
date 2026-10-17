@@ -9,20 +9,20 @@
 					"entryName": "shulker_box",
 					"type": "item",
 					"name": "minecraft:black_shulker_box",
-					"weight": 15					
+					"weight": 15
 				},
 				{
 					"entryName": "shulker_shell",
 					"type": "item",
 					"name": "minecraft:shulker_shell",
-					"weight": 20			
+					"weight": 20
 				},
 				{
 					"entryName": "dragon_breath",
 					"type": "item",
 					"name": "minecraft:dragon_breath",
-					"weight": 15				
-				},		
+					"weight": 15
+				},
 				{
 					"entryName": "elytra",
 					"type": "item",
@@ -33,8 +33,8 @@
 					"entryName": "totem_of_undying",
 					"type": "item",
 					"name": "minecraft:totem_of_undying",
-					"weight": 10				
-				},		
+					"weight": 10
+				},
 				{
 					"entryName": "experience_bottle",
 					"type": "item",
@@ -48,7 +48,7 @@
 								"max": 3
 							}
 						}
-					]						
+					]
 				},
 				{
 					"entryName": "emerald",
@@ -63,14 +63,14 @@
 								"max": 3
 							}
 						}
-					]							
+					]
 				},
 				{
 					"entryName": "end_crystal",
 					"type": "item",
 					"name": "minecraft:end_crystal",
-					"weight": 10						
-				},			
+					"weight": 10
+				},
 				{
 					"entryName": "chorus_fruit_popped",
 					"type": "item",
@@ -84,44 +84,63 @@
 								"max": 2
 							}
 						}
-					]							
+					]
 				},
 				{
 					"entryName": "skeleton_head",
 					"type": "item",
 					"name": "minecraft:skull",
 					"weight": 5,
-                    "functions": [
-                        {
-                            "function": "set_data",
-                            "data": 0
-                        }
-                    ]						
+					"functions": [
+						{
+							"function": "set_data",
+							"data": 0
+						}
+					]
 				},
 				{
 					"entryName": "zombie_head",
 					"type": "item",
 					"name": "minecraft:skull",
 					"weight": 5,
-                    "functions": [
-                        {
-                            "function": "set_data",
-                            "data": 2
-                        }
-                    ]						
+					"functions": [
+						{
+							"function": "set_data",
+							"data": 2
+						}
+					]
 				},
 				{
 					"entryName": "creeper_head",
 					"type": "item",
 					"name": "minecraft:skull",
 					"weight": 5,
-                    "functions": [
-                        {
-                            "function": "set_data",
-                            "data": 4
-                        }
-                    ]						
-				}				
+					"functions": [
+						{
+							"function": "set_data",
+							"data": 4
+						}
+					]
+				},
+				{
+					"entryName": "enchanted_book",
+					"type": "item",
+					"name": "minecraft:book",
+					"weight": 40,
+					"functions": [
+						{
+							"function": "enchant_with_levels",
+							"levels": 30,
+							"treasure": true
+						}
+					]
+				},
+				{
+					"entryName": "nether_star",
+					"type": "item",
+					"name": "minecraft:nether_star",
+					"weight": 10
+				}
 			]
 		}
 	]

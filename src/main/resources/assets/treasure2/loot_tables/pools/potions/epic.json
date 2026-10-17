@@ -68,7 +68,7 @@
 				{
 					"entryName": "potion_e6",
 					"type": "item",
-					"name": "minecraft:potion",
+					"name": "minecraft:splash_potion",
 					"weight": 10,
 					"functions": [
 						{
@@ -76,7 +76,7 @@
 							"tag": "{Potion:\"treasure2:extra_strong_poison\"}"
 						}
 					]
-				}	
+				}
 			]
 		}
 	]

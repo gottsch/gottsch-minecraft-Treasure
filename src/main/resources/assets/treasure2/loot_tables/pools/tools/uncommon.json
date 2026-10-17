@@ -6,12 +6,6 @@
 			"rolls": 1,
 			"entries": [
 				{
-					"entryName": "iron_sword",
-					"type": "item",
-					"name": "minecraft:iron_sword",
-					"weight": 35	
-				},
-				{
 					"entryName": "iron_pickaxe",
 					"type": "item",
 					"name": "minecraft:iron_pickaxe",
@@ -24,15 +18,10 @@
 					"weight": 25
 				},
 				{
-					"entryName": "golden_sword",
+					"entryName": "iron_shovel",
 					"type": "item",
-					"name": "minecraft:golden_sword",
-					"weight": 25,
-					"functions": [
-						{
-							"function": "enchant_randomly"
-						}
-					]
+					"name": "minecraft:iron_shovel",
+					"weight": 25
 				},
 				{
 					"entryName": "golden_pickaxe",
@@ -49,6 +38,40 @@
 					"entryName": "golden_axe",
 					"type": "item",
 					"name": "minecraft:golden_axe",
+					"weight": 15,
+					"functions": [
+						{
+							"function": "enchant_randomly"
+						}
+					]
+				},
+				{
+					"entryName": "golden_shovel",
+					"type": "item",
+					"name": "minecraft:golden_shovel",
+					"weight": 10,
+					"functions": [
+						{
+							"function": "enchant_randomly"
+						}
+					]
+				},
+				{
+					"entryName": "shears",
+					"type": "item",
+					"name": "minecraft:shears",
+					"weight": 20
+				},
+				{
+					"entryName": "flint_and_steel",
+					"type": "item",
+					"name": "minecraft:flint_and_steel",
+					"weight": 15
+				},
+				{
+					"entryName": "fishing_rod",
+					"type": "item",
+					"name": "minecraft:fishing_rod",
 					"weight": 15,
 					"functions": [
 						{

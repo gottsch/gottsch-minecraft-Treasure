@@ -1,0 +1,161 @@
+{
+	"version": "1.0",
+	"pools": [
+		{
+			"name": "mythical_items",
+			"rolls": 1,
+			"entries": [
+				{
+					"entryName": "enchanted_book",
+					"type": "item",
+					"name": "minecraft:book",
+					"weight": 40,
+					"functions": [
+						{
+							"function": "enchant_with_levels",
+							"levels": 30,
+							"treasure": true
+						}
+					]
+				},
+				{
+					"entryName": "mending_book",
+					"type": "item",
+					"name": "minecraft:book",
+					"weight": 20,
+					"functions": [
+						{
+							"function": "enchant_randomly",
+							"enchantments": [
+								"minecraft:mending"
+							]
+						}
+					]
+				},
+				{
+					"entryName": "nether_star",
+					"type": "item",
+					"name": "minecraft:nether_star",
+					"weight": 20,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]
+				},
+				{
+					"entryName": "beacon",
+					"type": "item",
+					"name": "minecraft:beacon",
+					"weight": 10
+				},
+				{
+					"entryName": "elytra",
+					"type": "item",
+					"name": "minecraft:elytra",
+					"weight": 15
+				},
+				{
+					"entryName": "totem_of_undying",
+					"type": "item",
+					"name": "minecraft:totem_of_undying",
+					"weight": 15
+				},
+				{
+					"entryName": "wither_skeleton_skull",
+					"type": "item",
+					"name": "minecraft:skull",
+					"weight": 10,
+					"functions": [
+						{
+							"function": "set_data",
+							"data": 1
+						}
+					]
+				},
+				{
+					"entryName": "dragon_head",
+					"type": "item",
+					"name": "minecraft:skull",
+					"weight": 8,
+					"functions": [
+						{
+							"function": "set_data",
+							"data": 5
+						}
+					]
+				},
+				{
+					"entryName": "experience_bottle",
+					"type": "item",
+					"name": "minecraft:experience_bottle",
+					"weight": 30,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 5,
+								"max": 10
+							}
+						}
+					]
+				},
+				{
+					"entryName": "diamond_block",
+					"type": "item",
+					"name": "minecraft:diamond_block",
+					"weight": 15,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 2,
+								"max": 4
+							}
+						}
+					]
+				},
+				{
+					"entryName": "emerald_block",
+					"type": "item",
+					"name": "minecraft:emerald_block",
+					"weight": 15,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 2,
+								"max": 4
+							}
+						}
+					]
+				},
+				{
+					"entryName": "end_crystal",
+					"type": "item",
+					"name": "minecraft:end_crystal",
+					"weight": 10,
+					"functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]
+				},
+				{
+					"entryName": "purple_shulker_box",
+					"type": "item",
+					"name": "minecraft:purple_shulker_box",
+					"weight": 10
+				}
+			]
+		}
+	]
+}

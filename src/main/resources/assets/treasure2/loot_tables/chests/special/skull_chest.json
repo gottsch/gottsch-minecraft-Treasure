@@ -44,6 +44,18 @@
 					"weight": 20
 				},
 				{
+					"entryName": "amethyst_key",
+					"type": "item",
+					"name": "treasure2:amethyst_key",
+					"weight": 10
+				},
+				{
+					"entryName": "onyx_key",
+					"type": "item",
+					"name": "treasure2:onyx_key",
+					"weight": 10
+				},
+				{
 					"entryName": "diamond_key",
 					"type": "item",
 					"name": "treasure2:diamond_key",
