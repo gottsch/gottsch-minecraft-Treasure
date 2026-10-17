@@ -101,6 +101,8 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	@Ignore public static final String EMERALD_LOCK_ID = "emerald_lock";
 	@Ignore public static final String RUBY_LOCK_ID = "ruby_lock";
 	@Ignore public static final String SAPPHIRE_LOCK_ID = "sapphire_lock";
+	@Ignore public static final String AMETHYST_LOCK_ID = "amethyst_lock";
+	@Ignore public static final String ONYX_LOCK_ID = "onyx_lock";
 	@Ignore public static final String SPIDER_LOCK_ID = "spider_lock";
 	@Ignore public static final String WITHER_LOCK_ID = "wither_lock";
 
@@ -117,6 +119,8 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 	@Ignore public static final String EMERALD_KEY_ID = "emerald_key";
 	@Ignore public static final String RUBY_KEY_ID = "ruby_key";
 	@Ignore public static final String SAPPHIRE_KEY_ID = "sapphire_key";
+	@Ignore public static final String AMETHYST_KEY_ID = "amethyst_key";
+	@Ignore public static final String ONYX_KEY_ID = "onyx_key";
 	@Ignore public static final String JEWELLED_KEY_ID = "jewelled_key";
 	@Ignore public static final String METALLURGISTS_KEY_ID = "metallurgists_key";
 	@Ignore public static final String SKELETON_KEY_ID = "skeleton_key";
@@ -1089,6 +1093,18 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		@RangeInt(min = 1, max = 32000)
 		@RequiresMcRestart
 		public int lightningKeyMaxUses = 10;
+
+		@Comment({ "The maximum uses for a given amethyst key." })
+		@Name("21. Amethyst key max. uses:")
+		@RangeInt(min = 1, max = 32000)
+		@RequiresMcRestart
+		public int amethystKeyMaxUses = 7;
+
+		@Comment({ "The maximum uses for a given onyx key." })
+		@Name("22. Onyx key max. uses:")
+		@RangeInt(min = 1, max = 32000)
+		@RequiresMcRestart
+		public int onyxKeyMaxUses = 7;
 	}
 
 	/*

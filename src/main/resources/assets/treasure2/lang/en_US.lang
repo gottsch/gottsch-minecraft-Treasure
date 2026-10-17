@@ -431,6 +431,8 @@ item.treasure2:diamond_key.name=Diamond Key
 item.treasure2:emerald_key.name=Emerald Key
 item.treasure2:ruby_key.name=Ruby Key
 item.treasure2:sapphire_key.name=Sapphire Key
+item.treasure2:amethyst_key.name=Amethyst Key
+item.treasure2:onyx_key.name=Onyx Key
 item.treasure2:jewelled_key.name=Jewelled Key
 item.treasure2:metallurgists_key.name=Metallurgist's Key
 item.treasure2:skeleton_key.name=Skeleton Key
@@ -449,6 +451,8 @@ item.treasure2:diamond_lock.name=Diamond Lock
 item.treasure2:emerald_lock.name=Emerald Lock
 item.treasure2:ruby_lock.name=Ruby Lock
 item.treasure2:sapphire_lock.name=Sapphire Lock
+item.treasure2:amethyst_lock.name=Amethyst Lock
+item.treasure2:onyx_lock.name=Onyx Lock
 item.treasure2:spider_lock.name=Spider Lock
 item.treasure2:wither_lock.name=Wither Lock
 

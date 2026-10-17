@@ -177,6 +177,8 @@ public class TreasureModels {
 		registerItemModel(TreasureItems.EMERALD_LOCK);
 		registerItemModel(TreasureItems.RUBY_LOCK);
 		registerItemModel(TreasureItems.SAPPHIRE_LOCK);
+		registerItemModel(TreasureItems.AMETHYST_LOCK);
+		registerItemModel(TreasureItems.ONYX_LOCK);
 		registerItemModel(TreasureItems.SPIDER_LOCK);
 		registerItemModel(TreasureItems.WITHER_LOCK);
 
@@ -192,6 +194,8 @@ public class TreasureModels {
 		registerItemModel(TreasureItems.EMERALD_KEY);
 		registerItemModel(TreasureItems.RUBY_KEY);
 		registerItemModel(TreasureItems.SAPPHIRE_KEY);
+		registerItemModel(TreasureItems.AMETHYST_KEY);
+		registerItemModel(TreasureItems.ONYX_KEY);
 		registerItemModel(TreasureItems.JEWELLED_KEY);
 		registerItemModel(TreasureItems.METALLURGISTS_KEY);
 		registerItemModel(TreasureItems.SKELETON_KEY);

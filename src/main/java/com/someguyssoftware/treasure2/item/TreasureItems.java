@@ -135,6 +135,8 @@ public class TreasureItems {
 	public static KeyItem EMERALD_KEY;
 	public static KeyItem RUBY_KEY;
 	public static KeyItem SAPPHIRE_KEY;
+	public static KeyItem AMETHYST_KEY;
+	public static KeyItem ONYX_KEY;
 	public static KeyItem JEWELLED_KEY;
 	public static KeyItem WITHER_KEY;
 	public static KeyItem BONE_KEY;
@@ -158,6 +160,8 @@ public class TreasureItems {
 	public static LockItem EMERALD_LOCK;
 	public static LockItem RUBY_LOCK;
 	public static LockItem SAPPHIRE_LOCK;
+	public static LockItem AMETHYST_LOCK;
+	public static LockItem ONYX_LOCK;
 	public static LockItem SPIDER_LOCK;
 	public static LockItem WITHER_LOCK;
 
@@ -491,6 +495,21 @@ public class TreasureItems {
 					.setCraftable(true)
 					.setMaxDamage(TreasureConfig.KEYS_LOCKS.sapphireKeyMaxUses);
 
+			// 1.12 amethyst is the newer versions' topaz (renamed there once vanilla added amethyst)
+			AMETHYST_KEY = new KeyItem(Treasure.MODID, TreasureConfig.AMETHYST_KEY_ID)
+					.setCategory(Category.GEMS)
+					.setRarity(Rarity.SCARCE)
+					.setBreakable(false)
+					.setCraftable(true)
+					.setMaxDamage(TreasureConfig.KEYS_LOCKS.amethystKeyMaxUses);
+
+			ONYX_KEY = new KeyItem(Treasure.MODID, TreasureConfig.ONYX_KEY_ID)
+					.setCategory(Category.GEMS)
+					.setRarity(Rarity.SCARCE)
+					.setBreakable(false)
+					.setCraftable(true)
+					.setMaxDamage(TreasureConfig.KEYS_LOCKS.onyxKeyMaxUses);
+
 			JEWELLED_KEY = new JewelledKey(Treasure.MODID, TreasureConfig.JEWELLED_KEY_ID)
 					.setCategory(Category.GEMS)
 					.setRarity(Rarity.EPIC)
@@ -557,6 +576,8 @@ public class TreasureItems {
 			keys.put(EMERALD_KEY.getRarity(), EMERALD_KEY);
 			keys.put(RUBY_KEY.getRarity(), RUBY_KEY);
 			keys.put(SAPPHIRE_KEY.getRarity(), SAPPHIRE_KEY);
+			keys.put(AMETHYST_KEY.getRarity(), AMETHYST_KEY);
+			keys.put(ONYX_KEY.getRarity(), ONYX_KEY);
 			keys.put(JEWELLED_KEY.getRarity(), JEWELLED_KEY);
 			keys.put(METALLURGISTS_KEY.getRarity(), METALLURGISTS_KEY);
 			keys.put(SKELETON_KEY.getRarity(), SKELETON_KEY);
@@ -596,6 +617,12 @@ public class TreasureItems {
 			SAPPHIRE_LOCK = new LockItem(Treasure.MODID, TreasureConfig.SAPPHIRE_LOCK_ID, new KeyItem[] {SAPPHIRE_KEY, JEWELLED_KEY})
 					.setCategory(Category.GEMS)
 					.setRarity(Rarity.EPIC);
+			AMETHYST_LOCK = new LockItem(Treasure.MODID, TreasureConfig.AMETHYST_LOCK_ID, new KeyItem[] {AMETHYST_KEY, JEWELLED_KEY})
+					.setCategory(Category.GEMS)
+					.setRarity(Rarity.SCARCE);
+			ONYX_LOCK = new LockItem(Treasure.MODID, TreasureConfig.ONYX_LOCK_ID, new KeyItem[] {ONYX_KEY, JEWELLED_KEY})
+					.setCategory(Category.GEMS)
+					.setRarity(Rarity.SCARCE);
 			SPIDER_LOCK = new LockItem(Treasure.MODID, TreasureConfig.SPIDER_LOCK_ID, new KeyItem[] {SPIDER_KEY})
 					.setCategory(Category.POTION)
 					.setRarity(Rarity.SCARCE);
@@ -614,6 +641,8 @@ public class TreasureItems {
 			locks.put(EMERALD_LOCK.getRarity(), EMERALD_LOCK);
 			locks.put(RUBY_LOCK.getRarity(), RUBY_LOCK);
 			locks.put(SAPPHIRE_LOCK.getRarity(), SAPPHIRE_LOCK);
+			locks.put(AMETHYST_LOCK.getRarity(), AMETHYST_LOCK);
+			locks.put(ONYX_LOCK.getRarity(), ONYX_LOCK);
 			locks.put(SPIDER_LOCK.getRarity(), SPIDER_LOCK);
 			// NOTE wither lock is a special and isn't used in the general locks list
 
@@ -1579,6 +1608,8 @@ public class TreasureItems {
 					EMERALD_LOCK,
 					RUBY_LOCK,
 					SAPPHIRE_LOCK,
+					AMETHYST_LOCK,
+					ONYX_LOCK,
 					SPIDER_LOCK,
 					WITHER_LOCK,
 					WOOD_KEY,
@@ -1592,6 +1623,8 @@ public class TreasureItems {
 					EMERALD_KEY,
 					RUBY_KEY,
 					SAPPHIRE_KEY,
+					AMETHYST_KEY,
+					ONYX_KEY,
 					JEWELLED_KEY,
 					METALLURGISTS_KEY,
 					SKELETON_KEY,
