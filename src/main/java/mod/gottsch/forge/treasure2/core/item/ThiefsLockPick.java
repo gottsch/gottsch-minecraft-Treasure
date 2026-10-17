@@ -95,8 +95,8 @@ public class ThiefsLockPick extends KeyItem {
 
 		Component s1 = Component.translatable(LangUtil.tooltip("key_lock.thiefs_lock_pick.specials"), 
 				getSuccessProbability(), 
-				(this.getSuccessProbability() - (this.getSuccessProbability()/4)),
-				(getSuccessProbability()/2));
+				getUncommonSuccessProbability(),
+				getScarceSuccessProbability());
 			
 		Component s2 = Component.translatable(LangUtil.tooltip("key_lock.specials"), 
 				ChatFormatting.GOLD + s1.getString());

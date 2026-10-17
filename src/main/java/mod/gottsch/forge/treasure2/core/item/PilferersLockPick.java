@@ -83,7 +83,7 @@ public class PilferersLockPick extends KeyItem {
     public void appendHoverSpecials(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flag) {
         Component s1 = Component.translatable(LangUtil.tooltip("key_lock.pilferers_lock_pick.specials"),
                 getSuccessProbability(),
-                (getSuccessProbability() / 2));
+                getUncommonSuccessProbability());
 
         Component s2 = Component.translatable(LangUtil.tooltip("key_lock.specials"),
                 ChatFormatting.GOLD + s1.getString());
