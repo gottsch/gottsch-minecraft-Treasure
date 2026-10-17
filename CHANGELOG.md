@@ -25,6 +25,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The Viking chest mimic's teeth no longer poke through its lid.
 - Lock pick tooltips now show the chances set in the config, the same ones used when picking a lock. They showed made-up chances before, so the Pilferer's Lock Pick claimed 24% on uncommon locks when the real chance is 32%, and on a server they could show 0%.
 - Callandor can now be found. Its place in the mythical loot pool handed out Oathbringer instead, so Callandor never dropped.
+- Better gear is now enchanted better. Rare diamond armor came unenchanted while Rare iron armor was heavily enchanted, Epic iron armor was enchanted more than Epic diamond armor, and the Rare and Scarce diamond swords were weaker than the iron ones. Diamond now always comes enchanted at least as well as iron.
+- The Epic iron sword no longer stacks three rounds of enchanting.
+- The Nether Star no longer turns up in Rare chests, where it was more likely than a diamond block. It now starts at Epic.
+- Harmful potions in loot are now splash potions: Weakness, Poison, Harming and Treasure2's Extra Strong Poison. As drinkable potions they only ever hurt whoever drank them.
+- Common chests no longer hold a useless Mundane Potion; it's a Healing potion now. The Regeneration potion in Common chests turns up five times as often (it was 1 in 31).
 
 ## [4.0.6] - 2026-09-06
 

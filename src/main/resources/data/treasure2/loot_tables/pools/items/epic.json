@@ -147,12 +147,16 @@
         }
       } ],
       "weight" : 15
-    },
-      {
-        "entryName" : "recovery_compass",
-        "type" : "minecraft:item",
-        "name" : "minecraft:recovery_compass",
-        "weight" : 5
-      }]
+    }, {
+      "entryName" : "recovery_compass",
+      "type" : "minecraft:item",
+      "name" : "minecraft:recovery_compass",
+      "weight" : 5
+    }, {
+      "entryName" : "nether_star",
+      "type" : "minecraft:item",
+      "name" : "minecraft:nether_star",
+      "weight" : 10
+    } ]
   } ]
 }
