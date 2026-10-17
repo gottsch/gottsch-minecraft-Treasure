@@ -5,13 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.4.0] - Unreleased
+## [2.4.0] - 2026-10-16
 
 ### 🛠️ Fixed
 - Servers no longer fill their log with "sent a mist message for another player" warnings when several players stand in the same poison or wither mist (caused by the 2.3.3 mist fix).
 - The in-game "update available" notice never worked for 1.12.2: the mod read the update file of a different Minecraft version. It now reads the 1.12.2 one.
 - Each chest's own "Enable ..." config option now works. Before, most of them were tied to the moldy crate option: turning off the moldy crate stopped 16 kinds of chest from generating, and turning off any of those chests did nothing.
 - Callandor could never be found: its loot entry gave Oathbringer instead. Mythical chests can now hold Callandor.
+- Vanilla dungeon chests now get their extra Treasure2 loot, a key and a treasure item. The extra loot pointed at a loot table that never existed, so these chests never got anything from Treasure2 and the server logged a warning every time one was filled.
 
 ### ✨ Added
 - Six new mimics: Viking chest, Cauldron chest, Crate, Moldy Crate, Cardboard Box and Milk Crate. Each can hide as its matching chest and has its own spawn egg.

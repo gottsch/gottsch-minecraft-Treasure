@@ -91,8 +91,9 @@ public class WorldEventHandler {
 	public void lootLoad(LootTableLoadEvent event) {
 		if (event.getName().toString().equals(LootTableList.CHESTS_SIMPLE_DUNGEON.toString()/*"minecraft:chests/simple_dungeon"*/)) {
 
-			// load a loot table
-			ResourceLocation location = new ResourceLocation(Treasure.MODID, "pools/treasure/scarce");
+			// add one roll of the scarce treasure pool (a key and a treasure item). there has never been a
+			// pools/treasure/scarce table, so the old name made vanilla log a warning and add nothing.
+			ResourceLocation location = new ResourceLocation(Treasure.MODID, "pools/treasure/scarce_treasure");
 			LootEntry entry = new LootEntryTable(location, 1, 1, new LootCondition[] {}, "treasure");
 			LootPool pool = new LootPool(new LootEntry[] {entry}, new LootCondition[] {}, new RandomValueRange(1), new RandomValueRange(1), "treasure");
 			event.getTable().addPool(pool);		
