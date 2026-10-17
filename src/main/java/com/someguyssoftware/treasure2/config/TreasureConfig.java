@@ -992,11 +992,41 @@ public class TreasureConfig implements IConfig, ILoggerConfig {
 		@RequiresMcRestart
 		public int pilferersLockPickMaxUses = 10;
 
+		@Comment({ "The success probability of a pilferers lock pick on a COMMON lock." })
+		@Name("03.1 Pilferer's lockpick COMMON success probability:")
+		@RangeDouble(min = 1.0, max = 100.0)
+		@RequiresMcRestart
+		public double pilferersLockPickCommonSuccessProbability = 48.0;
+
+		@Comment({ "The success probability of a pilferers lock pick on an UNCOMMON lock." })
+		@Name("03.2 Pilferer's lockpick UNCOMMON success probability:")
+		@RangeDouble(min = 1.0, max = 100.0)
+		@RequiresMcRestart
+		public double pilferersLockPickUncommonSuccessProbability = 32.0;
+
 		@Comment({ "The maximum uses for a given thiefs lock pick." })
 		@Name("04. Thief's lockpick max. uses:")
 		@RangeInt(min = 1, max = 32000)
 		@RequiresMcRestart
 		public int thiefsLockPickMaxUses = 10;
+
+		@Comment({ "The success probability of a thiefs lock pick on a COMMON lock." })
+		@Name("04.1 Thief's lockpick COMMON success probability:")
+		@RangeDouble(min = 1.0, max = 100.0)
+		@RequiresMcRestart
+		public double thiefsLockPickCommonSuccessProbability = 60.0;
+
+		@Comment({ "The success probability of a thiefs lock pick on an UNCOMMON lock." })
+		@Name("04.2 Thief's lockpick UNCOMMON success probability:")
+		@RangeDouble(min = 1.0, max = 100.0)
+		@RequiresMcRestart
+		public double thiefsLockPickUncommonSuccessProbability = 45.0;
+
+		@Comment({ "The success probability of a thiefs lock pick on a SCARCE lock." })
+		@Name("04.3 Thief's lockpick SCARCE success probability:")
+		@RangeDouble(min = 1.0, max = 100.0)
+		@RequiresMcRestart
+		public double thiefsLockPickScarceSuccessProbability = 30.0;
 
 		@Comment({ "The maximum uses for a given wooden key." })
 		@Name("05. Wood key max. uses:")

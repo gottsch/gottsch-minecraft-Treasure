@@ -546,20 +546,23 @@ public class TreasureItems {
 					.setMaxDamage(TreasureConfig.KEYS_LOCKS.witherKeyMaxUses);
 
 			PILFERERS_LOCK_PICK = new PilferersLockPick(Treasure.MODID, TreasureConfig.PILFERERS_LOCK_PICK_ID)
+					.setUncommonSuccessProbability(TreasureConfig.KEYS_LOCKS.pilferersLockPickUncommonSuccessProbability)
 					.setCategory(Category.ELEMENTAL)
 					.setRarity(Rarity.COMMON)
 					.setBreakable(true)
 					.setCraftable(true)
 					.setMaxDamage(TreasureConfig.KEYS_LOCKS.pilferersLockPickMaxUses)
-					.setSuccessProbability(32);
+					.setSuccessProbability(TreasureConfig.KEYS_LOCKS.pilferersLockPickCommonSuccessProbability);
 
 			THIEFS_LOCK_PICK = new ThiefsLockPick(Treasure.MODID, TreasureConfig.THIEFS_LOCK_PICK_ID)
+					.setUncommonSuccessProbability(TreasureConfig.KEYS_LOCKS.thiefsLockPickUncommonSuccessProbability)
+					.setScarceSuccessProbability(TreasureConfig.KEYS_LOCKS.thiefsLockPickScarceSuccessProbability)
 					.setCategory(Category.ELEMENTAL)
 					.setRarity(Rarity.UNCOMMON)
 					.setBreakable(true)
 					.setCraftable(true)
 					.setMaxDamage(TreasureConfig.KEYS_LOCKS.thiefsLockPickMaxUses)
-					.setSuccessProbability(48);
+					.setSuccessProbability(TreasureConfig.KEYS_LOCKS.thiefsLockPickCommonSuccessProbability);
 
 			// KEY SILVER_RING
 			KEY_RING = new KeyRingItem(Treasure.MODID, TreasureConfig.KEY_RING_ID);

@@ -25,6 +25,9 @@ import net.minecraft.world.World;
  *
  */
 public class ThiefsLockPick extends KeyItem {
+	/** The success probabilities on UNCOMMON and SCARCE locks. The COMMON probability is the key's success probability. */
+	private double uncommonSuccessProbability;
+	private double scarceSuccessProbability;
 
 	/**
 	 * 
@@ -47,8 +50,8 @@ public class ThiefsLockPick extends KeyItem {
 
 		String s1 = I18n.translateToLocalFormatted("tooltip.thiefs_lock_pick.specials", 
 				getSuccessProbability(), 
-				(this.getSuccessProbability() - (this.getSuccessProbability()/4)),
-				(getSuccessProbability()/2));
+				getUncommonSuccessProbability(),
+				getScarceSuccessProbability());
 			
 		String s2 = I18n.translateToLocalFormatted("tooltip.label.specials", 
 				TextFormatting.GOLD + s1);
@@ -66,8 +69,7 @@ public class ThiefsLockPick extends KeyItem {
 	}	
 
 	/*
-	 * If UNCOMMON lock, then this key has 25% less chance (ie x - x/4) of succeeding,
-	 * If SCARCE lock, then this key has 50% less chance (ie x/2) of succeeding,
+	 * COMMON locks use the success probability, UNCOMMON and SCARCE locks their own success probabilities (all configurable)
 	 * @see com.someguyssoftware.treasure2.item.KeyItem#unlock(com.someguyssoftware.treasure2.item.LockItem)
 	 */
 	@Override
@@ -81,18 +83,36 @@ public class ThiefsLockPick extends KeyItem {
 				}
 			}
 			else if (lockItem.getRarity() == Rarity.UNCOMMON) {
-				if (RandomHelper.checkProbability(new Random(), this.getSuccessProbability() - (this.getSuccessProbability()/4))) {
+				if (RandomHelper.checkProbability(new Random(), this.getUncommonSuccessProbability())) {
 					Treasure.LOGGER.debug("Unlock attempt met probability");
 					return true;
 				}				
 			}
 			else if (lockItem.getRarity() == Rarity.SCARCE) {
-				if (RandomHelper.checkProbability(new Random(), this.getSuccessProbability()/2)) {
+				if (RandomHelper.checkProbability(new Random(), this.getScarceSuccessProbability())) {
 					Treasure.LOGGER.debug("Unlock attempt met probability");
 					return true;
 				}				
 			}		
 		}
 		return false;
+	}
+
+	public double getUncommonSuccessProbability() {
+		return uncommonSuccessProbability;
+	}
+
+	public ThiefsLockPick setUncommonSuccessProbability(double uncommonSuccessProbability) {
+		this.uncommonSuccessProbability = uncommonSuccessProbability;
+		return this;
+	}
+
+	public double getScarceSuccessProbability() {
+		return scarceSuccessProbability;
+	}
+
+	public ThiefsLockPick setScarceSuccessProbability(double scarceSuccessProbability) {
+		this.scarceSuccessProbability = scarceSuccessProbability;
+		return this;
 	}
 }

@@ -24,6 +24,8 @@ import net.minecraft.world.World;
  *
  */
 public class PilferersLockPick extends KeyItem {
+	/** The success probability on an UNCOMMON lock. The COMMON probability is the key's success probability. */
+	private double uncommonSuccessProbability;
 
 	/**
 	 * 
@@ -46,7 +48,7 @@ public class PilferersLockPick extends KeyItem {
 	
 		String s1 = I18n.translateToLocalFormatted("tooltip.pilferers_lock_pick.specials", 
 				getSuccessProbability(),
-				(getSuccessProbability()/2));
+				getUncommonSuccessProbability());
 			
 		String s2 = I18n.translateToLocalFormatted("tooltip.label.specials", 
 				TextFormatting.GOLD + s1);
@@ -64,7 +66,7 @@ public class PilferersLockPick extends KeyItem {
 	}	
 
 	/*
-	 * If UNCOMMON lock, then this key has 50% less chance (ie x/2) of succeeding
+	 * COMMON locks use the success probability, UNCOMMON locks the uncommon success probability (both configurable)
 	 * @see com.someguyssoftware.treasure2.item.KeyItem#unlock(com.someguyssoftware.treasure2.item.LockItem)
 	 */
 	@Override
@@ -78,7 +80,7 @@ public class PilferersLockPick extends KeyItem {
 				}
 			}
 			else if (lockItem.getRarity() == Rarity.UNCOMMON) {
-				if (RandomHelper.checkProbability(new Random(), this.getSuccessProbability()/2)) {
+				if (RandomHelper.checkProbability(new Random(), this.getUncommonSuccessProbability())) {
 					Treasure.LOGGER.debug("Unlock attempt met probability");
 					return true;
 				}				
@@ -86,5 +88,14 @@ public class PilferersLockPick extends KeyItem {
 			
 		}
 		return false;
+	}
+
+	public double getUncommonSuccessProbability() {
+		return uncommonSuccessProbability;
+	}
+
+	public PilferersLockPick setUncommonSuccessProbability(double uncommonSuccessProbability) {
+		this.uncommonSuccessProbability = uncommonSuccessProbability;
+		return this;
 	}
 }
