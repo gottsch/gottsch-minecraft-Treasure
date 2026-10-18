@@ -30,6 +30,7 @@ import mod.gottsch.forge.treasure2.core.inventory.KeyRingContainerMenu;
 import mod.gottsch.forge.treasure2.core.lock.LockState;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
 import mod.gottsch.forge.treasure2.core.util.ModUtil;
+import mod.gottsch.forge.treasure2.core.util.ShareTagUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -289,41 +290,33 @@ public class KeyRingItem extends Item implements MenuProvider {
 	 */
 	@Override
 	public CompoundTag getShareTag(ItemStack stack) {
-
-		CompoundTag dataTag = null;
-		Optional<IKeyRingHandler> dataHandler = stack.getCapability(TreasureCapabilities.KEY_RING).map(h -> h);
-		if (dataHandler.isPresent()) {
-			dataTag = dataHandler.get().save();
-		}
-
-		CompoundTag itemTag = new CompoundTag();		
-		Optional<IItemHandler> itemHandler = stack.getCapability(TreasureCapabilities.KEY_RING_INV).map(h -> h);
-		if (itemHandler.isPresent()) {
-			itemTag =((ItemStackHandler) itemHandler.get()).serializeNBT();
-		}
-
-		CompoundTag tag = new CompoundTag();		
-		tag.put("keyRing", dataTag);
-		tag.put("inventory", itemTag);
-		return tag;
+		// NOTE the share tag becomes the client stack's tag, so start from a copy of the stack's own tag
+		// and keep the capability data under one sub-key.
+		CompoundTag capabilities = new CompoundTag();
+		stack.getCapability(TreasureCapabilities.KEY_RING).ifPresent(cap -> {
+			ShareTagUtil.put(capabilities, "keyRing", cap.save());
+		});
+		stack.getCapability(TreasureCapabilities.KEY_RING_INV).ifPresent(cap -> {
+			ShareTagUtil.put(capabilities, "inventory", ((ItemStackHandler) cap).serializeNBT());
+		});
+		return ShareTagUtil.create(stack, capabilities);
 	}
 
 	@Override
 	public void readShareTag(ItemStack stack, @Nullable CompoundTag compound) {
-		super.readShareTag(stack, compound);
+		super.readShareTag(stack, ShareTagUtil.getStackTag(compound));
 
-		if (compound instanceof CompoundTag) {
-			if (compound.contains("inventory")) {
-				stack.getCapability(TreasureCapabilities.KEY_RING_INV).ifPresent(cap -> {
-					((ItemStackHandler)cap).deserializeNBT(compound.getCompound("inventory"));
-				});
-			}
+		CompoundTag capabilities = ShareTagUtil.getCapabilities(compound);
+		if (capabilities.contains("inventory")) {
+			stack.getCapability(TreasureCapabilities.KEY_RING_INV).ifPresent(cap -> {
+				((ItemStackHandler)cap).deserializeNBT(capabilities.getCompound("inventory"));
+			});
+		}
 
-			if (compound.contains("keyRing")) {
-				stack.getCapability(TreasureCapabilities.KEY_RING).ifPresent(cap -> {
-					cap.load(compound.getCompound("keyRing"));
-				});
-			}
+		if (capabilities.contains("keyRing")) {
+			stack.getCapability(TreasureCapabilities.KEY_RING).ifPresent(cap -> {
+				cap.load(capabilities.getCompound("keyRing"));
+			});
 		}
 	}
 }

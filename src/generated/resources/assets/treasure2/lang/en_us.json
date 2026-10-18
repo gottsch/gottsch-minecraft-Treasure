@@ -1,4 +1,5 @@
 {
+  "biome.treasure2.wither_grove": "Wither Grove",
   "block.treasure2.barrel_chest": "Treasure Barrel",
   "block.treasure2.bone_chest": "Bone Chest",
   "block.treasure2.cardboard_box": "Cardboard Box",
@@ -75,6 +76,8 @@
   "block.treasure2.wither_log": "Witherwood Log",
   "block.treasure2.wither_planks": "Witherwood Planks",
   "block.treasure2.wither_root": "Witherwood Root",
+  "block.treasure2.withered_grass_block": "Withered Grass Block",
+  "block.treasure2.withered_leaf_litter": "Withered Leaf Litter",
   "block.treasure2.witherwood_branch": "Witherwood Branch",
   "block.treasure2.witherwood_broken_log": "Witherwood Broken Log",
   "block.treasure2.witherwood_button": "Witherwood Button",

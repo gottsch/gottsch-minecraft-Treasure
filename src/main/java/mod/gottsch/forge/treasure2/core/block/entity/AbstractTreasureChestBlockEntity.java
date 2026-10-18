@@ -80,6 +80,10 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 	public static final String FACING_TAG = "facing";
 	public static final String SEALED_TAG = "sealed";
 	public static final String LOOT_TABLE_TAG = "lootTable";
+	/** A foreign mod's table, rolled into whatever slots the chest's own loot leaves empty. */
+	public static final String SUPPLEMENTAL_LOOT_TABLE_TAG = "supplementalLootTable";
+	/** The processor list's fallback table, rolled only when no rarity loot table can be found. */
+	public static final String ALT_LOOT_TABLE_TAG = "altLootTable";
 	public static final String MIMIC_TAG = "mimic";
 
 	public static final String GENERATION_CONTEXT_TAG = "generationContext";
@@ -118,6 +122,18 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 	 * The loot table assigned to this block entity
 	 */
 	private ResourceLocation lootTable;
+
+	/*
+	 * A caller-supplied table that tops up the empty slots after the chest is filled. See
+	 * TreasureApi.generateChest.
+	 */
+	private ResourceLocation supplementalLootTable;
+
+	/*
+	 * The fallback table from the processor list's alt_loot_table, used when no rarity loot table
+	 * can be found on first open.
+	 */
+	private ResourceLocation altLootTable;
 
 	/*
 	 * The mimic assigned to this block entity
@@ -172,14 +188,15 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 //				Treasure.LOGGER.debug("chest gen  -> {}", chestGenerator.get().getClass().getSimpleName());
 				// fill the chest with loot
 //				chestGenerator.get().fillChest(getLevel(), getLevel().getRandom(), this, this.getGenerationContext().getLootRarity(), playerEntity);
-				ChestGenerationHelper.fillChest((ServerLevel) getLevel(), getLevel().getRandom(), this, rarityEntry, playerEntity);
+				// only clear the seal once the chest is actually filled, so a failed fill doesn't
+				// permanently strand the chest empty - it will simply retry on the next open.
+				if (ChestGenerationHelper.fillChest((ServerLevel) getLevel(), getLevel().getRandom(), this, rarityEntry, playerEntity)) {
+					this.setSealed(false);
+				}
 //			}
 //			else {
 //				Treasure.LOGGER.warn("treasure chest at -> {} does not reference a valid generator -> {}", this.worldPosition, chestGenerator.get().getClass().getSimpleName());
 //			}
-			// only clear the seal once the chest is actually filled, so a failed fill doesn't
-			// permanently strand the chest empty - it will simply retry on the next open.
-			this.setSealed(false);
 		}
 		return createChestContainerMenu(windowId, playerInventory, playerEntity);
 	}
@@ -404,6 +421,12 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 			if (getLootTable() != null) {
 				tag.putString(LOOT_TABLE_TAG, getLootTable().toString());
 			}
+			if (getSupplementalLootTable() != null) {
+				tag.putString(SUPPLEMENTAL_LOOT_TABLE_TAG, getSupplementalLootTable().toString());
+			}
+			if (getAltLootTable() != null) {
+				tag.putString(ALT_LOOT_TABLE_TAG, getAltLootTable().toString());
+			}
 
 			if (getMimic() != null) {
 				tag.putString(MIMIC_TAG, getMimic().toString());
@@ -497,6 +520,16 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 					this.setLootTable(new ResourceLocation(tag.getString(LOOT_TABLE_TAG)));
 				}
 			}
+			if (tag.contains(SUPPLEMENTAL_LOOT_TABLE_TAG)) {
+				if (!tag.getString(SUPPLEMENTAL_LOOT_TABLE_TAG).isEmpty()) {
+					this.setSupplementalLootTable(new ResourceLocation(tag.getString(SUPPLEMENTAL_LOOT_TABLE_TAG)));
+				}
+			}
+			if (tag.contains(ALT_LOOT_TABLE_TAG)) {
+				if (!tag.getString(ALT_LOOT_TABLE_TAG).isEmpty()) {
+					this.setAltLootTable(new ResourceLocation(tag.getString(ALT_LOOT_TABLE_TAG)));
+				}
+			}
 			if (tag.contains(MIMIC_TAG)) {
 				if (!tag.getString(MIMIC_TAG).isEmpty()) {
 					this.setMimic(new ResourceLocation(tag.getString(MIMIC_TAG)));
@@ -586,6 +619,8 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 	public CompoundTag getUpdateTag() {
 		CompoundTag tag = super.getUpdateTag();
 		saveAdditional(tag);
+		// don't tell clients which chests are mimics. the renderer doesn't need it.
+		tag.remove(MIMIC_TAG);
 		return tag;
 	}
 
@@ -653,6 +688,22 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 	@Override
 	public void setLootTable(ResourceLocation lootTable) {
 		this.lootTable = lootTable;
+	}
+
+	public ResourceLocation getSupplementalLootTable() {
+		return supplementalLootTable;
+	}
+
+	public void setSupplementalLootTable(ResourceLocation supplementalLootTable) {
+		this.supplementalLootTable = supplementalLootTable;
+	}
+
+	public ResourceLocation getAltLootTable() {
+		return altLootTable;
+	}
+
+	public void setAltLootTable(ResourceLocation altLootTable) {
+		this.altLootTable = altLootTable;
 	}
 
 

@@ -19,6 +19,7 @@ import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.item.TreasureItems;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 
 import java.util.Arrays;
@@ -103,6 +104,11 @@ public class TreasureBlockLootTables extends BlockLootSubProvider {
         this.add(TreasureBlocks.STRANGLE_VINES_PLANT.get(), block ->
                 createSingleItemTable(TreasureItems.STRANGLE_VINES.get()));
 
+        // one leaf per leaf, like pink petals; withered grass drops dirt unless silk touched, like grass
+        this.add(TreasureBlocks.WITHERED_LEAF_LITTER.get(), this::createPetalsDrops);
+        this.add(TreasureBlocks.WITHERED_GRASS_BLOCK.get(), block ->
+                createSingleItemTableWithSilkTouch(block, Items.DIRT));
+
     }
 
     @Override
@@ -132,6 +138,8 @@ public class TreasureBlockLootTables extends BlockLootSubProvider {
                 TreasureBlocks.STRIPPED_WITHERWOOD_LOG.get(),
                 TreasureBlocks.STRIPPED_WITHERWOOD_WOOD.get(),
                 TreasureBlocks.STRANGLE_VINES_PLANT.get(),
+                TreasureBlocks.WITHERED_LEAF_LITTER.get(),
+                TreasureBlocks.WITHERED_GRASS_BLOCK.get(),
 
                 // legacy wither
                 TreasureBlocks.WITHER_LOG.get(),

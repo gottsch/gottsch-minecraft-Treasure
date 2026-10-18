@@ -33,21 +33,16 @@ public abstract class MimicModel<T extends Entity> extends EntityModel<T> {
 
     @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        Mimic mimic = (Mimic) entity;
-
         // reset
         getLid().xRot = 0f;
 
-        if (mimic.isActive()) {
-            activeAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+        // the opening animation runs for the first second the client sees the mimic. ACTIVE is server-owned
+        // (it drives the ambient sound), so the model only reads the entity's age and never writes ACTIVE.
+        float timeSlice = getTimeSlice(ageInTicks);
+        if (timeSlice <= 1F) {
+            openAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, timeSlice);
         } else {
-            float timeSlice = getTimeSlice(ageInTicks);
-            if (timeSlice <= 1F) {
-                openAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, timeSlice);
-            }
-            else {
-                mimic.setActive(true);
-            }
+            activeAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         }
     }
 

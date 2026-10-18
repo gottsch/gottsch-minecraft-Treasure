@@ -382,6 +382,8 @@ public class TreasureItems {
 	public static final RegistryObject<Item> STRANGLE_VINES = fromBlock(TreasureBlocks.STRANGLE_VINES, TREASURE_PROPS_SUPPLIER);
 
 	public static final RegistryObject<Item> SPANISH_MOSS_ITEM = fromBlock(TreasureBlocks.SPANISH_MOSS, TREASURE_PROPS_SUPPLIER);
+	public static final RegistryObject<Item> WITHERED_LEAF_LITTER = fromBlock(TreasureBlocks.WITHERED_LEAF_LITTER, TREASURE_PROPS_SUPPLIER);
+	public static final RegistryObject<Item> WITHERED_GRASS_BLOCK = fromBlock(TreasureBlocks.WITHERED_GRASS_BLOCK, TREASURE_PROPS_SUPPLIER);
 
 	public static final RegistryObject<Item> TOPAZ_ORE_ITEM = fromBlock(TreasureBlocks.TOPAZ_ORE, TREASURE_PROPS_SUPPLIER);
 	public static final RegistryObject<Item> DEEPSLATE_TOPAZ_ORE_ITEM = fromBlock(TreasureBlocks.DEEPSLATE_TOPAZ_ORE, TREASURE_PROPS_SUPPLIER);
