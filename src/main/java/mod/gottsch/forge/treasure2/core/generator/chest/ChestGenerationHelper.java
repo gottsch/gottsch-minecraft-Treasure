@@ -92,10 +92,11 @@ public class ChestGenerationHelper {
      * @param blockEntity the block entity of the chest.
      * @param rarity      the rarity of the chest.
      * @param player      the player context, can be null.
+     * @return true if loot was generated into the chest, false if no loot table could be used.
      */
-    public static void fillChest(final ServerLevel level, RandomSource random, final BlockEntity blockEntity, IRarity rarity, Player player) {
+    public static boolean fillChest(final ServerLevel level, RandomSource random, final BlockEntity blockEntity, IRarity rarity, Player player) {
         if (!(blockEntity instanceof AbstractTreasureChestBlockEntity chestBlockEntity)) {
-            return;
+            return false;
         }
 
         // guard against a missing generation context (e.g. sealed with no rarity ever recorded) so
@@ -107,19 +108,19 @@ public class ChestGenerationHelper {
         }
         final IRarity finalRarity = rarity;
 
-        chestBlockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(itemHandler -> {
+        return chestBlockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).map(itemHandler -> {
             // 1. select a loot table for the chest
             Optional<ResourceLocation> lootTableIdOpt = selectLootTable(chestBlockEntity, random, finalRarity);
             if (lootTableIdOpt.isEmpty()) {
                 Treasure.LOGGER.warn("could not determine a loot table for chest at -> {}", chestBlockEntity.getBlockPos());
-                return;
+                return fillFromAltLootTable(level, random, chestBlockEntity, (ItemStackHandler) itemHandler, player);
             }
             ResourceLocation lootTableId = lootTableIdOpt.get();
 
             LootTable lootTable = LootTableRegistry.getLootTable(level, lootTableId);
             if (lootTable == LootTable.EMPTY) {
                 Treasure.LOGGER.warn("unable to load lootTable -> {}", lootTableId);
-                return;
+                return fillFromAltLootTable(level, random, chestBlockEntity, (ItemStackHandler) itemHandler, player);
             }
             Treasure.LOGGER.debug("selected loot table -> {} for chest at -> {}", lootTableId, chestBlockEntity.getBlockPos());
 
@@ -146,7 +147,71 @@ public class ChestGenerationHelper {
             // 6. populate the chest inventory
             populateInventory((ItemStackHandler) itemHandler, random, treasureStacks, originalTreasureSize);
             populateInventory((ItemStackHandler) itemHandler, random, fillerStacks, originalFillerSize);
-        });
+
+            // 7. top up the empty slots from the caller's supplemental table, if one was given.
+            addSupplementalLoot(level, random, chestBlockEntity, (ItemStackHandler) itemHandler, player);
+            return true;
+        }).orElse(false);
+    }
+
+    /**
+     * Fills the chest from its fallback table (a processor list's {@code alt_loot_table}) when no rarity
+     * loot table could be found, then tops it up from the supplemental table as usual.
+     *
+     * @return true if the fallback table filled the chest, false if it has none or it can't be loaded, so
+     * the chest stays sealed and tries again on the next open
+     */
+    private static boolean fillFromAltLootTable(ServerLevel level, RandomSource random,
+            AbstractTreasureChestBlockEntity chest, ItemStackHandler inventory, Player player) {
+
+        ResourceLocation tableId = chest.getAltLootTable();
+        if (tableId == null) {
+            return false;
+        }
+        LootTable table = level.getServer().getLootData().getLootTable(tableId);
+        if (table == LootTable.EMPTY) {
+            Treasure.LOGGER.warn("unable to load fallback lootTable -> {} for chest at -> {}", tableId, chest.getBlockPos());
+            return false;
+        }
+        LootParams.Builder params = new LootParams.Builder(level)
+                .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(chest.getBlockPos()));
+        if (player != null) {
+            params.withLuck(player.getLuck()).withParameter(LootContextParams.THIS_ENTITY, player);
+        }
+        List<ItemStack> stacks = table.getRandomItems(params.create(LootContextParamSets.CHEST));
+        Treasure.LOGGER.debug("fallback lootTable -> {} rolled {} stacks for chest at -> {}", tableId, stacks.size(), chest.getBlockPos());
+        fillSlots(inventory, random, stacks);
+        addSupplementalLoot(level, random, chest, inventory, player);
+        return true;
+    }
+
+    /**
+     * Rolls the chest's supplemental loot table (see {@code TreasureApi.generateChest}) into the
+     * slots Treasure2's own loot left empty.
+     *
+     * <p>Last, and empty slots only, so it can never displace Treasure2's loot: a full chest gets
+     * nothing, and anything that does not fit is dropped. A missing table is logged and skipped.</p>
+     */
+    private static void addSupplementalLoot(ServerLevel level, RandomSource random,
+            AbstractTreasureChestBlockEntity chest, ItemStackHandler inventory, Player player) {
+
+        ResourceLocation tableId = chest.getSupplementalLootTable();
+        if (tableId == null) {
+            return;
+        }
+        LootTable table = level.getServer().getLootData().getLootTable(tableId);
+        if (table == LootTable.EMPTY) {
+            Treasure.LOGGER.warn("unable to load supplemental lootTable -> {} for chest at -> {}", tableId, chest.getBlockPos());
+            return;
+        }
+        LootParams.Builder params = new LootParams.Builder(level)
+                .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(chest.getBlockPos()));
+        if (player != null) {
+            params.withLuck(player.getLuck()).withParameter(LootContextParams.THIS_ENTITY, player);
+        }
+        List<ItemStack> stacks = table.getRandomItems(params.create(LootContextParamSets.CHEST));
+        Treasure.LOGGER.debug("supplemental lootTable -> {} rolled {} stacks for chest at -> {}", tableId, stacks.size(), chest.getBlockPos());
+        fillSlots(inventory, random, stacks);
     }
 
     /**

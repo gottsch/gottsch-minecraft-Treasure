@@ -26,6 +26,7 @@ import mod.gottsch.forge.treasure2.core.capability.PouchCapability;
 import mod.gottsch.forge.treasure2.core.capability.TreasureCapabilities;
 import mod.gottsch.forge.treasure2.core.inventory.PouchContainerMenu;
 import mod.gottsch.forge.treasure2.core.util.LangUtil;
+import mod.gottsch.forge.treasure2.core.util.ShareTagUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -121,23 +122,28 @@ public class PouchItem extends Item implements MenuProvider {
 	 */
 	@Override
 	public CompoundTag getShareTag(ItemStack stack) {
-		CompoundTag nbt = stack.getOrCreateTag();
-		ItemStackHandler cap = (ItemStackHandler) stack.getCapability(TreasureCapabilities.POUCH).orElseThrow(() -> new IllegalArgumentException("LazyOptional must not be empty!"));
-		try {
-			nbt = cap.serializeNBT();
-		} catch (Exception e) {
-			Treasure.LOGGER.error("Unable to write state to NBT:", e);
-		}
-		return nbt;
+		// NOTE the share tag becomes the client stack's tag, so start from a copy of the stack's own tag
+		// and keep the capability data under one sub-key.
+		CompoundTag capabilities = new CompoundTag();
+		stack.getCapability(TreasureCapabilities.POUCH).ifPresent(cap -> {
+			try {
+				ShareTagUtil.put(capabilities, "inventory", ((ItemStackHandler) cap).serializeNBT());
+			} catch (Exception e) {
+				Treasure.LOGGER.error("Unable to write state to NBT:", e);
+			}
+		});
+		return ShareTagUtil.create(stack, capabilities);
 	}
 
 	@Override
 	public void readShareTag(ItemStack stack, @Nullable CompoundTag nbt) {
-		super.readShareTag(stack, nbt);
+		super.readShareTag(stack, ShareTagUtil.getStackTag(nbt));
 
-		if (nbt instanceof CompoundTag) {
-			ItemStackHandler cap = (ItemStackHandler) stack.getCapability(TreasureCapabilities.POUCH).orElseThrow(() -> new IllegalArgumentException("LazyOptional must not be empty!"));
-			cap.deserializeNBT((CompoundTag) nbt);
+		CompoundTag capabilities = ShareTagUtil.getCapabilities(nbt);
+		if (capabilities.contains("inventory")) {
+			stack.getCapability(TreasureCapabilities.POUCH).ifPresent(cap -> {
+				((ItemStackHandler) cap).deserializeNBT(capabilities.getCompound("inventory"));
+			});
 		}
 	}
 }

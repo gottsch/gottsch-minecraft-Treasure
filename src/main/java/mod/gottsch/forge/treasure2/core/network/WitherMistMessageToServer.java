@@ -15,12 +15,10 @@
  */
 package mod.gottsch.forge.treasure2.core.network;
 
-import java.util.UUID;
 import java.util.function.Supplier;
 
 import mod.gottsch.forge.treasure2.Treasure;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -100,7 +98,8 @@ public class WitherMistMessageToServer {
 		}
 		final ServerPlayer sendingPlayer = ctx.getSender();
 		if (sendingPlayer == null) {
-			Treasure.LOGGER.warn("PlayerEntityMP was null when PoisonMistMessageToServer was received");
+			Treasure.LOGGER.warn("PlayerEntityMP was null when WitherMistMessageToServer was received");
+			return;
 		}
 
 		// This code creates a new task which will be executed by the server during the next tick,
@@ -118,8 +117,12 @@ public class WitherMistMessageToServer {
 	static void processMessage(WitherMistMessageToServer message, ServerPlayer sendingPlayer) {
 
 		try {
-			MinecraftServer minecraftServer = sendingPlayer.server;
-			ServerPlayer player = minecraftServer.getPlayerList().getPlayer(UUID.fromString(message.getPlayerUUID()));
+			// only ever affect the player that sent the message - never trust a player uuid supplied by the client.
+			ServerPlayer player = sendingPlayer;
+			if (!player.getStringUUID().equals(message.getPlayerUUID())) {
+				Treasure.LOGGER.debug("{} sent a mist message for another player, ignoring it -> {}", player.getName().getString(), message.getPlayerUUID());
+				return;
+			}
 
 			if (player != null) {
 				boolean isAffected = false;

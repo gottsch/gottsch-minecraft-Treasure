@@ -10,7 +10,7 @@
 					"entryName": "potion_c1",
 					"type": "minecraft:item",
 					"name": "minecraft:potion",
-					"weight": 1,
+					"weight": 5,
 					"functions": [
 						{
 							"function": "minecraft:set_nbt",
@@ -50,7 +50,7 @@
 					"functions": [
 						{
 							"function": "minecraft:set_nbt",
-							"tag": "{Potion:\"minecraft:mundane\"}"
+							"tag": "{Potion:\"minecraft:healing\"}"
 						}
 					]
 				}
