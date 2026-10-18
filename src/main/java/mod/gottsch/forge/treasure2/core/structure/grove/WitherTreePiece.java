@@ -34,7 +34,8 @@ import net.minecraftforge.common.world.PieceBeardifierModifier;
  * One procedural tree in a Wither Grove.
  * <p>
  * Only the seed, archetype, scale and ground position are saved. The tree is rebuilt from them each
- * time postProcess runs (once per chunk it touches), so every chunk sees the same tree. Opts out of
+ * time postProcess runs (once per chunk it touches), so every chunk sees the same tree, and is seated
+ * on the real ground found in its trunk column (see WitherTreeBlueprint#seat). Opts out of
  * the structure's beard: the main tree keeps beard_thin, the grove trees sit on the ground as it is.
  *
  * @author Mark Gottschling on 10/18/2026
@@ -79,7 +80,10 @@ public class WitherTreePiece extends StructurePiece implements PieceBeardifierMo
 	@Override
 	public void postProcess(WorldGenLevel level, StructureManager structureManager, ChunkGenerator generator,
 			RandomSource random, BoundingBox chunkBox, ChunkPos chunkPos, BlockPos pivot) {
-		WitherTreeBuilder.build(seed, archetype, scale).place(level, origin, chunkBox);
+		BlockPos ground = WitherTreeBlueprint.seat(level, origin);
+		if (ground != null) {
+			WitherTreeBuilder.build(seed, archetype, scale).place(level, ground, chunkBox);
+		}
 	}
 
 	@Override

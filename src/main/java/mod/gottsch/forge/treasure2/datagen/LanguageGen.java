@@ -261,6 +261,7 @@ public class LanguageGen extends LanguageProvider {
         // mobs
         add(TreasureEntities.BOUND_SOUL_ENTITY_TYPE.get(), "Bound Soul");
         add(TreasureEntities.WITHERWOOD_GOLEM_ENTITY_TYPE.get(), "Witherwood Golem");
+        add("biome." + Treasure.MODID + ".wither_grove", "Wither Grove");
         add(TreasureEntities.WOOD_CHEST_MIMIC_ENTITY_TYPE.get(), "Wood Chest Mimic");
         add(TreasureEntities.PIRATE_CHEST_MIMIC_ENTITY_TYPE.get(), "Pirate Chest Mimic");
         add(TreasureEntities.VIKING_CHEST_MIMIC_ENTITY_TYPE.get(), "Viking Chest Mimic");

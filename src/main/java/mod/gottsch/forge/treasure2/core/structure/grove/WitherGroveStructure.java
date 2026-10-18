@@ -22,16 +22,28 @@ import mod.gottsch.forge.treasure2.core.structure.ModJigsawStructure;
 import mod.gottsch.forge.treasure2.core.structure.TreasureStructures;
 import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 import mod.gottsch.forge.treasure2.core.world.feature.IFeatureType;
+import mod.gottsch.forge.treasure2.Treasure;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.QuartPos;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.StructureManager;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.heightproviders.HeightProvider;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureType;
+import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 
@@ -49,6 +61,12 @@ import java.util.Optional;
  * @author Mark Gottschling on 10/18/2026
  */
 public class WitherGroveStructure extends ModJigsawStructure {
+	/** never in any biome source; only ever painted onto a grove */
+	public static final ResourceKey<Biome> GROVE_BIOME = ResourceKey.create(Registries.BIOME, new ResourceLocation(Treasure.MODID, "wither_grove"));
+	/** how far the painted biome reaches past the furthest trees */
+	private static final int PAINT_MARGIN = 3;
+	/** how far below the main tree's ground the biome is painted; the pit and its room are left alone */
+	private static final int PAINT_DEPTH = 8;
 
 	/**
 	 * Grove layout, from the structure JSON's "grove" object. Every field is required, so a misspelled
@@ -112,6 +130,18 @@ public class WitherGroveStructure extends ModJigsawStructure {
 
 	@Override
 	public Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
+		// vanilla tests the biome only after this method returns, so bail out of oceans before any jigsaw work
+		ChunkPos chunk = context.chunkPos();
+		Holder<Biome> biome = context.biomeSource().getNoiseBiome(QuartPos.fromBlock(chunk.getMiddleBlockX()),
+				QuartPos.fromBlock(context.chunkGenerator().getSeaLevel()), QuartPos.fromBlock(chunk.getMiddleBlockZ()), context.randomState().sampler());
+		if (!context.validBiome().test(biome)) {
+			return Optional.empty();
+		}
+		// and out of rivers and lakes, which the jigsaw would otherwise be assembled for
+		if (isWet(context, chunk.getMiddleBlockX(), chunk.getMiddleBlockZ())) {
+			return Optional.empty();
+		}
+
 		Optional<GenerationStub> jigsaw = super.findGenerationPoint(context);
 		if (jigsaw.isEmpty()) {
 			return jigsaw;
@@ -119,12 +149,46 @@ public class WitherGroveStructure extends ModJigsawStructure {
 		GenerationStub stub = jigsaw.get();
 		// the jigsaw stub's position is the centre of the main tree, one above its ground
 		BlockPos centre = stub.position();
+		if (isFlooded(context, centre)) {
+			return Optional.empty();
+		}
 		long groveSeed = context.random().nextLong();
 		return Optional.of(new GenerationStub(centre, builder -> {
 			List<StructurePiece> anchor = stub.getPiecesBuilder().build().pieces();
 			anchor.forEach(builder::addPiece);
 			layoutGrove(context, centre, groveSeed, anchor, builder);
 		}));
+	}
+
+	/**
+	 * Keeps the grove off water. The biome check misses rivers beside the centre and lakes (which have no
+	 * biome), so look at the surface itself: the main tree's own spot must be dry, at most one of eight
+	 * points round it (6 out) may be wet, and at most three of eight across the grove (12 out).
+	 */
+	private static boolean isFlooded(GenerationContext context, BlockPos centre) {
+		if (isWet(context, centre.getX(), centre.getZ())) {
+			return true;
+		}
+		return countWet(context, centre, 6, 2) >= 2 || countWet(context, centre, 12, 4) >= 4;
+	}
+
+	/** wet points among eight round the centre, stopping as soon as the limit is reached */
+	private static int countWet(GenerationContext context, BlockPos centre, int radius, int limit) {
+		int wet = 0;
+		for (int i = 0; i < 8 && wet < limit; i++) {
+			double angle = i * Math.PI / 4;
+			if (isWet(context, centre.getX() + (int) Math.round(Math.cos(angle) * radius), centre.getZ() + (int) Math.round(Math.sin(angle) * radius))) {
+				wet++;
+			}
+		}
+		return wet;
+	}
+
+	/** fluid on top: the surface heightmap counts it, the ocean-floor one does not */
+	private static boolean isWet(GenerationContext context, int x, int z) {
+		int surface = context.chunkGenerator().getFirstOccupiedHeight(x, z, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState());
+		int floor = context.chunkGenerator().getFirstOccupiedHeight(x, z, Heightmap.Types.OCEAN_FLOOR_WG, context.heightAccessor(), context.randomState());
+		return surface > floor;
 	}
 
 	/**
@@ -181,6 +245,59 @@ public class WitherGroveStructure extends ModJigsawStructure {
 			builder.addPiece(new WitherTreePiece(origin, random.nextLong(), WitherTreeArchetype.choose(fraction, random), scale));
 			trees.add(origin);
 		}
+	}
+
+	/**
+	 * Paints the Wither Grove biome over this chunk's share of the grove, the way /fillbiome does.
+	 * <p>
+	 * This runs during the chunk's surface_structures step, before its vegetal_decoration step, and
+	 * vanilla's BiomeFilter checks the biome at each feature's own position. The grove biome has no
+	 * features, so the host biome's trees, flowers and grass rooted inside the painted area never
+	 * generate. Only this chunk is written, so it is order-independent.
+	 */
+	@Override
+	public void afterPlace(WorldGenLevel level, StructureManager structureManager, ChunkGenerator chunkGenerator, RandomSource random,
+			BoundingBox box, ChunkPos chunkPos, PiecesContainer piecesContainer) {
+		paintBiome(level, chunkPos, piecesContainer);
+		super.afterPlace(level, structureManager, chunkGenerator, random, box, chunkPos, piecesContainer);
+	}
+
+	private void paintBiome(WorldGenLevel level, ChunkPos chunkPos, PiecesContainer piecesContainer) {
+		if (piecesContainer.pieces().isEmpty()) {
+			return;
+		}
+		Optional<Holder.Reference<Biome>> biome = level.registryAccess().registryOrThrow(Registries.BIOME).getHolder(GROVE_BIOME);
+		if (biome.isEmpty()) {
+			return;
+		}
+		// piece 0 is the main tree; its box starts at the ground
+		BoundingBox main = piecesContainer.pieces().get(0).getBoundingBox();
+		int centreX = main.getCenter().getX();
+		int centreZ = main.getCenter().getZ();
+		int minY = main.minY() - PAINT_DEPTH;
+		double radius = grove.radius() + PAINT_MARGIN;
+
+		// skip chunks entirely outside the painted circle
+		int nearestX = Mth.clamp(centreX, chunkPos.getMinBlockX(), chunkPos.getMaxBlockX());
+		int nearestZ = Mth.clamp(centreZ, chunkPos.getMinBlockZ(), chunkPos.getMaxBlockZ());
+		double reach = radius + 2;
+		if ((nearestX - centreX) * (nearestX - centreX) + (nearestZ - centreZ) * (nearestZ - centreZ) > reach * reach) {
+			return;
+		}
+
+		ChunkAccess chunk = level.getChunk(chunkPos.x, chunkPos.z);
+		Holder<Biome> groveBiome = biome.get();
+		chunk.fillBiomesFromNoise((quartX, quartY, quartZ, sampler) -> {
+			// the centre of the 4x4x4 biome cell
+			int dx = QuartPos.toBlock(quartX) + 2 - centreX;
+			int dz = QuartPos.toBlock(quartZ) + 2 - centreZ;
+			// a ragged edge: each cell's own reach varies by a couple of blocks
+			double edge = radius + ((Mth.getSeed(quartX, 0, quartZ) >> 16 & 3) - 1.5) * 1.5;
+			if (QuartPos.toBlock(quartY) + 3 >= minY && dx * dx + dz * dz <= edge * edge) {
+				return groveBiome;
+			}
+			return chunk.getNoiseBiome(quartX, quartY, quartZ);
+		}, level.getLevel().getChunkSource().randomState().sampler());
 	}
 
 	@Override

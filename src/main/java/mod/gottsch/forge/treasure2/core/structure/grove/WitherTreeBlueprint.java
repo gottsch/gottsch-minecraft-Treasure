@@ -51,6 +51,9 @@ public class WitherTreeBlueprint {
 	public static final int CLEARING_RELIEF = 3;
 	/** how far a strangle vine's ground may be above or below the tree's ground */
 	public static final int VINE_RELIEF = 6;
+	/** how far above and below its laid-out ground a tree looks for the real ground (see {@link #seat}) */
+	public static final int SEAT_RISE = 6;
+	public static final int SEAT_DEPTH = 10;
 	/** no neighbour shape updates: a neighbour may be in a chunk not generated yet */
 	private static final int FLAGS = Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE;
 
@@ -107,7 +110,7 @@ public class WitherTreeBlueprint {
 	 * The world-space box of everything this tree can write when its ground is at origin.
 	 */
 	public BoundingBox bounds(BlockPos origin) {
-		int minX = 0, minY = -SINK_DEPTH, minZ = 0, maxX = 0, maxY = VINE_RELIEF + 1, maxZ = 0;
+		int minX = 0, minY = -SINK_DEPTH - SEAT_DEPTH, minZ = 0, maxX = 0, maxY = VINE_RELIEF + 1, maxZ = 0;
 		List<BlockPos> cells = new ArrayList<>(structure.keySet());
 		cells.addAll(decorations.keySet());
 		for (BlockPos p : cells) {
@@ -125,7 +128,32 @@ public class WitherTreeBlueprint {
 			maxY = Math.max(maxY, VINE_RELIEF + v.height());
 		}
 		return new BoundingBox(origin.getX() + minX, origin.getY() + minY, origin.getZ() + minZ,
-				origin.getX() + maxX, origin.getY() + maxY, origin.getZ() + maxZ);
+				origin.getX() + maxX, origin.getY() + maxY + SEAT_RISE, origin.getZ() + maxZ);
+	}
+
+	/**
+	 * The real ground under a tree laid out at origin, or null if there is none near.
+	 * <p>
+	 * A grove lays its trees out from the generator's noise height, which knows nothing of the main
+	 * tree's beard or of carvers; both can move the ground by several blocks. This scans the trunk's own
+	 * column, from SEAT_RISE above to SEAT_DEPTH below, for the first terrain block with open space
+	 * above it. Logs, leaves, block entities and Treasure blocks are skipped, so another tree (or this
+	 * one, placed from a neighbouring chunk) never changes the answer, and every chunk of the tree
+	 * seats it in the same place.
+	 */
+	public static BlockPos seat(WorldGenLevel level, BlockPos origin) {
+		for (int dy = SEAT_RISE; dy >= -SEAT_DEPTH; dy--) {
+			BlockPos pos = origin.above(dy);
+			if (isTerrain(level.getBlockState(pos)) && !isTerrain(level.getBlockState(pos.above()))) {
+				return pos;
+			}
+		}
+		return null;
+	}
+
+	private static boolean isTerrain(BlockState state) {
+		return !isPassable(state) && !state.hasBlockEntity() && !(state.getBlock() instanceof ITreasureBlock)
+				&& !state.is(BlockTags.LOGS) && !state.is(BlockTags.LEAVES);
 	}
 
 	/**
