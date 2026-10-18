@@ -69,7 +69,7 @@
 				{
 					"entryName": "potion_e6",
 					"type": "minecraft:item",
-					"name": "minecraft:potion",
+					"name": "minecraft:splash_potion",
 					"weight": 10,
 					"functions": [
 						{

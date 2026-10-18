@@ -48,7 +48,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -367,6 +367,8 @@ public class AbstractTreasureChestBlock extends BaseEntityBlock implements ITrea
 
 		Mob mob = spawn((ServerLevel)level, level.getRandom(), entityType, pos, player, yRot);
 		if (mob != null) {
+			// a mimic sprung from a chest is awake from the start
+			((Mimic)mob).setActive(true);
 			// update the loot table in the mimic
 			((Mimic)mob).setLootTable(blockEntity.getLootTable());			
 			// update client
@@ -389,17 +391,20 @@ public class AbstractTreasureChestBlock extends BaseEntityBlock implements ITrea
 		double spawnX = pos.getX() + 0.5;
 		double spawnY = pos.getY();
 		double spawnZ = pos.getZ() + 0.5;
+		// NOTE no natural spawn position check - the mimic takes the place of a chest that was just there.
+		// an explosion removes blocks in random order, so the block below is often already gone,
+		// and an ON_GROUND check would fail and the chest would vanish without its mimic.
 		if (!WorldInfo.isClientSide(level)) {
-			SpawnPlacements.Type placement = SpawnPlacements.getPlacementType(entityType);
-			if (NaturalSpawner.isSpawnPositionOk(placement, level, pos, entityType)) {
-				Mob mob = (Mob)entityType.create(level);
+			Entity entity = entityType.create(level);
+			if (entity instanceof Mob mob) {
 				mob.setPos(spawnX, spawnY, spawnZ);
 				mob.setTarget(target);
 				mob.setYRot(yRot);
 				mob.yRotO = yRot;
 				level.addFreshEntityWithPassengers(mob);
-				return mob;			
+				return mob;
 			}
+			Treasure.LOGGER.warn("unable to spawn mimic -> {} at -> {}", ForgeRegistries.ENTITY_TYPES.getKey(entityType), pos.toShortString());
 		}
 		return null;
 	}
@@ -514,6 +519,13 @@ public class AbstractTreasureChestBlock extends BaseEntityBlock implements ITrea
 
 			if (blockEntity instanceof AbstractTreasureChestBlockEntity) {
 				AbstractTreasureChestBlockEntity be = (AbstractTreasureChestBlockEntity)blockEntity;
+
+				// a mimic springs instead of breaking, so it can't be defused or carried off on the chest item.
+				// spawnMimic() removes the block, so nothing is dropped.
+				if (be.getMimic() != null) {
+					spawnMimic(level, level.getRandom(), state, pos, player);
+					return true;
+				}
 
 				// unlocked!
 				if (!be.isLocked()) {
