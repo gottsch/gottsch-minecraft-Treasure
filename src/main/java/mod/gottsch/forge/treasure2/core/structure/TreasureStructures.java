@@ -16,8 +16,11 @@
 package mod.gottsch.forge.treasure2.core.structure;
 
 import mod.gottsch.forge.treasure2.Treasure;
+import mod.gottsch.forge.treasure2.core.structure.grove.WitherGroveStructure;
+import mod.gottsch.forge.treasure2.core.structure.grove.WitherTreePiece;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.structure.StructureType;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
@@ -35,7 +38,17 @@ public class TreasureStructures {
     public static final RegistryObject<StructureType<RuinsStructure>> RUINS_STRUCTURE =
             STRUCTURE_TYPES.register("ruins_structure", () -> () -> RuinsStructure.CODEC);
 
+    public static final RegistryObject<StructureType<WitherGroveStructure>> WITHER_GROVE =
+            STRUCTURE_TYPES.register("wither_grove", () -> () -> WitherGroveStructure.CODEC);
+
+    public static final DeferredRegister<StructurePieceType> STRUCTURE_PIECES =
+            DeferredRegister.create(Registries.STRUCTURE_PIECE, Treasure.MODID);
+
+    public static final RegistryObject<StructurePieceType> WITHER_TREE_PIECE =
+            STRUCTURE_PIECES.register("wither_tree", () -> (StructurePieceType.ContextlessType) WitherTreePiece::new);
+
     public static void register(IEventBus modEventBus) {
         STRUCTURE_TYPES.register(modEventBus);
+        STRUCTURE_PIECES.register(modEventBus);
     }
 }
