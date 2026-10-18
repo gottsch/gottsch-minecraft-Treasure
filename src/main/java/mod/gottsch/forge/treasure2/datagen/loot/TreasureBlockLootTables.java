@@ -108,6 +108,8 @@ public class TreasureBlockLootTables extends BlockLootSubProvider {
         this.add(TreasureBlocks.WITHERED_LEAF_LITTER.get(), this::createPetalsDrops);
         this.add(TreasureBlocks.WITHERED_GRASS_BLOCK.get(), block ->
                 createSingleItemTableWithSilkTouch(block, Items.DIRT));
+        // only shears take the thorns whole, as with dead bushes
+        this.add(TreasureBlocks.GRAVE_THORNS.get(), BlockLootSubProvider::createShearsOnlyDrop);
 
     }
 
@@ -140,6 +142,7 @@ public class TreasureBlockLootTables extends BlockLootSubProvider {
                 TreasureBlocks.STRANGLE_VINES_PLANT.get(),
                 TreasureBlocks.WITHERED_LEAF_LITTER.get(),
                 TreasureBlocks.WITHERED_GRASS_BLOCK.get(),
+                TreasureBlocks.GRAVE_THORNS.get(),
 
                 // legacy wither
                 TreasureBlocks.WITHER_LOG.get(),

@@ -274,6 +274,13 @@ public class TreasureBlocks {
 			BlockBehaviour.Properties.copy(Blocks.PINK_PETALS).mapColor(MapColor.TERRACOTTA_BROWN).sound(SoundType.AZALEA_LEAVES)));
 	public static final RegistryObject<Block> WITHERED_GRASS_BLOCK = Registration.BLOCKS.register("withered_grass_block", () -> new WitheredGrassBlock(
 			BlockBehaviour.Properties.copy(Blocks.DIRT).mapColor(MapColor.TERRACOTTA_BROWN).strength(0.6F).sound(SoundType.GRASS)));
+	public static final RegistryObject<Block> GRAVE_THORNS = Registration.BLOCKS.register("grave_thorns", () -> new GraveThornsBlock(
+			Properties.of().mapColor(MapColor.TERRACOTTA_BROWN).noCollission().instabreak().sound(SoundType.SWEET_BERRY_BUSH)
+					.offsetType(BlockBehaviour.OffsetType.XZ).pushReaction(PushReaction.DESTROY)));
+	/** no item: an invisible block, placed only by the grove (or /setblock) */
+	public static final RegistryObject<Block> WISP = Registration.BLOCKS.register("wisp", () -> new WispBlock(
+			Properties.of().replaceable().noCollission().noOcclusion().noLootTable().instabreak().air()
+					.lightLevel(state -> state.getValue(WispBlock.LIT) ? WispBlock.LIGHT : 0)));
 	public static final RegistryObject<Block> WISHING_WELL = Registration.BLOCKS.register("wishing_well_block", () -> new WishingWellBlock(
 			Properties.of().mapColor(MapColor.STONE).strength(2.0F).sound(SoundType.STONE)));
 

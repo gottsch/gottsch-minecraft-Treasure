@@ -15,6 +15,10 @@
  */
 package mod.gottsch.forge.treasure2.core.structure.grove;
 
+import mod.gottsch.forge.treasure2.Treasure;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.resources.ResourceLocation;
+import java.util.function.UnaryOperator;
 import mod.gottsch.forge.treasure2.core.block.ITreasureBlock;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.block.WitherRootBlock;
@@ -55,6 +59,10 @@ public class WitherTreeBlueprint {
 	/** how far above and below its laid-out ground a tree looks for the real ground (see {@link #seat}) */
 	public static final int SEAT_RISE = 6;
 	public static final int SEAT_DEPTH = 10;
+	/** what brushing the grove's suspicious gravel turns up */
+	public static final ResourceLocation ARCHAEOLOGY = new ResourceLocation(Treasure.MODID, "archaeology/wither_grove");
+	/** the most chain and lantern cells a hanging lantern may take below its branch */
+	private static final int MAX_HANG = 4;
 	/** no neighbour shape updates: a neighbour may be in a chunk not generated yet */
 	private static final int FLAGS = Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE;
 
@@ -90,6 +98,15 @@ public class WitherTreeBlueprint {
 	public void restate(BiFunction<BlockPos, BlockState, BlockState> function) {
 		structure.replaceAll(function);
 		sinks.replaceAll(function);
+	}
+
+	/** rewrites every clearing cell in place, in order */
+	public void restatePatch(UnaryOperator<PatchCell> function) {
+		patch.replaceAll(function);
+	}
+
+	public List<PatchCell> patch() {
+		return java.util.Collections.unmodifiableList(patch);
 	}
 
 	public void sink(BlockPos pos, BlockState state) {
@@ -209,6 +226,9 @@ public class WitherTreeBlueprint {
 					BlockState state = e.getValue();
 					if (chunkBox.isInside(pos) && canDecorate(level.getBlockState(pos)) && isSupported(level, pos, state)) {
 						level.setBlock(pos, state, FLAGS);
+						if (state.getBlock() instanceof WitherRootBlock) {
+							rootGround(level, pos.below());
+						}
 					}
 				});
 	}
@@ -220,6 +240,11 @@ public class WitherTreeBlueprint {
 				continue;
 			}
 			level.setBlock(ground, cell.ground(), FLAGS);
+			if (cell.ground().is(Blocks.SUSPICIOUS_GRAVEL)) {
+				// seeded by position, so a tree rebuilt in any chunk gives the same find
+				level.getBlockEntity(ground, BlockEntityType.BRUSHABLE_BLOCK)
+						.ifPresent(gravel -> gravel.setLootTable(ARCHAEOLOGY, ground.asLong()));
+			}
 			BlockPos above = ground.above();
 			BlockState aboveState = level.getBlockState(above);
 			if (!aboveState.isAir() && aboveState.canBeReplaced() && aboveState.getFluidState().isEmpty()) {
@@ -286,9 +311,42 @@ public class WitherTreeBlueprint {
 	}
 
 	/**
+	 * A root turns the dirt it grows from into rooted dirt, with hanging roots under it if the ground
+	 * overhangs. Same column as the root, so order-independent.
+	 */
+	private static void rootGround(WorldGenLevel level, BlockPos ground) {
+		BlockState state = level.getBlockState(ground);
+		if (!state.is(BlockTags.DIRT) || state.is(Blocks.ROOTED_DIRT) || state.is(Blocks.MUD)) {
+			return;
+		}
+		level.setBlock(ground, Blocks.ROOTED_DIRT.defaultBlockState(), FLAGS);
+		if (level.getBlockState(ground.below()).isAir()) {
+			level.setBlock(ground.below(), Blocks.HANGING_ROOTS.defaultBlockState(), FLAGS);
+		}
+	}
+
+	/**
 	 * Vertical support only, which is always in the same column. Horizontal support (a twig on a
 	 * branch) comes from the blueprint, because the neighbour may be in a chunk not generated yet.
 	 */
+	/**
+	 * A chain or lantern needs nothing but its own chain (or open air, where the chain above it is
+	 * still to be placed) between it and a branch. Decorations go bottom up, so the lantern is decided
+	 * first; every cell of the hang sees the same column, so all of it is placed or none.
+	 */
+	private static boolean hangsFromBranch(WorldGenLevel level, BlockPos pos) {
+		for (int i = 1; i <= MAX_HANG; i++) {
+			BlockState above = level.getBlockState(pos.above(i));
+			if (above.is(TreasureBlocks.WITHERWOOD_BRANCH.get())) {
+				return true;
+			}
+			if (!above.is(Blocks.CHAIN) && !canDecorate(above)) {
+				return false;
+			}
+		}
+		return false;
+	}
+
 	private static boolean isSupported(WorldGenLevel level, BlockPos pos, BlockState state) {
 		if (state.getBlock() instanceof WitherRootBlock) {
 			BlockPos below = pos.below();
@@ -296,6 +354,9 @@ public class WitherTreeBlueprint {
 		}
 		if (state.getBlock() == WitherTreeBuilder.spanishMoss()) {
 			return !level.getBlockState(pos.above()).isAir();
+		}
+		if (state.is(Blocks.CHAIN) || state.is(Blocks.SOUL_LANTERN)) {
+			return hangsFromBranch(level, pos);
 		}
 		return true;
 	}

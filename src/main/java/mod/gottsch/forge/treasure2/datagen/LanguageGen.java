@@ -107,6 +107,8 @@ public class LanguageGen extends LanguageProvider {
         add(TreasureBlocks.SPANISH_MOSS.get(), "Spanish Moss");
         add(TreasureBlocks.WITHERED_LEAF_LITTER.get(), "Withered Leaf Litter");
         add(TreasureBlocks.WITHERED_GRASS_BLOCK.get(), "Withered Grass Block");
+        add(TreasureBlocks.GRAVE_THORNS.get(), "Grave Thorns");
+        add(TreasureBlocks.WISP.get(), "Wisp");
         add(TreasureBlocks.WISHING_WELL.get(), "Wishing Well Mossy Cobblestone");
         add(TreasureBlocks.WISHING_WELL_COBBLESTONE.get(), "Wishing Well Cobblestone");
         add(TreasureBlocks.WISHING_WELL_MOSSY_COBBLESTONE.get(), "Wishing Well Mossy Cobblestone");

@@ -15,6 +15,7 @@
  */
 package mod.gottsch.forge.treasure2.core.structure.grove;
 
+import net.minecraft.world.level.block.LanternBlock;
 import mod.gottsch.forge.gottschcore.block.IFacingBlock;
 import mod.gottsch.forge.treasure2.core.block.SpanishMossBlock;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
@@ -81,6 +82,18 @@ public final class WitherTreeBuilder {
 	private static final float MOSS_BELOW_LINE = 0.85F;
 	private static final float MOSS_ABOVE_LINE = 0.1F;
 	private static final float MOSS_TOP = 0.25F;
+	/** salt for the extras' own random, so adding them left every tree's trunk, branches and clearing as they were */
+	private static final long EXTRAS_SALT = 0x6A09E667F3BCC909L;
+	/** per clearing cell within SUSPICIOUS_GRAVEL_REACH of the trunk */
+	private static final float SUSPICIOUS_GRAVEL_PROBABILITY = 0.012F;
+	private static final int SUSPICIOUS_GRAVEL_REACH = 3;
+	/** grave thorns on the clearing's outer ring, more toward the grove's edge (where trees are scaled down) */
+	private static final int THORNS_INNER = 4;
+	private static final float THORNS_PROBABILITY = 0.03F;
+	private static final float THORNS_EDGE_BONUS = 0.12F;
+	private static final float LANTERN_PROBABILITY = 0.2F;
+	private static final float WISP_PROBABILITY = 0.35F;
+	private static final float SECOND_WISP_PROBABILITY = 0.1F;
 
 	private static final List<Direction> ALL = List.of(Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST);
 
@@ -99,6 +112,7 @@ public final class WitherTreeBuilder {
 		moss(blueprint, seed);
 		strangleVines(blueprint, random);
 		clearing(blueprint, random);
+		extras(blueprint, RandomSource.create(seed ^ EXTRAS_SALT), scale);
 		return blueprint;
 	}
 
@@ -277,6 +291,65 @@ public final class WitherTreeBuilder {
 		if (!blueprint.isOccupied(pos)) {
 			blueprint.decorate(pos, facing(TreasureBlocks.WITHERWOOD_TWIG.get(), d));
 		}
+	}
+
+	/**
+	 * Suspicious gravel by the trunk, grave thorns round the clearing's edge, now and then a soul lantern
+	 * hung on a chain from a branch, and wisps in the air nearby. These draw from their own random, after
+	 * everything else, so the rest of the tree is unchanged by them.
+	 */
+	private static void extras(WitherTreeBlueprint blueprint, RandomSource random, float scale) {
+		float edge = Mth.clamp((1F - scale) / 0.35F, 0F, 1F);
+		float thorns = THORNS_PROBABILITY + THORNS_EDGE_BONUS * edge;
+		Block gravel = Blocks.SUSPICIOUS_GRAVEL;
+		blueprint.restatePatch(cell -> {
+			int distance = Math.abs(cell.x()) + Math.abs(cell.z());
+			boolean packed = cell.ground().is(Blocks.PACKED_MUD);
+			if (distance <= SUSPICIOUS_GRAVEL_REACH && random.nextFloat() < SUSPICIOUS_GRAVEL_PROBABILITY) {
+				return new WitherTreeBlueprint.PatchCell(cell.x(), cell.z(), gravel.defaultBlockState(), null);
+			}
+			if (distance >= THORNS_INNER && cell.cover() == null && !packed && random.nextFloat() < thorns) {
+				return new WitherTreeBlueprint.PatchCell(cell.x(), cell.z(), cell.ground(), TreasureBlocks.GRAVE_THORNS.get().defaultBlockState());
+			}
+			return cell;
+		});
+
+		if (random.nextFloat() < LANTERN_PROBABILITY) {
+			hangLantern(blueprint, random);
+		}
+
+		int wisps = random.nextFloat() < WISP_PROBABILITY ? (random.nextFloat() < SECOND_WISP_PROBABILITY ? 2 : 1) : 0;
+		for (int i = 0; i < wisps; i++) {
+			double angle = random.nextDouble() * Math.PI * 2;
+			double distance = 2.5 + random.nextDouble() * 3.5;
+			BlockPos pos = new BlockPos((int) Math.round(Math.cos(angle) * distance), 2 + random.nextInt(3), (int) Math.round(Math.sin(angle) * distance));
+			if (!blueprint.isOccupied(pos)) {
+				blueprint.decorate(pos, TreasureBlocks.WISP.get().defaultBlockState());
+			}
+		}
+	}
+
+	/**
+	 * A soul lantern on one or two links of chain, under a branch with nothing below it.
+	 */
+	private static void hangLantern(WitherTreeBlueprint blueprint, RandomSource random) {
+		Block branch = TreasureBlocks.WITHERWOOD_BRANCH.get();
+		List<BlockPos> spots = new ArrayList<>();
+		blueprint.structure().forEach((pos, state) -> {
+			if (state.is(branch) && pos.getY() >= 5 && !blueprint.isOccupied(pos.below())
+					&& !blueprint.isOccupied(pos.below(2)) && !blueprint.isOccupied(pos.below(3))) {
+				spots.add(pos);
+			}
+		});
+		if (spots.isEmpty()) {
+			return;
+		}
+		BlockPos pos = spots.get(random.nextInt(spots.size()));
+		int links = 1 + random.nextInt(2);
+		for (int i = 1; i <= links; i++) {
+			blueprint.decorate(pos.below(i), Blocks.CHAIN.defaultBlockState());
+		}
+		blueprint.decorate(pos.below(links + 1), Blocks.SOUL_LANTERN.defaultBlockState().setValue(LanternBlock.HANGING, true));
 	}
 
 	/**
