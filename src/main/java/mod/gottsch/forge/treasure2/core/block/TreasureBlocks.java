@@ -270,6 +270,10 @@ public class TreasureBlocks {
 
 	// other
 	public static final RegistryObject<Block> SPANISH_MOSS = Registration.BLOCKS.register("spanish_moss", () -> new SpanishMossBlock(Properties.of().mapColor(MapColor.WOOD)));
+	public static final RegistryObject<Block> WITHERED_LEAF_LITTER = Registration.BLOCKS.register("withered_leaf_litter", () -> new WitheredLeafLitterBlock(
+			BlockBehaviour.Properties.copy(Blocks.PINK_PETALS).mapColor(MapColor.TERRACOTTA_BROWN).sound(SoundType.AZALEA_LEAVES)));
+	public static final RegistryObject<Block> WITHERED_GRASS_BLOCK = Registration.BLOCKS.register("withered_grass_block", () -> new WitheredGrassBlock(
+			BlockBehaviour.Properties.copy(Blocks.DIRT).mapColor(MapColor.TERRACOTTA_BROWN).strength(0.6F).sound(SoundType.GRASS)));
 	public static final RegistryObject<Block> WISHING_WELL = Registration.BLOCKS.register("wishing_well_block", () -> new WishingWellBlock(
 			Properties.of().mapColor(MapColor.STONE).strength(2.0F).sound(SoundType.STONE)));
 

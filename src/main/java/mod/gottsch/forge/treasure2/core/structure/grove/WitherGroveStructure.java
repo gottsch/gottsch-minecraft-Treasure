@@ -41,6 +41,9 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.heightproviders.HeightProvider;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.BuiltinStructureSets;
+import net.minecraft.world.level.levelgen.structure.StructureSet;
+import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStructurePlacement;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
@@ -65,8 +68,10 @@ public class WitherGroveStructure extends ModJigsawStructure {
 	public static final ResourceKey<Biome> GROVE_BIOME = ResourceKey.create(Registries.BIOME, new ResourceLocation(Treasure.MODID, "wither_grove"));
 	/** how far the painted biome reaches past the furthest trees */
 	private static final int PAINT_MARGIN = 3;
-	/** how far below the main tree's ground the biome is painted; the pit and its room are left alone */
+	/** how far below the ground the biome is painted; the pit room, deeper under the main tree, is left alone */
 	private static final int PAINT_DEPTH = 8;
+	/** how far a village spreads from its start: the jigsaw limit of 80, plus its outermost house and a margin (one measured 95) */
+	private static final int VILLAGE_REACH = 104;
 
 	/**
 	 * Grove layout, from the structure JSON's "grove" object. Every field is required, so a misspelled
@@ -141,6 +146,10 @@ public class WitherGroveStructure extends ModJigsawStructure {
 		if (isWet(context, chunk.getMiddleBlockX(), chunk.getMiddleBlockZ())) {
 			return Optional.empty();
 		}
+		// and away from villages, whose own trees and houses the grove's biome cannot keep out
+		if (isNearVillage(context, chunk)) {
+			return Optional.empty();
+		}
 
 		Optional<GenerationStub> jigsaw = super.findGenerationPoint(context);
 		if (jigsaw.isEmpty()) {
@@ -182,6 +191,47 @@ public class WitherGroveStructure extends ModJigsawStructure {
 			}
 		}
 		return wet;
+	}
+
+	/**
+	 * Whether a village could start near enough to run into the grove. The villages' own placement
+	 * picks one candidate chunk per spacing-sized region, exactly as the game does, and a candidate
+	 * only counts if one of the village structures accepts the biome there, which is the same test
+	 * vanilla makes before building it. (An exclusion zone would block every candidate, biome or not.)
+	 * Frequency reduction is ignored; vanilla villages have none.
+	 */
+	private boolean isNearVillage(GenerationContext context, ChunkPos chunk) {
+		Optional<Holder.Reference<StructureSet>> villages = context.registryAccess().registryOrThrow(Registries.STRUCTURE_SET)
+				.getHolder(BuiltinStructureSets.VILLAGES);
+		if (villages.isEmpty() || !(villages.get().value().placement() instanceof RandomSpreadStructurePlacement placement)) {
+			return false;
+		}
+		int centreX = chunk.getMiddleBlockX();
+		int centreZ = chunk.getMiddleBlockZ();
+		int reach = grove.radius() + PAINT_MARGIN + VILLAGE_REACH;
+		int spacing = placement.spacing();
+		int regionX = Math.floorDiv(chunk.x, spacing);
+		int regionZ = Math.floorDiv(chunk.z, spacing);
+		for (int rx = regionX - 1; rx <= regionX + 1; rx++) {
+			for (int rz = regionZ - 1; rz <= regionZ + 1; rz++) {
+				ChunkPos candidate = placement.getPotentialStructureChunk(context.seed(), rx * spacing, rz * spacing);
+				int dx = candidate.getMiddleBlockX() - centreX;
+				int dz = candidate.getMiddleBlockZ() - centreZ;
+				if (dx * dx + dz * dz > reach * reach) {
+					continue;
+				}
+				int y = context.chunkGenerator().getFirstOccupiedHeight(candidate.getMiddleBlockX(), candidate.getMiddleBlockZ(),
+						Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState());
+				Holder<Biome> biome = context.biomeSource().getNoiseBiome(QuartPos.fromBlock(candidate.getMiddleBlockX()), QuartPos.fromBlock(y),
+						QuartPos.fromBlock(candidate.getMiddleBlockZ()), context.randomState().sampler());
+				for (StructureSet.StructureSelectionEntry entry : villages.get().value().structures()) {
+					if (entry.structure().value().biomes().contains(biome)) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
 
 	/** fluid on top: the surface heightmap counts it, the ocean-floor one does not */
@@ -245,6 +295,11 @@ public class WitherGroveStructure extends ModJigsawStructure {
 			builder.addPiece(new WitherTreePiece(origin, random.nextLong(), WitherTreeArchetype.choose(fraction, random), scale));
 			trees.add(origin);
 		}
+
+		// reach every chunk the biome is painted on, even on sides where no tree grew (see paintBiome)
+		int reach = radius + PAINT_MARGIN + 3;
+		builder.addPiece(new WitherGroveAreaPiece(new BoundingBox(centre.getX() - reach, ground - PAINT_DEPTH, centre.getZ() - reach,
+				centre.getX() + reach, ground + 1, centre.getZ() + reach)));
 	}
 
 	/**
@@ -286,6 +341,18 @@ public class WitherGroveStructure extends ModJigsawStructure {
 		}
 
 		ChunkAccess chunk = level.getChunk(chunkPos.x, chunkPos.z);
+		// each 4x4 biome column is painted from PAINT_DEPTH below its own lowest surface, so ground on a
+		// slope well below the main tree is still covered; never shallower than below the main tree
+		int[][] paintFrom = new int[4][4];
+		for (int[] row : paintFrom) {
+			java.util.Arrays.fill(row, minY);
+		}
+		for (int lx = 0; lx < 16; lx++) {
+			for (int lz = 0; lz < 16; lz++) {
+				int surface = chunk.getHeight(Heightmap.Types.WORLD_SURFACE_WG, lx, lz);
+				paintFrom[lx >> 2][lz >> 2] = Math.min(paintFrom[lx >> 2][lz >> 2], surface - PAINT_DEPTH);
+			}
+		}
 		Holder<Biome> groveBiome = biome.get();
 		chunk.fillBiomesFromNoise((quartX, quartY, quartZ, sampler) -> {
 			// the centre of the 4x4x4 biome cell
@@ -293,7 +360,8 @@ public class WitherGroveStructure extends ModJigsawStructure {
 			int dz = QuartPos.toBlock(quartZ) + 2 - centreZ;
 			// a ragged edge: each cell's own reach varies by a couple of blocks
 			double edge = radius + ((Mth.getSeed(quartX, 0, quartZ) >> 16 & 3) - 1.5) * 1.5;
-			if (QuartPos.toBlock(quartY) + 3 >= minY && dx * dx + dz * dz <= edge * edge) {
+			int from = paintFrom[quartX & 3][quartZ & 3];
+			if (QuartPos.toBlock(quartY) + 3 >= from && dx * dx + dz * dz <= edge * edge) {
 				return groveBiome;
 			}
 			return chunk.getNoiseBiome(quartX, quartY, quartZ);

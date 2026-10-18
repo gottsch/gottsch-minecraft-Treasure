@@ -24,6 +24,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.PinkPetalsBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.ArrayList;
@@ -61,6 +62,8 @@ public final class WitherTreeBuilder {
 	private static final int WITHER_BRANCH_SPACING = 1;
 	private static final int GREAT_BRANCH_SPACING = 2;
 	private static final float GROUND_REPLACEMENT_PROBABILITY = 0.9F;
+	/** fallen leaves on a clearing cell (not on packed mud, which they can't lie on) */
+	private static final float LEAF_LITTER_PROBABILITY = 0.25F;
 	private static final int CLEARING_RADIUS = 7;
 	private static final int STRANGLE_VINE_ATTEMPTS = 4;
 	private static final int STRANGLE_VINES_MAX_HEIGHT = 10;
@@ -280,8 +283,8 @@ public final class WitherTreeBuilder {
 	}
 
 	/**
-	 * The ground in a diamond around the tree, mostly turned to dirt, with coarse dirt, podzol,
-	 * mycelium and mud mixed in.
+	 * The ground in a diamond around the tree: dirt and withered grass, with coarse dirt, podzol,
+	 * mycelium and mud mixed in, and withered leaves lying on a quarter of it.
 	 */
 	private static void clearing(WitherTreeBlueprint blueprint, RandomSource random) {
 		for (int x = -CLEARING_RADIUS; x <= CLEARING_RADIUS; x++) {
@@ -298,9 +301,16 @@ public final class WitherTreeBuilder {
 					case 2 -> Blocks.MUD;
 					case 3 -> Blocks.PACKED_MUD;
 					case 4, 5 -> Blocks.COARSE_DIRT;
+					case 6, 7 -> TreasureBlocks.WITHERED_GRASS_BLOCK.get();
 					default -> Blocks.DIRT;
 				};
-				blueprint.patch(x, z, ground.defaultBlockState(), false);
+				BlockState cover = null;
+				if (ground != Blocks.PACKED_MUD && random.nextFloat() < LEAF_LITTER_PROBABILITY) {
+					cover = TreasureBlocks.WITHERED_LEAF_LITTER.get().defaultBlockState()
+							.setValue(PinkPetalsBlock.FACING, Direction.Plane.HORIZONTAL.getRandomDirection(random))
+							.setValue(PinkPetalsBlock.AMOUNT, 1 + random.nextInt(4));
+				}
+				blueprint.patch(x, z, ground.defaultBlockState(), cover);
 			}
 		}
 	}

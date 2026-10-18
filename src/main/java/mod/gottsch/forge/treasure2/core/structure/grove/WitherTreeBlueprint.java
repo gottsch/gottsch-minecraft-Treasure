@@ -68,7 +68,8 @@ public class WitherTreeBlueprint {
 	/** strangle vines standing on the ground; the column's surface is found at placement time */
 	private final List<VineColumn> vines = new ArrayList<>();
 
-	public record PatchCell(int x, int z, BlockState ground, boolean deadBush) {}
+	/** @param cover what lies on the new ground, or null */
+	public record PatchCell(int x, int z, BlockState ground, BlockState cover) {}
 
 	public record VineColumn(int x, int z, int height) {}
 
@@ -84,8 +85,8 @@ public class WitherTreeBlueprint {
 		decorations.putIfAbsent(pos, state);
 	}
 
-	public void patch(int x, int z, BlockState ground, boolean deadBush) {
-		patch.add(new PatchCell(x, z, ground, deadBush));
+	public void patch(int x, int z, BlockState ground, BlockState cover) {
+		patch.add(new PatchCell(x, z, ground, cover));
 	}
 
 	public void vines(int x, int z, int height) {
@@ -210,8 +211,8 @@ public class WitherTreeBlueprint {
 				// the host biome's grass and flowers
 				level.setBlock(above, Blocks.AIR.defaultBlockState(), FLAGS);
 			}
-			if (cell.deadBush()) {
-				level.setBlock(above, Blocks.DEAD_BUSH.defaultBlockState(), FLAGS);
+			if (cell.cover() != null) {
+				level.setBlock(above, cell.cover(), FLAGS);
 			}
 		}
 	}

@@ -41,6 +41,10 @@ public class TreasureBlockTagsProvider extends BlockTagsProvider {
 
 	@Override
     protected void addTags(Provider provider) {
+    	// withered grass behaves as grass: dug with a shovel, and plants grow on it
+    	tag(BlockTags.MINEABLE_WITH_SHOVEL).add(TreasureBlocks.WITHERED_GRASS_BLOCK.get());
+    	tag(BlockTags.DIRT).add(TreasureBlocks.WITHERED_GRASS_BLOCK.get());
+
     	// blocks rarity
     	tag(TreasureTags.Blocks.COMMON_CHESTS).add(TreasureBlocks.WOOD_CHEST.get());
     	tag(TreasureTags.Blocks.COMMON_CHESTS).add(TreasureBlocks.MOLDY_CRATE_CHEST.get());

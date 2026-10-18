@@ -16,6 +16,7 @@
 package mod.gottsch.forge.treasure2.core.structure;
 
 import mod.gottsch.forge.treasure2.Treasure;
+import mod.gottsch.forge.treasure2.core.structure.grove.WitherGroveAreaPiece;
 import mod.gottsch.forge.treasure2.core.structure.grove.WitherGroveStructure;
 import mod.gottsch.forge.treasure2.core.structure.grove.WitherTreePiece;
 import net.minecraft.core.registries.Registries;
@@ -46,6 +47,9 @@ public class TreasureStructures {
 
     public static final RegistryObject<StructurePieceType> WITHER_TREE_PIECE =
             STRUCTURE_PIECES.register("wither_tree", () -> (StructurePieceType.ContextlessType) WitherTreePiece::new);
+
+    public static final RegistryObject<StructurePieceType> WITHER_GROVE_AREA_PIECE =
+            STRUCTURE_PIECES.register("wither_grove_area", () -> (StructurePieceType.ContextlessType) WitherGroveAreaPiece::new);
 
     public static void register(IEventBus modEventBus) {
         STRUCTURE_TYPES.register(modEventBus);

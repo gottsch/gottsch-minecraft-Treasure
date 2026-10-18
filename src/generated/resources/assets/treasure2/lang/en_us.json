@@ -1,4 +1,5 @@
 {
+  "biome.treasure2.wither_grove": "Wither Grove",
   "block.treasure2.barrel_chest": "Treasure Barrel",
   "block.treasure2.bone_chest": "Bone Chest",
   "block.treasure2.cardboard_box": "Cardboard Box",
@@ -75,6 +76,8 @@
   "block.treasure2.wither_log": "Witherwood Log",
   "block.treasure2.wither_planks": "Witherwood Planks",
   "block.treasure2.wither_root": "Witherwood Root",
+  "block.treasure2.withered_grass_block": "Withered Grass Block",
+  "block.treasure2.withered_leaf_litter": "Withered Leaf Litter",
   "block.treasure2.witherwood_branch": "Witherwood Branch",
   "block.treasure2.witherwood_broken_log": "Witherwood Broken Log",
   "block.treasure2.witherwood_button": "Witherwood Button",
@@ -108,7 +111,6 @@
   "entity.treasure2.vanilla_chest_mimic": "Chest Mimic",
   "entity.treasure2.viking_chest_mimic": "Viking Chest Mimic",
   "entity.treasure2.witherwood_golem": "Witherwood Golem",
-  "biome.treasure2.wither_grove": "Wither Grove",
   "entity.treasure2.wood_chest_mimic": "Wood Chest Mimic",
   "item.treasure2.axe_of_durin": "Axe of Durin",
   "item.treasure2.barrel_mimic_egg": "Barrel Mimic Spawn Egg",
