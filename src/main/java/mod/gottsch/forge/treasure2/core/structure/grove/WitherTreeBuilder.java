@@ -19,16 +19,21 @@ import mod.gottsch.forge.gottschcore.block.IFacingBlock;
 import mod.gottsch.forge.treasure2.core.block.SpanishMossBlock;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.block.WitherRootBlock;
+import mod.gottsch.forge.treasure2.core.block.WitherwoodRotatedPillarBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.PinkPetalsBlock;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Grows a wither tree into a {@link WitherTreeBlueprint}, built on the 1.20 (pre-4.0)
@@ -67,6 +72,15 @@ public final class WitherTreeBuilder {
 	private static final int CLEARING_RADIUS = 7;
 	private static final int STRANGLE_VINE_ATTEMPTS = 4;
 	private static final int STRANGLE_VINES_MAX_HEIGHT = 10;
+	/**
+	 * Moss climbs each log column from the ground to its own moss line, somewhere between a fifth and
+	 * a little over half its height; above the line only the odd log is mossy.
+	 */
+	private static final float MOSS_LINE_MIN = 0.2F;
+	private static final float MOSS_LINE_RANGE = 0.35F;
+	private static final float MOSS_BELOW_LINE = 0.85F;
+	private static final float MOSS_ABOVE_LINE = 0.1F;
+	private static final float MOSS_TOP = 0.25F;
 
 	private static final List<Direction> ALL = List.of(Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST);
 
@@ -82,6 +96,7 @@ public final class WitherTreeBuilder {
 			case WITHER -> wither(blueprint, random, scale);
 			case GREAT -> great(blueprint, random, scale);
 		}
+		moss(blueprint, seed);
 		strangleVines(blueprint, random);
 		clearing(blueprint, random);
 		return blueprint;
@@ -262,6 +277,44 @@ public final class WitherTreeBuilder {
 		if (!blueprint.isOccupied(pos)) {
 			blueprint.decorate(pos, facing(TreasureBlocks.WITHERWOOD_TWIG.get(), d));
 		}
+	}
+
+	/**
+	 * Grows moss on the logs and broken tops (see MOSS_LINE_MIN). Each choice is a hash of the tree's
+	 * seed and the cell, not a draw from the tree's random, so the rest of the tree comes out the same
+	 * as it did before moss was chosen here.
+	 */
+	private static void moss(WitherTreeBlueprint blueprint, long seed) {
+		Block log = TreasureBlocks.WITHERWOOD_LOG.get();
+		Block top = TreasureBlocks.WITHERWOOD_BROKEN_LOG.get();
+		// each column's highest log
+		Map<Long, Integer> heights = new HashMap<>();
+		blueprint.structure().forEach((pos, state) -> {
+			if (state.is(log)) {
+				heights.merge(ChunkPos.asLong(pos.getX(), pos.getZ()), pos.getY(), Math::max);
+			}
+		});
+		blueprint.restate((pos, state) -> {
+			boolean isTop = state.is(top);
+			if (!state.is(log) && !isTop) {
+				return state;
+			}
+			float chance;
+			if (isTop) {
+				chance = MOSS_TOP;
+			}
+			else {
+				int height = heights.getOrDefault(ChunkPos.asLong(pos.getX(), pos.getZ()), pos.getY());
+				int line = Math.round(height * (MOSS_LINE_MIN + MOSS_LINE_RANGE * hash(seed, pos.getX(), 0, pos.getZ())));
+				chance = pos.getY() <= line ? MOSS_BELOW_LINE : MOSS_ABOVE_LINE;
+			}
+			return state.setValue(WitherwoodRotatedPillarBlock.MOSSY, hash(seed, pos.getX(), pos.getY(), pos.getZ()) < chance);
+		});
+	}
+
+	/** a float in [0, 1) from the tree's seed and a cell */
+	private static float hash(long seed, int x, int y, int z) {
+		return RandomSource.create(seed ^ Mth.getSeed(x, y, z)).nextFloat();
 	}
 
 	/**

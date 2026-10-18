@@ -33,6 +33,7 @@ import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 
 /**
  * Everything one wither tree places, in coordinates relative to the ground block under its trunk
@@ -75,6 +76,20 @@ public class WitherTreeBlueprint {
 
 	public void structure(BlockPos pos, BlockState state) {
 		structure.put(pos, state);
+	}
+
+	/** the trunk, branches and tops so far, read-only */
+	public Map<BlockPos, BlockState> structure() {
+		return java.util.Collections.unmodifiableMap(structure);
+	}
+
+	/**
+	 * Rewrites every trunk, branch and top state, and every sink state, in place; a sink shares its
+	 * cell with the trunk's foot, so a pure function gives both the same state.
+	 */
+	public void restate(BiFunction<BlockPos, BlockState, BlockState> function) {
+		structure.replaceAll(function);
+		sinks.replaceAll(function);
 	}
 
 	public void sink(BlockPos pos, BlockState state) {

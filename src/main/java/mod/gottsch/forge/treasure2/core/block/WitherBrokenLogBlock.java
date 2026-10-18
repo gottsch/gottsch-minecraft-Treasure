@@ -21,6 +21,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -40,6 +41,7 @@ public class WitherBrokenLogBlock extends FacingBlock implements ITreasureBlock 
 	 */
 	public WitherBrokenLogBlock(Block.Properties properties) {
 		super(properties.strength(3.0F).sound(SoundType.WOOD));
+		registerDefaultState(defaultBlockState().setValue(WitherwoodRotatedPillarBlock.MOSSY, false));
 
 		// TODO make better shape - unless exact match, use almost full block
 		VoxelShape box = Block.box(0.01, 0.01, 0.01, 15.99, 15.99, 15.99);
@@ -50,6 +52,12 @@ public class WitherBrokenLogBlock extends FacingBlock implements ITreasureBlock 
 			);
 	}
 	
+	@Override
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+		super.createBlockStateDefinition(builder);
+		builder.add(WitherwoodRotatedPillarBlock.MOSSY);
+	}
+
 	/**
 	 * 
 	 */
