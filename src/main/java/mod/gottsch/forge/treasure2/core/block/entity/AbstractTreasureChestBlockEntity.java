@@ -82,6 +82,8 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 	public static final String LOOT_TABLE_TAG = "lootTable";
 	/** A foreign mod's table, rolled into whatever slots the chest's own loot leaves empty. */
 	public static final String SUPPLEMENTAL_LOOT_TABLE_TAG = "supplementalLootTable";
+	/** The processor list's fallback table, rolled only when no rarity loot table can be found. */
+	public static final String ALT_LOOT_TABLE_TAG = "altLootTable";
 	public static final String MIMIC_TAG = "mimic";
 
 	public static final String GENERATION_CONTEXT_TAG = "generationContext";
@@ -126,6 +128,12 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 	 * TreasureApi.generateChest.
 	 */
 	private ResourceLocation supplementalLootTable;
+
+	/*
+	 * The fallback table from the processor list's alt_loot_table, used when no rarity loot table
+	 * can be found on first open.
+	 */
+	private ResourceLocation altLootTable;
 
 	/*
 	 * The mimic assigned to this block entity
@@ -416,6 +424,9 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 			if (getSupplementalLootTable() != null) {
 				tag.putString(SUPPLEMENTAL_LOOT_TABLE_TAG, getSupplementalLootTable().toString());
 			}
+			if (getAltLootTable() != null) {
+				tag.putString(ALT_LOOT_TABLE_TAG, getAltLootTable().toString());
+			}
 
 			if (getMimic() != null) {
 				tag.putString(MIMIC_TAG, getMimic().toString());
@@ -512,6 +523,11 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 			if (tag.contains(SUPPLEMENTAL_LOOT_TABLE_TAG)) {
 				if (!tag.getString(SUPPLEMENTAL_LOOT_TABLE_TAG).isEmpty()) {
 					this.setSupplementalLootTable(new ResourceLocation(tag.getString(SUPPLEMENTAL_LOOT_TABLE_TAG)));
+				}
+			}
+			if (tag.contains(ALT_LOOT_TABLE_TAG)) {
+				if (!tag.getString(ALT_LOOT_TABLE_TAG).isEmpty()) {
+					this.setAltLootTable(new ResourceLocation(tag.getString(ALT_LOOT_TABLE_TAG)));
 				}
 			}
 			if (tag.contains(MIMIC_TAG)) {
@@ -680,6 +696,14 @@ public abstract class AbstractTreasureChestBlockEntity extends BlockEntity imple
 
 	public void setSupplementalLootTable(ResourceLocation supplementalLootTable) {
 		this.supplementalLootTable = supplementalLootTable;
+	}
+
+	public ResourceLocation getAltLootTable() {
+		return altLootTable;
+	}
+
+	public void setAltLootTable(ResourceLocation altLootTable) {
+		this.altLootTable = altLootTable;
 	}
 
 

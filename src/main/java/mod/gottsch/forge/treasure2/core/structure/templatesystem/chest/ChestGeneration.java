@@ -96,6 +96,17 @@ public class ChestGeneration {
     }
 
     /**
+     * Generate a chest, with no fallback loot table.
+     */
+    public static StructureTemplate.StructureBlockInfo generate(LevelReader level, BlockPos pos,
+            RandomSource random, Direction facing, IFeatureType featureType,
+            Optional<IRarity> rarity, Optional<ResourceLocation> lootTable,
+            Optional<ResourceLocation> supplementalLootTable) {
+
+        return generate(level, pos, random, facing, featureType, rarity, lootTable, supplementalLootTable, Optional.empty());
+    }
+
+    /**
      * Generate a chest.
      *
      * @param level      read-only level; used for the fluid state under the chest and the biome
@@ -111,13 +122,16 @@ public class ChestGeneration {
      *                   resolve when the chest is opened; this does not register anything
      * @param supplementalLootTable a table rolled into the slots left empty after the chest fills
      *                   itself on first open. Any vanilla-format table the server can load
+     * @param altLootTable a table rolled instead when no rarity loot table can be found for the chest
+     *                   on first open (the processor lists' {@code alt_loot_table}). Any vanilla-format
+     *                   table the server can load
      * @return the block info to place. Never empty: a subprocessor that declines falls back to
      *         {@code defaultChest}, exactly as the processor path always did
      */
     public static StructureTemplate.StructureBlockInfo generate(LevelReader level, BlockPos pos,
             RandomSource random, Direction facing, IFeatureType featureType,
             Optional<IRarity> rarity, Optional<ResourceLocation> lootTable,
-            Optional<ResourceLocation> supplementalLootTable) {
+            Optional<ResourceLocation> supplementalLootTable, Optional<ResourceLocation> altLootTable) {
 
         // 1. map feature type to either TERRANEAN or AQUATIC.
         IFeatureType processedFeatureType = featureType == FeatureType.AQUATIC ? featureType : FeatureType.TERRANEAN;
@@ -181,6 +195,7 @@ public class ChestGeneration {
 
         info = applyLootTable(info, lootTable);
         info = applySupplementalLootTable(info, supplementalLootTable);
+        info = applyAltLootTable(info, altLootTable);
         cache(level, info, featureType, rarityEntry);
 
         // The weights are a self-balancing draw: adjusting them for a rarity nobody drew would skew
@@ -233,6 +248,19 @@ public class ChestGeneration {
         }
         info.nbt().putString(AbstractTreasureChestBlockEntity.SUPPLEMENTAL_LOOT_TABLE_TAG,
                 supplementalLootTable.get().toString());
+        return info;
+    }
+
+    /**
+     * Record the fallback table on the chest; it is rolled only if no rarity loot table can be found.
+     */
+    private static StructureTemplate.StructureBlockInfo applyAltLootTable(
+            StructureTemplate.StructureBlockInfo info, Optional<ResourceLocation> altLootTable) {
+
+        if (altLootTable.isEmpty() || info.nbt() == null) {
+            return info;
+        }
+        info.nbt().putString(AbstractTreasureChestBlockEntity.ALT_LOOT_TABLE_TAG, altLootTable.get().toString());
         return info;
     }
 

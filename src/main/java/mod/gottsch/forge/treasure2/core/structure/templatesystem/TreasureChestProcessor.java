@@ -63,6 +63,8 @@ public class TreasureChestProcessor extends VanillaChestProcessor {
     protected FeatureType featureType;
     @Deprecated
     protected ResourceLocation dimension;
+    // fallback loot table, used when no rarity loot table can be found for a chest
+    protected Optional<ResourceLocation> altLootTable;
 
     // property to capture the size of the current piece
     private Vec3i size;
@@ -75,7 +77,8 @@ public class TreasureChestProcessor extends VanillaChestProcessor {
     public static final Codec<TreasureChestProcessor> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             FeatureType.CODEC.fieldOf("feature_type").forGetter(TreasureChestProcessor::getFeatureType),
             ResourceLocation.CODEC.optionalFieldOf("dimension", null).forGetter(TreasureChestProcessor::getDimension),
-            ResourceLocation.CODEC.optionalFieldOf("loot_table").forGetter(VanillaChestProcessor::getLootTable)
+            ResourceLocation.CODEC.optionalFieldOf("loot_table").forGetter(VanillaChestProcessor::getLootTable),
+            ResourceLocation.CODEC.optionalFieldOf("alt_loot_table").forGetter(TreasureChestProcessor::getAltLootTable)
     ).apply(instance, TreasureChestProcessor::new));
 
 
@@ -86,9 +89,18 @@ public class TreasureChestProcessor extends VanillaChestProcessor {
     }
 
     public TreasureChestProcessor(FeatureType featureType, ResourceLocation dimension, Optional<ResourceLocation> lootTable) {
+        this(featureType, dimension, lootTable, Optional.empty());
+    }
+
+    /**
+     * @param altLootTable the fallback table, rolled when no rarity loot table can be found for a chest
+     */
+    public TreasureChestProcessor(FeatureType featureType, ResourceLocation dimension, Optional<ResourceLocation> lootTable,
+            Optional<ResourceLocation> altLootTable) {
         super(lootTable);
         this.featureType = featureType;
         this.dimension = dimension;
+        this.altLootTable = altLootTable;
     }
 
     @Override
@@ -174,8 +186,12 @@ public class TreasureChestProcessor extends VanillaChestProcessor {
     public StructureTemplate.StructureBlockInfo buildTreasureChest(LevelReader levelReader, BlockState state, BlockPos pos, StructurePlaceSettings placeSettings) {
         Direction facing = placeSettings.getRotation().rotate(state.getValue(StandardChestBlock.FACING));
         return ChestGeneration.generate(levelReader, pos, placeSettings.getRandom(pos), facing,
-                this.featureType, Optional.empty(), getLootTable());
+                this.featureType, Optional.empty(), getLootTable(), Optional.empty(), getAltLootTable());
      }
+
+    public Optional<ResourceLocation> getAltLootTable() {
+        return altLootTable;
+    }
 
     public FeatureType getFeatureType() {
         return featureType;
