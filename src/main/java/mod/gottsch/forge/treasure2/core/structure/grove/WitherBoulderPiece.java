@@ -116,8 +116,9 @@ public class WitherBoulderPiece extends StructurePiece implements PieceBeardifie
 	}
 
 	private static BoundingBox bounds(BlockPos origin) {
-		return new BoundingBox(origin.getX() - REACH, origin.getY() - WitherTreeBlueprint.SEAT_DEPTH - RELIEF - 1, origin.getZ() - REACH,
-				origin.getX() + REACH, origin.getY() + WitherTreeBlueprint.SEAT_RISE + RELIEF + MAX_HEIGHT + 1, origin.getZ() + REACH);
+		// one beyond the furthest column, for the vines on the boulder's outer faces
+		return new BoundingBox(origin.getX() - REACH - 1, origin.getY() - WitherTreeBlueprint.SEAT_DEPTH - RELIEF - 1, origin.getZ() - REACH - 1,
+				origin.getX() + REACH + 1, origin.getY() + WitherTreeBlueprint.SEAT_RISE + RELIEF + MAX_HEIGHT + 1, origin.getZ() + REACH + 1);
 	}
 
 	@Override
@@ -234,27 +235,44 @@ public class WitherBoulderPiece extends StructurePiece implements PieceBeardifie
 					level.setBlock(above, column.cover(), FLAGS);
 				}
 			}
-			sideVines(level, columns, ChunkPos.getX(key), ChunkPos.getZ(key), column, ground);
+			sideVines(level, columns, ChunkPos.getX(key), ChunkPos.getZ(key), column.height(), ground);
 		});
+
+		// the ground around the boulder, against its outer faces
+		for (int dx = -REACH - 1; dx <= REACH + 1; dx++) {
+			for (int dz = -REACH - 1; dz <= REACH + 1; dz++) {
+				int x = origin.getX() + dx;
+				int z = origin.getZ() + dz;
+				if (columns.containsKey(ChunkPos.asLong(dx, dz))
+						|| x < chunkBox.minX() || x > chunkBox.maxX() || z < chunkBox.minZ() || z > chunkBox.maxZ()) {
+					continue;
+				}
+				BlockPos ground = WitherTreeBlueprint.seat(level, new BlockPos(x, origin.getY(), z));
+				if (ground != null) {
+					sideVines(level, columns, dx, dz, 0, ground);
+				}
+			}
+		}
 	}
 
 	/**
 	 * Strangle vines on the sides of the boulder: in this column, above its own top, against the full
-	 * stone of a taller neighbouring column. The neighbour is in another column, so this can't look at it;
+	 * stone of a taller neighbouring column. This column is either a lower part of the boulder or, for
+	 * its outer faces, the bare ground beside it (height 0). The neighbour is in another column, so this can't look at it;
 	 * the vine goes only where this column's ground is at the boulder's layout height (where both columns
 	 * were laid out), and it schedules a tick that removes it if the stone behind isn't there after all.
 	 */
-	private void sideVines(WorldGenLevel level, Map<Long, Column> columns, int dx, int dz, Column column, BlockPos ground) {
+	private void sideVines(WorldGenLevel level, Map<Long, Column> columns, int dx, int dz, int height, BlockPos ground) {
 		if (ground.getY() != origin.getY()) {
 			return;
 		}
 		ClingingStrangleVinesBlock vines = (ClingingStrangleVinesBlock) TreasureBlocks.CLINGING_STRANGLE_VINES.get();
 		for (Direction d : Direction.Plane.HORIZONTAL) {
 			Column neighbour = columns.get(ChunkPos.asLong(dx + d.getStepX(), dz + d.getStepZ()));
-			if (neighbour == null || neighbour.height() <= column.height()) {
+			if (neighbour == null || neighbour.height() <= height) {
 				continue;
 			}
-			for (int i = column.height() + 1; i <= neighbour.height(); i++) {
+			for (int i = height + 1; i <= neighbour.height(); i++) {
 				// the neighbour's cell at this height: a stair or slab top has no full face to cling to
 				Block stone = neighbour.cells()[i + 1].getBlock();
 				if (stone instanceof StairBlock || stone instanceof SlabBlock

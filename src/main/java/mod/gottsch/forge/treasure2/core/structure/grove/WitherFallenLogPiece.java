@@ -152,12 +152,21 @@ public class WitherFallenLogPiece extends StructurePiece implements PieceBeardif
 				continue;
 			}
 			BlockPos ground = WitherTreeBlueprint.seat(level, column);
-			// the log lies level, one above the origin's ground, bridging a dip of one; the stump stands on its own ground
+			// the log lies level, one above the origin's ground, over a dip of one; the stump stands on its own ground
 			if (ground == null || ground.getY() > origin.getY() || ground.getY() < origin.getY() - 1
 					|| !level.getBlockState(ground.above()).getFluidState().isEmpty()) {
 				continue;
 			}
 			if (cell.step() >= 0) {
+				if (ground.getY() < origin.getY()) {
+					// fill the dip with this column's own ground, so the log rests on it: a gap left under it
+					// read as a floating log, and the trees' clearings put thorns and grass in it
+					BlockState existing = level.getBlockState(ground.above());
+					if (!existing.isAir() && !existing.canBeReplaced() && !(existing.getBlock() instanceof BushBlock)) {
+						continue;
+					}
+					level.setBlock(ground.above(), level.getBlockState(ground), FLAGS);
+				}
 				ground = new BlockPos(ground.getX(), origin.getY(), ground.getZ());
 			}
 			BlockState[] stack = cell.stack();
