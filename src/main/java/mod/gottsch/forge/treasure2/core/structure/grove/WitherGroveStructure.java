@@ -72,6 +72,11 @@ public class WitherGroveStructure extends ModJigsawStructure {
 	private static final int PAINT_DEPTH = 8;
 	/** how far a village spreads from its start: the jigsaw limit of 80, plus its outermost house and a margin (one measured 95) */
 	private static final int VILLAGE_REACH = 104;
+	/** boulders per grove, and how far they keep from trees and from each other */
+	private static final int MIN_BOULDERS = 2;
+	private static final int MAX_BOULDERS = 5;
+	private static final int BOULDER_TREE_SPACING = 3;
+	private static final int BOULDER_SPACING = 7;
 
 	/**
 	 * Grove layout, from the structure JSON's "grove" object. Every field is required, so a misspelled
@@ -296,10 +301,44 @@ public class WitherGroveStructure extends ModJigsawStructure {
 			trees.add(origin);
 		}
 
+		boulders(context, centre, ground, random, keepOut, trees, builder);
+
 		// reach every chunk the biome is painted on, even on sides where no tree grew (see paintBiome)
 		int reach = radius + PAINT_MARGIN + 3;
 		builder.addPiece(new WitherGroveAreaPiece(new BoundingBox(centre.getX() - reach, ground - PAINT_DEPTH, centre.getZ() - reach,
 				centre.getX() + reach, ground + 1, centre.getZ() + reach)));
+	}
+
+	/**
+	 * A few boulders between the trees, by dart throwing as for the trees. Drawn after every tree, so
+	 * the trees come out as they did before boulders existed.
+	 */
+	private void boulders(GenerationContext context, BlockPos centre, int ground, RandomSource random,
+			List<BoundingBox> keepOut, List<BlockPos> trees, StructurePiecesBuilder builder) {
+		int target = MIN_BOULDERS + random.nextInt(MAX_BOULDERS - MIN_BOULDERS + 1);
+		double reach = grove.radius() * 0.95;
+		int treeSq = BOULDER_TREE_SPACING * BOULDER_TREE_SPACING;
+		int boulderSq = BOULDER_SPACING * BOULDER_SPACING;
+		List<BlockPos> placed = new ArrayList<>();
+		for (int attempt = 0; attempt < 80 && placed.size() < target; attempt++) {
+			double angle = random.nextDouble() * Math.PI * 2;
+			double distance = grove.clearance() + Math.sqrt(random.nextDouble()) * (reach - grove.clearance());
+			int x = centre.getX() + (int) Math.round(Math.cos(angle) * distance);
+			int z = centre.getZ() + (int) Math.round(Math.sin(angle) * distance);
+			if (trees.stream().anyMatch(t -> (t.getX() - x) * (t.getX() - x) + (t.getZ() - z) * (t.getZ() - z) < treeSq)
+					|| placed.stream().anyMatch(b -> (b.getX() - x) * (b.getX() - x) + (b.getZ() - z) * (b.getZ() - z) < boulderSq)
+					|| keepOut.stream().anyMatch(box -> x >= box.minX() - 3 && x <= box.maxX() + 3 && z >= box.minZ() - 3 && z <= box.maxZ() + 3)) {
+				continue;
+			}
+			int surface = context.chunkGenerator().getFirstOccupiedHeight(x, z, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState());
+			int floor = context.chunkGenerator().getFirstOccupiedHeight(x, z, Heightmap.Types.OCEAN_FLOOR_WG, context.heightAccessor(), context.randomState());
+			if (surface != floor || Math.abs(surface - ground) > grove.maxRelief()) {
+				continue;
+			}
+			BlockPos origin = new BlockPos(x, surface, z);
+			builder.addPiece(new WitherBoulderPiece(origin, random.nextLong()));
+			placed.add(origin);
+		}
 	}
 
 	/**

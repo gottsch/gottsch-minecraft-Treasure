@@ -28,6 +28,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LanternBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -186,7 +187,16 @@ public class WitherTreeBlueprint {
 
 	private static boolean isTerrain(BlockState state) {
 		return !isPassable(state) && !state.hasBlockEntity() && !(state.getBlock() instanceof ITreasureBlock)
-				&& !state.is(BlockTags.LOGS) && !state.is(BlockTags.LEAVES);
+				&& !state.is(BlockTags.LOGS) && !state.is(BlockTags.LEAVES) && !isHung(state);
+	}
+
+	/**
+	 * A chain or lantern hung from a branch. Vanilla marks both forceSolidOn, so they count as solid
+	 * ground to the heightmaps (the thin branch above does not), and a neighbouring tree's clearing
+	 * once turned a chain's top link into floating mycelium.
+	 */
+	private static boolean isHung(BlockState state) {
+		return state.is(Blocks.CHAIN) || state.getBlock() instanceof LanternBlock;
 	}
 
 	/**
@@ -292,7 +302,7 @@ public class WitherTreeBlueprint {
 		}
 		BlockPos ground = new BlockPos(x, top, z);
 		BlockState state = level.getBlockState(ground);
-		if (isPassable(state) || state.hasBlockEntity() || state.getBlock() instanceof ITreasureBlock || state.is(BlockTags.LEAVES)) {
+		if (isPassable(state) || state.hasBlockEntity() || state.getBlock() instanceof ITreasureBlock || state.is(BlockTags.LEAVES) || isHung(state)) {
 			return null;
 		}
 		return ground;
