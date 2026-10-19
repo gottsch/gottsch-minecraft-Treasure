@@ -15,6 +15,15 @@
  */
 package mod.gottsch.forge.treasure2.datagen.loot;
 
+import java.util.stream.IntStream;
+import net.minecraft.advancements.critereon.StatePropertiesPredicate;
+import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import mod.gottsch.forge.treasure2.core.block.BracketFungusBlock;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.item.TreasureItems;
 import net.minecraft.data.loot.BlockLootSubProvider;
@@ -109,7 +118,18 @@ public class TreasureBlockLootTables extends BlockLootSubProvider {
         this.add(TreasureBlocks.WITHERED_GRASS_BLOCK.get(), block ->
                 createSingleItemTableWithSilkTouch(block, Items.DIRT));
         // only shears take the thorns whole, as with dead bushes
+        this.dropSelf(TreasureBlocks.HOLLOW_WITHERWOOD_LOG.get());
+        // the vine tears off: a plain log, unless silk touched
+        this.add(TreasureBlocks.STRANGLED_WITHERWOOD_LOG.get(), block ->
+                createSingleItemTableWithSilkTouch(block, TreasureItems.WITHERWOOD_LOG.get()));
         this.add(TreasureBlocks.GRAVE_THORNS.get(), BlockLootSubProvider::createShearsOnlyDrop);
+        // one per bracket, like pink petals
+        this.add(TreasureBlocks.BRACKET_FUNGUS.get(), block -> LootTable.lootTable().withPool(LootPool.lootPool()
+                .setRolls(ConstantValue.exactly(1.0F)).add(applyExplosionDecay(block, LootItem.lootTableItem(block)
+                        .apply(IntStream.rangeClosed(1, BracketFungusBlock.MAX_COUNT).boxed().toList(), count ->
+                                SetItemCountFunction.setCount(ConstantValue.exactly(count))
+                                        .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block)
+                                                .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(BracketFungusBlock.COUNT, count))))))));
 
     }
 
@@ -143,6 +163,9 @@ public class TreasureBlockLootTables extends BlockLootSubProvider {
                 TreasureBlocks.WITHERED_LEAF_LITTER.get(),
                 TreasureBlocks.WITHERED_GRASS_BLOCK.get(),
                 TreasureBlocks.GRAVE_THORNS.get(),
+                TreasureBlocks.BRACKET_FUNGUS.get(),
+                TreasureBlocks.HOLLOW_WITHERWOOD_LOG.get(),
+                TreasureBlocks.STRANGLED_WITHERWOOD_LOG.get(),
 
                 // legacy wither
                 TreasureBlocks.WITHER_LOG.get(),

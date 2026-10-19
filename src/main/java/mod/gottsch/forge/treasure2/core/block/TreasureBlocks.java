@@ -246,6 +246,10 @@ public class TreasureBlocks {
 
 	public static final RegistryObject<Block> WITHERWOOD_LOG = Registration.BLOCKS.register("witherwood_log", () -> witherwoodLog(MapColor.WOOD, MapColor.PODZOL));
 	public static final RegistryObject<Block> WITHERWOOD_WOOD = Registration.BLOCKS.register("witherwood_wood", () -> witherwoodLog(MapColor.WOOD, MapColor.PODZOL));
+	public static final RegistryObject<Block> HOLLOW_WITHERWOOD_LOG = Registration.BLOCKS.register("hollow_witherwood_log", () -> new HollowWitherwoodLogBlock(
+			BlockBehaviour.Properties.of().mapColor(MapColor.PODZOL).instrument(NoteBlockInstrument.BASS).strength(2.0F).sound(SoundType.WOOD).ignitedByLava().noOcclusion()));
+	public static final RegistryObject<Block> STRANGLED_WITHERWOOD_LOG = Registration.BLOCKS.register("strangled_witherwood_log", () -> new StrangledWitherwoodLogBlock(
+			BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASS).strength(2.0F).sound(SoundType.WOOD).ignitedByLava()));
 	public static final RegistryObject<Block> STRIPPED_WITHERWOOD_LOG = Registration.BLOCKS.register("stripped_witherwood_log", () -> log(MapColor.PODZOL, MapColor.PODZOL));
 	public static final RegistryObject<Block> STRIPPED_WITHERWOOD_WOOD = Registration.BLOCKS.register("stripped_witherwood_wood", () -> log(MapColor.PODZOL, MapColor.PODZOL));
 
@@ -277,6 +281,9 @@ public class TreasureBlocks {
 	public static final RegistryObject<Block> GRAVE_THORNS = Registration.BLOCKS.register("grave_thorns", () -> new GraveThornsBlock(
 			Properties.of().mapColor(MapColor.TERRACOTTA_BROWN).noCollission().instabreak().sound(SoundType.SWEET_BERRY_BUSH)
 					.offsetType(BlockBehaviour.OffsetType.XZ).pushReaction(PushReaction.DESTROY)));
+	public static final RegistryObject<Block> BRACKET_FUNGUS = Registration.BLOCKS.register("bracket_fungus", () -> new BracketFungusBlock(
+			Properties.of().mapColor(MapColor.TERRACOTTA_BROWN).noCollission().strength(0.2F).sound(SoundType.FUNGUS)
+					.pushReaction(PushReaction.DESTROY)));
 	/** no item: an invisible block, placed only by the grove (or /setblock) */
 	public static final RegistryObject<Block> WISP = Registration.BLOCKS.register("wisp", () -> new WispBlock(
 			Properties.of().replaceable().noCollission().noOcclusion().noLootTable().instabreak().air()

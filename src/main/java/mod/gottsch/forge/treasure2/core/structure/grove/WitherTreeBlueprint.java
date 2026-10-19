@@ -101,6 +101,11 @@ public class WitherTreeBlueprint {
 		sinks.replaceAll(function);
 	}
 
+	/** rewrites the trunk, branch and top states in place, leaving the sinks under the trunk as they are */
+	public void restateStructure(BiFunction<BlockPos, BlockState, BlockState> function) {
+		structure.replaceAll(function);
+	}
+
 	/** rewrites every clearing cell in place, in order */
 	public void restatePatch(UnaryOperator<PatchCell> function) {
 		patch.replaceAll(function);
@@ -178,11 +183,21 @@ public class WitherTreeBlueprint {
 	public static BlockPos seat(WorldGenLevel level, BlockPos origin) {
 		for (int dy = SEAT_RISE; dy >= -SEAT_DEPTH; dy--) {
 			BlockPos pos = origin.above(dy);
-			if (isTerrain(level.getBlockState(pos)) && !isTerrain(level.getBlockState(pos.above()))) {
+			if (isGround(level, pos) && !isGround(level, pos.above())) {
 				return pos;
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Terrain with a top you could stand on. A thin, non-replaceable plant or fixture (a strangle vine
+	 * stalk, a chain, a cobweb) is not ground, though it isn't air either: a boulder once sat on top of a
+	 * strangle vine because its stalk passed the terrain test.
+	 */
+	private static boolean isGround(WorldGenLevel level, BlockPos pos) {
+		BlockState state = level.getBlockState(pos);
+		return isTerrain(state) && state.isFaceSturdy(level, pos, Direction.UP);
 	}
 
 	private static boolean isTerrain(BlockState state) {
@@ -196,7 +211,8 @@ public class WitherTreeBlueprint {
 	 * once turned a chain's top link into floating mycelium.
 	 */
 	private static boolean isHung(BlockState state) {
-		return state.is(Blocks.CHAIN) || state.getBlock() instanceof LanternBlock;
+		// cobwebs too: they aren't replaceable, so they would pass for terrain in seat()
+		return state.is(Blocks.CHAIN) || state.getBlock() instanceof LanternBlock || state.is(Blocks.COBWEB);
 	}
 
 	/**
@@ -302,7 +318,8 @@ public class WitherTreeBlueprint {
 		}
 		BlockPos ground = new BlockPos(x, top, z);
 		BlockState state = level.getBlockState(ground);
-		if (isPassable(state) || state.hasBlockEntity() || state.getBlock() instanceof ITreasureBlock || state.is(BlockTags.LEAVES) || isHung(state)) {
+		if (isPassable(state) || state.hasBlockEntity() || state.getBlock() instanceof ITreasureBlock || state.is(BlockTags.LEAVES) || isHung(state)
+				|| !state.isFaceSturdy(level, ground, Direction.UP)) {
 			return null;
 		}
 		return ground;

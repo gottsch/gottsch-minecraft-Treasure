@@ -1,0 +1,64 @@
+{
+  "variants": {
+    "face=0,full=false,mossy=false": {
+      "model": "treasure2:block/strangled_witherwood_log"
+    },
+    "face=0,full=false,mossy=true": {
+      "model": "treasure2:block/mossy_strangled_witherwood_log"
+    },
+    "face=0,full=true,mossy=false": {
+      "model": "treasure2:block/strangled_witherwood_log_full"
+    },
+    "face=0,full=true,mossy=true": {
+      "model": "treasure2:block/mossy_strangled_witherwood_log_full"
+    },
+    "face=1,full=false,mossy=false": {
+      "model": "treasure2:block/strangled_witherwood_log",
+      "y": 270
+    },
+    "face=1,full=false,mossy=true": {
+      "model": "treasure2:block/mossy_strangled_witherwood_log",
+      "y": 270
+    },
+    "face=1,full=true,mossy=false": {
+      "model": "treasure2:block/strangled_witherwood_log_full",
+      "y": 270
+    },
+    "face=1,full=true,mossy=true": {
+      "model": "treasure2:block/mossy_strangled_witherwood_log_full",
+      "y": 270
+    },
+    "face=2,full=false,mossy=false": {
+      "model": "treasure2:block/strangled_witherwood_log",
+      "y": 180
+    },
+    "face=2,full=false,mossy=true": {
+      "model": "treasure2:block/mossy_strangled_witherwood_log",
+      "y": 180
+    },
+    "face=2,full=true,mossy=false": {
+      "model": "treasure2:block/strangled_witherwood_log_full",
+      "y": 180
+    },
+    "face=2,full=true,mossy=true": {
+      "model": "treasure2:block/mossy_strangled_witherwood_log_full",
+      "y": 180
+    },
+    "face=3,full=false,mossy=false": {
+      "model": "treasure2:block/strangled_witherwood_log",
+      "y": 90
+    },
+    "face=3,full=false,mossy=true": {
+      "model": "treasure2:block/mossy_strangled_witherwood_log",
+      "y": 90
+    },
+    "face=3,full=true,mossy=false": {
+      "model": "treasure2:block/strangled_witherwood_log_full",
+      "y": 90
+    },
+    "face=3,full=true,mossy=true": {
+      "model": "treasure2:block/mossy_strangled_witherwood_log_full",
+      "y": 90
+    }
+  }
+}

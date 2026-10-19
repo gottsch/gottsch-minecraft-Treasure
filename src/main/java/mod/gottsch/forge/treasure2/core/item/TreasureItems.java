@@ -385,6 +385,9 @@ public class TreasureItems {
 	public static final RegistryObject<Item> WITHERED_LEAF_LITTER = fromBlock(TreasureBlocks.WITHERED_LEAF_LITTER, TREASURE_PROPS_SUPPLIER);
 	public static final RegistryObject<Item> WITHERED_GRASS_BLOCK = fromBlock(TreasureBlocks.WITHERED_GRASS_BLOCK, TREASURE_PROPS_SUPPLIER);
 	public static final RegistryObject<Item> GRAVE_THORNS = fromBlock(TreasureBlocks.GRAVE_THORNS, TREASURE_PROPS_SUPPLIER);
+	public static final RegistryObject<Item> BRACKET_FUNGUS = fromBlock(TreasureBlocks.BRACKET_FUNGUS, TREASURE_PROPS_SUPPLIER);
+	public static final RegistryObject<Item> HOLLOW_WITHERWOOD_LOG = fromBlock(TreasureBlocks.HOLLOW_WITHERWOOD_LOG, TREASURE_PROPS_SUPPLIER);
+	public static final RegistryObject<Item> STRANGLED_WITHERWOOD_LOG = fromBlock(TreasureBlocks.STRANGLED_WITHERWOOD_LOG, TREASURE_PROPS_SUPPLIER);
 
 	public static final RegistryObject<Item> TOPAZ_ORE_ITEM = fromBlock(TreasureBlocks.TOPAZ_ORE, TREASURE_PROPS_SUPPLIER);
 	public static final RegistryObject<Item> DEEPSLATE_TOPAZ_ORE_ITEM = fromBlock(TreasureBlocks.DEEPSLATE_TOPAZ_ORE, TREASURE_PROPS_SUPPLIER);

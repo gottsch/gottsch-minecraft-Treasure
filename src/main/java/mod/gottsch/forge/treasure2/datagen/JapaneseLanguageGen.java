@@ -106,6 +106,9 @@ public class JapaneseLanguageGen extends LanguageProvider {
         add(TreasureBlocks.WITHERED_LEAF_LITTER.get(), "枯れた落ち葉");
         add(TreasureBlocks.WITHERED_GRASS_BLOCK.get(), "枯れた草ブロック");
         add(TreasureBlocks.GRAVE_THORNS.get(), "墓場のイバラ");
+        add(TreasureBlocks.BRACKET_FUNGUS.get(), "サルノコシカケ");
+        add(TreasureBlocks.HOLLOW_WITHERWOOD_LOG.get(), "空洞のウィザーウッドの原木");
+        add(TreasureBlocks.STRANGLED_WITHERWOOD_LOG.get(), "絞めつけられたウィザーウッドの原木");
         add(TreasureBlocks.WISP.get(), "ウィスプ");
         add(TreasureBlocks.WISHING_WELL.get(), "願い井戸の石");
         add(TreasureBlocks.WISHING_WELL_COBBLESTONE.get(), "願い井戸の丸石");

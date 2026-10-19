@@ -15,6 +15,11 @@
  */
 package mod.gottsch.forge.treasure2.core.structure.grove;
 
+import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
+import mod.gottsch.forge.treasure2.core.block.StrangledWitherwoodLogBlock;
+import java.util.HashSet;
+import java.util.Set;
+import mod.gottsch.forge.treasure2.core.block.BracketFungusBlock;
 import net.minecraft.world.level.block.LanternBlock;
 import mod.gottsch.forge.gottschcore.block.IFacingBlock;
 import mod.gottsch.forge.treasure2.core.block.SpanishMossBlock;
@@ -58,7 +63,6 @@ public final class WitherTreeBuilder {
 	private static final float SPANISH_MOSS_PROBABILITY = 0.4F;
 	private static final float LOW_MOSS_BONUS = 0.15F;
 	private static final float TWIG_PROBABILITY = 0.4F;
-	private static final float TIP_TWIG_PROBABILITY = 0.35F;
 	private static final float TRUNK_TWIG_PROBABILITY = 0.15F;
 	/** chance per layer of a stub or twig below the living crown */
 	private static final float DEAD_LIMB_PROBABILITY = 0.25F;
@@ -94,6 +98,20 @@ public final class WitherTreeBuilder {
 	private static final float LANTERN_PROBABILITY = 0.2F;
 	private static final float WISP_PROBABILITY = 0.35F;
 	private static final float SECOND_WISP_PROBABILITY = 0.1F;
+	/** a web strung between two branches that leave the trunk at right angles on the same layer */
+	private static final float FORK_WEB_PROBABILITY = 0.5F;
+	/** a web in the angle above a branch, against the trunk */
+	private static final float CORNER_WEB_PROBABILITY = 0.04F;
+	private static final int MAX_WEBS = 2;
+	/** per open log face in the lower part of the trunk */
+	private static final float FUNGUS_PROBABILITY = 0.05F;
+	private static final float FUNGUS_REACH = 0.65F;
+	private static final int MAX_FUNGI = 4;
+	/** salt for the strangle vine's own random, so the wrap changes nothing else */
+	private static final long STRANGLE_SALT = 0xBB67AE8584CAA73BL;
+	private static final float STRANGLED_PROBABILITY = 0.45F;
+	/** of strangled trunks, how many are choked (vine on every face) at the foot */
+	private static final float CHOKED_PROBABILITY = 0.25F;
 
 	private static final List<Direction> ALL = List.of(Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST);
 
@@ -113,6 +131,7 @@ public final class WitherTreeBuilder {
 		strangleVines(blueprint, random);
 		clearing(blueprint, random);
 		extras(blueprint, RandomSource.create(seed ^ EXTRAS_SALT), scale);
+		strangle(blueprint, new XoroshiroRandomSource(seed ^ STRANGLE_SALT));
 		return blueprint;
 	}
 
@@ -260,8 +279,8 @@ public final class WitherTreeBuilder {
 	}
 
 	/**
-	 * A straight run of branch blocks out of the trunk, moss hanging under it and sometimes a twig at
-	 * its tip. Never sits directly on another branch (a twig instead, as in the 1.20 generator).
+	 * A straight run of branch blocks out of the trunk, moss hanging under it. Never sits directly on
+	 * another branch (a twig on the trunk instead, as in the 1.20 generator).
 	 */
 	private static void run(WitherTreeBlueprint blueprint, BlockPos trunk, Direction d, int length, boolean low, RandomSource random) {
 		BlockPos pos = trunk;
@@ -282,8 +301,10 @@ public final class WitherTreeBuilder {
 						.setValue(SpanishMossBlock.ACTIVATED, random.nextFloat() < 0.7F));
 			}
 		}
-		if (last != null && random.nextFloat() < TIP_TWIG_PROBABILITY) {
-			twig(blueprint, last.relative(d), d);
+		// twigs grow only from the trunk (Mark). The tip twig's draw is kept, unused, so every later draw,
+		// and so the rest of every tree, comes out as it did; a grove generated half before still joins up
+		if (last != null) {
+			random.nextFloat();
 		}
 	}
 
@@ -327,6 +348,85 @@ public final class WitherTreeBuilder {
 				blueprint.decorate(pos, TreasureBlocks.WISP.get().defaultBlockState());
 			}
 		}
+
+		cobwebs(blueprint, random);
+		bracketFungi(blueprint, random);
+	}
+
+	/**
+	 * Cobwebs in the forks: where two branches leave the same trunk block at right angles, a web may fill
+	 * the corner cell between them; now and then one sits in the angle above a branch, against the trunk.
+	 */
+	private static void cobwebs(WitherTreeBlueprint blueprint, RandomSource random) {
+		Block branch = TreasureBlocks.WITHERWOOD_BRANCH.get();
+		Block log = TreasureBlocks.WITHERWOOD_LOG.get();
+		Map<BlockPos, List<Direction>> forks = new java.util.LinkedHashMap<>();
+		blueprint.structure().forEach((pos, state) -> {
+			if (state.is(branch)) {
+				Direction d = state.getValue(IFacingBlock.FACING);
+				BlockPos trunk = pos.relative(d.getOpposite());
+				if (blueprint.isBlock(trunk, log)) {
+					forks.computeIfAbsent(trunk, t -> new ArrayList<>()).add(d);
+				}
+			}
+		});
+		int webs = 0;
+		for (Map.Entry<BlockPos, List<Direction>> fork : forks.entrySet()) {
+			List<Direction> dirs = fork.getValue();
+			for (int i = 0; i < dirs.size() && webs < MAX_WEBS; i++) {
+				Direction d = dirs.get(i);
+				for (int j = i + 1; j < dirs.size() && webs < MAX_WEBS; j++) {
+					Direction e = dirs.get(j);
+					BlockPos corner = fork.getKey().relative(d).relative(e);
+					if (d.getAxis() != e.getAxis() && !blueprint.isOccupied(corner) && random.nextFloat() < FORK_WEB_PROBABILITY) {
+						blueprint.decorate(corner, Blocks.COBWEB.defaultBlockState());
+						webs++;
+					}
+				}
+				BlockPos above = fork.getKey().relative(d).above();
+				if (webs < MAX_WEBS && !blueprint.isOccupied(above) && random.nextFloat() < CORNER_WEB_PROBABILITY) {
+					blueprint.decorate(above, Blocks.COBWEB.defaultBlockState());
+					webs++;
+				}
+			}
+		}
+	}
+
+	/**
+	 * Bracket fungus on open faces of the lower trunk: one to three shelves (more often fewer), pointing
+	 * away from the log. A face is open when nothing of the tree is in front of it.
+	 */
+	private static void bracketFungi(WitherTreeBlueprint blueprint, RandomSource random) {
+		Block log = TreasureBlocks.WITHERWOOD_LOG.get();
+		Map<Long, Integer> heights = new HashMap<>();
+		blueprint.structure().forEach((pos, state) -> {
+			if (state.is(log)) {
+				heights.merge(ChunkPos.asLong(pos.getX(), pos.getZ()), pos.getY(), Math::max);
+			}
+		});
+		List<BlockPos> logs = new ArrayList<>();
+		blueprint.structure().forEach((pos, state) -> {
+			if (state.is(log) && pos.getY() >= 1
+					&& pos.getY() <= Math.max(2, heights.get(ChunkPos.asLong(pos.getX(), pos.getZ())) * FUNGUS_REACH)) {
+				logs.add(pos);
+			}
+		});
+		int fungi = 0;
+		for (BlockPos pos : logs) {
+			for (Direction d : ALL) {
+				if (fungi >= MAX_FUNGI) {
+					return;
+				}
+				BlockPos front = pos.relative(d);
+				if (!blueprint.isOccupied(front) && random.nextFloat() < FUNGUS_PROBABILITY) {
+					float roll = random.nextFloat();
+					int count = roll < 0.5F ? 1 : roll < 0.8F ? 2 : 3;
+					blueprint.decorate(front, TreasureBlocks.BRACKET_FUNGUS.get().defaultBlockState()
+							.setValue(BracketFungusBlock.FACING, d).setValue(BracketFungusBlock.COUNT, count));
+					fungi++;
+				}
+			}
+		}
 	}
 
 	/**
@@ -350,6 +450,39 @@ public final class WitherTreeBuilder {
 			blueprint.decorate(pos.below(i), Blocks.CHAIN.defaultBlockState());
 		}
 		blueprint.decorate(pos.below(links + 1), Blocks.SOUL_LANTERN.defaultBlockState().setValue(LanternBlock.HANGING, true));
+	}
+
+	/**
+	 * A strangle vine wound round some single trunks: one strand climbing from the ground, a face further
+	 * round each block, to somewhere between 40 and 90 % of the way up; a quarter of them choked at the
+	 * foot, with the vine on every face for the lowest one to three blocks. Runs last, on its own random,
+	 * and only re-skins logs, so nothing else about the tree changes. (Great trees' outer columns would
+	 * hide the strand on their inner faces; they are left for now.)
+	 */
+	private static void strangle(WitherTreeBlueprint blueprint, RandomSource random) {
+		if (random.nextFloat() >= STRANGLED_PROBABILITY) {
+			return;
+		}
+		Block log = TreasureBlocks.WITHERWOOD_LOG.get();
+		int height = 0;
+		for (int y = 1; blueprint.isBlock(new BlockPos(0, y, 0), log); y++) {
+			height = y;
+		}
+		if (height == 0) {
+			return;
+		}
+		int start = random.nextInt(4);
+		int reach = Math.max(2, Math.round(height * (0.4F + random.nextFloat() * 0.5F)));
+		int choked = random.nextFloat() < CHOKED_PROBABILITY ? 1 + random.nextInt(3) : 0;
+		StrangledWitherwoodLogBlock strangled = (StrangledWitherwoodLogBlock) TreasureBlocks.STRANGLED_WITHERWOOD_LOG.get();
+		blueprint.restateStructure((pos, state) -> {
+			if (pos.getX() != 0 || pos.getZ() != 0 || !state.is(log) || pos.getY() > reach) {
+				return state;
+			}
+			return strangled.climbing(start, pos.getY())
+					.setValue(StrangledWitherwoodLogBlock.FULL, pos.getY() <= choked)
+					.setValue(WitherwoodRotatedPillarBlock.MOSSY, state.getValue(WitherwoodRotatedPillarBlock.MOSSY));
+		});
 	}
 
 	/**

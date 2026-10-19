@@ -17,6 +17,7 @@ package mod.gottsch.forge.treasure2.core.structure;
 
 import mod.gottsch.forge.treasure2.Treasure;
 import mod.gottsch.forge.treasure2.core.structure.grove.WitherBoulderPiece;
+import mod.gottsch.forge.treasure2.core.structure.grove.WitherFallenLogPiece;
 import mod.gottsch.forge.treasure2.core.structure.grove.WitherGroveAreaPiece;
 import mod.gottsch.forge.treasure2.core.structure.grove.WitherGroveStructure;
 import mod.gottsch.forge.treasure2.core.structure.grove.WitherTreePiece;
@@ -54,6 +55,9 @@ public class TreasureStructures {
 
     public static final RegistryObject<StructurePieceType> WITHER_BOULDER_PIECE =
             STRUCTURE_PIECES.register("wither_boulder", () -> (StructurePieceType.ContextlessType) WitherBoulderPiece::new);
+
+    public static final RegistryObject<StructurePieceType> WITHER_FALLEN_LOG_PIECE =
+            STRUCTURE_PIECES.register("wither_fallen_log", () -> (StructurePieceType.ContextlessType) WitherFallenLogPiece::new);
 
     public static void register(IEventBus modEventBus) {
         STRUCTURE_TYPES.register(modEventBus);

@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.2.0] - Unreleased
+
+### Added
+- **The Wither Grove has been rebuilt.** The great wither tree now stands at the heart of a whole grove: 10 to 20 withered trees spread over a ragged clearing around it, tallest near the centre and smaller toward the edge. Every grove is different. The trees are grown fresh for each grove rather than copied from a handful of fixed shapes, and they keep the familiar witherwood look: straight trunks, thin branches spiralling up them, twigs, hanging moss and a broken top.
+- **Groves have their own biome, the Wither Grove.** It is painted over the grove as it generates, so the surrounding forest's trees, flowers and grass no longer grow up through it. The sky, fog, water and foliage turn grey and sickly, ash drifts in the air, and only the grove's own creatures spawn there: wither skeletons, strays, skeletons, spiders and the occasional Witherwood Golem.
+- **The grove floor is blighted.** Each tree stands in a patch of dead ground: Withered Grass, coarse dirt, podzol, mud and mycelium, with Withered Leaf Litter scattered over it. Roots turn the dirt beneath them into rooted dirt. Mossy and deepslate boulders lie half-sunk between the trees, along with fallen hollow logs, some beside the stump they broke from.
+- **Strangle vines wrap the trunks.** About half the trees have a strangle vine winding up the trunk, and some are choked by vines at the base.
+- **More to find among the trees:** bracket fungus on the trunks, cobwebs in the forks of branches, soul lanterns hanging on chains, Grave Thorns around the clearings (thicker toward the edge), and, at night, faint drifting Wisps between the trees.
+- **Suspicious gravel near some trunks.** Brush it for coins, gems, a Wither Key, bones and other oddments.
+- New blocks:
+  - **Strangled Witherwood Log**: a witherwood log wrapped in strangle vine. Stack them, each turned a face further round, and the vine spirals up the column. It drops a plain log unless broken with Silk Touch, and an axe strips the vine off with the bark.
+  - **Hollow Witherwood Log**: a rotted-out log, lying or standing. Small creatures can pass through it.
+  - **Bracket Fungus**: one to three shelves on the side of a log; place more on it to add shelves.
+  - **Grave Thorns**: a dead bramble that slows and scratches anything walking through it, except the monsters that live among it. Only shears gather it whole.
+  - **Withered Grass Block**: dead grass that never spreads. It drops dirt unless broken with Silk Touch, and can be made into a path or tilled.
+  - **Withered Leaf Litter**: fallen dead leaves, one to four to a block, that lie on any solid surface.
+  - **Wisp**: an invisible glow that only shows itself at night. It's placed by the grove; there is no item.
+- Witherwood logs, wood and broken tops can now be mossy, and the grove grows moss where it would grow on a real tree: low on the trunk. The mossy bark texture has been redrawn so the moss can actually be seen.
+- Japanese names for the new blocks and the Wither Grove biome.
+
+### Changed
+- Wither Groves no longer generate in rivers, lakes or the sea, or with their trees standing in water.
+- Wither Groves no longer generate on top of villages.
+- Grove trees no longer hang in the air or sink into the ground on slopes.
+- In existing worlds, witherwood logs that showed moss at random now show plain bark. Moss is now part of the block rather than chosen by its position, and old logs load as unmossed.
+- New commands for building and testing groves: `/t2 wither_tree <pos> [wither|great] [seed] [scale]` grows a single wither tree, and `/t2 wither_grove <pos>` places a whole grove.
+
 ## [4.1.0] - Unreleased
 
 ### Added

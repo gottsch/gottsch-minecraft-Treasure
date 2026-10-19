@@ -24,6 +24,7 @@ import mod.gottsch.forge.treasure2.core.world.feature.FeatureType;
 import mod.gottsch.forge.treasure2.core.world.feature.IFeatureType;
 import mod.gottsch.forge.treasure2.Treasure;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.QuartPos;
 import net.minecraft.core.registries.Registries;
@@ -77,6 +78,12 @@ public class WitherGroveStructure extends ModJigsawStructure {
 	private static final int MAX_BOULDERS = 5;
 	private static final int BOULDER_TREE_SPACING = 3;
 	private static final int BOULDER_SPACING = 7;
+	/** fallen logs per grove, and how far each cell keeps from trees, boulders and other logs */
+	private static final int MIN_FALLEN_LOGS = 1;
+	private static final int MAX_FALLEN_LOGS = 2;
+	private static final int FALLEN_LOG_SPACING = 3;
+	/** a fallen log lies below the branches, so it only has to clear the trunk and its roots */
+	private static final int FALLEN_LOG_TREE_SPACING = 2;
 
 	/**
 	 * Grove layout, from the structure JSON's "grove" object. Every field is required, so a misspelled
@@ -301,7 +308,8 @@ public class WitherGroveStructure extends ModJigsawStructure {
 			trees.add(origin);
 		}
 
-		boulders(context, centre, ground, random, keepOut, trees, builder);
+		List<BlockPos> boulders = boulders(context, centre, ground, random, keepOut, trees, builder);
+		fallenLogs(context, centre, ground, random, keepOut, trees, boulders, builder);
 
 		// reach every chunk the biome is painted on, even on sides where no tree grew (see paintBiome)
 		int reach = radius + PAINT_MARGIN + 3;
@@ -313,7 +321,7 @@ public class WitherGroveStructure extends ModJigsawStructure {
 	 * A few boulders between the trees, by dart throwing as for the trees. Drawn after every tree, so
 	 * the trees come out as they did before boulders existed.
 	 */
-	private void boulders(GenerationContext context, BlockPos centre, int ground, RandomSource random,
+	private List<BlockPos> boulders(GenerationContext context, BlockPos centre, int ground, RandomSource random,
 			List<BoundingBox> keepOut, List<BlockPos> trees, StructurePiecesBuilder builder) {
 		int target = MIN_BOULDERS + random.nextInt(MAX_BOULDERS - MIN_BOULDERS + 1);
 		double reach = grove.radius() * 0.95;
@@ -338,6 +346,55 @@ public class WitherGroveStructure extends ModJigsawStructure {
 			BlockPos origin = new BlockPos(x, surface, z);
 			builder.addPiece(new WitherBoulderPiece(origin, random.nextLong()));
 			placed.add(origin);
+		}
+		return placed;
+	}
+
+	/**
+	 * One or two fallen hollow logs, 3 to 6 long, lying along x or z where the ground is level to within a
+	 * block along the whole length (and two back, for the stump). Every cell keeps clear of trees, boulders, the jigsaw
+	 * pieces and water. Drawn after the boulders, so nothing laid out before them changes.
+	 */
+	private void fallenLogs(GenerationContext context, BlockPos centre, int ground, RandomSource random, List<BoundingBox> keepOut,
+			List<BlockPos> trees, List<BlockPos> boulders, StructurePiecesBuilder builder) {
+		int target = MIN_FALLEN_LOGS + random.nextInt(MAX_FALLEN_LOGS - MIN_FALLEN_LOGS + 1);
+		int spacingSq = FALLEN_LOG_SPACING * FALLEN_LOG_SPACING;
+		int treeSq = FALLEN_LOG_TREE_SPACING * FALLEN_LOG_TREE_SPACING;
+		int boulderSq = (FALLEN_LOG_SPACING + 2) * (FALLEN_LOG_SPACING + 2);
+		List<BlockPos> taken = new ArrayList<>();
+		int placed = 0;
+		for (int attempt = 0; attempt < 100 && placed < target; attempt++) {
+			double angle = random.nextDouble() * Math.PI * 2;
+			double distance = grove.clearance() + Math.sqrt(random.nextDouble()) * (grove.radius() * 0.9 - grove.clearance());
+			Direction direction = Direction.Plane.HORIZONTAL.getRandomDirection(random);
+			int length = WitherFallenLogPiece.MIN_LENGTH + random.nextInt(WitherFallenLogPiece.MAX_LENGTH - WitherFallenLogPiece.MIN_LENGTH + 1);
+			BlockPos start = new BlockPos(centre.getX() + (int) Math.round(Math.cos(angle) * distance), 0,
+					centre.getZ() + (int) Math.round(Math.sin(angle) * distance));
+			// level enough: no cell more than one below the highest (the log bridges a small dip)
+			int top = Integer.MIN_VALUE, bottom = Integer.MAX_VALUE;
+			boolean ok = true;
+			List<BlockPos> cells = new ArrayList<>();
+			for (int i = -2; i < length && ok; i++) {
+				BlockPos c = start.relative(direction, i);
+				int x = c.getX(), z = c.getZ();
+				int surface = context.chunkGenerator().getFirstOccupiedHeight(x, z, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState());
+				int floor = context.chunkGenerator().getFirstOccupiedHeight(x, z, Heightmap.Types.OCEAN_FLOOR_WG, context.heightAccessor(), context.randomState());
+				top = Math.max(top, surface);
+				bottom = Math.min(bottom, surface);
+				ok = surface == floor && top - bottom <= 1 && Math.abs(surface - ground) <= grove.maxRelief()
+						&& trees.stream().noneMatch(t -> (t.getX() - x) * (t.getX() - x) + (t.getZ() - z) * (t.getZ() - z) < treeSq)
+						&& boulders.stream().noneMatch(b -> (b.getX() - x) * (b.getX() - x) + (b.getZ() - z) * (b.getZ() - z) < boulderSq)
+						&& taken.stream().noneMatch(t -> (t.getX() - x) * (t.getX() - x) + (t.getZ() - z) * (t.getZ() - z) < spacingSq)
+						&& keepOut.stream().noneMatch(box -> x >= box.minX() - 2 && x <= box.maxX() + 2 && z >= box.minZ() - 2 && z <= box.maxZ() + 2);
+				cells.add(c);
+			}
+			if (!ok) {
+				continue;
+			}
+			int level = top;
+			builder.addPiece(new WitherFallenLogPiece(new BlockPos(start.getX(), level, start.getZ()), direction, length, random.nextLong()));
+			taken.addAll(cells);
+			placed++;
 		}
 	}
 

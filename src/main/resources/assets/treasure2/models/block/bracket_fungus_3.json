@@ -1,0 +1,190 @@
+{
+  "parent": "minecraft:block/block",
+  "render_type": "minecraft:cutout",
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "treasure2:block/bracket_fungus_top",
+    "top": "treasure2:block/bracket_fungus_top",
+    "side": "treasure2:block/bracket_fungus_side",
+    "under": "treasure2:block/bracket_fungus_under"
+  },
+  "elements": [
+    {
+      "from": [
+        3,
+        5,
+        9
+      ],
+      "to": [
+        13,
+        7,
+        16
+      ],
+      "faces": {
+        "up": {
+          "texture": "#top",
+          "uv": [
+            3,
+            9,
+            13,
+            16
+          ]
+        },
+        "down": {
+          "texture": "#under",
+          "uv": [
+            3,
+            9,
+            13,
+            16
+          ]
+        },
+        "north": {
+          "texture": "#side",
+          "uv": [
+            3,
+            0,
+            13,
+            2
+          ]
+        },
+        "east": {
+          "texture": "#side",
+          "uv": [
+            9,
+            0,
+            16,
+            2
+          ]
+        },
+        "west": {
+          "texture": "#side",
+          "uv": [
+            9,
+            0,
+            16,
+            2
+          ]
+        }
+      }
+    },
+    {
+      "from": [
+        5,
+        10,
+        11
+      ],
+      "to": [
+        11,
+        11.5,
+        16
+      ],
+      "faces": {
+        "up": {
+          "texture": "#top",
+          "uv": [
+            5,
+            11,
+            11,
+            16
+          ]
+        },
+        "down": {
+          "texture": "#under",
+          "uv": [
+            5,
+            11,
+            11,
+            16
+          ]
+        },
+        "north": {
+          "texture": "#side",
+          "uv": [
+            5,
+            0,
+            11,
+            1.5
+          ]
+        },
+        "east": {
+          "texture": "#side",
+          "uv": [
+            11,
+            0,
+            16,
+            1.5
+          ]
+        },
+        "west": {
+          "texture": "#side",
+          "uv": [
+            11,
+            0,
+            16,
+            1.5
+          ]
+        }
+      }
+    },
+    {
+      "from": [
+        2,
+        1.5,
+        12
+      ],
+      "to": [
+        8,
+        3,
+        16
+      ],
+      "faces": {
+        "up": {
+          "texture": "#top",
+          "uv": [
+            2,
+            12,
+            8,
+            16
+          ]
+        },
+        "down": {
+          "texture": "#under",
+          "uv": [
+            2,
+            12,
+            8,
+            16
+          ]
+        },
+        "north": {
+          "texture": "#side",
+          "uv": [
+            8,
+            0,
+            14,
+            1.5
+          ]
+        },
+        "east": {
+          "texture": "#side",
+          "uv": [
+            12,
+            0,
+            16,
+            1.5
+          ]
+        },
+        "west": {
+          "texture": "#side",
+          "uv": [
+            12,
+            0,
+            16,
+            1.5
+          ]
+        }
+      }
+    }
+  ]
+}

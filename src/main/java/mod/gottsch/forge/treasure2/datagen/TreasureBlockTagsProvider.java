@@ -44,6 +44,8 @@ public class TreasureBlockTagsProvider extends BlockTagsProvider {
     	// withered grass behaves as grass: dug with a shovel, and plants grow on it
     	tag(BlockTags.MINEABLE_WITH_SHOVEL).add(TreasureBlocks.WITHERED_GRASS_BLOCK.get());
     	tag(BlockTags.DIRT).add(TreasureBlocks.WITHERED_GRASS_BLOCK.get());
+    	tag(BlockTags.MINEABLE_WITH_AXE).add(TreasureBlocks.HOLLOW_WITHERWOOD_LOG.get());
+    	tag(BlockTags.MINEABLE_WITH_AXE).add(TreasureBlocks.STRANGLED_WITHERWOOD_LOG.get());
 
     	// blocks rarity
     	tag(TreasureTags.Blocks.COMMON_CHESTS).add(TreasureBlocks.WOOD_CHEST.get());

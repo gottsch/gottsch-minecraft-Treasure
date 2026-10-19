@@ -27,6 +27,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.PinkPetalsBlock;
 import net.minecraft.world.level.block.SlabBlock;
@@ -208,7 +209,8 @@ public class WitherBoulderPiece extends StructurePiece implements PieceBeardifie
 			for (int i = 1; i <= column.height(); i++) {
 				BlockPos pos = ground.above(i);
 				BlockState existing = level.getBlockState(pos);
-				if (!existing.isAir() && !existing.canBeReplaced()) {
+				// small plants give way, the trees' leaf litter and thorns among them
+				if (!existing.isAir() && !existing.canBeReplaced() && !(existing.getBlock() instanceof BushBlock)) {
 					return;
 				}
 				level.setBlock(pos, cells[i + 1], FLAGS);
