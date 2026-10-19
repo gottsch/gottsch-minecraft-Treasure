@@ -22,6 +22,7 @@ import mod.gottsch.forge.treasure2.core.entity.TreasureEntities;
 import mod.gottsch.forge.treasure2.core.inventory.TreasureContainers;
 import mod.gottsch.forge.treasure2.core.item.TreasureCreativeModeTabs;
 import mod.gottsch.forge.treasure2.core.item.TreasureItems;
+import mod.gottsch.forge.treasure2.core.item.TreasurePotions;
 import mod.gottsch.forge.treasure2.core.loot.TreasureLootTableTypes;
 import mod.gottsch.forge.treasure2.core.loot.modifier.TreasureLootModifiers;
 import mod.gottsch.forge.treasure2.core.particle.TreasureParticles;
@@ -74,6 +75,7 @@ public class Treasure {
 		TreasureRarities.register(modEventBus);
 		TreasureBlocks.register(modEventBus);
 		TreasureItems.register(modEventBus);
+		TreasurePotions.register(modEventBus);
 		TreasureBlockEntities.register(modEventBus);
 		TreasureContainers.register(modEventBus);
 		TreasureParticles.register(modEventBus);

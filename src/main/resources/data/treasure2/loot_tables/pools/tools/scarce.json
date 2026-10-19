@@ -8,7 +8,7 @@
       "entryName" : "iron_pickaxe",
       "type" : "minecraft:item",
       "name" : "minecraft:iron_pickaxe",
-      "weight" : 13,
+      "weight" : 20,
       "functions" : [ {
         "function" : "minecraft:enchant_randomly"
       } ]
@@ -16,7 +16,15 @@
       "entryName" : "iron_axe",
       "type" : "minecraft:item",
       "name" : "minecraft:iron_axe",
-      "weight" : 25,
+      "weight" : 20,
+      "functions" : [ {
+        "function" : "minecraft:enchant_randomly"
+      } ]
+    }, {
+      "entryName" : "iron_shovel",
+      "type" : "minecraft:item",
+      "name" : "minecraft:iron_shovel",
+      "weight" : 20,
       "functions" : [ {
         "function" : "minecraft:enchant_randomly"
       } ]
@@ -24,7 +32,26 @@
       "entryName" : "diamond_pickaxe",
       "type" : "minecraft:item",
       "name" : "minecraft:diamond_pickaxe",
-      "weight" : 15
+      "weight" : 15,
+      "functions" : [ {
+        "function" : "minecraft:enchant_randomly"
+      } ]
+    }, {
+      "entryName" : "diamond_shovel",
+      "type" : "minecraft:item",
+      "name" : "minecraft:diamond_shovel",
+      "weight" : 10,
+      "functions" : [ {
+        "function" : "minecraft:enchant_randomly"
+      } ]
+    }, {
+      "entryName" : "fishing_rod",
+      "type" : "minecraft:item",
+      "name" : "minecraft:fishing_rod",
+      "weight" : 15,
+      "functions" : [ {
+        "function" : "minecraft:enchant_randomly"
+      } ]
     } ]
   } ]
 }

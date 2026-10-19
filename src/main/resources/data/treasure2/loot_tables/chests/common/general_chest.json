@@ -13,8 +13,8 @@
   }, {
     "name" : "items",
     "rolls" : {
-      "min" : 3,
-      "max" : 5
+      "min" : 4,
+      "max" : 7
     },
     "entries" : [ {
       "type" : "minecraft:loot_table",

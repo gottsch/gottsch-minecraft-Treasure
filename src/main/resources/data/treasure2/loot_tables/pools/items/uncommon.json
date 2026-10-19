@@ -241,6 +241,152 @@
           "max" : 3
         }
       } ]
+    }, {
+      "entryName" : "saddle",
+      "type" : "minecraft:item",
+      "name" : "minecraft:saddle",
+      "weight" : 20
+    }, {
+      "entryName" : "name_tag",
+      "type" : "minecraft:item",
+      "name" : "minecraft:name_tag",
+      "weight" : 20
+    }, {
+      "entryName" : "music_disc_13",
+      "type" : "minecraft:item",
+      "name" : "minecraft:music_disc_13",
+      "weight" : 10
+    }, {
+      "entryName" : "music_disc_cat",
+      "type" : "minecraft:item",
+      "name" : "minecraft:music_disc_cat",
+      "weight" : 10
+    }, {
+      "entryName" : "enchanted_book",
+      "type" : "minecraft:item",
+      "name" : "minecraft:book",
+      "weight" : 20,
+      "functions" : [ {
+        "function" : "minecraft:enchant_with_levels",
+        "levels" : {
+          "type" : "minecraft:uniform",
+          "min" : 5,
+          "max" : 10
+        }
+      } ]
+    }, {
+      "entryName" : "valuable_iron_ingot",
+      "type" : "minecraft:item",
+      "name" : "minecraft:iron_ingot",
+      "weight" : 92,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 2,
+          "max" : 5
+        }
+      } ]
+    }, {
+      "entryName" : "valuable_raw_iron",
+      "type" : "minecraft:item",
+      "name" : "minecraft:raw_iron",
+      "weight" : 55,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 3,
+          "max" : 7
+        }
+      } ]
+    }, {
+      "entryName" : "valuable_gold_ingot",
+      "type" : "minecraft:item",
+      "name" : "minecraft:gold_ingot",
+      "weight" : 74,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 1,
+          "max" : 3
+        }
+      } ]
+    }, {
+      "entryName" : "valuable_raw_gold",
+      "type" : "minecraft:item",
+      "name" : "minecraft:raw_gold",
+      "weight" : 44,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 2,
+          "max" : 4
+        }
+      } ]
+    }, {
+      "entryName" : "valuable_copper_ingot",
+      "type" : "minecraft:item",
+      "name" : "minecraft:copper_ingot",
+      "weight" : 44,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 3,
+          "max" : 8
+        }
+      } ]
+    }, {
+      "entryName" : "valuable_lapis_lazuli",
+      "type" : "minecraft:item",
+      "name" : "minecraft:lapis_lazuli",
+      "weight" : 44,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 3,
+          "max" : 8
+        }
+      } ]
+    }, {
+      "entryName" : "valuable_redstone",
+      "type" : "minecraft:item",
+      "name" : "minecraft:redstone",
+      "weight" : 44,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 3,
+          "max" : 8
+        }
+      } ]
+    }, {
+      "entryName" : "valuable_amethyst_shard",
+      "type" : "minecraft:item",
+      "name" : "minecraft:amethyst_shard",
+      "weight" : 30,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 2,
+          "max" : 5
+        }
+      } ]
+    }, {
+      "entryName" : "valuable_emerald",
+      "type" : "minecraft:item",
+      "name" : "minecraft:emerald",
+      "weight" : 30,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 1,
+          "max" : 2
+        }
+      } ]
+    }, {
+      "entryName" : "valuable_diamond",
+      "type" : "minecraft:item",
+      "name" : "minecraft:diamond",
+      "weight" : 15
     } ]
   }, {
     "name" : "common_supplies",

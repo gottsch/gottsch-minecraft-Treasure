@@ -1,0 +1,48 @@
+{
+	"version": "1.0",
+	"type": "minecraft:chest",
+	"pools": [
+		{
+			"name": "legendary_food",
+			"rolls": 1,
+			"entries": [
+				{
+					"entryName": "enchanted_golden_apple",
+					"type": "minecraft:item",
+					"name": "minecraft:enchanted_golden_apple",
+					"weight": 20
+				},
+				{
+					"entryName": "golden_apple",
+					"type": "minecraft:item",
+					"name": "minecraft:golden_apple",
+					"weight": 40,
+					"functions": [
+						{
+							"function": "minecraft:set_count",
+							"count": {
+								"min": 1,
+								"max": 2
+							}
+						}
+					]
+				},
+				{
+					"entryName": "golden_carrot",
+					"type": "minecraft:item",
+					"name": "minecraft:golden_carrot",
+					"weight": 40,
+					"functions": [
+						{
+							"function": "minecraft:set_count",
+							"count": {
+								"min": 2,
+								"max": 5
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}

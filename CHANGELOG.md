@@ -39,6 +39,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Grove trees no longer hang in the air or sink into the ground on slopes.
 - In existing worlds, witherwood logs that showed moss at random now show plain bark. Moss is now part of the block rather than chosen by its position, and old logs load as unmossed.
 - New commands for building and testing groves: `/t2 wither_tree <pos> [wither|great] [seed] [scale]` grows a single wither tree, and `/t2 wither_grove <pos>` places a whole grove.
+- **Chest loot overhaul**, the same changes as Treasure2 2.4.0 for 1.12.2:
+  - **Legendary and Mythical chests have filler of their own.** They used to share Epic's items, food and potions, with Rare as the lesser tier. Now they hold Mending and other high-level enchanted books, nether stars, beacons, elytra, totems, wither skeleton skulls, dragon heads, diamond and emerald blocks, end crystals and shulker boxes, as well as enchanted golden apples and Treasure2's strongest potions. Their lesser tier is now the tier just below: Epic for Legendary, Legendary for Mythical.
+  - **Enchanted books at every tier from Uncommon up**, stronger the rarer the chest. Uncommon chests can also hold saddles, name tags and music discs.
+  - **Tools are tools.** Swords have left the tools pools (they're still among the weapons) and shovels, shears, fishing rods and flint and steel have joined them. Epic and better chests now find enchanted diamond and netherite tools.
+  - Common chests have less junk: fewer bones, rotten flesh, spider eyes and string, less raw food, and some cooked meat and baked potatoes.
+  - Golden apples now start at Rare. Enchanted golden apples are found only in Legendary and Mythical chests.
+  - **More valuables in every chest.** About two in five item rolls now turn up ores, ingots, gems or their blocks, rising with the chest's rarity: coal, raw ores and lapis in Common chests; diamonds, emeralds, gold blocks and netherite in Epic and better. A Legendary chest now holds about 10 diamonds' worth on average, and a Mythical one about 19.
+  - **Fuller chests.** Every chest rolls more items, and Rare chests now roll as many as Epic ones. Chests average about 22 stacks, up from about 20.
+- The Treasure2 level III potions (healing, strength, swiftness, leaping, regeneration and splash poison) are back. The Epic chest's loot called for them, but they were never registered in 1.20.1, so each one came out as an Uncraftable Potion with no effect.
 
 ## [4.1.0] - Unreleased
 

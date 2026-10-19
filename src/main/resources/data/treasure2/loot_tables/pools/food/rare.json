@@ -62,6 +62,12 @@
 							}
 						}
 					]
+				},
+				{
+					"entryName": "golden_apple",
+					"type": "minecraft:item",
+					"name": "minecraft:golden_apple",
+					"weight": 15
 				}
 			]
 		}
