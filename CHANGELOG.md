@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [4.2.0] - Unreleased
+## [4.2.0] - 2026-10-19
 
 ### Added
 - **The Wither Grove has been rebuilt.** The great wither tree now stands at the heart of a whole grove: 10 to 20 withered trees spread over a ragged clearing around it, tallest near the centre and smaller toward the edge. Every grove is different. The trees are grown fresh for each grove rather than copied from a handful of fixed shapes, and they keep the familiar witherwood look: straight trunks, thin branches spiralling up them, twigs, hanging moss and a broken top.
@@ -49,7 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **Fuller chests.** Every chest rolls more items, and Rare chests now roll as many as Epic ones. Chests average about 22 stacks, up from about 20.
 - The Treasure2 level III potions (healing, strength, swiftness, leaping, regeneration and splash poison) are back. The Epic chest's loot called for them, but they were never registered in 1.20.1, so each one came out as an Uncraftable Potion with no effect.
 
-## [4.1.0] - Unreleased
+## [4.1.0] - 2026-10-18
 
 ### Added
 - **Other mods can now put real Treasure2 chests in their own structures.** Until now the only way was to build a Treasure2 chest block into the structure file itself and run Treasure2's chest processor over it — which makes Treasure2 a hard requirement, and leaves that structure broken for anyone playing without it. A mod can now keep a marker of its own and ask Treasure2 for a chest while its structure is being built, so Treasure2 can stay an optional companion instead of a dependency.
