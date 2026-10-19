@@ -312,6 +312,7 @@ public class ItemModelsProvider extends ItemModelProvider {
 		singleTexture(TreasureItems.BRACKET_FUNGUS.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/bracket_fungus"));
 		withExistingParent(TreasureItems.HOLLOW_WITHERWOOD_LOG.getId().getPath(), modLoc("block/hollow_witherwood_log"));
 		withExistingParent(TreasureItems.STRANGLED_WITHERWOOD_LOG.getId().getPath(), modLoc("block/strangled_witherwood_log_full"));
+		singleTexture(TreasureItems.CLINGING_STRANGLE_VINES.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/clinging_strangle_vines"));
 		
 		withExistingParent(TreasureItems.TOPAZ_ORE_ITEM.getId().getPath(), modLoc("block/topaz_ore"));
 		withExistingParent(TreasureItems.ONYX_ORE_ITEM.getId().getPath(), modLoc("block/onyx_ore"));

@@ -79,6 +79,9 @@ public class TreasureTags {
 	}
 
 	public static class Blocks {
+		/** what roots hang from, for the hanging roots processor: earth, wood and mud brick */
+		public static final TagKey<Block> HANGING_ROOTS_CEILINGS = mod(Treasure.MODID, "hanging_roots_ceilings");
+
 		// chests
 		public static final TagKey<Block> COMMON_CHESTS = mod(Treasure.MODID, "chests/rarity/core/common");
 		public static final TagKey<Block> UNCOMMON_CHESTS = mod(Treasure.MODID, "chests/rarity/core/uncommon");

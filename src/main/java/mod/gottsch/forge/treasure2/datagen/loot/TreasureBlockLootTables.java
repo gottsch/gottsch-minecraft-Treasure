@@ -120,6 +120,8 @@ public class TreasureBlockLootTables extends BlockLootSubProvider {
         // only shears take the thorns whole, as with dead bushes
         this.dropSelf(TreasureBlocks.HOLLOW_WITHERWOOD_LOG.get());
         // the vine tears off: a plain log, unless silk touched
+        // like glow lichen: one per face, with shears only
+        this.add(TreasureBlocks.CLINGING_STRANGLE_VINES.get(), block -> createMultifaceBlockDrops(block, HAS_SHEARS));
         this.add(TreasureBlocks.STRANGLED_WITHERWOOD_LOG.get(), block ->
                 createSingleItemTableWithSilkTouch(block, TreasureItems.WITHERWOOD_LOG.get()));
         this.add(TreasureBlocks.GRAVE_THORNS.get(), BlockLootSubProvider::createShearsOnlyDrop);
@@ -166,6 +168,7 @@ public class TreasureBlockLootTables extends BlockLootSubProvider {
                 TreasureBlocks.BRACKET_FUNGUS.get(),
                 TreasureBlocks.HOLLOW_WITHERWOOD_LOG.get(),
                 TreasureBlocks.STRANGLED_WITHERWOOD_LOG.get(),
+                TreasureBlocks.CLINGING_STRANGLE_VINES.get(),
 
                 // legacy wither
                 TreasureBlocks.WITHER_LOG.get(),

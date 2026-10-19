@@ -15,6 +15,7 @@
  */
 package mod.gottsch.forge.treasure2.core.structure.grove;
 
+import mod.gottsch.forge.treasure2.core.block.ClingingStrangleVinesBlock;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.structure.TreasureStructures;
 import net.minecraft.core.BlockPos;
@@ -66,6 +67,9 @@ public class WitherBoulderPiece extends StructurePiece implements PieceBeardifie
 	private static final int RELIEF = 4;
 	private static final float SLAB_PROBABILITY = 0.6F;
 	private static final float LEAF_LITTER_PROBABILITY = 0.15F;
+	/** strangle vines lying over a bare full top; their own hash per column, so the shape is as before */
+	private static final float STRANGLE_VINES_PROBABILITY = 0.25F;
+	private static final long STRANGLE_VINES_SALT = 0x3C6EF372FE94F82BL;
 
 	private final BlockPos origin;
 	private final long seed;
@@ -177,6 +181,11 @@ public class WitherBoulderPiece extends StructurePiece implements PieceBeardifie
 						cover = TreasureBlocks.WITHERED_LEAF_LITTER.get().defaultBlockState()
 								.setValue(PinkPetalsBlock.FACING, Direction.Plane.HORIZONTAL.getRandomDirection(random))
 								.setValue(PinkPetalsBlock.AMOUNT, 1 + random.nextInt(3));
+					}
+					boolean fullTop = !(cells[top].getBlock() instanceof StairBlock) && !(cells[top].getBlock() instanceof SlabBlock);
+					if (cover == null && fullTop
+							&& new XoroshiroRandomSource(seed ^ STRANGLE_VINES_SALT ^ ChunkPos.asLong(dx, dz)).nextFloat() < STRANGLE_VINES_PROBABILITY) {
+						cover = ((ClingingStrangleVinesBlock) TreasureBlocks.CLINGING_STRANGLE_VINES.get()).on(Direction.DOWN);
 					}
 				}
 				columns.put(ChunkPos.asLong(dx, dz), new Column(height, height > 0 ? cells : new BlockState[] {cells[0]}, cover));

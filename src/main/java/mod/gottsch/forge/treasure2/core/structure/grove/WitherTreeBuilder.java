@@ -15,6 +15,7 @@
  */
 package mod.gottsch.forge.treasure2.core.structure.grove;
 
+import mod.gottsch.forge.treasure2.core.block.ClingingStrangleVinesBlock;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import mod.gottsch.forge.treasure2.core.block.StrangledWitherwoodLogBlock;
 import java.util.HashSet;
@@ -112,6 +113,10 @@ public final class WitherTreeBuilder {
 	private static final float STRANGLED_PROBABILITY = 0.45F;
 	/** of strangled trunks, how many are choked (vine on every face) at the foot */
 	private static final float CHOKED_PROBABILITY = 0.25F;
+	/** strangle vines creeping over the ground close round the trunk, on their own random */
+	private static final long CREEPING_SALT = 0x510E527FADE682D1L;
+	private static final int CREEPING_REACH = 3;
+	private static final float CREEPING_PROBABILITY = 0.12F;
 
 	private static final List<Direction> ALL = List.of(Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST);
 
@@ -132,6 +137,7 @@ public final class WitherTreeBuilder {
 		clearing(blueprint, random);
 		extras(blueprint, RandomSource.create(seed ^ EXTRAS_SALT), scale);
 		strangle(blueprint, new XoroshiroRandomSource(seed ^ STRANGLE_SALT));
+		creeping(blueprint, new XoroshiroRandomSource(seed ^ CREEPING_SALT));
 		return blueprint;
 	}
 
@@ -450,6 +456,22 @@ public final class WitherTreeBuilder {
 			blueprint.decorate(pos.below(i), Blocks.CHAIN.defaultBlockState());
 		}
 		blueprint.decorate(pos.below(links + 1), Blocks.SOUL_LANTERN.defaultBlockState().setValue(LanternBlock.HANGING, true));
+	}
+
+	/**
+	 * Strangle vines creeping over the bare clearing close round the trunk (not on packed mud or suspicious
+	 * gravel). Last, on its own random, so nothing else changes.
+	 */
+	private static void creeping(WitherTreeBlueprint blueprint, RandomSource random) {
+		BlockState vines = ((ClingingStrangleVinesBlock) TreasureBlocks.CLINGING_STRANGLE_VINES.get()).on(Direction.DOWN);
+		blueprint.restatePatch(cell -> {
+			boolean near = Math.abs(cell.x()) + Math.abs(cell.z()) <= CREEPING_REACH;
+			if (near && cell.cover() == null && !cell.ground().is(Blocks.PACKED_MUD) && !cell.ground().is(Blocks.SUSPICIOUS_GRAVEL)
+					&& random.nextFloat() < CREEPING_PROBABILITY) {
+				return new WitherTreeBlueprint.PatchCell(cell.x(), cell.z(), cell.ground(), vines);
+			}
+			return cell;
+		});
 	}
 
 	/**

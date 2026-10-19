@@ -214,8 +214,9 @@ public class JapaneseLanguageGen extends LanguageProvider {
         add(TreasureBlocks.WITHERWOOD_HANGING_SIGN.get(), "ウィザーウッドの吊り看板");
         add(TreasureBlocks.WITHERWOOD_TWIG.get(), "ウィザーウッドの小枝");
 //
-        add(TreasureBlocks.STRANGLE_VINES.get(), "絞めつけるツタ");
-        add(TreasureBlocks.STRANGLE_VINES_PLANT.get(), "絞めつけるツタ植物");
+        add(TreasureBlocks.STRANGLE_VINES.get(), "ブライトストーク");
+        add(TreasureBlocks.STRANGLE_VINES_PLANT.get(), "ブライトストークの茎");
+        add(TreasureBlocks.CLINGING_STRANGLE_VINES.get(), "絞めつけるツタ");
 
         // ore
         add(TreasureBlocks.TOPAZ_ORE.get(), "トパーズ鉱石");

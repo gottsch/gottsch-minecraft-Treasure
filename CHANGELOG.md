@@ -11,10 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **The Wither Grove has been rebuilt.** The great wither tree now stands at the heart of a whole grove: 10 to 20 withered trees spread over a ragged clearing around it, tallest near the centre and smaller toward the edge. Every grove is different. The trees are grown fresh for each grove rather than copied from a handful of fixed shapes, and they keep the familiar witherwood look: straight trunks, thin branches spiralling up them, twigs, hanging moss and a broken top.
 - **Groves have their own biome, the Wither Grove.** It is painted over the grove as it generates, so the surrounding forest's trees, flowers and grass no longer grow up through it. The sky, fog, water and foliage turn grey and sickly, ash drifts in the air, and only the grove's own creatures spawn there: wither skeletons, strays, skeletons, spiders and the occasional Witherwood Golem.
 - **The grove floor is blighted.** Each tree stands in a patch of dead ground: Withered Grass, coarse dirt, podzol, mud and mycelium, with Withered Leaf Litter scattered over it. Roots turn the dirt beneath them into rooted dirt. Mossy and deepslate boulders lie half-sunk between the trees, along with fallen hollow logs, some beside the stump they broke from.
-- **Strangle vines wrap the trunks.** About half the trees have a strangle vine winding up the trunk, and some are choked by vines at the base.
+- **Strangle vines wrap the trunks.** About half the trees have a strangle vine winding up the trunk, and some are choked by vines at the base. Strangle Vines also creep over the ground round the trees and lie across the boulders and fallen logs.
 - **More to find among the trees:** bracket fungus on the trunks, cobwebs in the forks of branches, soul lanterns hanging on chains, Grave Thorns around the clearings (thicker toward the edge), and, at night, faint drifting Wisps between the trees.
 - **Suspicious gravel near some trunks.** Brush it for coins, gems, a Wither Key, bones and other oddments.
+- **Roots hang from the pit and its rooms** beneath the great wither tree, wherever there is earth, wood or mud brick overhead, and they come out differently in every grove. Other dungeons can use the same `treasure2:hanging_roots_processor` in their processor lists.
 - New blocks:
+  - **Strangle Vines**: a tangle of vine that clings flat to any face of a block, like glow lichen. It catches at anything pushing through it, slowing and scratching it, but leaves the grove's monsters alone. Only shears take it.
   - **Strangled Witherwood Log**: a witherwood log wrapped in strangle vine. Stack them, each turned a face further round, and the vine spirals up the column. It drops a plain log unless broken with Silk Touch, and an axe strips the vine off with the bark.
   - **Hollow Witherwood Log**: a rotted-out log, lying or standing. Small creatures can pass through it.
   - **Bracket Fungus**: one to three shelves on the side of a log; place more on it to add shelves.
@@ -22,10 +24,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **Withered Grass Block**: dead grass that never spreads. It drops dirt unless broken with Silk Touch, and can be made into a path or tilled.
   - **Withered Leaf Litter**: fallen dead leaves, one to four to a block, that lie on any solid surface.
   - **Wisp**: an invisible glow that only shows itself at night. It's placed by the grove; there is no item.
+- Recipes:
+  - **Hollow Witherwood Log** ×8: eight witherwood logs in a ring, with the middle left empty.
+  - **Strangled Witherwood Log**: a witherwood log and Strangle Vines.
+  - A hollow log makes 2 witherwood planks, and a strangled log makes 4, like any witherwood log.
+- Bracket Fungus burns in a furnace, a little longer than a stick. The grove's other new blocks can't be crafted; they're found there.
 - Witherwood logs, wood and broken tops can now be mossy, and the grove grows moss where it would grow on a real tree: low on the trunk. The mossy bark texture has been redrawn so the moss can actually be seen.
 - Japanese names for the new blocks and the Wither Grove biome.
 
 ### Changed
+- The tall strangle vine plant is now called **Blightstalk**, so that the name Strangle Vines can go to the new clinging vine. It is the same plant, and nothing changes in existing worlds.
 - Wither Groves no longer generate in rivers, lakes or the sea, or with their trees standing in water.
 - Wither Groves no longer generate on top of villages.
 - Grove trees no longer hang in the air or sink into the ground on slopes.

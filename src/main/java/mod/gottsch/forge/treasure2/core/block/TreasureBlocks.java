@@ -269,8 +269,13 @@ public class TreasureBlocks {
 	public static final RegistryObject<Block> WITHERWOOD_HANGING_SIGN = Registration.BLOCKS.register("witherwood_hanging_sign", () -> new TreasureHangingSignBlock(BlockBehaviour.Properties.copy(Blocks.OAK_HANGING_SIGN), TreasureWoodTypes.WITHERWOOD_TYPE));
 	public static final RegistryObject<Block> WITHERWOOD_WALL_HANGING_SIGN = Registration.BLOCKS.register("witherwood_wall_hanging_sign", () -> new TreasureWallHangingSignBlock(BlockBehaviour.Properties.copy(Blocks.OAK_WALL_HANGING_SIGN), TreasureWoodTypes.WITHERWOOD_TYPE));
 
+	// the upright plant: the id is legacy (saved worlds and main_wither_tree.nbt hold it), but it is shown as
+	// Blightstalk; the name Strangle Vines belongs to CLINGING_STRANGLE_VINES. Don't "fix" the mismatch.
 	public static final RegistryObject<Block> STRANGLE_VINES = Registration.BLOCKS.register("strangle_vines", () -> new StrangleVinesBlock(BlockBehaviour.Properties.copy(Blocks.TWISTING_VINES)));
 	public static final RegistryObject<Block> STRANGLE_VINES_PLANT = Registration.BLOCKS.register("strangle_vines_plant", () -> new StrangleVinesPlantBlock(BlockBehaviour.Properties.copy(Blocks.TWISTING_VINES_PLANT)));
+	public static final RegistryObject<Block> CLINGING_STRANGLE_VINES = Registration.BLOCKS.register("clinging_strangle_vines", () -> new ClingingStrangleVinesBlock(
+			Properties.of().mapColor(MapColor.COLOR_BLACK).replaceable().noCollission().strength(0.2F).sound(SoundType.VINE)
+					.ignitedByLava().pushReaction(PushReaction.DESTROY)));
 
 	// other
 	public static final RegistryObject<Block> SPANISH_MOSS = Registration.BLOCKS.register("spanish_moss", () -> new SpanishMossBlock(Properties.of().mapColor(MapColor.WOOD)));

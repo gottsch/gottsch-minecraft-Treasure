@@ -15,6 +15,7 @@
  */
 package mod.gottsch.forge.treasure2.core.structure.grove;
 
+import mod.gottsch.forge.treasure2.core.block.ClingingStrangleVinesBlock;
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
 import mod.gottsch.forge.treasure2.core.block.WitherwoodRotatedPillarBlock;
 import mod.gottsch.forge.treasure2.core.structure.TreasureStructures;
@@ -65,6 +66,9 @@ public class WitherFallenLogPiece extends StructurePiece implements PieceBeardif
 	private static final float MOSSY_PROBABILITY = 0.4F;
 	private static final float LEAF_LITTER_PROBABILITY = 0.2F;
 	private static final float STUMP_PROBABILITY = 0.5F;
+	/** strangle vines lying along the log where no leaves are; their own hash per cell, so the rest is as before */
+	private static final float STRANGLE_VINES_PROBABILITY = 0.3F;
+	private static final long STRANGLE_VINES_SALT = 0xA54FF53A5F1D36F1L;
 	private static final int FLAGS = Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE;
 
 	/** the ground block under the first log cell */
@@ -121,6 +125,9 @@ public class WitherFallenLogPiece extends StructurePiece implements PieceBeardif
 							.setValue(PinkPetalsBlock.FACING, Direction.Plane.HORIZONTAL.getRandomDirection(random))
 							.setValue(PinkPetalsBlock.AMOUNT, 1 + random.nextInt(3))
 					: null;
+			if (cover == null && new XoroshiroRandomSource(seed ^ STRANGLE_VINES_SALT ^ i).nextFloat() < STRANGLE_VINES_PROBABILITY) {
+				cover = ((ClingingStrangleVinesBlock) TreasureBlocks.CLINGING_STRANGLE_VINES.get()).on(Direction.DOWN);
+			}
 			cells.add(new Cell(i, new BlockState[] {log}, cover));
 		}
 		if (random.nextFloat() < STUMP_PROBABILITY) {

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "w": [
+      {
+        "item": "treasure2:witherwood_log"
+      },
+      {
+        "item": "treasure2:wither_log"
+      }
+    ]
+  },
+  "pattern": [
+    "www",
+    "w w",
+    "www"
+  ],
+  "result": {
+    "count": 8,
+    "item": "treasure2:hollow_witherwood_log"
+  },
+  "show_notification": true
+}

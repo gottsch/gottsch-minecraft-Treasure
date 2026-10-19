@@ -220,8 +220,10 @@ public class LanguageGen extends LanguageProvider {
         add(TreasureBlocks.WITHERWOOD_HANGING_SIGN.get(), "Witherwood Hanging Sign");
         add(TreasureBlocks.WITHERWOOD_TWIG.get(), "Witherwood Twig");
 
-        add(TreasureBlocks.STRANGLE_VINES.get(), "Strangle Vine");
-        add(TreasureBlocks.STRANGLE_VINES_PLANT.get(), "Strangle Vine Plant");
+        // the upright plant keeps the strangle_vines id; the name Strangle Vines belongs to the clinging vine
+        add(TreasureBlocks.STRANGLE_VINES.get(), "Blightstalk");
+        add(TreasureBlocks.STRANGLE_VINES_PLANT.get(), "Blightstalk Plant");
+        add(TreasureBlocks.CLINGING_STRANGLE_VINES.get(), "Strangle Vines");
 
         // ore
         add(TreasureBlocks.TOPAZ_ORE.get(), "Topaz Ore");
