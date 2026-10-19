@@ -70,6 +70,8 @@ public class WitherBoulderPiece extends StructurePiece implements PieceBeardifie
 	/** strangle vines lying over a bare full top; their own hash per column, so the shape is as before */
 	private static final float STRANGLE_VINES_PROBABILITY = 0.25F;
 	private static final long STRANGLE_VINES_SALT = 0x3C6EF372FE94F82BL;
+	/** per exposed full stone face of a taller column, seen from a lower one */
+	private static final float SIDE_VINES_PROBABILITY = 0.35F;
 
 	private final BlockPos origin;
 	private final long seed;
@@ -197,7 +199,8 @@ public class WitherBoulderPiece extends StructurePiece implements PieceBeardifie
 	@Override
 	public void postProcess(WorldGenLevel level, StructureManager structureManager, ChunkGenerator generator,
 			RandomSource random, BoundingBox chunkBox, ChunkPos chunkPos, BlockPos pivot) {
-		shape(seed).forEach((key, column) -> {
+		Map<Long, Column> columns = shape(seed);
+		columns.forEach((key, column) -> {
 			int x = origin.getX() + ChunkPos.getX(key);
 			int z = origin.getZ() + ChunkPos.getZ(key);
 			if (x < chunkBox.minX() || x > chunkBox.maxX() || z < chunkBox.minZ() || z > chunkBox.maxZ()) {
@@ -231,7 +234,43 @@ public class WitherBoulderPiece extends StructurePiece implements PieceBeardifie
 					level.setBlock(above, column.cover(), FLAGS);
 				}
 			}
+			sideVines(level, columns, ChunkPos.getX(key), ChunkPos.getZ(key), column, ground);
 		});
+	}
+
+	/**
+	 * Strangle vines on the sides of the boulder: in this column, above its own top, against the full
+	 * stone of a taller neighbouring column. The neighbour is in another column, so this can't look at it;
+	 * the vine goes only where this column's ground is at the boulder's layout height (where both columns
+	 * were laid out), and it schedules a tick that removes it if the stone behind isn't there after all.
+	 */
+	private void sideVines(WorldGenLevel level, Map<Long, Column> columns, int dx, int dz, Column column, BlockPos ground) {
+		if (ground.getY() != origin.getY()) {
+			return;
+		}
+		ClingingStrangleVinesBlock vines = (ClingingStrangleVinesBlock) TreasureBlocks.CLINGING_STRANGLE_VINES.get();
+		for (Direction d : Direction.Plane.HORIZONTAL) {
+			Column neighbour = columns.get(ChunkPos.asLong(dx + d.getStepX(), dz + d.getStepZ()));
+			if (neighbour == null || neighbour.height() <= column.height()) {
+				continue;
+			}
+			for (int i = column.height() + 1; i <= neighbour.height(); i++) {
+				// the neighbour's cell at this height: a stair or slab top has no full face to cling to
+				Block stone = neighbour.cells()[i + 1].getBlock();
+				if (stone instanceof StairBlock || stone instanceof SlabBlock
+						|| new XoroshiroRandomSource(seed ^ STRANGLE_VINES_SALT ^ ChunkPos.asLong(dx, dz) ^ ((long) i << 40) ^ ((long) d.ordinal() << 48)).nextFloat() >= SIDE_VINES_PROBABILITY) {
+					continue;
+				}
+				BlockPos pos = ground.above(i);
+				BlockState existing = level.getBlockState(pos);
+				BlockState state = existing.is(vines) ? existing : existing.isAir() ? vines.defaultBlockState() : null;
+				if (state == null) {
+					continue;
+				}
+				level.setBlock(pos, state.setValue(ClingingStrangleVinesBlock.getFaceProperty(d), true), FLAGS);
+				level.scheduleTick(pos, vines, 1);
+			}
+		}
 	}
 
 	/** as the grove trees: no neighbour shape updates, since a neighbour may be in a chunk not generated yet */

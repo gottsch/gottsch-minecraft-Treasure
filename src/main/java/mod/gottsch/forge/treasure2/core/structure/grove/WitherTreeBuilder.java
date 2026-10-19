@@ -116,7 +116,7 @@ public final class WitherTreeBuilder {
 	/** strangle vines creeping over the ground close round the trunk, on their own random */
 	private static final long CREEPING_SALT = 0x510E527FADE682D1L;
 	private static final int CREEPING_REACH = 3;
-	private static final float CREEPING_PROBABILITY = 0.12F;
+	private static final float CREEPING_PROBABILITY = 0.3F;
 
 	private static final List<Direction> ALL = List.of(Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST);
 

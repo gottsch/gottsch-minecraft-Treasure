@@ -18,11 +18,13 @@ package mod.gottsch.forge.treasure2.core.block;
 import mod.gottsch.forge.treasure2.core.particle.TreasureParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.MultifaceBlock;
 import net.minecraft.world.level.block.MultifaceSpreader;
 import net.minecraft.world.level.block.state.BlockState;
@@ -76,6 +78,29 @@ public class ClingingStrangleVinesBlock extends MultifaceBlock implements ITreas
 		}
 		level.addParticle(TreasureParticles.BLACK_SPORE_PARTICLE.get(),
 				pos.getX() + random.nextDouble(), pos.getY() + random.nextDouble(), pos.getZ() + random.nextDouble(), 0, 0, 0);
+	}
+
+	/**
+	 * Drops any face with nothing solid behind it, and the whole block if none is left. Worldgen
+	 * schedules this for vines it hangs on a boulder's side, where the stone is in the next column over:
+	 * if that column came out differently, the vine goes rather than floats. (After worldgen, block
+	 * updates do the same job through updateShape, as for glow lichen.)
+	 */
+	@Override
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+		BlockState pruned = state;
+		for (Direction face : Direction.values()) {
+			BlockPos behind = pos.relative(face);
+			if (hasFace(pruned, face) && !canAttachTo(level, face, behind, level.getBlockState(behind))) {
+				pruned = pruned.setValue(getFaceProperty(face), false);
+			}
+		}
+		if (!hasAnyFace(pruned)) {
+			level.removeBlock(pos, false);
+		}
+		else if (pruned != state) {
+			level.setBlock(pos, pruned, Block.UPDATE_CLIENTS);
+		}
 	}
 
 	/** this block with just the given face covered */

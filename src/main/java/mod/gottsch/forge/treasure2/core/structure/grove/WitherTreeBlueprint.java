@@ -201,8 +201,18 @@ public class WitherTreeBlueprint {
 	}
 
 	private static boolean isTerrain(BlockState state) {
-		return !isPassable(state) && !state.hasBlockEntity() && !(state.getBlock() instanceof ITreasureBlock)
+		return !isPassable(state) && !state.hasBlockEntity() && !isTreasureFixture(state)
 				&& !state.is(BlockTags.LOGS) && !state.is(BlockTags.LEAVES) && !isHung(state);
+	}
+
+	/**
+	 * A Treasure2 block that is part of a tree or decoration, not the ground. Treasure2's own ground
+	 * blocks (withered grass, tagged as dirt) are ground: treating them as fixtures made every clearing
+	 * skip the cells a neighbouring tree had already turned to withered grass, losing their ground
+	 * cover and creeping vines, and seated boulders and trees a block low.
+	 */
+	private static boolean isTreasureFixture(BlockState state) {
+		return state.getBlock() instanceof ITreasureBlock && !state.is(BlockTags.DIRT);
 	}
 
 	/**
@@ -273,11 +283,15 @@ public class WitherTreeBlueprint {
 			}
 			BlockPos above = ground.above();
 			BlockState aboveState = level.getBlockState(above);
-			if (!aboveState.isAir() && aboveState.canBeReplaced() && aboveState.getFluidState().isEmpty()) {
-				// the host biome's grass and flowers
+			if (!aboveState.isAir() && aboveState.canBeReplaced() && aboveState.getFluidState().isEmpty()
+					&& !(aboveState.getBlock() instanceof ITreasureBlock)) {
+				// the host biome's grass and flowers, but not the grove's own: a neighbouring tree's clearing
+				// once wiped out nearly every creeping strangle vine (replaceable, like glow lichen)
 				level.setBlock(above, Blocks.AIR.defaultBlockState(), FLAGS);
 			}
-			if (cell.cover() != null) {
+			// only into an empty cell: a neighbouring tree's thorns once landed under its Blightstalk, leaving
+			// the stalk standing on them
+			if (cell.cover() != null && level.getBlockState(above).isAir()) {
 				level.setBlock(above, cell.cover(), FLAGS);
 			}
 		}
@@ -318,7 +332,7 @@ public class WitherTreeBlueprint {
 		}
 		BlockPos ground = new BlockPos(x, top, z);
 		BlockState state = level.getBlockState(ground);
-		if (isPassable(state) || state.hasBlockEntity() || state.getBlock() instanceof ITreasureBlock || state.is(BlockTags.LEAVES) || isHung(state)
+		if (isPassable(state) || state.hasBlockEntity() || isTreasureFixture(state) || state.is(BlockTags.LEAVES) || isHung(state)
 				|| !state.isFaceSturdy(level, ground, Direction.UP)) {
 			return null;
 		}
