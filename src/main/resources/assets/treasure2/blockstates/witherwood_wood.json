@@ -1,15 +1,27 @@
 {
   "variants": {
-    "axis=x": {
+    "axis=x,mossy=false": {
       "model": "treasure2:block/witherwood_wood",
       "x": 90,
       "y": 90
     },
-    "axis=y": {
+    "axis=x,mossy=true": {
+      "model": "treasure2:block/witherwood_log_full_mossy",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y,mossy=false": {
       "model": "treasure2:block/witherwood_wood"
     },
-    "axis=z": {
+    "axis=y,mossy=true": {
+      "model": "treasure2:block/witherwood_log_full_mossy"
+    },
+    "axis=z,mossy=false": {
       "model": "treasure2:block/witherwood_wood",
+      "x": 90
+    },
+    "axis=z,mossy=true": {
+      "model": "treasure2:block/witherwood_log_full_mossy",
       "x": 90
     }
   }

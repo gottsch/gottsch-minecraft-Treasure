@@ -17,15 +17,27 @@ package mod.gottsch.forge.treasure2.core.block;
 
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraftforge.common.ToolAction;
 import org.jetbrains.annotations.Nullable;
 
 public class WitherwoodRotatedPillarBlock extends RotatedPillarBlock implements ITreasureBlock {
+    /** moss-grown bark; set by the wither tree generator, never by placing a log, and lost when stripped */
+    public static final BooleanProperty MOSSY = BooleanProperty.create("mossy");
 
     public WitherwoodRotatedPillarBlock(Properties properties) {
         super(properties);
+        registerDefaultState(defaultBlockState().setValue(MOSSY, false));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
+        builder.add(MOSSY);
     }
 
     @Override

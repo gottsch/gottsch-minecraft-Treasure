@@ -157,6 +157,103 @@
       "type" : "minecraft:item",
       "name" : "minecraft:nether_star",
       "weight" : 10
+    }, {
+      "entryName" : "enchanted_book",
+      "type" : "minecraft:item",
+      "name" : "minecraft:book",
+      "weight" : 40,
+      "functions" : [ {
+        "function" : "minecraft:enchant_with_levels",
+        "levels" : 30,
+        "treasure" : true
+      } ]
+    }, {
+      "entryName" : "valuable_diamond",
+      "type" : "minecraft:item",
+      "name" : "minecraft:diamond",
+      "weight" : 63,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 2,
+          "max" : 5
+        }
+      } ]
+    }, {
+      "entryName" : "valuable_emerald",
+      "type" : "minecraft:item",
+      "name" : "minecraft:emerald",
+      "weight" : 50,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 3,
+          "max" : 7
+        }
+      } ]
+    }, {
+      "entryName" : "valuable_gold_block",
+      "type" : "minecraft:item",
+      "name" : "minecraft:gold_block",
+      "weight" : 30,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 1,
+          "max" : 3
+        }
+      } ]
+    }, {
+      "entryName" : "valuable_iron_block",
+      "type" : "minecraft:item",
+      "name" : "minecraft:iron_block",
+      "weight" : 20,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 2,
+          "max" : 4
+        }
+      } ]
+    }, {
+      "entryName" : "valuable_netherite_scrap",
+      "type" : "minecraft:item",
+      "name" : "minecraft:netherite_scrap",
+      "weight" : 25,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 1,
+          "max" : 3
+        }
+      } ]
+    }, {
+      "entryName" : "valuable_ancient_debris",
+      "type" : "minecraft:item",
+      "name" : "minecraft:ancient_debris",
+      "weight" : 13,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 1,
+          "max" : 2
+        }
+      } ]
+    }, {
+      "entryName" : "valuable_diamond_block",
+      "type" : "minecraft:item",
+      "name" : "minecraft:diamond_block",
+      "weight" : 13
+    }, {
+      "entryName" : "valuable_emerald_block",
+      "type" : "minecraft:item",
+      "name" : "minecraft:emerald_block",
+      "weight" : 13
+    }, {
+      "entryName" : "valuable_netherite_ingot",
+      "type" : "minecraft:item",
+      "name" : "minecraft:netherite_ingot",
+      "weight" : 10
     } ]
   } ]
 }

@@ -18,8 +18,8 @@
   }, {
     "name" : "items",
     "rolls" : {
-      "min" : 2,
-      "max" : 6
+      "min" : 3,
+      "max" : 7
     },
     "entries" : [ {
       "type" : "minecraft:loot_table",
@@ -46,6 +46,14 @@
     "entries" : [ {
       "type" : "minecraft:loot_table",
       "name" : "treasure2:pools/food/epic",
+      "weight" : 1
+    } ]
+  }, {
+    "name" : "tools",
+    "rolls" : 1,
+    "entries" : [ {
+      "type" : "minecraft:loot_table",
+      "name" : "treasure2:pools/tools/epic",
       "weight" : 1
     } ]
   }, {

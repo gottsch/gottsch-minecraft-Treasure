@@ -306,6 +306,13 @@ public class ItemModelsProvider extends ItemModelProvider {
 //		withExistingParent(TreasureItems.WOOD_CHEST_ITEM.getId().getPath(), modLoc("block/wood_chest"));
     	
 		withExistingParent(TreasureItems.SPANISH_MOSS_ITEM.getId().getPath(), modLoc("block/spanish_moss"));
+		singleTexture(TreasureItems.WITHERED_LEAF_LITTER.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/withered_leaf_litter"));
+		withExistingParent(TreasureItems.WITHERED_GRASS_BLOCK.getId().getPath(), modLoc("block/withered_grass_block"));
+		singleTexture(TreasureItems.GRAVE_THORNS.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("block/grave_thorns"));
+		singleTexture(TreasureItems.BRACKET_FUNGUS.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/bracket_fungus"));
+		withExistingParent(TreasureItems.HOLLOW_WITHERWOOD_LOG.getId().getPath(), modLoc("block/hollow_witherwood_log"));
+		withExistingParent(TreasureItems.STRANGLED_WITHERWOOD_LOG.getId().getPath(), modLoc("block/strangled_witherwood_log_full"));
+		singleTexture(TreasureItems.CLINGING_STRANGLE_VINES.getId().getPath(), mcLoc("item/generated"), "layer0", modLoc("item/clinging_strangle_vines"));
 		
 		withExistingParent(TreasureItems.TOPAZ_ORE_ITEM.getId().getPath(), modLoc("block/topaz_ore"));
 		withExistingParent(TreasureItems.ONYX_ORE_ITEM.getId().getPath(), modLoc("block/onyx_ore"));

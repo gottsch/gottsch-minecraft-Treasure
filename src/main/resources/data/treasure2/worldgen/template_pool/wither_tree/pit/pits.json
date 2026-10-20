@@ -8,7 +8,7 @@
         "element_type": "minecraft:single_pool_element",
         "location": "treasure2:wither_tree/pit/pit_1",
         "projection": "rigid",
-        "processors": "treasure2:pit_processors"
+        "processors": "treasure2:wither_tree/pit_processors"
       }
     },
     {
@@ -17,7 +17,7 @@
         "element_type": "minecraft:single_pool_element",
         "location": "treasure2:wither_tree/pit/pit_2",
         "projection": "rigid",
-        "processors": "treasure2:pit_processors"
+        "processors": "treasure2:wither_tree/pit_processors"
       }
     },
     {

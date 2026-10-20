@@ -193,6 +193,10 @@
           }
         }
       ]
+    },
+    {
+      "processor_type": "treasure2:hanging_roots_processor",
+      "probability": 0.2
     }
   ]
 }

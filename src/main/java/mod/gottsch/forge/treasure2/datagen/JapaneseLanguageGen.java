@@ -103,6 +103,13 @@ public class JapaneseLanguageGen extends LanguageProvider {
         add(TreasureItems.TREASURE_TOOL.get(), "宝探しツール");
         add(TreasureItems.POUCH.get(), "小銭入れ");
         add(TreasureBlocks.SPANISH_MOSS.get(), "しだれコケ");
+        add(TreasureBlocks.WITHERED_LEAF_LITTER.get(), "枯れた落ち葉");
+        add(TreasureBlocks.WITHERED_GRASS_BLOCK.get(), "枯れた草ブロック");
+        add(TreasureBlocks.GRAVE_THORNS.get(), "墓場のイバラ");
+        add(TreasureBlocks.BRACKET_FUNGUS.get(), "サルノコシカケ");
+        add(TreasureBlocks.HOLLOW_WITHERWOOD_LOG.get(), "空洞のウィザーウッドの原木");
+        add(TreasureBlocks.STRANGLED_WITHERWOOD_LOG.get(), "絞めつけられたウィザーウッドの原木");
+        add(TreasureBlocks.WISP.get(), "ウィスプ");
         add(TreasureBlocks.WISHING_WELL.get(), "願い井戸の石");
         add(TreasureBlocks.WISHING_WELL_COBBLESTONE.get(), "願い井戸の丸石");
         add(TreasureBlocks.WISHING_WELL_STONE_BRICKS.get(), "願い井戸の石");
@@ -207,8 +214,9 @@ public class JapaneseLanguageGen extends LanguageProvider {
         add(TreasureBlocks.WITHERWOOD_HANGING_SIGN.get(), "ウィザーウッドの吊り看板");
         add(TreasureBlocks.WITHERWOOD_TWIG.get(), "ウィザーウッドの小枝");
 //
-        add(TreasureBlocks.STRANGLE_VINES.get(), "絞めつけるツタ");
-        add(TreasureBlocks.STRANGLE_VINES_PLANT.get(), "絞めつけるツタ植物");
+        add(TreasureBlocks.STRANGLE_VINES.get(), "ブライトストーク");
+        add(TreasureBlocks.STRANGLE_VINES_PLANT.get(), "ブライトストークの茎");
+        add(TreasureBlocks.CLINGING_STRANGLE_VINES.get(), "絞めつけるツタ");
 
         // ore
         add(TreasureBlocks.TOPAZ_ORE.get(), "トパーズ鉱石");
@@ -269,6 +277,9 @@ public class JapaneseLanguageGen extends LanguageProvider {
         // eggs
         add(TreasureItems.BOUND_SOUL_EGG.get(), "地縛霊のスポーンエッグ");
         add(TreasureItems.WITHERWOOD_GOLEM_EGG.get(), "ウィザーウッドゴーレムのスポーンエッグ");
+
+        // biomes
+        add("biome." + Treasure.MODID + ".wither_grove", "ウィザーの林");
         add(TreasureItems.WOOD_CHEST_MIMIC_EGG.get(), "チェストミミックのスポーンエッグ");
         add(TreasureItems.PIRATE_CHEST_MIMIC_EGG.get(), "海賊チェストミミックのスポーンエッグ");
         add(TreasureItems.VIKING_CHEST_MIMIC_EGG.get(), "バイキングミミックのスポーンエッグ");

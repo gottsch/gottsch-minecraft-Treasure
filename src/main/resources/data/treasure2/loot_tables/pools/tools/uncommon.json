@@ -15,13 +15,10 @@
       "name" : "minecraft:iron_axe",
       "weight" : 25
     }, {
-      "entryName" : "golden_sword",
+      "entryName" : "iron_shovel",
       "type" : "minecraft:item",
-      "name" : "minecraft:golden_sword",
-      "weight" : 25,
-      "functions" : [ {
-        "function" : "minecraft:enchant_randomly"
-      } ]
+      "name" : "minecraft:iron_shovel",
+      "weight" : 25
     }, {
       "entryName" : "golden_pickaxe",
       "type" : "minecraft:item",
@@ -34,6 +31,32 @@
       "entryName" : "golden_axe",
       "type" : "minecraft:item",
       "name" : "minecraft:golden_axe",
+      "weight" : 15,
+      "functions" : [ {
+        "function" : "minecraft:enchant_randomly"
+      } ]
+    }, {
+      "entryName" : "golden_shovel",
+      "type" : "minecraft:item",
+      "name" : "minecraft:golden_shovel",
+      "weight" : 10,
+      "functions" : [ {
+        "function" : "minecraft:enchant_randomly"
+      } ]
+    }, {
+      "entryName" : "shears",
+      "type" : "minecraft:item",
+      "name" : "minecraft:shears",
+      "weight" : 20
+    }, {
+      "entryName" : "flint_and_steel",
+      "type" : "minecraft:item",
+      "name" : "minecraft:flint_and_steel",
+      "weight" : 15
+    }, {
+      "entryName" : "fishing_rod",
+      "type" : "minecraft:item",
+      "name" : "minecraft:fishing_rod",
       "weight" : 15,
       "functions" : [ {
         "function" : "minecraft:enchant_randomly"

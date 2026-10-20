@@ -16,3 +16,6 @@ gradle.log
 !/models/
 !*.md
 *.classpath
+
+# datagen bookkeeping: hashes of what runData last wrote, rewritten on every run
+src/generated/resources/.cache/

@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "lit=false": { "model": "treasure2:block/wisp" },
+    "lit=true": { "model": "treasure2:block/wisp" }
+  }
+}

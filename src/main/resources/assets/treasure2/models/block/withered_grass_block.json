@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "minecraft:block/dirt",
+    "side": "treasure2:block/withered_grass_block_side",
+    "top": "treasure2:block/withered_grass_block_top"
+  }
+}

@@ -105,6 +105,13 @@ public class LanguageGen extends LanguageProvider {
         add(TreasureItems.TREASURE_TOOL.get(), "Treasure Tool");
         add(TreasureItems.POUCH.get(), "Pouch");
         add(TreasureBlocks.SPANISH_MOSS.get(), "Spanish Moss");
+        add(TreasureBlocks.WITHERED_LEAF_LITTER.get(), "Withered Leaf Litter");
+        add(TreasureBlocks.WITHERED_GRASS_BLOCK.get(), "Withered Grass Block");
+        add(TreasureBlocks.GRAVE_THORNS.get(), "Grave Thorns");
+        add(TreasureBlocks.BRACKET_FUNGUS.get(), "Bracket Fungus");
+        add(TreasureBlocks.HOLLOW_WITHERWOOD_LOG.get(), "Hollow Witherwood Log");
+        add(TreasureBlocks.STRANGLED_WITHERWOOD_LOG.get(), "Strangled Witherwood Log");
+        add(TreasureBlocks.WISP.get(), "Wisp");
         add(TreasureBlocks.WISHING_WELL.get(), "Wishing Well Mossy Cobblestone");
         add(TreasureBlocks.WISHING_WELL_COBBLESTONE.get(), "Wishing Well Cobblestone");
         add(TreasureBlocks.WISHING_WELL_MOSSY_COBBLESTONE.get(), "Wishing Well Mossy Cobblestone");
@@ -213,8 +220,10 @@ public class LanguageGen extends LanguageProvider {
         add(TreasureBlocks.WITHERWOOD_HANGING_SIGN.get(), "Witherwood Hanging Sign");
         add(TreasureBlocks.WITHERWOOD_TWIG.get(), "Witherwood Twig");
 
-        add(TreasureBlocks.STRANGLE_VINES.get(), "Strangle Vine");
-        add(TreasureBlocks.STRANGLE_VINES_PLANT.get(), "Strangle Vine Plant");
+        // the upright plant keeps the strangle_vines id; the name Strangle Vines belongs to the clinging vine
+        add(TreasureBlocks.STRANGLE_VINES.get(), "Blightstalk");
+        add(TreasureBlocks.STRANGLE_VINES_PLANT.get(), "Blightstalk Plant");
+        add(TreasureBlocks.CLINGING_STRANGLE_VINES.get(), "Strangle Vines");
 
         // ore
         add(TreasureBlocks.TOPAZ_ORE.get(), "Topaz Ore");
@@ -261,6 +270,7 @@ public class LanguageGen extends LanguageProvider {
         // mobs
         add(TreasureEntities.BOUND_SOUL_ENTITY_TYPE.get(), "Bound Soul");
         add(TreasureEntities.WITHERWOOD_GOLEM_ENTITY_TYPE.get(), "Witherwood Golem");
+        add("biome." + Treasure.MODID + ".wither_grove", "Wither Grove");
         add(TreasureEntities.WOOD_CHEST_MIMIC_ENTITY_TYPE.get(), "Wood Chest Mimic");
         add(TreasureEntities.PIRATE_CHEST_MIMIC_ENTITY_TYPE.get(), "Pirate Chest Mimic");
         add(TreasureEntities.VIKING_CHEST_MIMIC_ENTITY_TYPE.get(), "Viking Chest Mimic");
