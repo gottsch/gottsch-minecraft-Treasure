@@ -294,6 +294,138 @@
         }
       } ],
       "weight" : 5
+    }, {
+      "entryName" : "enchanted_book",
+      "type" : "minecraft:item",
+      "name" : "minecraft:book",
+      "weight" : 40,
+      "functions" : [ {
+        "function" : "minecraft:enchant_with_levels",
+        "levels" : {
+          "type" : "minecraft:uniform",
+          "min" : 20,
+          "max" : 30
+        },
+        "treasure" : true
+      } ]
+    }, {
+      "entryName" : "valuable_diamond",
+      "type" : "minecraft:item",
+      "name" : "minecraft:diamond",
+      "weight" : 95,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 1,
+          "max" : 3
+        }
+      } ]
+    }, {
+      "entryName" : "valuable_emerald",
+      "type" : "minecraft:item",
+      "name" : "minecraft:emerald",
+      "weight" : 78,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 2,
+          "max" : 5
+        }
+      } ]
+    }, {
+      "entryName" : "valuable_gold_ingot",
+      "type" : "minecraft:item",
+      "name" : "minecraft:gold_ingot",
+      "weight" : 78,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 3,
+          "max" : 8
+        }
+      } ]
+    }, {
+      "entryName" : "valuable_iron_ingot",
+      "type" : "minecraft:item",
+      "name" : "minecraft:iron_ingot",
+      "weight" : 52,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 5,
+          "max" : 10
+        }
+      } ]
+    }, {
+      "entryName" : "valuable_gold_block",
+      "type" : "minecraft:item",
+      "name" : "minecraft:gold_block",
+      "weight" : 35,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 1,
+          "max" : 2
+        }
+      } ]
+    }, {
+      "entryName" : "valuable_iron_block",
+      "type" : "minecraft:item",
+      "name" : "minecraft:iron_block",
+      "weight" : 35,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 1,
+          "max" : 2
+        }
+      } ]
+    }, {
+      "entryName" : "valuable_lapis_block",
+      "type" : "minecraft:item",
+      "name" : "minecraft:lapis_block",
+      "weight" : 26,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 1,
+          "max" : 2
+        }
+      } ]
+    }, {
+      "entryName" : "valuable_redstone_block",
+      "type" : "minecraft:item",
+      "name" : "minecraft:redstone_block",
+      "weight" : 26,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 1,
+          "max" : 2
+        }
+      } ]
+    }, {
+      "entryName" : "valuable_netherite_scrap",
+      "type" : "minecraft:item",
+      "name" : "minecraft:netherite_scrap",
+      "weight" : 26,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 1,
+          "max" : 2
+        }
+      } ]
+    }, {
+      "entryName" : "valuable_ancient_debris",
+      "type" : "minecraft:item",
+      "name" : "minecraft:ancient_debris",
+      "weight" : 13
+    }, {
+      "entryName" : "valuable_diamond_block",
+      "type" : "minecraft:item",
+      "name" : "minecraft:diamond_block",
+      "weight" : 4
     } ]
   } ]
 }

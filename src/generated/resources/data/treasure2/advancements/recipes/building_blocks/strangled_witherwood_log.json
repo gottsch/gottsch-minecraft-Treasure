@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_strangle_vines": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "treasure2:clinging_strangle_vines"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "treasure2:strangled_witherwood_log"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_strangle_vines",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "treasure2:strangled_witherwood_log"
+    ]
+  },
+  "sends_telemetry_event": false
+}

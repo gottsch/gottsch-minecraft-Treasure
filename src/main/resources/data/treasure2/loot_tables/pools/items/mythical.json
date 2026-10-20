@@ -1,0 +1,195 @@
+{
+  "version" : "1.0",
+  "type" : "minecraft:chest",
+  "pools" : [ {
+    "name" : "mythical_items",
+    "rolls" : 1,
+    "entries" : [ {
+      "entryName" : "enchanted_book",
+      "type" : "minecraft:item",
+      "name" : "minecraft:book",
+      "weight" : 40,
+      "functions" : [ {
+        "function" : "minecraft:enchant_with_levels",
+        "levels" : 30,
+        "treasure" : true
+      } ]
+    }, {
+      "entryName" : "mending_book",
+      "type" : "minecraft:item",
+      "name" : "minecraft:book",
+      "weight" : 20,
+      "functions" : [ {
+        "function" : "minecraft:enchant_randomly",
+        "enchantments" : [ "minecraft:mending" ]
+      } ]
+    }, {
+      "entryName" : "nether_star",
+      "type" : "minecraft:item",
+      "name" : "minecraft:nether_star",
+      "weight" : 20,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 1,
+          "max" : 2
+        }
+      } ]
+    }, {
+      "entryName" : "beacon",
+      "type" : "minecraft:item",
+      "name" : "minecraft:beacon",
+      "weight" : 10
+    }, {
+      "entryName" : "elytra",
+      "type" : "minecraft:item",
+      "name" : "minecraft:elytra",
+      "weight" : 15
+    }, {
+      "entryName" : "totem_of_undying",
+      "type" : "minecraft:item",
+      "name" : "minecraft:totem_of_undying",
+      "weight" : 15
+    }, {
+      "entryName" : "wither_skeleton_skull",
+      "type" : "minecraft:item",
+      "name" : "minecraft:wither_skeleton_skull",
+      "weight" : 10
+    }, {
+      "entryName" : "dragon_head",
+      "type" : "minecraft:item",
+      "name" : "minecraft:dragon_head",
+      "weight" : 8
+    }, {
+      "entryName" : "experience_bottle",
+      "type" : "minecraft:item",
+      "name" : "minecraft:experience_bottle",
+      "weight" : 30,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 5,
+          "max" : 10
+        }
+      } ]
+    }, {
+      "entryName" : "diamond_block",
+      "type" : "minecraft:item",
+      "name" : "minecraft:diamond_block",
+      "weight" : 15,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 2,
+          "max" : 4
+        }
+      } ]
+    }, {
+      "entryName" : "emerald_block",
+      "type" : "minecraft:item",
+      "name" : "minecraft:emerald_block",
+      "weight" : 15,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 2,
+          "max" : 4
+        }
+      } ]
+    }, {
+      "entryName" : "end_crystal",
+      "type" : "minecraft:item",
+      "name" : "minecraft:end_crystal",
+      "weight" : 10,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 1,
+          "max" : 2
+        }
+      } ]
+    }, {
+      "entryName" : "purple_shulker_box",
+      "type" : "minecraft:item",
+      "name" : "minecraft:purple_shulker_box",
+      "weight" : 10
+    }, {
+      "entryName" : "valuable_diamond",
+      "type" : "minecraft:item",
+      "name" : "minecraft:diamond",
+      "weight" : 41,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 5,
+          "max" : 12
+        }
+      } ]
+    }, {
+      "entryName" : "valuable_emerald",
+      "type" : "minecraft:item",
+      "name" : "minecraft:emerald",
+      "weight" : 33,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 6,
+          "max" : 14
+        }
+      } ]
+    }, {
+      "entryName" : "valuable_gold_block",
+      "type" : "minecraft:item",
+      "name" : "minecraft:gold_block",
+      "weight" : 16,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 3,
+          "max" : 6
+        }
+      } ]
+    }, {
+      "entryName" : "valuable_diamond_block",
+      "type" : "minecraft:item",
+      "name" : "minecraft:diamond_block",
+      "weight" : 16,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 1,
+          "max" : 3
+        }
+      } ]
+    }, {
+      "entryName" : "valuable_emerald_block",
+      "type" : "minecraft:item",
+      "name" : "minecraft:emerald_block",
+      "weight" : 16,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 1,
+          "max" : 3
+        }
+      } ]
+    }, {
+      "entryName" : "valuable_netherite_ingot",
+      "type" : "minecraft:item",
+      "name" : "minecraft:netherite_ingot",
+      "weight" : 20,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 1,
+          "max" : 3
+        }
+      } ]
+    }, {
+      "entryName" : "valuable_netherite_block",
+      "type" : "minecraft:item",
+      "name" : "minecraft:netherite_block",
+      "weight" : 3
+    } ]
+  } ]
+}

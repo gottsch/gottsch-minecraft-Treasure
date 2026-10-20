@@ -1,0 +1,144 @@
+{
+	"version": "1.0",
+	"type": "minecraft:chest",
+	"pools": [
+		{
+			"name": "legendary_potions",
+			"rolls": 1,
+			"entries": [
+				{
+					"entryName": "potion_l1",
+					"type": "minecraft:item",
+					"name": "minecraft:potion",
+					"weight": 10,
+					"functions": [
+						{
+							"function": "minecraft:set_nbt",
+							"tag": "{Potion:\"treasure2:extra_strong_healing\"}"
+						}
+					]
+				},
+				{
+					"entryName": "potion_l2",
+					"type": "minecraft:item",
+					"name": "minecraft:potion",
+					"weight": 10,
+					"functions": [
+						{
+							"function": "minecraft:set_nbt",
+							"tag": "{Potion:\"treasure2:extra_strong_strength\"}"
+						}
+					]
+				},
+				{
+					"entryName": "potion_l3",
+					"type": "minecraft:item",
+					"name": "minecraft:potion",
+					"weight": 10,
+					"functions": [
+						{
+							"function": "minecraft:set_nbt",
+							"tag": "{Potion:\"treasure2:extra_strong_swiftness\"}"
+						}
+					]
+				},
+				{
+					"entryName": "potion_l4",
+					"type": "minecraft:item",
+					"name": "minecraft:potion",
+					"weight": 10,
+					"functions": [
+						{
+							"function": "minecraft:set_nbt",
+							"tag": "{Potion:\"treasure2:extra_strong_regeneration\"}"
+						}
+					]
+				},
+				{
+					"entryName": "potion_l5",
+					"type": "minecraft:item",
+					"name": "minecraft:potion",
+					"weight": 10,
+					"functions": [
+						{
+							"function": "minecraft:set_nbt",
+							"tag": "{Potion:\"treasure2:extra_strong_leaping\"}"
+						}
+					]
+				},
+				{
+					"entryName": "potion_l6",
+					"type": "minecraft:item",
+					"name": "minecraft:potion",
+					"weight": 10,
+					"functions": [
+						{
+							"function": "minecraft:set_nbt",
+							"tag": "{Potion:\"minecraft:long_fire_resistance\"}"
+						}
+					]
+				},
+				{
+					"entryName": "potion_l7",
+					"type": "minecraft:item",
+					"name": "minecraft:potion",
+					"weight": 10,
+					"functions": [
+						{
+							"function": "minecraft:set_nbt",
+							"tag": "{Potion:\"minecraft:long_invisibility\"}"
+						}
+					]
+				},
+				{
+					"entryName": "potion_l8",
+					"type": "minecraft:item",
+					"name": "minecraft:potion",
+					"weight": 10,
+					"functions": [
+						{
+							"function": "minecraft:set_nbt",
+							"tag": "{Potion:\"minecraft:long_water_breathing\"}"
+						}
+					]
+				},
+				{
+					"entryName": "potion_l9",
+					"type": "minecraft:item",
+					"name": "minecraft:potion",
+					"weight": 10,
+					"functions": [
+						{
+							"function": "minecraft:set_nbt",
+							"tag": "{Potion:\"minecraft:strong_turtle_master\"}"
+						}
+					]
+				},
+				{
+					"entryName": "potion_l10",
+					"type": "minecraft:item",
+					"name": "minecraft:splash_potion",
+					"weight": 5,
+					"functions": [
+						{
+							"function": "minecraft:set_nbt",
+							"tag": "{Potion:\"treasure2:extra_strong_poison\"}"
+						}
+					]
+				},
+				{
+					"entryName": "potion_l11",
+					"type": "minecraft:item",
+					"name": "minecraft:lingering_potion",
+					"weight": 5,
+					"functions": [
+						{
+							"function": "minecraft:set_nbt",
+							"tag": "{Potion:\"minecraft:strong_harming\"}"
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -18,6 +18,7 @@ package mod.gottsch.forge.treasure2.datagen;
 import java.util.concurrent.CompletableFuture;
 
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraftforge.common.Tags;
 import org.jetbrains.annotations.Nullable;
@@ -40,6 +41,20 @@ public class TreasureItemTagsProvider extends ItemTagsProvider {
 
 	@Override
 	protected void addTags(Provider provider) {     
+		// witherwood joins the vanilla wood families (see TreasureBlockTagsProvider)
+		tag(TreasureTags.Items.WITHERWOOD_LOGS).add(TreasureItems.WITHERWOOD_LOG.get(), TreasureItems.WITHERWOOD_WOOD.get(), TreasureItems.STRIPPED_WITHERWOOD_LOG.get(), TreasureItems.STRIPPED_WITHERWOOD_WOOD.get(), TreasureItems.STRANGLED_WITHERWOOD_LOG.get());
+		tag(ItemTags.LOGS_THAT_BURN).addTag(TreasureTags.Items.WITHERWOOD_LOGS);
+		tag(ItemTags.PLANKS).add(TreasureItems.WITHERWOOD_PLANKS.get());
+		tag(ItemTags.WOODEN_SLABS).add(TreasureItems.WITHERWOOD_SLAB.get());
+		tag(ItemTags.WOODEN_STAIRS).add(TreasureItems.WITHERWOOD_STAIRS.get());
+		tag(ItemTags.WOODEN_FENCES).add(TreasureItems.WITHERWOOD_FENCE.get());
+		tag(ItemTags.FENCE_GATES).add(TreasureItems.WITHERWOOD_FENCE_GATE.get());
+		tag(ItemTags.WOODEN_DOORS).add(TreasureItems.WITHERWOOD_DOOR.get());
+		tag(ItemTags.WOODEN_TRAPDOORS).add(TreasureItems.WITHERWOOD_TRAPDOOR.get());
+		tag(ItemTags.WOODEN_BUTTONS).add(TreasureItems.WITHERWOOD_BUTTON.get());
+		tag(ItemTags.WOODEN_PRESSURE_PLATES).add(TreasureItems.WITHERWOOD_PRESSURE_PLATE.get());
+		tag(ItemTags.SIGNS).add(TreasureItems.WITHERWOOD_SIGN.get());
+		tag(ItemTags.HANGING_SIGNS).add(TreasureItems.WITHERWOOD_HANGING_SIGN.get());
 		// keys rarity
 		tag(TreasureTags.Items.COMMON_KEY).add(TreasureItems.WOOD_KEY.get());
 		tag(TreasureTags.Items.COMMON_KEY).add(TreasureItems.STONE_KEY.get());

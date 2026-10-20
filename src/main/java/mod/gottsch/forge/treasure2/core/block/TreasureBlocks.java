@@ -246,6 +246,10 @@ public class TreasureBlocks {
 
 	public static final RegistryObject<Block> WITHERWOOD_LOG = Registration.BLOCKS.register("witherwood_log", () -> witherwoodLog(MapColor.WOOD, MapColor.PODZOL));
 	public static final RegistryObject<Block> WITHERWOOD_WOOD = Registration.BLOCKS.register("witherwood_wood", () -> witherwoodLog(MapColor.WOOD, MapColor.PODZOL));
+	public static final RegistryObject<Block> HOLLOW_WITHERWOOD_LOG = Registration.BLOCKS.register("hollow_witherwood_log", () -> new HollowWitherwoodLogBlock(
+			BlockBehaviour.Properties.of().mapColor(MapColor.PODZOL).instrument(NoteBlockInstrument.BASS).strength(2.0F).sound(SoundType.WOOD).ignitedByLava().noOcclusion()));
+	public static final RegistryObject<Block> STRANGLED_WITHERWOOD_LOG = Registration.BLOCKS.register("strangled_witherwood_log", () -> new StrangledWitherwoodLogBlock(
+			BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASS).strength(2.0F).sound(SoundType.WOOD).ignitedByLava()));
 	public static final RegistryObject<Block> STRIPPED_WITHERWOOD_LOG = Registration.BLOCKS.register("stripped_witherwood_log", () -> log(MapColor.PODZOL, MapColor.PODZOL));
 	public static final RegistryObject<Block> STRIPPED_WITHERWOOD_WOOD = Registration.BLOCKS.register("stripped_witherwood_wood", () -> log(MapColor.PODZOL, MapColor.PODZOL));
 
@@ -265,11 +269,30 @@ public class TreasureBlocks {
 	public static final RegistryObject<Block> WITHERWOOD_HANGING_SIGN = Registration.BLOCKS.register("witherwood_hanging_sign", () -> new TreasureHangingSignBlock(BlockBehaviour.Properties.copy(Blocks.OAK_HANGING_SIGN), TreasureWoodTypes.WITHERWOOD_TYPE));
 	public static final RegistryObject<Block> WITHERWOOD_WALL_HANGING_SIGN = Registration.BLOCKS.register("witherwood_wall_hanging_sign", () -> new TreasureWallHangingSignBlock(BlockBehaviour.Properties.copy(Blocks.OAK_WALL_HANGING_SIGN), TreasureWoodTypes.WITHERWOOD_TYPE));
 
+	// the upright plant: the id is legacy (saved worlds and main_wither_tree.nbt hold it), but it is shown as
+	// Blightstalk; the name Strangle Vines belongs to CLINGING_STRANGLE_VINES. Don't "fix" the mismatch.
 	public static final RegistryObject<Block> STRANGLE_VINES = Registration.BLOCKS.register("strangle_vines", () -> new StrangleVinesBlock(BlockBehaviour.Properties.copy(Blocks.TWISTING_VINES)));
 	public static final RegistryObject<Block> STRANGLE_VINES_PLANT = Registration.BLOCKS.register("strangle_vines_plant", () -> new StrangleVinesPlantBlock(BlockBehaviour.Properties.copy(Blocks.TWISTING_VINES_PLANT)));
+	public static final RegistryObject<Block> CLINGING_STRANGLE_VINES = Registration.BLOCKS.register("clinging_strangle_vines", () -> new ClingingStrangleVinesBlock(
+			Properties.of().mapColor(MapColor.COLOR_BLACK).replaceable().noCollission().strength(0.2F).sound(SoundType.VINE)
+					.ignitedByLava().pushReaction(PushReaction.DESTROY)));
 
 	// other
 	public static final RegistryObject<Block> SPANISH_MOSS = Registration.BLOCKS.register("spanish_moss", () -> new SpanishMossBlock(Properties.of().mapColor(MapColor.WOOD)));
+	public static final RegistryObject<Block> WITHERED_LEAF_LITTER = Registration.BLOCKS.register("withered_leaf_litter", () -> new WitheredLeafLitterBlock(
+			BlockBehaviour.Properties.copy(Blocks.PINK_PETALS).mapColor(MapColor.TERRACOTTA_BROWN).sound(SoundType.AZALEA_LEAVES)));
+	public static final RegistryObject<Block> WITHERED_GRASS_BLOCK = Registration.BLOCKS.register("withered_grass_block", () -> new WitheredGrassBlock(
+			BlockBehaviour.Properties.copy(Blocks.DIRT).mapColor(MapColor.TERRACOTTA_BROWN).strength(0.6F).sound(SoundType.GRASS)));
+	public static final RegistryObject<Block> GRAVE_THORNS = Registration.BLOCKS.register("grave_thorns", () -> new GraveThornsBlock(
+			Properties.of().mapColor(MapColor.TERRACOTTA_BROWN).noCollission().instabreak().sound(SoundType.SWEET_BERRY_BUSH)
+					.offsetType(BlockBehaviour.OffsetType.XZ).pushReaction(PushReaction.DESTROY)));
+	public static final RegistryObject<Block> BRACKET_FUNGUS = Registration.BLOCKS.register("bracket_fungus", () -> new BracketFungusBlock(
+			Properties.of().mapColor(MapColor.TERRACOTTA_BROWN).noCollission().strength(0.2F).sound(SoundType.FUNGUS)
+					.pushReaction(PushReaction.DESTROY)));
+	/** no item: an invisible block, placed only by the grove (or /setblock) */
+	public static final RegistryObject<Block> WISP = Registration.BLOCKS.register("wisp", () -> new WispBlock(
+			Properties.of().replaceable().noCollission().noOcclusion().noLootTable().instabreak().air()
+					.lightLevel(state -> state.getValue(WispBlock.LIT) ? WispBlock.LIGHT : 0)));
 	public static final RegistryObject<Block> WISHING_WELL = Registration.BLOCKS.register("wishing_well_block", () -> new WishingWellBlock(
 			Properties.of().mapColor(MapColor.STONE).strength(2.0F).sound(SoundType.STONE)));
 

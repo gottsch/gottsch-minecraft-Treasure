@@ -5,7 +5,61 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [4.1.0] - Unreleased
+## [4.2.1] - 2026-10-20
+
+### Changed
+- Fixed a crash at night in a Wither Grove. A Wisp's glow had no texture, so the game crashed the first time one appeared.
+- Wisps now appear every night. They used to show only if you had joined the world at night, and then went on drifting through the day. Now they come out at dusk and fade at dawn. The faint light each one casts follows within a minute or so.
+- Fixed a crash when saving the world, and the first time a player used a chest, if Treasure2 had recorded the chest without noting which dimension it was in. A mod placing chests with Treasure2's chest API and leaving out its last step (`TreasureApi.finalizeChest`) could cause this.
+- Axes now cut witherwood. Witherwood logs, wood, planks, stairs, slabs, doors, trapdoors, fences, gates, buttons, pressure plates, signs, branches, broken logs and roots, and Bracket Fungus, all broke at the same speed with an axe as by hand. A Witherwood Root took about four and a half seconds even with a diamond axe; it now takes about half a second.
+- Witherwood now counts as wood everywhere vanilla wood does. Witherwood planks make crafting tables, sticks, chests and anything else that takes any planks; witherwood logs and wood smelt into charcoal, make campfires and burn as fuel, as do the planks, slabs, stairs, doors and the rest; and villagers can open witherwood doors. A new `treasure2:witherwood_logs` tag holds the logs, wood, stripped logs and wood, and the Strangled Witherwood Log, as vanilla has `oak_logs`.
+- Wisps are now much bigger: a soft green-white glow a third of a block or more across that swells and fades as it drifts, where before it was a speck that was easy to miss.
+
+## [4.2.0] - 2026-10-19
+
+### Added
+- **The Wither Grove has been rebuilt.** The great wither tree now stands at the heart of a whole grove: 10 to 20 withered trees spread over a ragged clearing around it, tallest near the centre and smaller toward the edge. Every grove is different. The trees are grown fresh for each grove rather than copied from a handful of fixed shapes, and they keep the familiar witherwood look: straight trunks, thin branches spiralling up them, twigs, hanging moss and a broken top.
+- **Groves have their own biome, the Wither Grove.** It is painted over the grove as it generates, so the surrounding forest's trees, flowers and grass no longer grow up through it. The sky, fog, water and foliage turn grey and sickly, ash drifts in the air, and only the grove's own creatures spawn there: wither skeletons, strays, skeletons, spiders and the occasional Witherwood Golem.
+- **The grove floor is blighted.** Each tree stands in a patch of dead ground: Withered Grass, coarse dirt, podzol, mud and mycelium, with Withered Leaf Litter scattered over it. Roots turn the dirt beneath them into rooted dirt. Mossy and deepslate boulders lie half-sunk between the trees, along with fallen hollow logs, some beside the stump they broke from.
+- **Strangle vines wrap the trunks.** About half the trees have a strangle vine winding up the trunk, and some are choked by vines at the base. Strangle Vines also creep over the ground round the trees, lie along fallen logs, and cover and climb the boulders.
+- **More to find among the trees:** bracket fungus on the trunks, cobwebs in the forks of branches, soul lanterns hanging on chains, Grave Thorns around the clearings (thicker toward the edge), and, at night, faint drifting Wisps between the trees.
+- **Suspicious gravel near some trunks.** Brush it for coins, gems, a Wither Key, bones and other oddments.
+- **Roots hang from the pit and its rooms** beneath the great wither tree, wherever there is earth, wood or mud brick overhead, and they come out differently in every grove. Other dungeons can use the same `treasure2:hanging_roots_processor` in their processor lists.
+- New blocks:
+  - **Strangle Vines**: a tangle of vine that clings flat to any face of a block, like glow lichen. It catches at anything pushing through it, slowing and scratching it, but leaves the grove's monsters alone. Only shears take it.
+  - **Strangled Witherwood Log**: a witherwood log wrapped in strangle vine. Stack them, each turned a face further round, and the vine spirals up the column. It drops a plain log unless broken with Silk Touch, and an axe strips the vine off with the bark.
+  - **Hollow Witherwood Log**: a rotted-out log, lying or standing. Small creatures can pass through it.
+  - **Bracket Fungus**: one to three shelves on the side of a log; place more on it to add shelves.
+  - **Grave Thorns**: a dead bramble that slows and scratches anything walking through it, except the monsters that live among it. Only shears gather it whole.
+  - **Withered Grass Block**: dead grass that never spreads. It drops dirt unless broken with Silk Touch, and can be made into a path or tilled.
+  - **Withered Leaf Litter**: fallen dead leaves, one to four to a block, that lie on any solid surface.
+  - **Wisp**: an invisible glow that only shows itself at night. It's placed by the grove; there is no item.
+- Recipes:
+  - **Hollow Witherwood Log** ×8: eight witherwood logs in a ring, with the middle left empty.
+  - **Strangled Witherwood Log**: a witherwood log and Strangle Vines.
+  - A hollow log makes 2 witherwood planks, and a strangled log makes 4, like any witherwood log.
+- Bracket Fungus burns in a furnace, a little longer than a stick. The grove's other new blocks can't be crafted; they're found there.
+- Witherwood logs, wood and broken tops can now be mossy, and the grove grows moss where it would grow on a real tree: low on the trunk. The mossy bark texture has been redrawn so the moss can actually be seen.
+- Japanese names for the new blocks and the Wither Grove biome.
+
+### Changed
+- The tall strangle vine plant is now called **Blightstalk**, so that the name Strangle Vines can go to the new clinging vine. It is the same plant, and nothing changes in existing worlds.
+- Wither Groves no longer generate in rivers, lakes or the sea, or with their trees standing in water.
+- Wither Groves no longer generate on top of villages.
+- Grove trees no longer hang in the air or sink into the ground on slopes.
+- In existing worlds, witherwood logs that showed moss at random now show plain bark. Moss is now part of the block rather than chosen by its position, and old logs load as unmossed.
+- New commands for building and testing groves: `/t2 wither_tree <pos> [wither|great] [seed] [scale]` grows a single wither tree, and `/t2 wither_grove <pos>` places a whole grove.
+- **Chest loot overhaul**, the same changes as Treasure2 2.4.0 for 1.12.2:
+  - **Legendary and Mythical chests have filler of their own.** They used to share Epic's items, food and potions, with Rare as the lesser tier. Now they hold Mending and other high-level enchanted books, nether stars, beacons, elytra, totems, wither skeleton skulls, dragon heads, diamond and emerald blocks, end crystals and shulker boxes, as well as enchanted golden apples and Treasure2's strongest potions. Their lesser tier is now the tier just below: Epic for Legendary, Legendary for Mythical.
+  - **Enchanted books at every tier from Uncommon up**, stronger the rarer the chest. Uncommon chests can also hold saddles, name tags and music discs.
+  - **Tools are tools.** Swords have left the tools pools (they're still among the weapons) and shovels, shears, fishing rods and flint and steel have joined them. Epic and better chests now find enchanted diamond and netherite tools.
+  - Common chests have less junk: fewer bones, rotten flesh, spider eyes and string, less raw food, and some cooked meat and baked potatoes.
+  - Golden apples now start at Rare. Enchanted golden apples are found only in Legendary and Mythical chests.
+  - **More valuables in every chest.** About two in five item rolls now turn up ores, ingots, gems or their blocks, rising with the chest's rarity: coal, raw ores and lapis in Common chests; diamonds, emeralds, gold blocks and netherite in Epic and better. A Legendary chest now holds about 10 diamonds' worth on average, and a Mythical one about 19.
+  - **Fuller chests.** Every chest rolls more items, and Rare chests now roll as many as Epic ones. Chests average about 22 stacks, up from about 20.
+- The Treasure2 level III potions (healing, strength, swiftness, leaping, regeneration and splash poison) are back. The Epic chest's loot called for them, but they were never registered in 1.20.1, so each one came out as an Uncraftable Potion with no effect.
+
+## [4.1.0] - 2026-10-18
 
 ### Added
 - **Other mods can now put real Treasure2 chests in their own structures.** Until now the only way was to build a Treasure2 chest block into the structure file itself and run Treasure2's chest processor over it — which makes Treasure2 a hard requirement, and leaves that structure broken for anyone playing without it. A mod can now keep a marker of its own and ask Treasure2 for a chest while its structure is being built, so Treasure2 can stay an optional companion instead of a dependency.

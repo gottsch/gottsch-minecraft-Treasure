@@ -21,7 +21,7 @@
       "entryName" : "apple",
       "type" : "minecraft:item",
       "name" : "minecraft:apple",
-      "weight" : 80,
+      "weight" : 60,
       "functions" : [ {
         "function" : "minecraft:set_count",
         "count" : {
@@ -33,7 +33,7 @@
       "entryName" : "wheat",
       "type" : "minecraft:item",
       "name" : "minecraft:wheat",
-      "weight" : 80,
+      "weight" : 40,
       "functions" : [ {
         "function" : "minecraft:set_count",
         "count" : {
@@ -45,7 +45,7 @@
       "entryName" : "wheat_seeds",
       "type" : "minecraft:item",
       "name" : "minecraft:wheat_seeds",
-      "weight" : 80,
+      "weight" : 30,
       "functions" : [ {
         "function" : "minecraft:set_count",
         "count" : {
@@ -57,7 +57,7 @@
       "entryName" : "brown_mushroom",
       "type" : "minecraft:item",
       "name" : "minecraft:brown_mushroom",
-      "weight" : 80,
+      "weight" : 30,
       "functions" : [ {
         "function" : "minecraft:set_count",
         "count" : {
@@ -69,7 +69,7 @@
       "entryName" : "red_mushroom",
       "type" : "minecraft:item",
       "name" : "minecraft:red_mushroom",
-      "weight" : 80,
+      "weight" : 30,
       "functions" : [ {
         "function" : "minecraft:set_count",
         "count" : {
@@ -105,7 +105,7 @@
       "entryName" : "egg",
       "type" : "minecraft:item",
       "name" : "minecraft:egg",
-      "weight" : 80,
+      "weight" : 40,
       "functions" : [ {
         "function" : "minecraft:set_count",
         "count" : {
@@ -205,6 +205,54 @@
         "count" : {
           "min" : 1,
           "max" : 5
+        }
+      } ]
+    }, {
+      "entryName" : "cooked_porkchop",
+      "type" : "minecraft:item",
+      "name" : "minecraft:cooked_porkchop",
+      "weight" : 25,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 1,
+          "max" : 2
+        }
+      } ]
+    }, {
+      "entryName" : "cooked_beef",
+      "type" : "minecraft:item",
+      "name" : "minecraft:cooked_beef",
+      "weight" : 25,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 1,
+          "max" : 2
+        }
+      } ]
+    }, {
+      "entryName" : "cooked_chicken",
+      "type" : "minecraft:item",
+      "name" : "minecraft:cooked_chicken",
+      "weight" : 25,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 1,
+          "max" : 2
+        }
+      } ]
+    }, {
+      "entryName" : "baked_potato",
+      "type" : "minecraft:item",
+      "name" : "minecraft:baked_potato",
+      "weight" : 30,
+      "functions" : [ {
+        "function" : "minecraft:set_count",
+        "count" : {
+          "min" : 1,
+          "max" : 3
         }
       } ]
     } ]

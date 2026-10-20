@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:archaeology",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        { "type": "minecraft:item", "name": "treasure2:copper_coin", "weight": 6 },
+        { "type": "minecraft:item", "name": "treasure2:silver_coin", "weight": 3 },
+        { "type": "minecraft:item", "name": "treasure2:gold_coin", "weight": 1 },
+        { "type": "minecraft:item", "name": "treasure2:onyx", "weight": 1 },
+        { "type": "minecraft:item", "name": "treasure2:black_pearl", "weight": 1 },
+        { "type": "minecraft:item", "name": "treasure2:wither_key", "weight": 1 },
+        { "type": "minecraft:item", "name": "treasure2:witherwood_stick_item", "weight": 4 },
+        { "type": "minecraft:item", "name": "minecraft:bone", "weight": 5 },
+        { "type": "minecraft:item", "name": "minecraft:charcoal", "weight": 3 },
+        { "type": "minecraft:item", "name": "minecraft:skeleton_skull", "weight": 1 }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

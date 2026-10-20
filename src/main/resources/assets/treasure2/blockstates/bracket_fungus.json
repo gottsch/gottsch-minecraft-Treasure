@@ -1,0 +1,49 @@
+{
+  "variants": {
+    "count=1,facing=north": {
+      "model": "treasure2:block/bracket_fungus_1"
+    },
+    "count=2,facing=north": {
+      "model": "treasure2:block/bracket_fungus_2"
+    },
+    "count=3,facing=north": {
+      "model": "treasure2:block/bracket_fungus_3"
+    },
+    "count=1,facing=east": {
+      "model": "treasure2:block/bracket_fungus_1",
+      "y": 90
+    },
+    "count=2,facing=east": {
+      "model": "treasure2:block/bracket_fungus_2",
+      "y": 90
+    },
+    "count=3,facing=east": {
+      "model": "treasure2:block/bracket_fungus_3",
+      "y": 90
+    },
+    "count=1,facing=south": {
+      "model": "treasure2:block/bracket_fungus_1",
+      "y": 180
+    },
+    "count=2,facing=south": {
+      "model": "treasure2:block/bracket_fungus_2",
+      "y": 180
+    },
+    "count=3,facing=south": {
+      "model": "treasure2:block/bracket_fungus_3",
+      "y": 180
+    },
+    "count=1,facing=west": {
+      "model": "treasure2:block/bracket_fungus_1",
+      "y": 270
+    },
+    "count=2,facing=west": {
+      "model": "treasure2:block/bracket_fungus_2",
+      "y": 270
+    },
+    "count=3,facing=west": {
+      "model": "treasure2:block/bracket_fungus_3",
+      "y": 270
+    }
+  }
+}

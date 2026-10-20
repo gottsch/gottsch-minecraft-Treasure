@@ -1,0 +1,42 @@
+{
+  "render_type": "minecraft:cutout",
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "treasure2:block/withered_leaf_litter",
+    "flowerbed": "treasure2:block/withered_leaf_litter"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0.25,
+        8
+      ],
+      "to": [
+        8,
+        0.25,
+        16
+      ],
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            8,
+            8,
+            16
+          ],
+          "texture": "#flowerbed"
+        },
+        "down": {
+          "uv": [
+            0,
+            16,
+            8,
+            8
+          ],
+          "texture": "#flowerbed"
+        }
+      }
+    }
+  ]
+}

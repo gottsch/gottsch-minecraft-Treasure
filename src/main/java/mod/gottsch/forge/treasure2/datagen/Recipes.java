@@ -15,6 +15,8 @@
  */
 package mod.gottsch.forge.treasure2.datagen;
 
+import mod.gottsch.forge.treasure2.Treasure;
+import net.minecraft.resources.ResourceLocation;
 import java.util.function.Consumer;
 
 import mod.gottsch.forge.treasure2.core.block.TreasureBlocks;
@@ -197,8 +199,31 @@ public class Recipes extends RecipeProvider {
 
 			// wither planks
 			ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, TreasureBlocks.WITHERWOOD_PLANKS.get(), 4)
-					.requires(Ingredient.of(TreasureBlocks.WITHERWOOD_LOG.get(), TreasureBlocks.WITHERWOOD_WOOD.get(), TreasureBlocks.WITHER_LOG.get()))
+					.requires(Ingredient.of(TreasureBlocks.WITHERWOOD_LOG.get(), TreasureBlocks.WITHERWOOD_WOOD.get(), TreasureBlocks.WITHER_LOG.get(),
+							TreasureBlocks.STRANGLED_WITHERWOOD_LOG.get()))
 					.unlockedBy("has_log", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureBlocks.WITHERWOOD_LOG.get()))
+					.save(recipe);
+
+			// a hollow log is half a log: two planks
+			ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, TreasureBlocks.WITHERWOOD_PLANKS.get(), 2)
+					.requires(TreasureBlocks.HOLLOW_WITHERWOOD_LOG.get())
+					.unlockedBy("has_hollow_log", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureBlocks.HOLLOW_WITHERWOOD_LOG.get()))
+					.save(recipe, new ResourceLocation(Treasure.MODID, "witherwood_planks_from_hollow_log"));
+
+			// hollow witherwood logs: a ring of logs, hollowed out
+			ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, TreasureBlocks.HOLLOW_WITHERWOOD_LOG.get(), 8)
+					.pattern("www")
+					.pattern("w w")
+					.pattern("www")
+					.define('w', Ingredient.of(TreasureBlocks.WITHERWOOD_LOG.get(), TreasureBlocks.WITHER_LOG.get()))
+					.unlockedBy("has_log", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureBlocks.WITHERWOOD_LOG.get()))
+					.save(recipe);
+
+			// a strangled log: wind strangle vines round a log
+			ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, TreasureBlocks.STRANGLED_WITHERWOOD_LOG.get())
+					.requires(Ingredient.of(TreasureBlocks.WITHERWOOD_LOG.get(), TreasureBlocks.WITHER_LOG.get()))
+					.requires(TreasureBlocks.CLINGING_STRANGLE_VINES.get())
+					.unlockedBy("has_strangle_vines", InventoryChangeTrigger.TriggerInstance.hasItems(TreasureBlocks.CLINGING_STRANGLE_VINES.get()))
 					.save(recipe);
 
 			// witherwood stairs
