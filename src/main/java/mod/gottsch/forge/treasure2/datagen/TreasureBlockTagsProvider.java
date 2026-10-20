@@ -53,6 +53,29 @@ public class TreasureBlockTagsProvider extends BlockTagsProvider {
     					TreasureBlocks.STRIPPED_WITHERWOOD_WOOD.get(), TreasureBlocks.WITHERWOOD_PLANKS.get(), TreasureBlocks.WITHERWOOD_STAIRS.get(),
     					TreasureBlocks.WITHERWOOD_SLAB.get(), TreasureBlocks.STRANGLED_WITHERWOOD_LOG.get(), TreasureBlocks.WITHERED_GRASS_BLOCK.get());
     	tag(BlockTags.MINEABLE_WITH_AXE).add(TreasureBlocks.STRANGLED_WITHERWOOD_LOG.get());
+    	// witherwood is wood: an axe cuts all of it. It is in neither #logs nor #planks, so nothing else puts it here
+    	tag(BlockTags.MINEABLE_WITH_AXE).add(TreasureBlocks.WITHERWOOD_ROOT.get(),
+    			TreasureBlocks.WITHERWOOD_BRANCH.get(),
+    			TreasureBlocks.WITHERWOOD_BROKEN_LOG.get(),
+    			TreasureBlocks.WITHERWOOD_TWIG.get(),
+    			TreasureBlocks.WITHERWOOD_LOG.get(),
+    			TreasureBlocks.WITHERWOOD_WOOD.get(),
+    			TreasureBlocks.STRIPPED_WITHERWOOD_LOG.get(),
+    			TreasureBlocks.STRIPPED_WITHERWOOD_WOOD.get(),
+    			TreasureBlocks.WITHERWOOD_PLANKS.get(),
+    			TreasureBlocks.WITHERWOOD_SLAB.get(),
+    			TreasureBlocks.WITHERWOOD_STAIRS.get(),
+    			TreasureBlocks.WITHERWOOD_FENCE.get(),
+    			TreasureBlocks.WITHERWOOD_FENCE_GATE.get(),
+    			TreasureBlocks.WITHERWOOD_DOOR.get(),
+    			TreasureBlocks.WITHERWOOD_TRAPDOOR.get(),
+    			TreasureBlocks.WITHERWOOD_BUTTON.get(),
+    			TreasureBlocks.WITHERWOOD_PRESSURE_PLATE.get(),
+    			TreasureBlocks.WITHERWOOD_SIGN.get(),
+    			TreasureBlocks.WITHERWOOD_WALL_SIGN.get(),
+    			TreasureBlocks.WITHERWOOD_HANGING_SIGN.get(),
+    			TreasureBlocks.WITHERWOOD_WALL_HANGING_SIGN.get(),
+    			TreasureBlocks.BRACKET_FUNGUS.get());
 
     	// blocks rarity
     	tag(TreasureTags.Blocks.COMMON_CHESTS).add(TreasureBlocks.WOOD_CHEST.get());
@@ -97,6 +120,22 @@ public class TreasureBlockTagsProvider extends BlockTagsProvider {
 
 		tag(BlockTags.FENCES).add(TreasureBlocks.WITHERWOOD_FENCE.get());
 		tag(BlockTags.WOODEN_FENCES).add(TreasureBlocks.WITHERWOOD_FENCE.get());
+		// witherwood is ordinary overworld wood, so it joins the vanilla wood families: logs burn and make
+		// charcoal and campfires, planks make crafting tables and sticks, doors open for villagers, and so on
+		tag(TreasureTags.Blocks.WITHERWOOD_LOGS).add(TreasureBlocks.WITHERWOOD_LOG.get(), TreasureBlocks.WITHERWOOD_WOOD.get(), TreasureBlocks.STRIPPED_WITHERWOOD_LOG.get(), TreasureBlocks.STRIPPED_WITHERWOOD_WOOD.get(), TreasureBlocks.STRANGLED_WITHERWOOD_LOG.get());
+		tag(BlockTags.LOGS_THAT_BURN).addTag(TreasureTags.Blocks.WITHERWOOD_LOGS);
+		tag(BlockTags.PLANKS).add(TreasureBlocks.WITHERWOOD_PLANKS.get());
+		tag(BlockTags.WOODEN_SLABS).add(TreasureBlocks.WITHERWOOD_SLAB.get());
+		tag(BlockTags.WOODEN_STAIRS).add(TreasureBlocks.WITHERWOOD_STAIRS.get());
+		tag(BlockTags.FENCE_GATES).add(TreasureBlocks.WITHERWOOD_FENCE_GATE.get());
+		tag(BlockTags.WOODEN_DOORS).add(TreasureBlocks.WITHERWOOD_DOOR.get());
+		tag(BlockTags.WOODEN_TRAPDOORS).add(TreasureBlocks.WITHERWOOD_TRAPDOOR.get());
+		tag(BlockTags.WOODEN_BUTTONS).add(TreasureBlocks.WITHERWOOD_BUTTON.get());
+		tag(BlockTags.WOODEN_PRESSURE_PLATES).add(TreasureBlocks.WITHERWOOD_PRESSURE_PLATE.get());
+		tag(BlockTags.STANDING_SIGNS).add(TreasureBlocks.WITHERWOOD_SIGN.get());
+		tag(BlockTags.WALL_SIGNS).add(TreasureBlocks.WITHERWOOD_WALL_SIGN.get());
+		tag(BlockTags.CEILING_HANGING_SIGNS).add(TreasureBlocks.WITHERWOOD_HANGING_SIGN.get());
+		tag(BlockTags.WALL_HANGING_SIGNS).add(TreasureBlocks.WITHERWOOD_WALL_HANGING_SIGN.get());
 	}
 
 }

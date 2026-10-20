@@ -5,12 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [4.2.1] - Unreleased
+## [4.2.1] - 2026-10-20
 
 ### Changed
 - Fixed a crash at night in a Wither Grove. A Wisp's glow had no texture, so the game crashed the first time one appeared.
 - Wisps now appear every night. They used to show only if you had joined the world at night, and then went on drifting through the day. Now they come out at dusk and fade at dawn. The faint light each one casts follows within a minute or so.
 - Fixed a crash when saving the world, and the first time a player used a chest, if Treasure2 had recorded the chest without noting which dimension it was in. A mod placing chests with Treasure2's chest API and leaving out its last step (`TreasureApi.finalizeChest`) could cause this.
+- Axes now cut witherwood. Witherwood logs, wood, planks, stairs, slabs, doors, trapdoors, fences, gates, buttons, pressure plates, signs, branches, broken logs and roots, and Bracket Fungus, all broke at the same speed with an axe as by hand. A Witherwood Root took about four and a half seconds even with a diamond axe; it now takes about half a second.
+- Witherwood now counts as wood everywhere vanilla wood does. Witherwood planks make crafting tables, sticks, chests and anything else that takes any planks; witherwood logs and wood smelt into charcoal, make campfires and burn as fuel, as do the planks, slabs, stairs, doors and the rest; and villagers can open witherwood doors. A new `treasure2:witherwood_logs` tag holds the logs, wood, stripped logs and wood, and the Strangled Witherwood Log, as vanilla has `oak_logs`.
 - Wisps are now much bigger: a soft green-white glow a third of a block or more across that swells and fades as it drifts, where before it was a speck that was easy to miss.
 
 ## [4.2.0] - 2026-10-19
