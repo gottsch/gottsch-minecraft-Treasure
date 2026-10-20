@@ -77,14 +77,28 @@ public class WispBlock extends Block implements ITreasureBlock {
 		}
 	}
 
+	/** dusk to dawn by the clock, as vanilla's isNight() reads in clear weather */
+	private static boolean isNightTime(Level level) {
+		long time = level.getDayTime() % 24000L;
+		return time >= NIGHT_START && time < NIGHT_END;
+	}
+
+	private static final long NIGHT_START = 13000L;
+	private static final long NIGHT_END = 23000L;
+
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
-		if (!level.isNight() || random.nextInt(3) != 0) {
+		// the clock, not level.isNight(): a client level sets its sky darkness once, when it loads, and
+		// never again, so isNight() there is stuck at whatever it was on joining. Nor LIT, which waits for a
+		// random tick (a minute or so) to catch up. The day time is synced, and /time set sends it at once.
+		if (!isNightTime(level) || random.nextInt(3) != 0) {
 			return;
 		}
+		// anywhere within a block or so of the wisp, pushed off in any direction, some sinking
 		level.addParticle(TreasureParticles.WISP_PARTICLE.get(),
-				pos.getX() + 0.2 + random.nextDouble() * 0.6, pos.getY() + 0.2 + random.nextDouble() * 0.6, pos.getZ() + 0.2 + random.nextDouble() * 0.6,
-				(random.nextDouble() - 0.5) * 0.02, 0.004 + random.nextDouble() * 0.01, (random.nextDouble() - 0.5) * 0.02);
+				pos.getX() + 0.5 + (random.nextDouble() - 0.5) * 2.0, pos.getY() + 0.5 + (random.nextDouble() - 0.5) * 1.5,
+				pos.getZ() + 0.5 + (random.nextDouble() - 0.5) * 2.0,
+				(random.nextDouble() - 0.5) * 0.04, (random.nextDouble() - 0.35) * 0.02, (random.nextDouble() - 0.5) * 0.04);
 	}
 }

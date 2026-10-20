@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.2.1] - Unreleased
+
+### Changed
+- Fixed a crash at night in a Wither Grove. A Wisp's glow had no texture, so the game crashed the first time one appeared.
+- Wisps now appear every night. They used to show only if you had joined the world at night, and then went on drifting through the day. Now they come out at dusk and fade at dawn. The faint light each one casts follows within a minute or so.
+- Wisps are now much bigger: a soft green-white glow a third of a block or more across that swells and fades as it drifts, where before it was a speck that was easy to miss.
+
 ## [4.2.0] - 2026-10-19
 
 ### Added
