@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Fixed a crash at night in a Wither Grove. A Wisp's glow had no texture, so the game crashed the first time one appeared.
 - Wisps now appear every night. They used to show only if you had joined the world at night, and then went on drifting through the day. Now they come out at dusk and fade at dawn. The faint light each one casts follows within a minute or so.
+- Fixed a crash when saving the world, and the first time a player used a chest, if Treasure2 had recorded the chest without noting which dimension it was in. A mod placing chests with Treasure2's chest API and leaving out its last step (`TreasureApi.finalizeChest`) could cause this.
 - Wisps are now much bigger: a soft green-white glow a third of a block or more across that swells and fades as it drifts, where before it was a speck that was easy to miss.
 
 ## [4.2.0] - 2026-10-19

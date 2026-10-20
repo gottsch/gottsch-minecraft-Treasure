@@ -65,7 +65,9 @@ public class TreasureChestCacheData {
             tag.putString(CHEST_NAME, getChestName().toString());
         }
 
-        if (getChestName() != null) {
+        // a chest is cached during processBlock and gets its dimension in finalizeProcessing; one that
+        // never got there (a mod that skips TreasureApi.finalizeChest) must not stop the world saving
+        if (getDimensionName() != null) {
             tag.putString(DIMENSION_NAME, getDimensionName().toString());
         }
 

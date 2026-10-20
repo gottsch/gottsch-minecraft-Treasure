@@ -460,7 +460,7 @@ public class AbstractTreasureChestBlock extends BaseEntityBlock implements ITrea
 
 		TreasureChestCache.getCache().stream()
 				// if matching on dimension and pos, doesn't require to match on biome
-				.filter(chest -> chest.getDimensionName().equals(level.dimensionType().effectsLocation()))
+				.filter(chest -> level.dimensionType().effectsLocation().equals(chest.getDimensionName()))
 				.filter(chest -> chest.getCoords().equals(Coords.of(pos)))
 				.findFirst().ifPresent(chest -> {
 					Treasure.LOGGER.debug("marking chest at pos {} as discovered", pos.toShortString());
