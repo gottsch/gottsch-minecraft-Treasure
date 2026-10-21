@@ -443,9 +443,14 @@ public class WitherGroveStructure extends ModJigsawStructure {
 		for (int[] row : paintFrom) {
 			java.util.Arrays.fill(row, minY);
 		}
+		// a chunk still generating has the _WG map; a finished one (a grove placed by command) keeps only
+		// WORLD_SURFACE, which counts the same blocks. Asking a finished chunk for the _WG map rebuilds it and,
+		// in a dev run, logs "Unprimed heightmap"
+		Heightmap.Types surfaceType = chunk.hasPrimedHeightmap(Heightmap.Types.WORLD_SURFACE_WG)
+				? Heightmap.Types.WORLD_SURFACE_WG : Heightmap.Types.WORLD_SURFACE;
 		for (int lx = 0; lx < 16; lx++) {
 			for (int lz = 0; lz < 16; lz++) {
-				int surface = chunk.getHeight(Heightmap.Types.WORLD_SURFACE_WG, lx, lz);
+				int surface = chunk.getHeight(surfaceType, lx, lz);
 				paintFrom[lx >> 2][lz >> 2] = Math.min(paintFrom[lx >> 2][lz >> 2], surface - PAINT_DEPTH);
 			}
 		}
